@@ -77,6 +77,6 @@ export function voiceTokens(text: string): string[] {
 
 /** First sentence of a voiceover (used for the 2-second hook check). */
 export function firstSentence(text: string): string {
-  const m = /^(.+?[.!?…])(\s|$)/u.exec(text.trim());
+  const m = /^(.+?[.!?])(\s|$)/u.exec(text.trim());
   return m ? m[1] : text.trim();
 }

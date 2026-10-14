@@ -90,7 +90,6 @@ async function draftChannelFromSeed(ws: Workspace, opts: { seed?: string; slug?:
     draftRel = draft.rel;
   }
   slug = slug ?? slugify(seed).split("-").slice(0, 5).join("-");
-  name = name || seed.replace(/\b\w/g, (c) => c.toUpperCase());
   const touched = createChannelSkeleton(ws, slug, name);
   if (draftRel) {
     writeText(ws.path(draftRel), updateFrontmatter(readText(ws.path(draftRel)), { "draft.status": "approved", "draft.decided": today(), "draft.approved_into": `channels/${slug}` }));
@@ -153,8 +152,7 @@ export function approveChannel(ws: Workspace, slug: string, by: string | undefin
   const status = String(channel.doc.data.status);
   if (status === "active") throw new EngineError(`Channel "${slug}" is already active.`);
   writeText(channel.doc.abs, updateFrontmatter(channel.doc.text, { status: "active", approved: today(), ...(by ? { approved_by: by } : {}) }));
-  const touched = [channel.doc.abs];
-  commitPaths(ws, touched, `approve channel ${slug} → active${by ? ` (by ${by})` : ""}`);
+  commitPaths(ws, [channel.dir], `approve channel ${slug} → active${by ? ` (by ${by})` : ""}`);
   ok(`${slug} is now active`);
   next([`Make an episode: ./engine make episode --channel ${slug} --series ${[...channel.series.keys()][0] ?? "<series>"}`]);
 }

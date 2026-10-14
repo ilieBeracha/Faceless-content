@@ -93,6 +93,6 @@ export function checkBeatVisual(visual: Beat3dVisual, scene: Scene3d | undefined
   return problems;
 }
 
-export function sceneText(scene: Scene3d): string[] {
-  return scene.parts.flatMap((p) => [p.label, p.note ?? ""]).filter(Boolean);
+export function sceneText(scene: Scene3d | undefined): string[] {
+  return (scene?.parts ?? []).flatMap((p) => [p.label, p.note ?? ""]).filter(Boolean);
 }

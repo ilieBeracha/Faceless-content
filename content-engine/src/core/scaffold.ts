@@ -63,7 +63,7 @@ export function createChannelSkeleton(ws: Workspace, slug: string, name: string)
     .replace(/^slug: my-channel/m, `slug: ${slug}`)
     .replace(/^name: My Channel( *)/m, `name: ${JSON.stringify(name)}$1`)
     .replace(/^created: 2026-01-01/m, `created: ${today()}`)
-    .replace(/\{\{name\}\}/g, name);
+    .replace(/\{\{name\}\}/g, name || "(channel name)");
   const files = [join(dir, "channel.md"), join(dir, "ideas.md"), join(dir, "learnings.md")];
   createFileExclusive(files[0], tpl);
   createFileExclusive(files[1], templateBody(ws, "ideas.md", { name }).trimStart());

@@ -41,7 +41,7 @@ export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
     sceneSchema: motion.sceneSchema,
     sceneRequired: false,
     beatVisualSchema: motion.beatVisualSchema,
-    text: (_scene, beats) => beats.flatMap((b) => (b.visual as motion.MgBeatVisual).elements.flatMap(motion.elementText)).filter(Boolean),
+    text: (_scene, beats) => beats.flatMap((b) => ((b.visual as motion.MgBeatVisual).elements ?? []).flatMap((el) => (el && typeof el === "object" ? motion.elementText(el) : []))).filter(Boolean),
   },
   "render-talking-character": {
     name: "render-talking-character",

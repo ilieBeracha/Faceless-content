@@ -44,7 +44,7 @@ export function buildPages(words: TimedWord[], measure: (text: string) => number
       line = lines[lines.length - 1];
     }
     line.words.push(word);
-    if (/[.!?…]["”']?$/.test(word.text) && i < words.length - 1) flush();
+    if (/[.!?]["”')]?$/.test(word.text) && i < words.length - 1) flush();
   });
   flush();
   // Each page stays up until the next one starts (or briefly after its last word).
