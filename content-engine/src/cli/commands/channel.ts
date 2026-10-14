@@ -77,6 +77,7 @@ async function draftChannelFromSeed(ws: Workspace, opts: { seed?: string; slug?:
   let slug = opts.slug;
   let name = "";
   let draftRel: string | null = null;
+  let draftSkills: string[] = [];
   if (opts.fromDraft) {
     const draft = draftInfo(ws, opts.fromDraft);
     if (draft.kind !== "niche") throw new EngineError(`${draft.rel} is a ${draft.kind} draft, not a niche.`);
@@ -88,6 +89,7 @@ async function draftChannelFromSeed(ws: Workspace, opts: { seed?: string; slug?:
     name = String(data.name);
     seed = `Approved niche proposal (${draft.rel}) — use it as the brief:\n\n${readText(draft.abs)}`;
     draftRel = draft.rel;
+    draftSkills = Array.isArray(data.render_skills) ? data.render_skills.map(String) : [];
   }
   slug = slug ?? slugify(seed).split("-").slice(0, 5).join("-");
   const touched = createChannelSkeleton(ws, slug, name);
@@ -99,11 +101,14 @@ async function draftChannelFromSeed(ws: Workspace, opts: { seed?: string; slug?:
   commitPaths(ws, touched, `new channel ${slug}: skeleton from ${draftRel ? "approved niche" : "seed"}`);
 
   const renderSkills = listSkills(ws).filter((s) => s.kind === "render");
-  const ctx = new ContextBundle(ws, { purpose: "new-channel", channel: slug, skills: ["brainstorm", "render-talking-character", "write-script"], globals: ["templates/channel.md", "templates/character.md", "templates/series.md", "templates/ideas.md", "workflows/new-channel.md"] });
+  // The niche's chosen render skills come with their guides, so the series and character fit them.
+  const extraSkills = draftSkills.filter((s) => s !== "render-talking-character" && renderSkills.some((r) => r.name === s));
+  const ctx = new ContextBundle(ws, { purpose: "new-channel", channel: slug, skills: ["brainstorm", "render-talking-character", "write-script", ...extraSkills], globals: ["templates/channel.md", "templates/character.md", "templates/series.md", "templates/ideas.md", "workflows/new-channel.md"] });
   ctx.addFile("workflows/new-channel.md", "workflow");
   for (const t of ["channel.md", "character.md", "series.md", "ideas.md"]) ctx.addFile(`templates/${t}`, "template");
   ctx.addFile("skills/brainstorm/SKILL.md", "skill");
   ctx.addFile("skills/render-talking-character/SKILL.md", "skill");
+  for (const s of extraSkills) ctx.addFile(`skills/${s}/SKILL.md`, "skill");
   ctx.addFile(`channels/${slug}/channel.md`, "channel");
   ctx.addInline("seed", seed);
   ctx.addInline("render skills available (series pick from these)", renderSkills.map((s) => `- ${s.name} (${s.layer}): ${s.description}`).join("\n"), "listing");

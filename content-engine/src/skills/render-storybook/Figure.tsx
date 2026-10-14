@@ -26,13 +26,13 @@ function poseAt(name: Figure["pose"], t: number): PoseDef {
     case "point":
       return { ...STAND, front: [96, 84], head: -4 };
     case "wave":
-      return { ...STAND, front: [140, 170 + Math.sin(t * 9) * 18] };
+      return { ...STAND, front: [110, 160 + Math.sin(t * 9) * 18] }; // raised clear of the head
     case "think":
       return { ...STAND, back: [-16, -10], front: [28, 152], head: 8 };
     case "shrug":
       return { ...STAND, back: [-42, -102], front: [42, 102], head: 6 };
     case "cheer":
-      return { ...STAND, back: [-152, -168], front: [152, 168], legBack: [-12, -8], legFront: [12, 8], head: -6 };
+      return { ...STAND, back: [-115, -140], front: [115, 140], legBack: [-12, -8], legFront: [12, 8], head: -6 }; // a V, clear of the head
     case "hold":
       return { ...STAND, back: [52, 96], front: [66, 100] };
     case "walk":

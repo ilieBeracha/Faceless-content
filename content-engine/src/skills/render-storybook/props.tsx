@@ -155,7 +155,8 @@ const Candle: React.FC<{ x: number; y: number; s: number; seed: number; t: numbe
 /** Draw one scene prop. */
 export const PropView: React.FC<{ p: StoryProp; groundY: number; seed: number; t: number; accent: string }> = ({ p, groundY, seed, t, accent }) => {
   const s = p.scale;
-  const x = p.x * 1000;
+  const x0 = p.x * 1000;
+  const x = x0;
   const y = p.y !== undefined ? p.y * 1000 : (SKY_Y[p.type] ?? -1) >= 0 ? SKY_Y[p.type]! * 1000 : groundY;
   const o = (n: number, extra: object = {}) => ({ seed: seed * 13 + n, ...extra });
   const c = p.color;
@@ -164,6 +165,8 @@ export const PropView: React.FC<{ p: StoryProp; groundY: number; seed: number; t
       const text = p.text ?? "";
       const w = Math.max(150, text.length * 34 + 60) * s;
       const h = 110 * s;
+      // Long boards are kept inside the picture (with room for the slow camera moves).
+      const x = Math.min(Math.max(x0, w / 2 + 50), 1000 - w / 2 - 50);
       return (
         <g>
           <GroundShadow cx={x} cy={y + 2} rx={40 * s} />
