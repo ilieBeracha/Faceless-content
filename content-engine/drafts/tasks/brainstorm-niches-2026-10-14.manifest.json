@@ -1,0 +1,54 @@
+{
+  "task": "brainstorm-niches-2026-10-14",
+  "title": "Brainstorm 3 channel niches",
+  "purpose": "brainstorm-niches",
+  "channel": null,
+  "series": null,
+  "created": "2026-10-14T18:56:35Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "skills/brainstorm/SKILL.md",
+      "role": "skill",
+      "sha256": "459d640837c9a0d7e4d8a98c7d641da186433bc6a63adad9a8f8313071061c23",
+      "bytes": 3056
+    },
+    {
+      "path": "templates/niche.md",
+      "role": "template",
+      "sha256": "a3f5b395c75764bf05f166ef6b53b19859aac64f8e14d67be51608b2560d91b8",
+      "bytes": 1438
+    },
+    {
+      "path": "(inline) existing channels (names and niches only — propose something different)",
+      "role": "listing",
+      "sha256": "35d6c581b8dd98bf748c5532442550068bdaa4a8725bbd28691577498b9c5149",
+      "bytes": 123
+    },
+    {
+      "path": "(inline) render skills available",
+      "role": "listing",
+      "sha256": "49629a92f0256c72a0ff6f945230244711c89c37e1e6c54659d6fa001a4b321d",
+      "bytes": 575
+    },
+    {
+      "path": "(inline) direction from the person",
+      "role": "input",
+      "sha256": "547a4b30833872790e9459706405fe42028ff7c9a142dff7207b85b65496cd59",
+      "bytes": 71
+    }
+  ],
+  "outputs": [
+    {
+      "path": "drafts/niches",
+      "format": "files",
+      "description": "3 niche proposals"
+    }
+  ],
+  "next": "./engine list drafts"
+}

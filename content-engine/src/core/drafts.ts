@@ -43,7 +43,9 @@ export function listDrafts(ws: Workspace): DraftInfo[] {
   const walk = (dir: string) => {
     for (const entry of readdirSync(dir)) {
       const p = join(dir, entry);
-      if (statSync(p).isDirectory()) walk(p);
+      if (statSync(p).isDirectory()) {
+        if (entry !== "tasks") walk(p); // task files for agents live next to drafts but aren't drafts
+      }
       else if (entry.endsWith(".md") && entry !== "README.md") files.push(p);
     }
   };
