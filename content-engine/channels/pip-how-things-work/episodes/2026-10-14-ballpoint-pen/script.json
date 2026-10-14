@@ -1,0 +1,298 @@
+{
+  "schema": "script/v1",
+  "channel": "pip-how-things-work",
+  "series": "inside-it",
+  "idea": "ballpoint-pen",
+  "title": "Inside It: a ballpoint pen",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "pip",
+      "voiceover": "Why doesn't your pen leak?",
+      "on_screen_text": "Why doesn't it LEAK?",
+      "visual": {
+        "skill": "render-3d-explainer",
+        "shot": "establish"
+      },
+      "character": {
+        "placement": "full",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "fly-in",
+      "speaker": "pip",
+      "voiceover": "Okay but… WHY though? Let's fly inside and find out. The secret is hiding right down at the tip.",
+      "visual": {
+        "skill": "render-3d-explainer",
+        "shot": "fly-in",
+        "target": "tip",
+        "callouts": []
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "explode",
+      "speaker": "pip",
+      "voiceover": "Here's everything in there. A see-through plastic barrel. A thin tube full of thick, oily ink. And at the very end, a tiny metal ball, about one millimetre wide.",
+      "on_screen_text": "What's inside",
+      "visual": {
+        "skill": "render-3d-explainer",
+        "shot": "explode",
+        "explode": 1,
+        "callouts": [
+          "barrel",
+          "ink",
+          "ball"
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "surprised"
+      }
+    },
+    {
+      "id": "key-part",
+      "speaker": "pip",
+      "voiceover": "That ball sits in a snug little socket. When you write, it rolls, grabs ink from inside, and paints it onto the paper. When you stop writing, it just sits there and blocks the opening, like a tiny cork.",
+      "on_screen_text": "The ball is the secret",
+      "visual": {
+        "skill": "render-3d-explainer",
+        "shot": "focus",
+        "target": "ball",
+        "explode": 0,
+        "callouts": [
+          "ball",
+          "tip"
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "thinking"
+      }
+    },
+    {
+      "id": "payoff",
+      "speaker": "pip",
+      "voiceover": "So the ball is the lid! And the ink is way too thick to drip out on its own. No rolling, no leaking.",
+      "on_screen_text": "No rolling = no leaking",
+      "visual": {
+        "skill": "render-3d-explainer",
+        "shot": "reassemble"
+      },
+      "character": {
+        "placement": "full",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-3d-explainer": {
+      "object": "ballpoint pen",
+      "parts": [
+        {
+          "id": "barrel",
+          "label": "Plastic barrel",
+          "note": "see-through case",
+          "shape": "tube",
+          "radius": 0.72,
+          "inner_radius": 0.58,
+          "length": 12.5,
+          "position": [
+            0,
+            0.6,
+            0
+          ],
+          "color": "#8fd0ff",
+          "material": "plastic",
+          "opacity": 0.3,
+          "shell": true,
+          "explode": [
+            -3.4,
+            0.4,
+            -1.0
+          ],
+          "anchor": [
+            -0.6,
+            3.0,
+            0
+          ]
+        },
+        {
+          "id": "end-plug",
+          "label": "End plug",
+          "shape": "cylinder",
+          "radius": 0.6,
+          "length": 0.9,
+          "position": [
+            0,
+            7.3,
+            0
+          ],
+          "color": "#2563eb",
+          "material": "plastic",
+          "explode": [
+            -3.4,
+            1.6,
+            -1.0
+          ]
+        },
+        {
+          "id": "ink-tube",
+          "label": "Ink tube",
+          "shape": "tube",
+          "radius": 0.3,
+          "inner_radius": 0.22,
+          "length": 11.8,
+          "position": [
+            0,
+            0.4,
+            0
+          ],
+          "color": "#eef2f7",
+          "material": "plastic",
+          "opacity": 0.5,
+          "explode": [
+            1.4,
+            0.3,
+            0
+          ]
+        },
+        {
+          "id": "ink",
+          "label": "Thick, oily ink",
+          "note": "too thick to drip",
+          "shape": "cylinder",
+          "radius": 0.21,
+          "length": 7.4,
+          "position": [
+            0,
+            -1.8,
+            0
+          ],
+          "color": "#1d3fb8",
+          "material": "ink",
+          "explode": [
+            1.4,
+            0.3,
+            0
+          ],
+          "anchor": [
+            0.2,
+            1.5,
+            0
+          ]
+        },
+        {
+          "id": "tip",
+          "label": "Socket",
+          "note": "holds the ball snug",
+          "shape": "cone",
+          "radius_bottom": 0.1,
+          "radius_top": 0.3,
+          "length": 1.1,
+          "position": [
+            0,
+            -6.05,
+            0
+          ],
+          "color": "#d9a441",
+          "material": "metal",
+          "explode": [
+            3.6,
+            -1.2,
+            0.6
+          ],
+          "anchor": [
+            0.2,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "ball",
+          "label": "Metal ball",
+          "note": "about 1 mm wide",
+          "shape": "sphere",
+          "radius": 0.09,
+          "position": [
+            0,
+            -6.62,
+            0
+          ],
+          "color": "#e3e7ec",
+          "material": "metal",
+          "explode": [
+            3.6,
+            -2.4,
+            0.6
+          ]
+        }
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Inside a ballpoint pen's plastic barrel is a thin tube (the refill) that holds the ink.",
+      "beat": "explode",
+      "source": "https://home.howstuffworks.com/pen3.htm",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "claim": "Ballpoint pen ink is thick and oil-based — far more viscous than water or fountain-pen ink (oil-based ballpoint inks are typically around 1,000–20,000 centipoise; water is about 1).",
+      "beat": "explode",
+      "source": "https://home.howstuffworks.com/pen3.htm ; US patent 5,990,201 (image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/5990201)",
+      "confidence": "high",
+      "note": "Some modern 'low-viscosity' oil inks are thinner (300–3,000 cP) but still far thicker than water."
+    },
+    {
+      "id": "c3",
+      "claim": "The tip of a common ballpoint pen holds a metal ball about one millimetre wide (a 'medium' point is a 1.0 mm ball).",
+      "beat": "explode",
+      "source": "MoMA collection, Bic Cristal (moma.org/collection/works/82141): '1 mm ball'; https://en.wikipedia.org/wiki/Bic_Cristal",
+      "confidence": "high",
+      "note": "Ball sizes range from about 0.5 to 1.6 mm; materials include tungsten carbide, steel and brass."
+    },
+    {
+      "id": "c4",
+      "claim": "The ball sits in a socket at the tip; as it rolls, ink from the refill coats the ball and the ball carries that ink onto the paper.",
+      "beat": "key-part",
+      "source": "https://home.howstuffworks.com/pen3.htm ; Princeton fluid-mechanics paper (princeton.edu/~stonelab/Teaching/PaulReverdy%20finalPaper.pdf)",
+      "confidence": "high"
+    },
+    {
+      "id": "c5",
+      "claim": "When the pen isn't writing, the ball blocks the opening at the tip, which also limits air reaching the ink so it doesn't dry out.",
+      "beat": "key-part",
+      "source": "https://home.howstuffworks.com/pen3.htm",
+      "confidence": "high",
+      "note": "'Like a tiny cork' is an analogy, not a literal seal."
+    },
+    {
+      "id": "c6",
+      "claim": "Ballpoint ink is too viscous to flow out freely on its own; it flows when the rolling ball draws it out.",
+      "beat": "payoff",
+      "source": "Bureau of Indian Standards, Ballpoint Pen document (bis.gov.in/wp-content/uploads/2023/08/Ballpoint-Pen-16.pdf): 'the ink does not flow out of the pen freely due to its viscous nature'",
+      "confidence": "high"
+    }
+  ],
+  "pronunciations": {
+    "millimetre": "millimeter"
+  },
+  "publish": {
+    "title": "Why doesn't your pen leak? 🖊️ Inside It",
+    "description": "Pip flies inside a ballpoint pen to find the tiny part that stops it from leaking. Spoiler: it's a 1 mm ball.",
+    "hashtags": [
+      "#howitworks",
+      "#science",
+      "#ballpointpen",
+      "#insideit"
+    ]
+  }
+}
