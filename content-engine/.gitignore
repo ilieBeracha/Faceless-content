@@ -1,0 +1,24 @@
+# dependencies & local tooling
+node_modules/
+.venv/
+.models/
+.cache/
+
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# machine-specific overrides
+engine.config.local.json
+
+# rendered videos and other large media (re-creatable from the committed scripts)
+out/
+channels/*/episodes/*/audio/*.wav
+channels/*/episodes/*/audio/chunks/
+channels/*/episodes/*/qa/frames/
+channels/*/episodes/*/qa/*.jpg
+
+# OS / editor noise
+.DS_Store
+*.log

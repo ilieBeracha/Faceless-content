@@ -1,0 +1,90 @@
+{
+  "$comment": "Engine-wide defaults shared by every channel. Series files can override `length`; channel files set brand/tone. Machine-specific overrides go in engine.config.local.json (gitignored) or .env.",
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "codec": "h264",
+    "crf": 18
+  },
+  "length": {
+    "min_seconds": 20,
+    "max_seconds": 60
+  },
+  "safe_area": {
+    "$comment": "Pixels to keep clear of platform UI on a 1080x1920 frame (strictest of TikTok / Reels / Shorts). All text must stay inside.",
+    "top": 250,
+    "bottom": 440,
+    "left": 60,
+    "right": 150
+  },
+  "hook": {
+    "speech_starts_by_seconds": 0.5,
+    "hook_line_ends_by_seconds": 2.0,
+    "on_screen_by_seconds": 0.5
+  },
+  "audio": {
+    "target_lufs": -14,
+    "lufs_tolerance": 1.5,
+    "true_peak_max_db": -1.0,
+    "sample_rate": 48000,
+    "lead_in_seconds": 0.1,
+    "beat_gap_seconds": 0.22,
+    "outro_hold_seconds": 1.0,
+    "max_outro_padding_seconds": 3.0
+  },
+  "voice": {
+    "default_provider": "kokoro",
+    "providers": {
+      "kokoro": {
+        "kind": "local",
+        "cost": "free",
+        "license": "Apache-2.0 (model + voices)",
+        "dir": ".models/kokoro",
+        "model_url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx",
+        "voices_url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin",
+        "python_packages": ["kokoro-onnx==0.6.1", "onnx==1.23.2", "soundfile==0.14.0"]
+      }
+    }
+  },
+  "llm": {
+    "$comment": "agent = the coding agent operating this repo writes drafts/scripts from task files (free). anthropic = Claude API (paid; needs ANTHROPIC_API_KEY and your OK).",
+    "provider": "agent",
+    "anthropic": {
+      "model": "claude-opus-5-5",
+      "effort": "high",
+      "max_tokens": 32000
+    }
+  },
+  "captions": {
+    "max_chars_per_line": 16,
+    "max_lines": 2
+  },
+  "qa": {
+    "caption_sync_tolerance_frames": 1,
+    "caption_sync_max_bad_ratio": 0.02,
+    "frames_to_sample": 8
+  },
+  "render": {
+    "gl": "angle",
+    "jpeg_quality": 92
+  },
+  "git": {
+    "auto_commit": true
+  },
+  "fonts": ["montserrat", "space-grotesk", "fredoka", "baloo-2"],
+  "platforms": {
+    "youtube-shorts": {
+      "max_seconds": 180,
+      "ai_disclosure": "YouTube Studio > 'Altered or synthetic content'. Required for realistic content; optional (but allowed) for clearly animated content."
+    },
+    "tiktok": {
+      "max_seconds": 600,
+      "ai_disclosure": "Post settings > 'AI-generated content' toggle. Required when content is significantly AI-generated and realistic."
+    },
+    "instagram-reels": {
+      "max_seconds": 180,
+      "ai_disclosure": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio."
+    }
+  }
+}

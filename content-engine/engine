@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Content engine CLI. Usage: ./engine <command> [options]   (./engine --help)
+DIR="$(cd "$(dirname "$0")" && pwd)"
+exec "$DIR/node_modules/.bin/tsx" "$DIR/src/cli/main.ts" "$@"
