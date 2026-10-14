@@ -1,0 +1,24 @@
+{
+  "rig": "stick-figure",
+  "params": {
+    "head": "#f1d9a6",
+    "line": "#3a332d",
+    "line_width": 5.5,
+    "head_size": 1.05,
+    "hair": "tuft",
+    "hair_color": "#3a332d",
+    "body_style": "stick",
+    "body_color": "#d9b97e",
+    "accessory": "scarf",
+    "accessory_color": "#f28c38"
+  },
+  "expressions": {
+    "neutral": { "eye_scale": 1, "brow": "flat", "mouth_curve": 0.15, "bounce": 0.25 },
+    "curious": { "eye_scale": 1.12, "brow": "up", "tilt_deg": 8, "look": [0.3, 0.1], "mouth_curve": 0.1, "bounce": 0.3 },
+    "excited": { "eye_scale": 1.2, "brow": "up", "mouth_curve": 0.7, "bounce": 0.6 },
+    "surprised": { "eye_scale": 1.35, "pupil_scale": 0.8, "brow": "up", "mouth_curve": 0, "bounce": 0.35 },
+    "thinking": { "lid": 0.3, "brow": "worried", "look": [-0.4, 0.4], "tilt_deg": -6, "mouth_curve": 0, "bounce": 0.2 },
+    "happy": { "eye_scale": 1, "lid": 0.15, "brow": "flat", "mouth_curve": 0.8, "bounce": 0.4 },
+    "worried": { "eye_scale": 1.05, "brow": "worried", "mouth_curve": -0.4, "bounce": 0.2 }
+  }
+}
