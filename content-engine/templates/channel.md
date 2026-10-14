@@ -22,6 +22,7 @@ brand:                          # required object — the channel's look
   text_color: "#ffffff"         # optional color — on-screen text
   font: montserrat              # required ref(font) — one of the fonts bundled with the engine
   caption_case: normal          # optional enum(normal|upper) — UPPERCASE captions or not
+  caption_color: "#ffd23f"      # optional color — single-word captions (defaults to the accent colour)
 created: 2026-01-01             # required date — when the channel was created
 approved: ""                    # optional date — set by `./engine approve channel`
 approved_by: ""                 # optional string — who approved it

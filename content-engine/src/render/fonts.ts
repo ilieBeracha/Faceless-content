@@ -1,5 +1,7 @@
 import { loadFont } from "@remotion/fonts";
+import anton400 from "@fontsource/anton/files/anton-latin-400-normal.woff2";
 import baloo800 from "@fontsource/baloo-2/files/baloo-2-latin-800-normal.woff2";
+import patrickHand400 from "@fontsource/patrick-hand/files/patrick-hand-latin-400-normal.woff2";
 import fredoka600 from "@fontsource/fredoka/files/fredoka-latin-600-normal.woff2";
 import fredoka700 from "@fontsource/fredoka/files/fredoka-latin-700-normal.woff2";
 import montserrat800 from "@fontsource/montserrat/files/montserrat-latin-800-normal.woff2";
@@ -13,7 +15,11 @@ export const FONTS: Record<string, { family: string; files: { url: string; weigh
   "space-grotesk": { family: "Space Grotesk", files: [{ url: grotesk500, weight: "500" }, { url: grotesk700, weight: "700" }], heavy: 700, regular: 500 },
   fredoka: { family: "Fredoka", files: [{ url: fredoka600, weight: "600" }, { url: fredoka700, weight: "700" }], heavy: 700, regular: 600 },
   "baloo-2": { family: "Baloo 2", files: [{ url: baloo800, weight: "800" }], heavy: 800, regular: 800 },
+  anton: { family: "Anton", files: [{ url: anton400, weight: "400" }], heavy: 400, regular: 400 },
 };
+
+/** Not a brand choice: the handwriting used for lettering inside storybook scenes. */
+const EXTRA_FONTS = [{ family: "Patrick Hand", url: patrickHand400, weight: "400" }];
 
 let loaded = false;
 export function loadEngineFonts(): void {
@@ -22,6 +28,7 @@ export function loadEngineFonts(): void {
   for (const font of Object.values(FONTS)) {
     for (const file of font.files) void loadFont({ family: font.family, url: file.url, weight: file.weight });
   }
+  for (const f of EXTRA_FONTS) void loadFont({ family: f.family, url: f.url, weight: f.weight });
 }
 
 export function fontFor(key: string) {

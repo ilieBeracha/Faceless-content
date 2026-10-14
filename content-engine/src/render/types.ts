@@ -15,6 +15,8 @@ export interface Brand {
   text_color: string;
   font: string;
   caption_case: "normal" | "upper";
+  /** Single-word captions colour (defaults to the accent colour). */
+  caption_color?: string;
 }
 
 export interface TimedWord {
@@ -54,6 +56,8 @@ export interface EpisodeProps {
   characters: Record<string, CharacterInfo>;
   renderSkills: string[];
   captionsSkill: string | null;
+  /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time. */
+  captionStyle: "pages" | "single-word";
   audioFile: string | null;
   showSafeAreas: boolean;
   qaProbe: boolean;

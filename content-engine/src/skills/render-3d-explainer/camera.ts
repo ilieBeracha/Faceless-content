@@ -66,17 +66,18 @@ function shotPose(visual: Beat3dVisual, prev: CamPose, scene: Scene3d, stage: Re
     case "establish": {
       const explode = visual.explode ?? 0;
       const box = boxOf(parts, explode, parts);
-      return { target: box.center, distance: fitDistance(box, stage, canvasH, 0.78), yaw: 28, pitch: 10, explode, focus: null, inside: 0 };
+      return { target: box.center, distance: fitDistance(box, stage, canvasH, 0.8), yaw: 24, pitch: 10, explode, focus: null, inside: 0 };
     }
     case "explode": {
+      // Face the explode offsets (mostly X/Y) almost head-on so the parts spread across the frame.
       const explode = visual.explode ?? 1;
       const box = boxOf(parts, explode, parts);
-      return { target: box.center, distance: fitDistance(box, stage, canvasH, 0.82), yaw: prev.yaw + 22, pitch: 12, explode, focus: null, inside: 0 };
+      return { target: box.center, distance: fitDistance(box, stage, canvasH, 0.92), yaw: 10, pitch: 8, explode, focus: null, inside: 0 };
     }
     case "reassemble": {
       const explode = visual.explode ?? 0;
       const box = boxOf(parts, explode, parts);
-      return { target: box.center, distance: fitDistance(box, stage, canvasH, 0.78), yaw: prev.yaw + 30, pitch: 10, explode, focus: null, inside: 0 };
+      return { target: box.center, distance: fitDistance(box, stage, canvasH, 0.8), yaw: 20, pitch: 10, explode, focus: null, inside: 0 };
     }
     case "fly-in":
     case "focus": {
@@ -85,7 +86,7 @@ function shotPose(visual: Beat3dVisual, prev: CamPose, scene: Scene3d, stage: Re
       const box = boxOf([part], explode, parts);
       const close = visual.shot === "fly-in";
       const distance = Math.max(fitDistance(box, stage, canvasH, close ? 0.55 : 0.35), close ? 1.2 : 2.5);
-      return { target: box.center, distance, yaw: prev.yaw + (close ? 18 : 12), pitch: close ? 6 : 9, explode, focus: part.id, inside: close ? 1 : explode < 0.3 ? 0.8 : 0 };
+      return { target: box.center, distance, yaw: close ? 32 : 18, pitch: close ? 6 : 9, explode, focus: part.id, inside: close ? 1 : explode < 0.3 ? 0.8 : 0 };
     }
     case "orbit":
       return { ...prev, target: prev.target.clone(), yaw: prev.yaw + 50 };
@@ -121,7 +122,7 @@ export function poseAt(t: number, spans: BeatSpan[], scene: Scene3d, stageFor: (
     const target = shotPose(visual, pose, scene, stageFor(span), canvasH);
     const local = Math.min(t, span.end) - span.start;
     const k = easeInOut(local / glide);
-    const drift = visual.shot === "orbit" ? 0 : Math.max(0, local - glide) * (visual.shot === "establish" ? 9 : 5);
+    const drift = visual.shot === "orbit" ? 0 : Math.max(0, local - glide) * (visual.shot === "establish" ? 4 : 2);
     const orbit = visual.shot === "orbit" ? (local / Math.max(0.1, dur)) * 50 : 0;
     const moved = mix(pose, target, k);
     moved.yaw += drift + orbit - (visual.shot === "orbit" ? 50 * k : 0);

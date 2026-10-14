@@ -31,6 +31,7 @@ export function brandOf(channelData: Record<string, unknown>): Brand {
     text_color: b.text_color ?? "#ffffff",
     font: b.font ?? "montserrat",
     caption_case: (b.caption_case as Brand["caption_case"]) ?? "normal",
+    ...(b.caption_color ? { caption_color: b.caption_color } : {}),
   };
 }
 
@@ -59,6 +60,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     characters,
     renderSkills: series.skills.render,
     captionsSkill: series.skills.captions ?? null,
+    captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
     audioFile: "voice.wav",
     showSafeAreas: false,
     qaProbe: true,

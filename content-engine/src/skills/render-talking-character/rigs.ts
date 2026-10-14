@@ -117,11 +117,33 @@ const flat2d = z
   })
   .strict();
 
-export const characterModelSchema = z.discriminatedUnion("rig", [orbBot3d, flat2d]);
+const stickFigure = z
+  .object({
+    rig: z.literal("stick-figure"),
+    params: z
+      .object({
+        head: color.default("#f1d9a6").describe("head fill"),
+        line: color.default("#3a332d").describe("body, limbs and outlines"),
+        line_width: z.number().min(2).max(10).default(5.5),
+        head_size: z.number().min(0.8).max(1.4).default(1),
+        hair: z.enum(["tuft", "none", "curl", "spiky", "bun"]).default("tuft"),
+        hair_color: color.default("#3a332d"),
+        body_style: z.enum(["stick", "tunic"]).default("stick").describe("tunic = a small filled body instead of one line"),
+        body_color: color.default("#d9b97e"),
+        accessory: z.enum(["none", "glasses", "beanie", "chef-hat", "helmet", "scarf", "bow", "cap"]).default("none"),
+        accessory_color: color.default("#c2553a"),
+      })
+      .strict(),
+    expressions: z.record(z.string(), expressionSchema),
+  })
+  .strict();
+
+export const characterModelSchema = z.discriminatedUnion("rig", [orbBot3d, flat2d, stickFigure]);
 export type CharacterModel = z.infer<typeof characterModelSchema>;
 export type OrbBot3dModel = z.infer<typeof orbBot3d>;
 export type Flat2dModel = z.infer<typeof flat2d>;
-export const RIG_NAMES = ["orb-bot-3d", "flat-2d"] as const;
+export type StickFigureModel = z.infer<typeof stickFigure>;
+export const RIG_NAMES = ["orb-bot-3d", "flat-2d", "stick-figure"] as const;
 
 /** Problems with a model.json (empty list when valid). */
 export function checkCharacterModel(raw: unknown): string[] {

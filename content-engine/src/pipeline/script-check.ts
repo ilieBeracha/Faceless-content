@@ -80,7 +80,14 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
     }
     const r = spec.beatVisualSchema.safeParse(beat.visual);
     if (!r.success) errors.push(...r.error.issues.map((i) => `beat "${beat.id}" visual.${i.path.join(".")}: ${i.message}`));
-    else beat.visual = r.data as typeof beat.visual;
+    else {
+      beat.visual = r.data as typeof beat.visual;
+      const used = spec.expressionsUsed?.(r.data) ?? [];
+      if (used.length && character && existsSync(character.modelPath)) {
+        const model = parseCharacterModel(readJson(character.modelPath));
+        for (const name of new Set(used)) if (!(name in model.expressions)) errors.push(`beat "${beat.id}": scene expression "${name}" is not defined for ${beat.speaker} (has: ${Object.keys(model.expressions).join(", ")})`);
+      }
+    }
   }
 
   for (const skill of renderSkills) {

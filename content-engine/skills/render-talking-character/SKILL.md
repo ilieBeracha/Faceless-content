@@ -60,6 +60,27 @@ need no code — only a new model.json.
 }
 ```
 
+### Rig `stick-figure` — a round-headed doodle person
+
+Drawn with sketchy hand-drawn lines. It is the character of the `render-storybook` skill, which poses it inside
+each scene (see that skill); on other scene skills this layer shows it like any other rig.
+
+```jsonc
+{
+  "rig": "stick-figure",
+  "params": {
+    "head": "#f1d9a6", "line": "#3a332d", "line_width": 5.5, "head_size": 1,   // head_size 0.8–1.4
+    "hair": "tuft",            // tuft | none | curl | spiky | bun
+    "hair_color": "#3a332d",
+    "body_style": "stick",     // stick | tunic (a small filled body)
+    "body_color": "#d9b97e",
+    "accessory": "none",       // none | glasses | beanie | chef-hat | helmet | scarf | bow | cap
+    "accessory_color": "#c2553a"
+  },
+  "expressions": { "neutral": { … } }
+}
+```
+
 ### Expressions (same fields for every rig; all optional)
 
 | field | range | effect |
@@ -70,8 +91,8 @@ need no code — only a new model.json.
 | `tilt_deg` | -25–25 | head tilt |
 | `look` | [-1..1, -1..1] | gaze direction |
 | `bounce` | 0–1 | how much it bobs while talking |
-| `brow` | flat \| up \| down \| worried | brows (2D rig) |
-| `mouth_curve` | -1–1 | frown … smile (2D rig) |
+| `brow` | flat \| up \| down \| worried | brows (2D and stick-figure rigs) |
+| `mouth_curve` | -1–1 | frown … smile (2D and stick-figure rigs) |
 | `glow` | 0–1.5 | eye/LED glow (robot rig) |
 
 Every model needs at least `neutral`. Recommended set: `neutral`, `curious`, `excited`, `surprised`, `thinking`.

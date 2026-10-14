@@ -23,8 +23,10 @@ export interface SceneProps {
 export function stageFor(span: BeatSpan, props: EpisodeProps): Rect {
   const r = regions(props.width, props.height, props.safeArea);
   if (span.beat.character.placement === "full" && props.renderSkills.includes("render-talking-character")) {
+    // The character stands big at the bottom-left; frame the object in the column to its right.
     const ch = characterRect("full", props.width, props.height, props.safeArea);
-    return { x: r.stage.x, y: r.stage.y, w: r.stage.w, h: Math.max(240, ch.y - r.stage.y + 40) };
+    const x = ch.x + ch.w * 0.74;
+    return { x, y: r.stage.y + 10, w: r.stage.x + r.stage.w - x, h: r.stage.h - 30 };
   }
   return { x: r.stage.x + 40, y: r.stage.y + 10, w: r.stage.w - 80, h: r.stage.h - 30 };
 }
@@ -57,7 +59,7 @@ const PartMesh: React.FC<{ part: Part; index: number; count: number; pose: CamPo
         opacity={opacity}
         depthWrite={opacity >= 0.999}
         emissive={focused ? accent : "#000000"}
-        emissiveIntensity={focused ? 0.22 + 0.08 * Math.sin(t * 5) : 0}
+        emissiveIntensity={focused ? 0.1 + 0.05 * Math.sin(t * 5) : 0}
         side={part.shell && opacity < 0.999 ? THREE.DoubleSide : THREE.FrontSide}
       />
     </mesh>
@@ -135,8 +137,8 @@ const Callout: React.FC<{ p: Placed; area: Rect; font: ReturnType<typeof fontFor
           transform: `translateX(${(1 - k) * (p.side === "left" ? -40 : 40)}px)`,
         }}
       >
-        <div style={{ fontFamily: font.family, fontWeight: font.heavy, fontSize: p.part.label.length > 16 ? 34 : 40, color: "#ffffff", lineHeight: 1.05, whiteSpace: "nowrap" }}>{p.part.label}</div>
-        {p.part.note && <div style={{ fontFamily: font.family, fontWeight: font.regular, fontSize: 25, color: "rgba(255,255,255,0.78)", marginTop: 4, whiteSpace: "nowrap" }}>{p.part.note}</div>}
+        <div style={{ fontFamily: font.family, fontWeight: font.heavy, fontSize: p.part.label.length > 16 ? 36 : 42, color: "#ffffff", lineHeight: 1.05, whiteSpace: "nowrap" }}>{p.part.label}</div>
+        {p.part.note && <div style={{ fontFamily: font.family, fontWeight: font.regular, fontSize: 28, color: "rgba(255,255,255,0.78)", marginTop: 4, whiteSpace: "nowrap" }}>{p.part.note}</div>}
       </div>
     </>
   );

@@ -96,6 +96,7 @@ export const demoProps: EpisodeProps = {
   },
   renderSkills: ["render-3d-explainer", "render-motion-graphics", "render-talking-character"],
   captionsSkill: "captions",
+  captionStyle: "pages",
   audioFile: null,
   showSafeAreas: false,
   qaProbe: false,

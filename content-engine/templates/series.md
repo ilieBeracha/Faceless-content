@@ -19,6 +19,7 @@ skills:                         # required object — the ONLY skills an episode
   script: write-script          # required ref(skill:script) — writes the script JSON
   render: []                    # required list(ref(skill:render)) min=1 — visual styles; mix and match
   captions: captions            # required ref(skill:captions) — word-by-word captions
+caption_style: pages            # optional enum(pages|single-word) — a block of words with the spoken one highlighted, or one word at a time
 cta: ""                         # optional string — closing line or call to action
 created: 2026-01-01             # required date
 ---

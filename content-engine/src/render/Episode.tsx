@@ -4,6 +4,7 @@ import { Captions } from "../skills/captions/Captions.tsx";
 import { MotionGraphics } from "../skills/render-motion-graphics/MotionGraphics.tsx";
 import { CharacterLayer } from "../skills/render-talking-character/CharacterLayer.tsx";
 import { Scene3D } from "../skills/render-3d-explainer/Scene3D.tsx";
+import { StorybookScene } from "../skills/render-storybook/Storybook.tsx";
 import { fontFor, loadEngineFonts } from "./fonts.ts";
 import { useQaProbe } from "./qa-probe.ts";
 import { beatSpans, clamp, easeOut, regions, safeRect } from "./timeline.ts";
@@ -17,7 +18,11 @@ type SceneComponent = React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: n
 export const SCENE_SKILLS: Record<string, SceneComponent> = {
   "render-3d-explainer": Scene3D,
   "render-motion-graphics": MotionGraphics,
+  "render-storybook": StorybookScene,
 };
+
+/** Scene skills that draw their own title, so the engine's per-beat headline stays off. */
+const OWN_TITLE = new Set(["render-storybook"]);
 
 interface Run {
   skill: string;
@@ -43,7 +48,7 @@ const Headline: React.FC<{ props: EpisodeProps; spans: BeatSpan[] }> = ({ props,
   const { fps, width, height } = useVideoConfig();
   const t = frame / fps;
   const span = spans.reduce((cur, s) => (t >= s.start ? s : cur), spans[0]);
-  const text = span.beat.on_screen_text;
+  const text = OWN_TITLE.has(span.beat.visual.skill) ? undefined : span.beat.on_screen_text;
   const ref = useRef<HTMLDivElement>(null);
   const appearAt = span.index === 0 ? 0 : span.start + 0.05;
   const k = easeOut((t - appearAt) / 0.22);

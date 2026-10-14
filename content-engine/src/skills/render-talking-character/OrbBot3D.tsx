@@ -76,7 +76,7 @@ const OrbBot: React.FC<{ model: OrbBot3dModel; pose: PoseInput }> = ({ model, po
             </mesh>
             <mesh rotation={[Math.PI / 2, 0, 0]} position={[look.x, look.y, front + 0.012]}>
               <cylinderGeometry args={[eyeR * 0.56, eyeR * 0.56, 0.01, 36]} />
-              <meshStandardMaterial color={p.eye.iris} emissive={p.eye.iris} emissiveIntensity={p.eye.glow * e.glow * 0.9} roughness={0.3} />
+              <meshStandardMaterial color={p.eye.iris} emissive={p.eye.iris} emissiveIntensity={p.eye.glow * e.glow * 0.35} roughness={0.3} />
             </mesh>
             <mesh rotation={[Math.PI / 2, 0, 0]} position={[look.x * 1.12, look.y * 1.12, front + 0.02]}>
               <cylinderGeometry args={[eyeR * 0.27 * e.pupil_scale, eyeR * 0.27 * e.pupil_scale, 0.01, 28]} />
@@ -108,7 +108,7 @@ const OrbBot: React.FC<{ model: OrbBot3dModel; pose: PoseInput }> = ({ model, po
                 return (
                   <mesh key={i} position={[x, 0, 0.01]}>
                     <boxGeometry args={[0.05, h, 0.03]} />
-                    <meshStandardMaterial color={p.mouth.color} emissive={p.mouth.color} emissiveIntensity={0.6 + pose.mouth * 1.4} />
+                    <meshStandardMaterial color={p.mouth.color} emissive={p.mouth.color} emissiveIntensity={0.35 + pose.mouth * 0.9} />
                   </mesh>
                 );
               })

@@ -72,8 +72,9 @@ export function regions(width: number, height: number, safe: SafeArea) {
 export function characterRect(placement: "full" | "corner" | "hidden", width: number, height: number, safe: SafeArea): Rect {
   const r = regions(width, height, safe);
   if (placement === "full") {
-    const size = Math.min(r.stage.w * 0.78, r.stage.h * 0.72);
-    return { x: r.centreX - size / 2, y: r.stage.y + r.stage.h - size, w: size, h: size };
+    // Big, bottom-left: the scene gets the space to its right (and above it).
+    const size = Math.min(r.stage.w * 0.56, r.stage.h * 0.66);
+    return { x: r.safe.x - 10, y: r.stage.y + r.stage.h - size + 10, w: size, h: size };
   }
   const size = Math.min(300, r.stage.w * 0.3);
   return { x: r.safe.x - 10, y: r.stage.y + r.stage.h - size + 10, w: size, h: size };

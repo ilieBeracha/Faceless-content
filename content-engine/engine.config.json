@@ -72,7 +72,7 @@
   "git": {
     "auto_commit": true
   },
-  "fonts": ["montserrat", "space-grotesk", "fredoka", "baloo-2"],
+  "fonts": ["montserrat", "space-grotesk", "fredoka", "baloo-2", "anton"],
   "platforms": {
     "youtube-shorts": {
       "max_seconds": 180,

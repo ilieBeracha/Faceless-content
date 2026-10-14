@@ -6,6 +6,7 @@
 import type { z } from "zod";
 import * as explainer from "./render-3d-explainer/schema.ts";
 import * as motion from "./render-motion-graphics/schema.ts";
+import * as story from "./render-storybook/schema.ts";
 
 export interface RenderSkillSpec {
   name: string;
@@ -15,8 +16,10 @@ export interface RenderSkillSpec {
   sceneRequired: boolean;
   /** Schema for beat.visual when a beat uses this skill as its scene. */
   beatVisualSchema?: z.ZodType;
-  check?(scene: unknown, beats: { id: string; visual: unknown }[]): string[];
+  check?(scene: unknown, beats: { id: string; visual: unknown; voiceover?: string }[]): string[];
   text?(scene: unknown, beats: { id: string; visual: unknown }[]): string[];
+  /** Expression names a beat's visual uses (checked against the speaker's model.json). */
+  expressionsUsed?(visual: unknown): string[];
 }
 
 export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
@@ -42,6 +45,20 @@ export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
     sceneRequired: false,
     beatVisualSchema: motion.beatVisualSchema,
     text: (_scene, beats) => beats.flatMap((b) => ((b.visual as motion.MgBeatVisual).elements ?? []).flatMap((el) => (el && typeof el === "object" ? motion.elementText(el) : []))).filter(Boolean),
+  },
+  "render-storybook": {
+    name: "render-storybook",
+    layer: "scene",
+    sceneSchema: story.storybookSchema,
+    sceneRequired: true,
+    beatVisualSchema: story.beatVisualSchema,
+    check: (_scene, beats) =>
+      beats.flatMap((b) => {
+        const sentences = (b.voiceover ?? "").split(/(?<=[.!?])\s+/).filter((s) => s.trim()).length;
+        return story.checkStoryBeat(b.visual as story.StoryBeatVisual, b.id, Math.max(1, sentences));
+      }),
+    text: (scene, beats) => story.storyText(scene as story.Storybook | undefined, beats),
+    expressionsUsed: (visual) => ((visual as story.StoryBeatVisual).scenes ?? []).flatMap((s) => [s.character?.expression, ...(s.others ?? []).map((o) => o.expression)]).filter((e): e is string => Boolean(e)),
   },
   "render-talking-character": {
     name: "render-talking-character",

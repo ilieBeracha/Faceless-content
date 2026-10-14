@@ -13,7 +13,53 @@ const GAP = 22;
  * Word-by-word captions: a short page of words at a time, the word being spoken highlighted.
  * Timing comes straight from audio/timings.json, so captions can't drift from the voice.
  */
-export const Captions: React.FC<{ props: EpisodeProps }> = ({ props }) => {
+export const Captions: React.FC<{ props: EpisodeProps }> = ({ props }) => (props.captionStyle === "single-word" ? <SingleWord props={props} /> : <Pages props={props} />);
+
+/** Where single-word captions sit: the upper middle of the frame, above where faces usually are. */
+export const SINGLE_WORD_Y = 0.42;
+
+/** One word at a time, small and centred on the picture (storybook style). */
+const SingleWord: React.FC<{ props: EpisodeProps }> = ({ props }) => {
+  const frame = useCurrentFrame();
+  const { fps, width, height } = useVideoConfig();
+  const t = frame / fps;
+  const active = activeWordIndex(props.words, t);
+  const word = active >= 0 ? props.words[active] : null;
+  const next = word ? props.words[active + 1] : null;
+  const visible = word !== null && (t <= word.end + 0.35 || (next !== null && next !== undefined && t < next.start && next.start - word.end < 0.35));
+  const ref = useRef<HTMLDivElement>(null);
+  useQaProbe(props.qaProbe && visible, ref, "captions", "caption", { word: visible ? active : -1 });
+  if (!word || !visible) return null;
+  const font = fontFor(props.brand.font);
+  const pop = easeOut((t - word.start) / 0.08);
+  const upper = props.brand.caption_case === "upper";
+  const safe = regions(width, height, props.safeArea).safe;
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <div style={{ position: "absolute", left: safe.x, width: safe.w, top: height * SINGLE_WORD_Y - 50, height: 100, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div
+          ref={ref}
+          style={{
+            fontFamily: font.family,
+            fontWeight: font.heavy,
+            fontSize: 60,
+            lineHeight: 1,
+            whiteSpace: "nowrap",
+            textTransform: upper ? "uppercase" : "none",
+            color: props.brand.caption_color ?? props.brand.accent_color,
+            WebkitTextStroke: "8px rgba(20,16,12,0.92)",
+            paintOrder: "stroke fill",
+            transform: `scale(${0.9 + 0.1 * pop})`,
+          }}
+        >
+          {word.text.replace(/[,;:]$/, "")}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const t = frame / fps;

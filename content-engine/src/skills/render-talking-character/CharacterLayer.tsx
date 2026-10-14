@@ -3,6 +3,7 @@ import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
 import { characterRect, clamp, easeInOut, lerp } from "../../render/timeline.ts";
 import type { BeatSpan, EpisodeProps, Rect } from "../../render/types.ts";
 import { blinkAt, expressionAt, mouthAt, speakerAt } from "./animation.ts";
+import { StickFigure } from "../render-storybook/Figure.tsx";
 import { Flat2D } from "./Flat2D.tsx";
 import { OrbBot3D } from "./OrbBot3D.tsx";
 
@@ -67,8 +68,12 @@ export const CharacterLayer: React.FC<{ props: EpisodeProps; spans: BeatSpan[] }
             <div style={{ position: "absolute", left: 0, top: 0, width: BASE, height: BASE, transform: `scale(${size / BASE})`, transformOrigin: "0 0" }}>
               {character.model.rig === "orb-bot-3d" ? (
                 <OrbBot3D model={character.model} size={BASE} pose={pose} />
-              ) : (
+              ) : character.model.rig === "flat-2d" ? (
                 <Flat2D model={character.model} size={BASE} pose={pose} id={`ch-${character.name}`} />
+              ) : (
+                <svg width={BASE} height={BASE} viewBox="0 0 1000 1000">
+                  <StickFigure figure={{ pose: "stand", x: 0.5, scale: 2.3, facing: "right", expression: "neutral" }} model={character.model} expression={pose.expression} groundY={975} t={t} mouth={mouth} blink={pose.blink} seed={index + 3} />
+                </svg>
               )}
             </div>
           </div>
