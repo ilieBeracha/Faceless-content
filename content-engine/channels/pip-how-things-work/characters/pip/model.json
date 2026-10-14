@@ -1,0 +1,20 @@
+{
+  "rig": "orb-bot-3d",
+  "params": {
+    "body": { "shape": "sphere", "color": "#cfd6df", "metalness": 1, "roughness": 0.16, "facets": 18 },
+    "eye": { "count": 1, "size": 0.46, "sclera": "#f4f8fc", "iris": "#0fa8ff", "pupil": "#061019", "glow": 0.45 },
+    "mouth": { "style": "led-bar", "color": "#19b8ff", "width": 0.32 },
+    "antenna": { "enabled": true, "color": "#a3acb8", "tip": "#ff5a3c", "length": 0.42 },
+    "accent": "#ff5a3c",
+    "arms": "stubs",
+    "hover": 0.06
+  },
+  "expressions": {
+    "neutral": { "eye_scale": 1, "pupil_scale": 1, "lid": 0, "tilt_deg": 0, "look": [0, 0], "bounce": 0.35, "glow": 1 },
+    "curious": { "eye_scale": 1.12, "pupil_scale": 1.18, "lid": 0, "tilt_deg": 14, "look": [0.35, 0.25], "bounce": 0.45, "glow": 1.15 },
+    "excited": { "eye_scale": 1.16, "pupil_scale": 0.9, "lid": 0, "tilt_deg": -6, "look": [0, 0], "bounce": 0.85, "glow": 1.4 },
+    "surprised": { "eye_scale": 1.3, "pupil_scale": 0.65, "lid": 0, "tilt_deg": 0, "look": [0, 0.15], "bounce": 0.5, "glow": 1.3 },
+    "thinking": { "eye_scale": 0.95, "pupil_scale": 1, "lid": 0.35, "tilt_deg": -10, "look": [-0.45, 0.4], "bounce": 0.2, "glow": 0.9 },
+    "skeptical": { "eye_scale": 1, "pupil_scale": 0.95, "lid": 0.45, "tilt_deg": 7, "look": [0.5, 0], "bounce": 0.25, "glow": 0.85 }
+  }
+}
