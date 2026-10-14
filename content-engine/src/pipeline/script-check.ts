@@ -33,8 +33,8 @@ export interface ScriptCheck {
   estimatedSeconds?: number;
 }
 
-/** Roughly how many words per second Kokoro speaks at speed 1.0 (measured on typical scripts). */
-export const WORDS_PER_SECOND = 2.75;
+/** Roughly how many words per second Kokoro speaks at speed 1.0 (measured: ~3.0 w/s). */
+export const WORDS_PER_SECOND = 3.0;
 
 export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel; series: string; idea: string }): ScriptCheck {
   const parsed = scriptSchema.safeParse(raw);
