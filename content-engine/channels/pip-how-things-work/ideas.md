@@ -10,9 +10,10 @@ The engine marks an idea "used" when an episode is made from it.
 ## ballpoint-pen
 - title: Inside It: a ballpoint pen
 - series: inside-it
-- status: new
+- status: used
 - angle: Why doesn't the ink leak out of your pocket — and what is the tiny ball at the tip actually doing?
 - added: 2026-10-14
+- used_in: episodes/2026-10-14-ballpoint-pen
 
 ## pin-tumbler-lock
 - title: Inside It: a door lock
