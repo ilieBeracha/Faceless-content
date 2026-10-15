@@ -1,0 +1,96 @@
+{
+  "task": "draft-channel",
+  "title": "Draft channel cosmic-footnotes",
+  "purpose": "new-channel",
+  "channel": "cosmic-footnotes",
+  "series": null,
+  "created": "2026-10-15T13:39:37Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "workflows/new-channel.md",
+      "role": "workflow",
+      "sha256": "f7f9a3876a7cf44d3a73d2fce7c0ca5ddd1534c4eeccac4d4a5b3f4d0f06d66a",
+      "bytes": 2993
+    },
+    {
+      "path": "templates/channel.md",
+      "role": "template",
+      "sha256": "9bf30b70c8ae216fefcb67a17c4607688bcf7cb1e8c4d16afce31831f3931fb9",
+      "bytes": 2497
+    },
+    {
+      "path": "templates/character.md",
+      "role": "template",
+      "sha256": "ec2d8e8d88a44b0408b44aa4b65fa42c62c0aeefe8a20a3313cf4741263170b2",
+      "bytes": 2051
+    },
+    {
+      "path": "templates/series.md",
+      "role": "template",
+      "sha256": "91196da7c97d61e91eb73a7ce515a1c846d57b4cc6bfe7676309dcf8b4e76d9d",
+      "bytes": 2161
+    },
+    {
+      "path": "templates/ideas.md",
+      "role": "template",
+      "sha256": "e05ec6dcfb5e8dce2e6d963f238c04f9da404bf491497a8f77170ced7bfe5cd4",
+      "bytes": 317
+    },
+    {
+      "path": "skills/brainstorm/SKILL.md",
+      "role": "skill",
+      "sha256": "459d640837c9a0d7e4d8a98c7d641da186433bc6a63adad9a8f8313071061c23",
+      "bytes": 3056
+    },
+    {
+      "path": "skills/render-talking-character/SKILL.md",
+      "role": "skill",
+      "sha256": "2385f5c069a1fbbe154697e721e206de12283e6f3cf83715e31b9787e621d637",
+      "bytes": 4106
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "79523196b9d770c0e80c36725c80e011b63ccf217ec728b5b5a67e239d488113",
+      "bytes": 2501
+    },
+    {
+      "path": "(inline) seed",
+      "role": "input",
+      "sha256": "4251efdda8350e774e76a690ec0ff9027757d12738fcea8e00e558d46baff10f",
+      "bytes": 348
+    },
+    {
+      "path": "(inline) render skills available (series pick from these)",
+      "role": "listing",
+      "sha256": "a7c1babb6d81a12bf8af63b741d0b6511e8b79d4125ef42523188787507dd15f",
+      "bytes": 787
+    },
+    {
+      "path": "(inline) voices available (free, local Kokoro)",
+      "role": "listing",
+      "sha256": "7a4ea4f944ce2e8a7a8f5375da552b6937cee283ecc75ab3ade580d84024bba9",
+      "bytes": 992
+    },
+    {
+      "path": "(inline) fonts available",
+      "role": "listing",
+      "sha256": "1f20f1dab79d100e84eaf033268ca71bdd2c0fd65f98c94103e5feccc6ba08a1",
+      "bytes": 50
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes",
+      "format": "files",
+      "description": "channel.md, characters/, series/, ideas.md"
+    }
+  ],
+  "next": "./engine validate --channel cosmic-footnotes"
+}
