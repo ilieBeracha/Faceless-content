@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-15-roman-baths
 channel: time-tourist
-status: pending
+status: approved
 script_hash: 64f0f57e222b85d55fd7e0bd79126afc9e301f8364a1321163bec3f47931092c
 generated_at: 2026-10-15T15:08:35Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha (approved in chat)
+approved_at: 2026-10-15T15:08:45Z
 notes: null
 ---
 
