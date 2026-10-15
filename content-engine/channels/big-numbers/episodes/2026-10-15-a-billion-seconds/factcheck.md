@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-15-a-billion-seconds
 channel: big-numbers
-status: pending
+status: approved
 script_hash: 84336d696ea89445dad31e6a64be4fe9fb0789e462067a368ce7ddb5fc12f1d8
 generated_at: 2026-10-15T11:58:17Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha (approved in chat)
+approved_at: 2026-10-15T11:58:31Z
 notes: null
 ---
 
