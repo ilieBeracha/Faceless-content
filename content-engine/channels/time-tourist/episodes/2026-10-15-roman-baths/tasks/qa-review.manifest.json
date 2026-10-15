@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-10-15-roman-baths",
+  "purpose": "qa-review",
+  "channel": "time-tourist",
+  "series": "rated",
+  "created": "2026-10-15T15:21:35Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "a5b872bc9825bd6e7e45206c3a3edf4d60e90f29dceffc35fe6605fb64393240",
+      "bytes": 2291
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "aa5f07cb2e49ea48e2a6a613bab37af202f63de3503429e58933bfec6e69d2bf",
+      "bytes": 3699
+    },
+    {
+      "path": "channels/time-tourist/series/rated.md",
+      "role": "channel",
+      "sha256": "6f45846a347490ed048765be8c08ec1eee5b30ac77d622f85166f667f34010d3",
+      "bytes": 3252
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly.md",
+      "role": "channel",
+      "sha256": "5dff77892739552d507a670a54a9d3f9c8dba8e3a9b651d6aea55bf7b6382efb",
+      "bytes": 2792
+    },
+    {
+      "path": "channels/time-tourist/episodes/2026-10-15-roman-baths/script.json",
+      "role": "channel",
+      "sha256": "e4744e1945252ef35ea20074a5a1e934ecfbe084c7b5052cbfa51d43484f5b45",
+      "bytes": 14167
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "ec00991dcad4f1dfdf97e31931a4131d61f98ce23d66acbf51a8751504c8a1c5",
+      "bytes": 822
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-15-roman-baths/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series rated"
+}

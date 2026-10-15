@@ -58,7 +58,7 @@ keep the last scene up. So write the voiceover in short sentences and give each 
     "hold": "clock",         // optional: cards | paper | book | clock | coins | drop | globe | sign | candle | phone
     "hold_text": "52!"       // optional: ≤ 12 chars written on a held sign / paper / book
   },
-  "others": [                // ≤ 4 extra figures (same look, they don't talk) — crowds, "you", a friend
+  "others": [                // ≤ 4 extra figures (plain strangers in varied colours, they don't talk) — crowds, a friend
     { "pose": "stand", "x": 0.62, "scale": 0.8, "facing": "left" }
   ],
   "props": [                 // ≤ 8 props (below)

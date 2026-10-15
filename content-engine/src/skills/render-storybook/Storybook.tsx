@@ -131,6 +131,13 @@ const SceneArt: React.FC<{ scene: StoryScene; seed: number; t: number; u: number
   // On dark skies the ink lines vanish: draw a pale, thicker copy of each figure underneath as an outline.
   const dark = scene.setting === "night" || scene.setting === "space" || scene.time === "night";
   const halo: StickFigureModel = { ...model, params: { ...model.params, line: "#efe6cf", hair_color: "#efe6cf", line_width: model.params.line_width * 2.6 } };
+  // Background people are strangers, not copies of the narrator: plain looks varied by position.
+  const extras = ["#9b6b4f", "#6f8aa8", "#a8565a", "#7d8f5a", "#c49a5b"];
+  const hairs = ["tuft", "bun", "none", "curl", "spiky"] as const;
+  const stranger = (i: number): StickFigureModel => ({
+    ...model,
+    params: { ...model.params, accessory: "none", body_style: "tunic", body_color: extras[i % extras.length], hair: hairs[(i + 2) % hairs.length], head: i % 2 ? "#e8c39e" : "#c99a73" },
+  });
   const sky = scene.props.filter((p) => isSkyProp(p.type) && p.type !== "thought" && p.type !== "speech" && p.type !== "question");
   const ground_ = scene.props.filter((p) => !isSkyProp(p.type));
   const overlay = scene.props.filter((p) => p.type === "thought" || p.type === "speech" || p.type === "question");
@@ -146,7 +153,7 @@ const SceneArt: React.FC<{ scene: StoryScene; seed: number; t: number; u: number
       {scene.others.map((f, i) => (
         <React.Fragment key={`o${i}`}>
           {dark && <StickFigure figure={f} model={halo} expression={expression(f.expression)} groundY={ground + 10 * (f.scale - 1)} t={t} mouth={0} blink={blinkAt(t, seed + i * 9.1)} seed={seed + 300 + i} />}
-          <StickFigure figure={f} model={model} expression={expression(f.expression)} groundY={ground + 10 * (f.scale - 1)} t={t} mouth={0} blink={blinkAt(t, seed + i * 9.1)} seed={seed + 300 + i} />
+          <StickFigure figure={f} model={stranger(i)} expression={expression(f.expression)} groundY={ground + 10 * (f.scale - 1)} t={t} mouth={0} blink={blinkAt(t, seed + i * 9.1)} seed={seed + 300 + i} />
         </React.Fragment>
       ))}
       {ground_.filter((p) => !((p.y ?? 1) * 1000 <= ground - 1 || p.type === "mountain" || p.type === "house")).map((p, i) => (
