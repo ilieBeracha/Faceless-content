@@ -170,6 +170,19 @@
         "sha": "dcf1ab8ccc0e1261dd6b90b7bf1e89cfcb41d055e202a414c6c822b696ec6acb",
         "key": "6b241c690018e8037d7bc85cbc80d9da499063539cbeb13f2c332ca2dc0fe8d4",
         "at": "2026-10-15T21:18:54Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/03-catch-2.mp4",
+        "sha": "b3eb21eb064a4753ef39eb14967ec0e50930bad85d43f7a51742176b34e5d206",
+        "key": "8f696a5c57c39e0bb818842637085cb556c0ed32941f52a86e18e40b8a34ea8a",
+        "at": "2026-10-15T21:45:42Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "You rub olive oil on your skin, then scrape it off with a curved metal strigil.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "03-catch-3": {
