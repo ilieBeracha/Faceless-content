@@ -32,6 +32,21 @@ export interface EngineConfig {
   git: { auto_commit: boolean };
   fonts: string[];
   platforms: Record<string, { max_seconds: number; ai_disclosure: string }>;
+  ai_video: {
+    provider: "gemini";
+    image_model: string;
+    video_model: string;
+    resolution: string;
+    person_generation: string;
+    budget_per_episode_usd: number;
+    identity_budget_usd: number;
+    check_model: string;
+    rates_usd: { image: number; check: number; video_per_second: Record<string, number>; video_per_second_default: number };
+    clip_seconds: number[];
+    words_per_second: number;
+    max_retries_per_shot: number;
+    concurrency: number;
+  };
 }
 
 /**

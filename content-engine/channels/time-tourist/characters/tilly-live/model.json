@@ -1,0 +1,18 @@
+{
+  "rig": "photoreal",
+  "params": {
+    "identity": "a fictional woman in her late twenties, warm light-olive skin with a few freckles across the nose, dark brown curly shoulder-length hair, thick dark eyebrows, brown eyes, a wide expressive mouth, slim build, average height",
+    "wardrobe": "a faded red baseball cap, a mustard linen overshirt over a plain white t-shirt, a small canvas crossbody bag",
+    "voice": "a warm, bright young woman's voice with a light London accent, quick and chatty, natural and unpolished like a real vlog",
+    "fictional": true,
+    "references": []
+  },
+  "expressions": {
+    "neutral": "relaxed, friendly half-smile",
+    "curious": "eyebrows raised, head tilted slightly, interested",
+    "excited": "wide-eyed, big open grin",
+    "surprised": "eyebrows high, mouth open in disbelief",
+    "unimpressed": "flat mouth, one eyebrow raised, deadpan",
+    "gentle": "soft eyes, calm and serious, no smile"
+  }
+}

@@ -16,6 +16,7 @@ import { allText, bannedTopicHits, factualHash, type SeriesData } from "../pipel
 import type { LayoutSummary } from "../render/render-episode.ts";
 import { outputPath } from "../render/render-episode.ts";
 import { activeWordIndex } from "../skills/captions/pages.ts";
+import { footagePaths, readLedger, spent, type FootageState } from "../skills/render-ai-video/footage.ts";
 import { firstSentence, voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 
@@ -135,6 +136,18 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
   const hits = bannedTopicHits(ep.channel, allText(script));
   add("banned-topics", "Banned topics (keyword screen)", hits.length === 0, hits.length ? hits.map((h) => `"${h.topic}" ~ "${h.match}"`).join("; ") : `none of ${((ep.channel.doc.data.banned_topics as string[]) ?? []).length} banned topics mentioned`);
 
+  if (series.skills.render.includes("render-ai-video")) {
+    const fp = footagePaths(ep.dir);
+    const state = existsSync(fp.state) ? readJson<FootageState>(fp.state) : null;
+    const shots = Object.entries(state?.shots ?? {}).filter(([id]) => (timings.clips ?? []).some((c) => c.id === id));
+    const fake = shots.filter(([, s]) => s.clip?.fake || s.still?.fake);
+    add("footage-real", "Footage is real (not placeholders)", shots.length > 0 && fake.length === 0, fake.length ? `${fake.length} placeholder clip(s) made with ENGINE_AI_VIDEO_FAKE=1 — generate real footage first` : `${shots.length} clips from ${ws.config.ai_video.video_model}`);
+    const wrong = shots.filter(([, s]) => s.clip?.speech?.same_words !== true);
+    add("footage-speech", "Every clip says its line", shots.length > 0 && wrong.length === 0, wrong.length ? wrong.map(([id, s]) => `${id}: heard "${s.clip?.speech?.transcript ?? "?"}"`).join("; ") : `${shots.length} clips checked by ear`);
+    const ledger = readLedger(ws, ep.dir);
+    add("footage-budget", "Within budget", spent(ledger) <= ledger.budget_usd + 1e-9, `$${spent(ledger).toFixed(2)} spent of $${ledger.budget_usd.toFixed(2)} (${ledger.entries.length} paid calls logged in footage/ledger.json)`);
+  }
+
   const fc = readFactcheck(ep.dir);
   add("factcheck", "Fact-check approved", Boolean(fc && fc.status === "approved" && fc.scriptHash === factualHash(script)), fc ? `${fc.status} by ${fc.approvedBy ?? "—"} (${script.claims.length} claims)` : "missing");
   return checks;
@@ -179,7 +192,7 @@ Review the rendered episode **${ep.state.id}** against \`workflows/qa.md\` and t
 1. Look at every sampled frame (open the images):
 ${frames.map((f) => `   - \`${ws.rel(f)}\``).join("\n")}
    The full video is \`${ws.rel(outputPath(ws, ep.channel.slug, ep.state.id))}\`.
-2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
+${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
 3. Write \`${ws.rel(reviewPath)}\` as JSON:
 
 \`\`\`json
@@ -246,6 +259,8 @@ function writePublishMetadata(ws: Workspace, ep: EpisodeRef, script: Script): vo
   const platforms = (ep.channel.doc.data.platforms as string[]) ?? [];
   const path = join(ep.dir, "publish.json");
   if (existsSync(path)) return;
+  const series = ep.channel.series.get(ep.series)!.data as unknown as SeriesData;
+  const realistic = series.skills.render.includes("render-ai-video");
   writeJson(path, {
     status: "not-posted",
     $comment: "Posting is not built yet. Nothing here is sent anywhere.",
@@ -256,8 +271,11 @@ function writePublishMetadata(ws: Workspace, ep: EpisodeRef, script: Script): vo
     ai_disclosure: {
       ai_generated: true,
       label_as_ai_generated: true,
-      details: "Script drafted by an AI agent, voice synthesised (Kokoro TTS), visuals rendered procedurally. Facts reviewed by a person.",
-      platforms: Object.fromEntries(platforms.map((p) => [p, { label_required: "check at posting time", how: ws.config.platforms[p]?.ai_disclosure ?? "", labeled: false }])),
+      details: realistic
+        ? `Photorealistic AI video: footage, the person on screen and the voice are generated by Google Veo (${ws.config.ai_video.video_model}); the person is fictional, not a real human. Script drafted by an AI agent. Facts reviewed by a person.`
+        : "Script drafted by an AI agent, voice synthesised (Kokoro TTS), visuals rendered procedurally. Facts reviewed by a person.",
+      realistic,
+      platforms: Object.fromEntries(platforms.map((p) => [p, { label_required: realistic ? "yes — realistic AI-generated person and voice" : "check at posting time", how: ws.config.platforms[p]?.ai_disclosure ?? "", labeled: false }])),
     },
     made_for_kids: Boolean((ep.channel.doc.data.audience as { made_for_kids?: boolean } | undefined)?.made_for_kids),
     platforms,

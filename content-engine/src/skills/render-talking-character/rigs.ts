@@ -138,12 +138,30 @@ const stickFigure = z
   })
   .strict();
 
-export const characterModelSchema = z.discriminatedUnion("rig", [orbBot3d, flat2d, stickFigure]);
+/** A photoreal person made by an image/video model (render-ai-video). Always fictional, or a consenting person's twin. */
+const photoreal = z
+  .object({
+    rig: z.literal("photoreal"),
+    params: z
+      .object({
+        identity: z.string().min(40).describe("who the camera sees: age range, face, hair, build — specific enough to stay consistent"),
+        wardrobe: z.string().min(10).describe("default clothing; scenes may add period pieces"),
+        voice: z.string().min(10).describe("how the voice sounds, given to the video model with every line"),
+        fictional: z.literal(true).describe("must be true: never a real person's likeness without written consent"),
+        references: z.array(z.string()).default([]).describe("approved reference photos, relative to the character folder"),
+      })
+      .strict(),
+    expressions: z.record(z.string(), z.string().min(3)).describe("name → how the face looks, in words (given to the image and video models)"),
+  })
+  .strict();
+
+export const characterModelSchema = z.discriminatedUnion("rig", [orbBot3d, flat2d, stickFigure, photoreal]);
 export type CharacterModel = z.infer<typeof characterModelSchema>;
 export type OrbBot3dModel = z.infer<typeof orbBot3d>;
 export type Flat2dModel = z.infer<typeof flat2d>;
 export type StickFigureModel = z.infer<typeof stickFigure>;
-export const RIG_NAMES = ["orb-bot-3d", "flat-2d", "stick-figure"] as const;
+export type PhotorealModel = z.infer<typeof photoreal>;
+export const RIG_NAMES = ["orb-bot-3d", "flat-2d", "stick-figure", "photoreal"] as const;
 
 /** Problems with a model.json (empty list when valid). */
 export function checkCharacterModel(raw: unknown): string[] {

@@ -1,6 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { AbsoluteFill, Html5Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { Captions } from "../skills/captions/Captions.tsx";
+import { AiVideoScene } from "../skills/render-ai-video/AiVideoScene.tsx";
 import { MotionGraphics } from "../skills/render-motion-graphics/MotionGraphics.tsx";
 import { CharacterLayer } from "../skills/render-talking-character/CharacterLayer.tsx";
 import { Scene3D } from "../skills/render-3d-explainer/Scene3D.tsx";
@@ -17,6 +18,7 @@ type SceneComponent = React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: n
 /** Scene-layer render skills (one fills the frame per beat). Overlays are composed below. */
 export const SCENE_SKILLS: Record<string, SceneComponent> = {
   "render-3d-explainer": Scene3D,
+  "render-ai-video": AiVideoScene,
   "render-motion-graphics": MotionGraphics,
   "render-storybook": StorybookScene,
 };

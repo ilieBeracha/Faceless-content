@@ -36,6 +36,13 @@ export interface ScriptCheck {
 /** Roughly how many words per second Kokoro speaks at speed 1.0 (measured: ~3.0 w/s). */
 export const WORDS_PER_SECOND = 3.0;
 
+/** Spoken words per second for a character: Kokoro's measured rate × speed, or the video model's rate. */
+export function speechRate(ws: Workspace, characterData: Record<string, unknown> | undefined): number {
+  const voice = characterData?.voice as CharacterVoice | undefined;
+  if (voice?.provider === "veo") return ws.config.ai_video.words_per_second;
+  return WORDS_PER_SECOND * Number(voice?.speed ?? 1);
+}
+
 export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel; series: string; idea: string }): ScriptCheck {
   const parsed = scriptSchema.safeParse(raw);
   if (!parsed.success) {
@@ -109,7 +116,7 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
       continue;
     }
     script.visuals[skill] = r.data;
-    errors.push(...(spec.check?.(r.data, beatsUsing) ?? []));
+    errors.push(...(spec.check?.(r.data, beatsUsing, { config: ws.config }) ?? []));
   }
   for (const key of Object.keys(script.visuals)) if (!renderSkills.includes(key)) warnings.push(`visuals["${key}"] is ignored — not a render skill of this series`);
 
@@ -123,9 +130,7 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
   }
 
   // Length and hook, estimated from word counts (measured exactly after the voice step).
-  const speaker = ctx.channel.characters.get(script.beats[0].speaker);
-  const speed = Number((speaker?.data.voice as CharacterVoice | undefined)?.speed ?? 1);
-  const wps = WORDS_PER_SECOND * speed;
+  const wps = speechRate(ws, ctx.channel.characters.get(script.beats[0].speaker)?.data);
   const words = script.beats.reduce((n, b) => n + voiceTokens(b.voiceover).length, 0);
   const cfg = ws.config.audio;
   const estimate = words / wps + script.beats.length * cfg.beat_gap_seconds + cfg.lead_in_seconds + cfg.outro_hold_seconds;

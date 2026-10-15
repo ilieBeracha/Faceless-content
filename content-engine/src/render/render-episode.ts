@@ -3,7 +3,7 @@
  * The render package (props + voice.wav) is staged in .cache/ so only this episode's files are served.
  */
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { canonicalJson, nowIso, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
@@ -62,6 +62,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     captionsSkill: series.skills.captions ?? null,
     captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
     audioFile: "voice.wav",
+    ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,
     qaProbe: true,
   };
@@ -145,7 +146,8 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
   const log = opts.log ?? (() => {});
   const props = buildProps(ws, ep, script);
   const wav = voicePaths(ep.dir).wav;
-  const inputsHash = sha256(canonicalJson({ v: RENDER_VERSION, props: { ...props, envelope: sha256(JSON.stringify(props.envelope)) }, wav: sha256(readFileSync(wav)), code: codeHash() }));
+  const clipFiles = (props.clips ?? []).map((c) => ({ src: join(ep.dir, "footage", c.file), dest: c.file }));
+  const inputsHash = sha256(canonicalJson({ v: RENDER_VERSION, props: { ...props, envelope: sha256(JSON.stringify(props.envelope)) }, wav: sha256(readFileSync(wav)), clips: clipFiles.map((c) => sha256(readFileSync(c.src))), code: codeHash() }));
   const output = outputPath(ws, ep.channel.slug, ep.state.id);
   const manifestPath = join(ep.dir, "render.json");
   if (!opts.force && existsSync(manifestPath) && existsSync(output) && readJson<{ inputs_hash: string }>(manifestPath).inputs_hash === inputsHash) {
@@ -155,6 +157,10 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
   const stage = ws.path(".cache", "render", ep.channel.slug, ep.state.id, "public");
   mkdirSync(stage, { recursive: true });
   copyFileSync(wav, join(stage, "voice.wav"));
+  for (const c of clipFiles) {
+    mkdirSync(dirname(join(stage, c.dest)), { recursive: true });
+    copyFileSync(c.src, join(stage, c.dest));
+  }
   const serveUrl = await bundleFor(stage, log);
   const { renderMedia, selectComposition } = await import("@remotion/renderer");
   const browser = browserOptions(ws);

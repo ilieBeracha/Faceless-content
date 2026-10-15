@@ -1,7 +1,10 @@
 /**
  * The episode pipeline — identical for every channel:
  *
- *   idea → script → fact-check (STOP for human approval) → voice → render → QA
+ *   idea → script → fact-check (STOP for human approval) → [footage] → voice → render → QA
+ *
+ * The footage step only runs for series that use render-ai-video (paid; it stops once more for a
+ * person to approve the stills and the cost before any video is generated).
  *
  * Each step writes its result into channels/<channel>/episodes/<date>-<idea>/ and the pipeline is
  * resumable: run `make episode` again and it continues from the first unfinished step.
@@ -20,9 +23,9 @@ import { formatIssues, hasErrors } from "../core/validate.ts";
 import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
-import { checkScript, factualHash, WORDS_PER_SECOND, type CharacterVoice, type SeriesData } from "./script-check.ts";
+import { checkScript, factualHash, speechRate, type SeriesData } from "./script-check.ts";
 
-export const STEPS = ["idea", "script", "factcheck", "voice", "render", "qa"] as const;
+export const STEPS = ["idea", "script", "factcheck", "footage", "voice", "render", "qa"] as const;
 export type StepName = (typeof STEPS)[number];
 
 export interface EpisodeState {
@@ -162,9 +165,19 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
   if (!done("factcheck")) mark(ep, "factcheck", "done", `approved by ${factcheck.approvedBy}`);
   log(`• fact-check: approved by ${factcheck.approvedBy} (${factcheck.approvedAt})`);
 
+  // 3b. Footage (render-ai-video only)
+  const { seriesUsesAiVideo, runFootage } = await import("../skills/render-ai-video/footage.ts");
+  let footageChanged = false;
+  if (seriesUsesAiVideo(ep)) {
+    const footage = await runFootage(ws, ep, script, { log }).finally(() => commitPaths(ws, [join(ep.dir, "footage")], `${channel.slug}: footage for ${ep.state.id}`));
+    footageChanged = footage.regenerated;
+    if (!done("footage") || footage.regenerated) mark(ep, "footage", "done", `${footage.plan.length} clips, $${footage.spentUsd.toFixed(2)} spent${footage.fake ? " (PLACEHOLDERS)" : ""}`);
+    log(`• footage: ${footage.plan.length} clips, $${footage.spentUsd.toFixed(2)} spent${footage.fake ? " — placeholders, not real footage" : ""}`);
+  }
+
   // 4. Voice
   const { synthesizeEpisode } = await import("../voice/synthesize.ts");
-  const voice = await synthesizeEpisode(ws, ep, script, { force: redo.has("voice"), log });
+  const voice = await synthesizeEpisode(ws, ep, script, { force: redo.has("voice") || footageChanged, log });
   if (!done("voice") || voice.regenerated) {
     mark(ep, "voice", "done", `${voice.duration.toFixed(2)}s`);
     commitPaths(ws, [join(ep.dir, "audio"), join(ep.dir, "episode.json")], `${channel.slug}: voice for ${ep.state.id}`);
@@ -266,8 +279,7 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   ctx.addInline("the idea for this episode", ["```", `id: ${idea.id}`, `title: ${idea.title}`, `angle: ${idea.angle ?? "(none)"}`, "```"].join("\n"));
 
   const speaker = ch.characters.get(series.characters[0])!;
-  const speed = Number((speaker.data.voice as CharacterVoice | undefined)?.speed ?? 1);
-  const wps = WORDS_PER_SECOND * speed;
+  const wps = speechRate(ws, speaker.data);
   const { min_seconds: min, max_seconds: max } = series.length;
   const overhead = series.beats.length * ws.config.audio.beat_gap_seconds + ws.config.audio.lead_in_seconds + ws.config.audio.outro_hold_seconds;
   const lo = Math.round((min - overhead) * wps);

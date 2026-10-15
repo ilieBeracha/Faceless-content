@@ -59,6 +59,8 @@ export interface EpisodeProps {
   /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time. */
   captionStyle: "pages" | "single-word";
   audioFile: string | null;
+  /** render-ai-video: footage clips on the timeline (files are staged next to voice.wav). */
+  clips?: { id: string; beat: string; file: string; start: number; duration: number; trim: number }[];
   showSafeAreas: boolean;
   qaProbe: boolean;
 }

@@ -37,6 +37,8 @@ export const CharacterLayer: React.FC<{ props: EpisodeProps; spans: BeatSpan[] }
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       {Object.values(props.characters).map((character, index) => {
+        // Photoreal characters are filmed by render-ai-video, never drawn.
+        if (character.model.rig === "photoreal") return null;
         const { rect, visible } = placementAt(spans, t, character.name, width, height, props);
         if (visible <= 0.01) return null;
         const isSpeaking = speaking === character.name;

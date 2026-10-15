@@ -49,6 +49,8 @@ export interface Timings {
   beats: BeatTiming[];
   voices: Record<string, CharacterVoice>;
   loudness: { integrated_lufs: number; true_peak_db: number };
+  /** render-ai-video: where each clip sits on the timeline (seconds) and where it was cut (trim). */
+  clips?: { id: string; beat: string; file: string; start: number; duration: number; trim: number; align: string; align_cost: number }[];
 }
 
 export function voicePaths(episodeDir: string) {
@@ -99,9 +101,13 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
 
   const speakers = [...new Set(script.beats.map((b) => b.speaker))];
   const voices = Object.fromEntries(speakers.map((s) => [s, characterVoice(ep, s)]));
+  if (Object.values(voices).every((v) => v.provider === "veo")) {
+    const { voiceFromClips } = await import("../skills/render-ai-video/audio.ts");
+    return voiceFromClips(ws, ep, script, { force: opts.force, log });
+  }
   for (const [name, v] of Object.entries(voices)) {
     if (v.provider !== "kokoro") {
-      throw new EngineError(`${name} uses voice provider "${v.provider}", which isn't wired up yet.`, "Only the free local Kokoro voice is available until you choose a paid provider (see README → Voices).");
+      throw new EngineError(`${name} uses voice provider "${v.provider}", which isn't wired up yet.`, v.provider === "veo" ? "A Veo voice only works when every speaker of the series uses it (the video model speaks inside the clips)." : "Only the free local Kokoro voice is available until you choose a paid provider (see README → Voices).");
     }
   }
   const hash = sha256(canonicalJson({ v: VOICE_PIPELINE_VERSION, beats: script.beats.map((b) => [b.id, b.speaker, b.voiceover]), pron: script.pronunciations, voices, audio: cfg, fps, min: series.length.min_seconds }));
@@ -110,36 +116,23 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
     if (existing.hash === hash) return { duration: existing.duration, words: existing.words.length, regenerated: false };
   }
 
-  const python = venvPython(ws);
-  const providerCfg = ws.config.voice.providers.kokoro;
-  const modelDir = ws.path(providerCfg.dir ?? ".models/kokoro");
-  const model = join(modelDir, "kokoro-v1.0.timed.onnx");
-  if (!existsSync(python) || !existsSync(model)) throw new EngineError("The local voice engine (Kokoro) is not set up yet.", "Run: ./engine setup   (free; downloads ~350 MB once)");
-
   mkdirSync(paths.chunks, { recursive: true });
   const tokensPerBeat = script.beats.map((b) => voiceTokens(b.voiceover));
-  const request = {
-    model,
-    voices: join(modelDir, "voices-v1.0.bin"),
-    out_dir: paths.chunks,
-    chunks: script.beats.map((b, i) => {
-      const v = voices[b.speaker];
-      const pron = { ...v.pronunciations, ...script.pronunciations };
-      return {
-        id: `${String(i).padStart(2, "0")}-${b.id}`,
-        voice: v.voice_id,
-        lang: kokoroLang(v.voice_id),
-        speed: v.speed,
-        sentence_pause: v.sentence_pause,
-        clause_pause: v.clause_pause,
-        say: tokensPerBeat[i].map((t) => sayFor(t, pron)),
-      };
-    }),
-  };
+  const chunks: KokoroChunk[] = script.beats.map((b, i) => {
+    const v = voices[b.speaker];
+    const pron = { ...v.pronunciations, ...script.pronunciations };
+    return {
+      id: `${String(i).padStart(2, "0")}-${b.id}`,
+      voice: v.voice_id,
+      lang: kokoroLang(v.voice_id),
+      speed: v.speed ?? 1,
+      sentence_pause: v.sentence_pause ?? 0.25,
+      clause_pause: v.clause_pause ?? 0.1,
+      say: tokensPerBeat[i].map((t) => sayFor(t, pron)),
+    };
+  });
   log(`  ↳ synthesizing ${script.beats.length} beats with Kokoro (local, free)…`);
-  const res = spawnSync(python, [join(ENGINE_DIR, "src", "voice", "kokoro_tts.py")], { input: JSON.stringify(request), encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
-  if (res.status !== 0) throw new EngineError(`Kokoro failed:\n${(res.stderr || res.stdout).split("\n").slice(-12).join("\n")}`);
-  const out = JSON.parse(res.stdout) as { sample_rate: number; chunks: { id: string; file: string; duration: number; words: { i: number; start: number; end: number }[] }[] };
+  const out = runKokoro(ws, chunks, paths.chunks);
 
   // Place beats on the timeline, applying each speaker's pitch.
   const sr = out.sample_rate;
@@ -200,6 +193,37 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
   return { duration, words: words.length, regenerated: true };
 }
 
+export interface KokoroChunk {
+  id: string;
+  voice: string;
+  lang: string;
+  speed: number;
+  sentence_pause: number;
+  clause_pause: number;
+  /** One entry per caption word: what the voice says for it. */
+  say: string[];
+}
+
+export interface KokoroResult {
+  sample_rate: number;
+  chunks: { id: string; file: string; duration: number; words: { i: number; start: number; end: number }[] }[];
+}
+
+/** Run the local Kokoro voice on some chunks (one WAV each, with exact word timings). */
+export function runKokoro(ws: Workspace, chunks: KokoroChunk[], outDir: string): KokoroResult {
+  const python = venvPython(ws);
+  const modelDir = ws.path(ws.config.voice.providers.kokoro.dir ?? ".models/kokoro");
+  const model = join(modelDir, "kokoro-v1.0.timed.onnx");
+  if (!existsSync(python) || !existsSync(model)) throw new EngineError("The local voice engine (Kokoro) is not set up yet.", "Run: ./engine setup   (free; downloads ~350 MB once)");
+  mkdirSync(outDir, { recursive: true });
+  const request = { model, voices: join(modelDir, "voices-v1.0.bin"), out_dir: outDir, chunks };
+  const res = spawnSync(python, [join(ENGINE_DIR, "src", "voice", "kokoro_tts.py")], { input: JSON.stringify(request), encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  if (res.status !== 0) throw new EngineError(`Kokoro failed:\n${(res.stderr || res.stdout).split("\n").slice(-12).join("\n")}`);
+  return JSON.parse(res.stdout) as KokoroResult;
+}
+
+export { kokoroLang };
+
 function round(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
@@ -216,7 +240,7 @@ function pitchShift(file: string, semitones: number, sr: number): string {
 }
 
 /** Two-pass EBU R128 normalisation to the platform target (≈ -14 LUFS, true peak ≤ -1.5 dBTP). */
-function normalizeLoudness(input: string, output: string, targetLufs: number, truePeak: number, sampleRate: number): void {
+export function normalizeLoudness(input: string, output: string, targetLufs: number, truePeak: number, sampleRate: number): void {
   const m = measureLoudness(input);
   const filter = `loudnorm=I=${targetLufs}:TP=${truePeak}:LRA=11:measured_I=${m.integratedLufs}:measured_TP=${m.truePeakDb}:measured_LRA=${m.lra}:measured_thresh=${m.threshold}:linear=true`;
   runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", output], "normalising loudness");

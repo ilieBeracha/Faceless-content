@@ -43,7 +43,17 @@
         "dir": ".models/kokoro",
         "model_url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx",
         "voices_url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin",
-        "python_packages": ["kokoro-onnx==0.6.1", "onnx==1.23.2", "soundfile==0.14.0"]
+        "python_packages": [
+          "kokoro-onnx==0.6.1",
+          "onnx==1.23.2",
+          "soundfile==0.14.0"
+        ]
+      },
+      "veo": {
+        "kind": "api",
+        "cost": "included in the Veo clip price",
+        "license": "Google Gemini API terms",
+        "$comment": "The video model speaks the line itself, lip-synced, inside each clip (render-ai-video only)."
       }
     }
   },
@@ -72,7 +82,13 @@
   "git": {
     "auto_commit": true
   },
-  "fonts": ["montserrat", "space-grotesk", "fredoka", "baloo-2", "anton"],
+  "fonts": [
+    "montserrat",
+    "space-grotesk",
+    "fredoka",
+    "baloo-2",
+    "anton"
+  ],
   "platforms": {
     "youtube-shorts": {
       "max_seconds": 180,
@@ -86,5 +102,35 @@
       "max_seconds": 180,
       "ai_disclosure": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio."
     }
+  },
+  "ai_video": {
+    "$comment": "render-ai-video: realistic footage from Google's Gemini API (paid; needs GEMINI_API_KEY and your OK). Model ids change: `./engine ai-video models` lists the ones your key can use.",
+    "provider": "gemini",
+    "image_model": "gemini-2.5-flash-image",
+    "video_model": "veo-3.1-fast-generate-preview",
+    "resolution": "720p",
+    "person_generation": "allow_adult",
+    "budget_per_episode_usd": 25,
+    "rates_usd": {
+      "image": 0.039,
+      "video_per_second": {
+        "veo-3.1-fast-generate-preview": 0.1,
+        "veo-3.1-generate-preview": 0.4,
+        "veo-3.1-lite-generate-preview": 0.05
+      },
+      "video_per_second_default": 0.4,
+      "check": 0.002
+    },
+    "clip_seconds": [
+      4,
+      6,
+      8
+    ],
+    "words_per_second": 2.6,
+    "check_model": "gemini-2.5-flash",
+    "max_retries_per_shot": 1,
+    "concurrency": 2,
+    "fake_env": "ENGINE_AI_VIDEO_FAKE",
+    "identity_budget_usd": 2
   }
 }

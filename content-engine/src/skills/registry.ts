@@ -6,7 +6,9 @@
 import type { z } from "zod";
 import * as explainer from "./render-3d-explainer/schema.ts";
 import * as motion from "./render-motion-graphics/schema.ts";
+import * as ai from "./render-ai-video/schema.ts";
 import * as story from "./render-storybook/schema.ts";
+import type { EngineConfig } from "../core/workspace.ts";
 
 export interface RenderSkillSpec {
   name: string;
@@ -16,7 +18,7 @@ export interface RenderSkillSpec {
   sceneRequired: boolean;
   /** Schema for beat.visual when a beat uses this skill as its scene. */
   beatVisualSchema?: z.ZodType;
-  check?(scene: unknown, beats: { id: string; visual: unknown; voiceover?: string }[]): string[];
+  check?(scene: unknown, beats: { id: string; visual: unknown; voiceover?: string }[], ctx: { config: EngineConfig }): string[];
   text?(scene: unknown, beats: { id: string; visual: unknown }[]): string[];
   /** Expression names a beat's visual uses (checked against the speaker's model.json). */
   expressionsUsed?(visual: unknown): string[];
@@ -59,6 +61,20 @@ export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
       }),
     text: (scene, beats) => story.storyText(scene as story.Storybook | undefined, beats),
     expressionsUsed: (visual) => ((visual as story.StoryBeatVisual).scenes ?? []).flatMap((s) => [s.character?.expression, ...(s.others ?? []).map((o) => o.expression)]).filter((e): e is string => Boolean(e)),
+  },
+  "render-ai-video": {
+    name: "render-ai-video",
+    layer: "scene",
+    sceneSchema: ai.worldSchema,
+    sceneRequired: true,
+    beatVisualSchema: ai.beatVisualSchema,
+    check: (_scene, beats, { config }) => {
+      const max = ai.maxWordsPerShot(config.ai_video.clip_seconds, config.ai_video.words_per_second);
+      return beats.flatMap((b) => ai.checkAiBeat(b.visual as ai.AiBeatVisual, b.id, b.voiceover ?? "", max));
+    },
+    // The footage has no lettering (the prompts forbid it); captions and the headline are checked elsewhere.
+    text: () => [],
+    expressionsUsed: (visual) => ((visual as ai.AiBeatVisual).shots ?? []).map((s) => s.expression).filter((e): e is string => Boolean(e)),
   },
   "render-talking-character": {
     name: "render-talking-character",

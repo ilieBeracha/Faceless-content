@@ -16,6 +16,7 @@ import { addCharacter, addIdeas, addSeries, setIdeaStatus } from "./commands/add
 import { brainstorm, type BrainstormKind } from "./commands/brainstorm.ts";
 import { approveChannel, editFile, newChannel, setChannelStatus } from "./commands/channel.ts";
 import { approveFactcheckCommand, episodeStatus, makeEpisodeCommand, rejectFactcheckCommand } from "./commands/episode.ts";
+import { approveFootageCommand, budgetCommand, ledgerCommand, listAiModels, makeIdentity, pickIdentity, redoShotCommand } from "./commands/ai-video.ts";
 import { compare, list, validate } from "./commands/list.ts";
 import { doctor } from "./commands/system.ts";
 import { log, ok, printPause } from "./ui.ts";
@@ -109,6 +110,49 @@ approve
   .requiredOption("--by <name>", "who checked the claims")
   .description("approve every claim of an episode (rendering is blocked until this)")
   .action((o) => approveFactcheckCommand(ws, o.channel, o.episode, o.by));
+
+approve
+  .command("footage")
+  .requiredOption("--channel <slug>")
+  .requiredOption("--episode <id>")
+  .requiredOption("--by <name>", "who looked at the stills")
+  .description("render-ai-video: approve the first frames and the clip cost (no video is generated before this)")
+  .action((o) => approveFootageCommand(ws, o.channel, o.episode, o.by));
+
+const aiVideo = program.command("ai-video").description("realistic footage (render-ai-video, Google Veo via the Gemini API — paid)");
+aiVideo.command("models").description("list the video/image models your GEMINI_API_KEY can use").action(async () => listAiModels(ws));
+aiVideo
+  .command("identity")
+  .description("make candidate face photos for a photoreal character (≈$0.04 each, capped per character)")
+  .requiredOption("--channel <slug>")
+  .requiredOption("--character <name>")
+  .option("--count <n>", "how many candidates", (v) => Number(v), 4)
+  .action(async (o) => makeIdentity(ws, o.channel, o.character, o.count));
+aiVideo
+  .command("pick-identity")
+  .description("a person picks the face: the photo(s) become the character's references")
+  .requiredOption("--channel <slug>")
+  .requiredOption("--character <name>")
+  .requiredOption("--by <name>", "who picked it")
+  .argument("<files...>", "candidate photo(s), e.g. candidate-2.jpg")
+  .action((files: string[], o) => pickIdentity(ws, o.channel, o.character, files, o.by));
+aiVideo
+  .command("redo")
+  .description("regenerate one shot's still (and so its clip) or only its clip; the old one is kept in footage/rejected/")
+  .requiredOption("--channel <slug>")
+  .requiredOption("--episode <id>")
+  .requiredOption("--shot <id>")
+  .addOption(new Option("--what <part>", "still | clip").choices(["still", "clip"]).default("still"))
+  .action((o) => redoShotCommand(ws, o.channel, o.episode, o.shot, o.what));
+aiVideo
+  .command("budget")
+  .description("set an episode's total footage budget in USD (a person decides)")
+  .requiredOption("--channel <slug>")
+  .requiredOption("--episode <id>")
+  .requiredOption("--usd <amount>", "new total budget", (v) => Number(v))
+  .requiredOption("--by <name>")
+  .action((o) => budgetCommand(ws, o.channel, o.episode, o.usd, o.by));
+aiVideo.command("ledger").description("every paid call for an episode and the total").requiredOption("--channel <slug>").requiredOption("--episode <id>").action((o) => ledgerCommand(ws, o.channel, o.episode));
 
 const reject = program.command("reject").description("record a rejection (nothing is deleted)");
 reject
