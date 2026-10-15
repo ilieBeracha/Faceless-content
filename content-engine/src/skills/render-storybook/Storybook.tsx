@@ -42,8 +42,9 @@ const DEFAULT_FIGURE: StickFigureModel = {
 };
 
 export const TITLE_FONT = "Anton";
-/** Anton's tall glyph box needs ~1.2 line height to fit inside its own line. */
+/** Anton's glyph boxes reach past a tight line box; this line height plus TITLE_PAD keeps them inside the title's own box. */
 const TITLE_LINE = 1.2;
+const TITLE_PAD = 0.15;
 
 /** Card layout on a vertical frame: title bar, then a square scene the full width of the frame. */
 export function storyLayout(width: number, height: number, props: Pick<EpisodeProps, "safeArea">) {
@@ -82,7 +83,7 @@ export function titleFit(chars: number, w: number, h: number): { size: number; l
   const one = Math.floor(w / (Math.max(1, chars) * em));
   if (one >= 56) return { size: Math.min(one, 76), lines: 1 };
   const perLine = Math.ceil(chars / 2) + 2;
-  return { size: Math.max(40, Math.min(Math.floor(w / (perLine * em)), Math.floor(h / (2 * TITLE_LINE)))), lines: 2 };
+  return { size: Math.max(40, Math.min(Math.floor(w / (perLine * em)), Math.floor(h / (2 * TITLE_LINE + 2 * TITLE_PAD)))), lines: 2 };
 }
 
 const Title: React.FC<{ book: StorybookData; x: number; y: number; w: number; h: number; text: string; accent: string; probe: boolean }> = ({ book, x, y, w, h, text, accent, probe }) => {
@@ -105,7 +106,7 @@ const Title: React.FC<{ book: StorybookData; x: number; y: number; w: number; h:
   const { size } = titleFit(title.length, w, h);
   return (
     <div style={{ position: "absolute", left: x, top: y, width: w, height: h, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-      <div ref={ref} style={{ maxWidth: w, fontFamily: TITLE_FONT, fontSize: size, lineHeight: TITLE_LINE, textAlign: "center", letterSpacing: 0.5, overflow: "hidden", textWrap: "balance" }}>
+      <div ref={ref} style={{ maxWidth: w, fontFamily: TITLE_FONT, fontSize: size, lineHeight: TITLE_LINE, padding: `${TITLE_PAD}em 0`, textAlign: "center", letterSpacing: 0.5, overflow: "hidden", textWrap: "balance" }}>
         {parts.map((p, i) => (
           <span key={i} style={{ color: p.hi ? accent : text }}>
             {p.s}

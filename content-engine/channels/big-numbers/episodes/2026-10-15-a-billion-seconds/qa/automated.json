@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-15T12:49:50Z",
-  "render_hash": "771c5865d350559d1c70490654982cdec21548f638a39d998f7b9f6f510c8229",
+  "checked_at": "2026-10-15T13:12:26Z",
+  "render_hash": "de99ea8fd84e7cc67e5c1c1033fde2e52f49cf60775cdb7ead7f880207297b38",
   "checks": [
     {
       "id": "format",
@@ -30,19 +30,19 @@
       "id": "hook-text",
       "label": "Hook: on-screen text",
       "pass": true,
-      "detail": "visible from 0.00s"
+      "detail": "visible from 0.07s"
     },
     {
       "id": "safe-areas",
       "label": "Text inside safe areas",
       "pass": true,
-      "detail": "2 text elements checked on every frame (2673 measurements)"
+      "detail": "2 text elements checked on every frame (2671 measurements)"
     },
     {
       "id": "cut-off",
       "label": "Nothing cut off",
       "pass": false,
-      "detail": "storybook:title:cut-off (2 frames), storybook:title:text-overflow (1364 frames)"
+      "detail": "storybook:title:text-overflow (1362 frames)"
     },
     {
       "id": "captions-sync",

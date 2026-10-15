@@ -22,7 +22,7 @@ Review the rendered episode **2026-10-15-a-billion-seconds** against `workflows/
 
 ```json
 {
-  "render_hash": "771c5865d350559d1c70490654982cdec21548f638a39d998f7b9f6f510c8229",
+  "render_hash": "de99ea8fd84e7cc67e5c1c1033fde2e52f49cf60775cdb7ead7f880207297b38",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -802,9 +802,9 @@ big to imagine. The scarf is the only colour they own.
 - [x] Length: 45.48s (series allows 40–55s)
 - [x] Hook: speech starts immediately: first word at 0.22s (limit 0.5s)
 - [x] Hook: first line lands in 2 s: "A billion seconds." ends at 1.32s (limit 2s)
-- [x] Hook: on-screen text: visible from 0.00s
-- [x] Text inside safe areas: 2 text elements checked on every frame (2673 measurements)
-- [ ] Nothing cut off: storybook:title:cut-off (2 frames), storybook:title:text-overflow (1364 frames)
+- [x] Hook: on-screen text: visible from 0.07s
+- [x] Text inside safe areas: 2 text elements checked on every frame (2671 measurements)
+- [ ] Nothing cut off: storybook:title:text-overflow (1362 frames)
 - [x] Captions in sync: 119 words; text matches script: yes; highlight off on 0/1309 frames; words over silent audio: 0
 - [x] Loudness: -15.0 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 7 banned topics mentioned

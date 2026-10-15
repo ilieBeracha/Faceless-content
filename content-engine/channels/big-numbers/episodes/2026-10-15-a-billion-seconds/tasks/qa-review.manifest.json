@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "big-numbers",
   "series": "bigger-than-you-think",
-  "created": "2026-10-15T12:49:50Z",
+  "created": "2026-10-15T13:12:26Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -45,8 +45,8 @@
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "d5a6802719ff44ab7912e45bc062dc5b2c3bf4520140870e7c5e47b3a10a5160",
-      "bytes": 845
+      "sha256": "d9dcb4ca681d9db7d5f24e67fb8bdf14e1c6b2d13973d116909c21b1752dd88a",
+      "bytes": 809
     }
   ],
   "outputs": [

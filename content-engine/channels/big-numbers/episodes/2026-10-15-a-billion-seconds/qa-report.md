@@ -12,9 +12,9 @@ Checklist: `workflows/qa.md`. Video: `out/big-numbers/2026-10-15-a-billion-secon
 | ✅ | Length | 45.48s (series allows 40–55s) |
 | ✅ | Hook: speech starts immediately | first word at 0.22s (limit 0.5s) |
 | ✅ | Hook: first line lands in 2 s | "A billion seconds." ends at 1.32s (limit 2s) |
-| ✅ | Hook: on-screen text | visible from 0.00s |
-| ✅ | Text inside safe areas | 2 text elements checked on every frame (2673 measurements) |
-| ❌ | Nothing cut off | storybook:title:cut-off (2 frames), storybook:title:text-overflow (1364 frames) |
+| ✅ | Hook: on-screen text | visible from 0.07s |
+| ✅ | Text inside safe areas | 2 text elements checked on every frame (2671 measurements) |
+| ❌ | Nothing cut off | storybook:title:text-overflow (1362 frames) |
 | ✅ | Captions in sync | 119 words; text matches script: yes; highlight off on 0/1309 frames; words over silent audio: 0 |
 | ✅ | Loudness | -15.0 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1) |
 | ✅ | Banned topics (keyword screen) | none of 7 banned topics mentioned |
