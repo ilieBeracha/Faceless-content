@@ -1,0 +1,15 @@
+{
+  "render_hash": "1e62d2b4e8a484b3c238d8cb92c8110d55209cf60edaee322798b5bc752af106",
+  "tone": { "pass": true, "notes": "Casual first-person selfie vlog, present tense, short lines, light humour aimed at the experience (no soap, one coin). The enslaved-workers line is said plainly and seriously, with no joke attached. Ends with 'Okay, review time' and a spoken 5/5 and 1/5 rating, as the series asks. Fits 13+." },
+  "banned_topics": { "pass": true, "notes": "Slavery is mentioned once, factually and respectfully (c10), never glorified or joked about. No violence, politics, religion or health advice. The keyword screen found nothing." },
+  "visuals": { "pass": true, "notes": "Realistic handheld phone footage, a new place in every shot, the period fits (tunics, marble, mosaics, a furnace tunnel), captions and the hook headline are readable and inside safe areas. No burned-in letters or logos in the sampled frames. Minor: the hook's background has a weathered, blank stone panel; the rating-1 arcaded front reads slightly like the Colosseum; tour-3's shelves look like bound books rather than scrolls. None of these contradicts a claim." },
+  "character": { "pass": true, "notes": "Same face, freckles, curly hair, red cap, mustard overshirt and crossbody bag in every shot, matching tilly-live's model.json and reference photo. Expressions fit the lines (excited hook, serious furnace line, deadpan soap line). Lip sync was judged from the sampled frames (mouth shapes match the highlighted caption words); every clip's audio was checked by transcription and says its exact line." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "Veo speaks slower than the engine's 2.6 words/s estimate: 130 words ran 60.8 s (about 2.2 words/s) after trimming. Keep rated-live scripts to about 115-120 words to land under 58 s.",
+    "Describing the setting as 'the massive building' or 'the huge baths' makes the image model draw the Colosseum or modern ruins. Name the bathhouse's own features (red-brick and marble front, tall arched windows) and say 'just-built, undamaged'.",
+    "Veo blocked a shot of Tilly miming scraping her forearm with a curved tool. Show objects held up to the camera instead of tools against skin.",
+    "Veo repeated words in 2 of 11 clips ('brand brand new', a doubled 'there's a library'); the by-ear check caught both and one retry fixed them. Budget about one retry per five clips."
+  ]
+}

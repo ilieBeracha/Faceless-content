@@ -1,0 +1,90 @@
+{
+  "checked_at": "2026-10-15T21:59:53Z",
+  "render_hash": "1e62d2b4e8a484b3c238d8cb92c8110d55209cf60edaee322798b5bc752af106",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": false,
+      "detail": "60.80s (series allows 38–58s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.10s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"Rome's biggest bathhouse.\" ends at 1.94s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: on-screen text",
+      "pass": true,
+      "detail": "visible from 0.07s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "2 text elements checked on every frame (1908 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "130 words; text matches script: yes; highlight off on 0/1809 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-15.3 LUFS (target -14 ±1.5), true peak -4.4 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 6 banned topics mentioned"
+    },
+    {
+      "id": "footage-real",
+      "label": "Footage is real (not placeholders)",
+      "pass": true,
+      "detail": "11 clips from veo-3.1-fast-generate-preview"
+    },
+    {
+      "id": "footage-speech",
+      "label": "Every clip says its line",
+      "pass": true,
+      "detail": "11 clips checked by ear"
+    },
+    {
+      "id": "footage-budget",
+      "label": "Within budget",
+      "pass": true,
+      "detail": "$10.25 spent of $25.00 (43 paid calls logged in footage/ledger.json)"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by Ilie (11 claims)"
+    }
+  ]
+}
