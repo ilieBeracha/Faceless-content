@@ -106,6 +106,8 @@ export class LayoutCollector {
     } catch {
       return;
     }
+    // Measurements taken while the page is still parked off-screen (first frames of a tab) are not layout.
+    if (r.y < -10_000) return;
     const s = this.summary;
     s.probes++;
     const el = (s.elements[r.id] ??= { kind: r.kind, frames: 0, minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity });

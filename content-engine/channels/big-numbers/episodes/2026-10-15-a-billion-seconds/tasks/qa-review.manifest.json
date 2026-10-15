@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-10-15-a-billion-seconds",
+  "purpose": "qa-review",
+  "channel": "big-numbers",
+  "series": "bigger-than-you-think",
+  "created": "2026-10-15T12:49:50Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "a5b872bc9825bd6e7e45206c3a3edf4d60e90f29dceffc35fe6605fb64393240",
+      "bytes": 2291
+    },
+    {
+      "path": "channels/big-numbers/channel.md",
+      "role": "channel",
+      "sha256": "51244de242bfcf3db5e6198635dc018b990f008bcc1e5a4e91714e9a24666613",
+      "bytes": 3709
+    },
+    {
+      "path": "channels/big-numbers/series/bigger-than-you-think.md",
+      "role": "channel",
+      "sha256": "aef8a90ca26f583f2fefc624e0094ae8eb4beb78250c9185153c30c4aa06c74b",
+      "bytes": 3672
+    },
+    {
+      "path": "channels/big-numbers/characters/dot.md",
+      "role": "channel",
+      "sha256": "867cd20dd0b8312bc34ac88fb9929bba5988fbe00f6a2edff398b21b50e6082e",
+      "bytes": 2907
+    },
+    {
+      "path": "channels/big-numbers/episodes/2026-10-15-a-billion-seconds/script.json",
+      "role": "channel",
+      "sha256": "431c529dcec77e4d675464c9d70d7f342472d1e17779547c4400362242e6de27",
+      "bytes": 13818
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "d5a6802719ff44ab7912e45bc062dc5b2c3bf4520140870e7c5e47b3a10a5160",
+      "bytes": 845
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/big-numbers/episodes/2026-10-15-a-billion-seconds/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel big-numbers --series bigger-than-you-think"
+}

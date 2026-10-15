@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-10-15T12:49:50Z",
+  "render_hash": "771c5865d350559d1c70490654982cdec21548f638a39d998f7b9f6f510c8229",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": true,
+      "detail": "45.48s (series allows 40–55s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.22s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"A billion seconds.\" ends at 1.32s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: on-screen text",
+      "pass": true,
+      "detail": "visible from 0.00s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "2 text elements checked on every frame (2673 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": false,
+      "detail": "storybook:title:cut-off (2 frames), storybook:title:text-overflow (1364 frames)"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "119 words; text matches script: yes; highlight off on 0/1309 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-15.0 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 7 banned topics mentioned"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by ilieBeracha (approved in chat) (9 claims)"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import React, { useEffect, useRef, useState } from "react";
+import { AbsoluteFill, continueRender, delayRender, useCurrentFrame, useVideoConfig } from "remotion";
 import { useQaProbe } from "../../render/qa-probe.ts";
 import { clamp, easeInOut, regions } from "../../render/timeline.ts";
 import type { BeatSpan, EpisodeProps, TimedWord } from "../../render/types.ts";
@@ -9,6 +9,30 @@ import { StickFigure } from "./Figure.tsx";
 import { isSkyProp, PropView } from "./props.tsx";
 import type { StoryBeatVisual, Storybook as StorybookData, StoryScene } from "./schema.ts";
 import { GROUND_Y, SettingView } from "./settings.tsx";
+import grainUrl from "./textures/grain.png";
+import wash0 from "./textures/wash-0.png";
+import wash1 from "./textures/wash-1.png";
+import wash2 from "./textures/wash-2.png";
+import wash3 from "./textures/wash-3.png";
+
+/** Pre-made paper textures (see textures/make_textures.py): far cheaper than per-frame SVG noise filters. */
+const WASHES = [wash0, wash1, wash2, wash3];
+
+/** Hold rendering until the textures are decoded, so no frame is captured without them. */
+function useTextures(): void {
+  const [handle] = useState(() => delayRender("storybook textures"));
+  useEffect(() => {
+    const load = (src: string) => {
+      const img = new Image();
+      img.src = src;
+      return img.decode();
+    };
+    Promise.all([grainUrl, ...WASHES].map(load)).then(
+      () => continueRender(handle),
+      () => continueRender(handle),
+    );
+  }, [handle]);
+}
 
 /** Fallback look when a beat's speaker isn't a stick-figure character. */
 const DEFAULT_FIGURE: StickFigureModel = {
@@ -18,13 +42,15 @@ const DEFAULT_FIGURE: StickFigureModel = {
 };
 
 export const TITLE_FONT = "Anton";
+/** Anton's tall glyph box needs ~1.2 line height to fit inside its own line. */
+const TITLE_LINE = 1.2;
 
 /** Card layout on a vertical frame: title bar, then a square scene the full width of the frame. */
 export function storyLayout(width: number, height: number, props: Pick<EpisodeProps, "safeArea">) {
   const r = regions(width, height, props.safeArea);
   const card = Math.min(width, height * 0.5625);
   const cardY = Math.round(height * 0.219);
-  return { card, cardX: (width - card) / 2, cardY, title: { x: r.headline.x, y: Math.max(r.safe.y + 20, cardY - 150), w: r.headline.w, h: 130 } };
+  return { card, cardX: (width - card) / 2, cardY, title: { x: r.headline.x, y: Math.max(r.safe.y + 4, cardY - 166), w: r.headline.w, h: 156 } };
 }
 
 /** When each scene of a beat starts: one scene per sentence, extra scenes split the last sentence. */
@@ -56,7 +82,7 @@ export function titleFit(chars: number, w: number, h: number): { size: number; l
   const one = Math.floor(w / (Math.max(1, chars) * em));
   if (one >= 56) return { size: Math.min(one, 76), lines: 1 };
   const perLine = Math.ceil(chars / 2) + 2;
-  return { size: Math.max(40, Math.min(Math.floor(w / (perLine * em)), Math.floor(h / (2 * 1.04)))), lines: 2 };
+  return { size: Math.max(40, Math.min(Math.floor(w / (perLine * em)), Math.floor(h / (2 * TITLE_LINE)))), lines: 2 };
 }
 
 const Title: React.FC<{ book: StorybookData; x: number; y: number; w: number; h: number; text: string; accent: string; probe: boolean }> = ({ book, x, y, w, h, text, accent, probe }) => {
@@ -79,7 +105,7 @@ const Title: React.FC<{ book: StorybookData; x: number; y: number; w: number; h:
   const { size } = titleFit(title.length, w, h);
   return (
     <div style={{ position: "absolute", left: x, top: y, width: w, height: h, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-      <div ref={ref} style={{ maxWidth: w, fontFamily: TITLE_FONT, fontSize: size, lineHeight: 1.04, textAlign: "center", letterSpacing: 0.5, overflow: "hidden", textWrap: "balance" }}>
+      <div ref={ref} style={{ maxWidth: w, fontFamily: TITLE_FONT, fontSize: size, lineHeight: TITLE_LINE, textAlign: "center", letterSpacing: 0.5, overflow: "hidden", textWrap: "balance" }}>
         {parts.map((p, i) => (
           <span key={i} style={{ color: p.hi ? accent : text }}>
             {p.s}
@@ -123,23 +149,13 @@ const SceneArt: React.FC<{ scene: StoryScene; seed: number; t: number; u: number
       {overlay.map((p, i) => (
         <PropView key={`v${i}`} p={p} groundY={ground} seed={seed + 400 + i * 7} t={t} accent={accent} />
       ))}
-      <rect x={-60} y={-60} width={1120} height={1120} filter={`url(#wash-${washSeed(seed)})`} opacity={0.32} style={{ mixBlendMode: "multiply" }} />
+      <image href={WASHES[washSeed(seed)]} x={-60} y={-60} width={1120} height={1120} opacity={0.32} style={{ mixBlendMode: "multiply" }} />
     </g>
   );
 };
 
 /** Low-frequency noise that makes flat fills look like uneven watercolour washes (one of 4 variants per scene). */
 const washSeed = (seed: number) => Math.abs(Math.round(seed)) % 4;
-const WashFilters: React.FC = () => (
-  <>
-    {[0, 1, 2, 3].map((k) => (
-      <filter key={k} id={`wash-${k}`} x="0" y="0" width="100%" height="100%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.0075" numOctaves={3} seed={11 + k * 17} />
-        <feColorMatrix type="matrix" values="0 0 0 0 0.42  0 0 0 0 0.33  0 0 0 0 0.22  0 0 0 1 -0.3" />
-      </filter>
-    ))}
-  </>
-);
 
 /** render-storybook: hand-drawn scenes (one per sentence), a title bar, a square card layout. */
 export const StorybookScene: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: number }> = ({ props, spans, from }) => {
@@ -182,7 +198,7 @@ export const StorybookScene: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; 
   const current = scenes[idx];
   const scale = L.card / 1000;
   const bg = props.brand.background[0];
-  const grainId = "paper-grain";
+  useTextures();
 
   return (
     <AbsoluteFill style={{ background: bg }}>
@@ -192,11 +208,6 @@ export const StorybookScene: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; 
           <clipPath id="card-clip">
             <rect x={0} y={0} width={1000} height={1000} />
           </clipPath>
-          <filter id={grainId} x="0" y="0" width="100%" height="100%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={4} result="noise" />
-            <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.28  0 0 0 0 0.2  0 0 0 0.55 0" />
-          </filter>
-          <WashFilters />
           <radialGradient id="vignette" cx="50%" cy="48%" r="72%">
             <stop offset="0.62" stopColor="#3b2f22" stopOpacity="0" />
             <stop offset="1" stopColor="#3b2f22" stopOpacity="0.42" />
@@ -209,7 +220,7 @@ export const StorybookScene: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; 
               <SceneArt scene={current} seed={span.index * 100 + idx} t={t} u={u} figureFor={figureFor} mouth={mouth} blink={blink} accent={props.brand.accent_color} />
             </g>
           )}
-          <rect x={0} y={0} width={1000} height={1000} filter={`url(#${grainId})`} opacity={0.22} style={{ mixBlendMode: "multiply" }} />
+          <image href={grainUrl} x={0} y={0} width={1000} height={1000} opacity={0.22} style={{ mixBlendMode: "multiply" }} />
           <rect x={0} y={0} width={1000} height={1000} fill="url(#vignette)" />
         </g>
       </svg>
