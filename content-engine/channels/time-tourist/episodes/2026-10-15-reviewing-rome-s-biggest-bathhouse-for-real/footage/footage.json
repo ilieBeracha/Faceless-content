@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "shots": {
+    "00-hook-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/00-hook-1.jpg",
+        "sha": "a4a8b736c8498fc109051dbcd5e0dbc30e58c4e03f5f7bb8635aab08823038d1",
+        "key": "584ecf7fcb584629b169ee739676edc6d2bbcf1514dc7a1a7b1850e622f0b082",
+        "at": "2026-10-15T18:40:25Z"
+      }
+    },
+    "01-arrival-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/01-arrival-1.jpg",
+        "sha": "bd191530a79b3cd160a4aa6bb6bf42e661528cbe77fce362b083ca6cfabb4479",
+        "key": "707c4a05c673c89a442f4dfc48a69e3a99aa210005e45a523558cc6d5fc5b170",
+        "at": "2026-10-15T18:40:32Z"
+      }
+    },
+    "01-arrival-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/01-arrival-2.jpg",
+        "sha": "42af6cd2673a635308945a3d2586a6d7549954ab4418b1e5fd805b5396e9f88c",
+        "key": "0d3c65b869078f886b873a96a65d3cf9982ef00c6c5e06c92dca6d61befeb41a",
+        "at": "2026-10-15T18:40:39Z"
+      }
+    },
+    "02-tour-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/02-tour-1.jpg",
+        "sha": "9eec11fe42fc8a0764219015506e216664b213782d9bfb629ef5771351393447",
+        "key": "2e4d3d824b3c24cdce385cdda35c6aa3f3316a8912cffc3f6a08bcece069f552",
+        "at": "2026-10-15T18:40:47Z"
+      }
+    },
+    "02-tour-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/02-tour-2.jpg",
+        "sha": "b67643927cf54925bfa13aeaec0ca74cfaef98cc60af48d52e9043f8585bb11f",
+        "key": "a244b80e8d2b2f5451ab7f2c9fcca11d44240183fd13058e0c8cd21692e3c6d1",
+        "at": "2026-10-15T18:40:54Z"
+      }
+    },
+    "02-tour-3": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/02-tour-3.jpg",
+        "sha": "c6ea6fc53933f2127d351ddb00b1d1ee32a4465f42caa44e74b1a8cd6546b225",
+        "key": "0710b047c2f462a5b606d4f45a0bc63724175eec5474e2d706c0ec2b39a4d3f0",
+        "at": "2026-10-15T18:41:01Z"
+      }
+    },
+    "03-catch-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/03-catch-1.jpg",
+        "sha": "4e38df8bd97109f0d9712f82c73027dbcee86d3250b5aaf6e98b95fbb8d4aa3e",
+        "key": "c0d328b850b2bea93a44840c5bb7559670a6690546f064dfd7255a69fc5bd862",
+        "at": "2026-10-15T18:41:09Z"
+      }
+    },
+    "03-catch-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/03-catch-2.jpg",
+        "sha": "cf65f63e388a0360e2b08c6c09eafcb6c96f3f554686d02db8ec70a4e71ab792",
+        "key": "953460bc95d6f3d89089dbf891b58b7ee99f8db608234c3e6c6625e3fa6e26e0",
+        "at": "2026-10-15T18:41:17Z"
+      }
+    },
+    "03-catch-3": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/03-catch-3.jpg",
+        "sha": "7e5f31c2983bd35e105864e8995be1852f8df3de6287b3b56d7498861de14a23",
+        "key": "cbf425697304c71fb495583d8368303e369df45542ca855d00bd5a891afc6096",
+        "at": "2026-10-15T18:41:24Z"
+      }
+    },
+    "04-rating-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/04-rating-1.jpg",
+        "sha": "b8dbce08ccc963dee87b7a967fd46a77647893f2d51d000787f1f9873f0316ca",
+        "key": "685e1ab21cf9f0560fd783aa5924353e83fb7ec86a1ea93b53cbfd0e9be2a44b",
+        "at": "2026-10-15T18:41:32Z"
+      }
+    },
+    "04-rating-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/04-rating-2.jpg",
+        "sha": "c02c7a1b9c87db976cd12409ca893bb86429329eca2aded47eb59005e937057f",
+        "key": "a2367d451f65a47092bb59231b14de1a43e56f111f1915b9339cc28f18321537",
+        "at": "2026-10-15T18:41:39Z"
+      }
+    }
+  },
+  "pending": {
+    "hash": "4ad585f8d11557742194d8465d2ad3b34551672439c15d2358b60701a3811996",
+    "estimate_usd": 7.42
+  }
+}

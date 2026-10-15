@@ -1,0 +1,94 @@
+{
+  "budget_usd": 25,
+  "budget_changes": [],
+  "entries": [
+    {
+      "at": "2026-10-15T18:40:25Z",
+      "shot": "00-hook-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:40:32Z",
+      "shot": "01-arrival-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:40:39Z",
+      "shot": "01-arrival-2",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:40:46Z",
+      "shot": "02-tour-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:40:54Z",
+      "shot": "02-tour-2",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:41:01Z",
+      "shot": "02-tour-3",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:41:09Z",
+      "shot": "03-catch-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:41:17Z",
+      "shot": "03-catch-2",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:41:24Z",
+      "shot": "03-catch-3",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:41:31Z",
+      "shot": "04-rating-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:41:39Z",
+      "shot": "04-rating-2",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    }
+  ]
+}
