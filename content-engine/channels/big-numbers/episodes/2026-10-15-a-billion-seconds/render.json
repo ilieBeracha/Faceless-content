@@ -1,7 +1,7 @@
 {
   "output": "out/big-numbers/2026-10-15-a-billion-seconds.mp4",
-  "rendered_at": "2026-10-15T12:49:45Z",
-  "seconds_to_render": 1851,
+  "rendered_at": "2026-10-15T13:12:20Z",
+  "seconds_to_render": 785,
   "width": 1080,
   "height": 1920,
   "fps": 30,
@@ -11,5 +11,5 @@
   ],
   "captions_skill": "captions",
   "gl": "swangle",
-  "inputs_hash": "771c5865d350559d1c70490654982cdec21548f638a39d998f7b9f6f510c8229"
+  "inputs_hash": "de99ea8fd84e7cc67e5c1c1033fde2e52f49cf60775cdb7ead7f880207297b38"
 }
