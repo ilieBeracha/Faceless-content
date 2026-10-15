@@ -10,9 +10,10 @@ The engine marks an idea "used" when an episode is made from it.
 ## a-billion-seconds
 - title: How long is a billion seconds?
 - series: bigger-than-you-think
-- status: new
+- status: used
 - angle: A million seconds is under two weeks; a billion is almost 32 years — same-sounding words, wildly different stories.
 - added: 2026-10-14
+- used_in: episodes/2026-10-15-a-billion-seconds
 
 ## rice-on-a-chessboard
 - title: Rice on a chessboard
