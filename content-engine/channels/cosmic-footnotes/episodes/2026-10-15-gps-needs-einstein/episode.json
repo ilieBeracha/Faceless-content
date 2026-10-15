@@ -5,7 +5,7 @@
   "idea": "gps-needs-einstein",
   "title": "Your phone needs Einstein",
   "created": "2026-10-15T13:54:42Z",
-  "updated": "2026-10-15T13:54:50Z",
+  "updated": "2026-10-15T13:55:01Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,9 @@
       "at": "2026-10-15T13:54:49Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-10-15T13:54:50Z"
+      "status": "done",
+      "at": "2026-10-15T13:55:01Z",
+      "note": "approved by ilieBeracha (approved in chat)"
     }
   }
 }
