@@ -9,7 +9,7 @@ import { Circle, Curve, Ellipse, GroundShadow, INK, Line, rect, rnd, shade, Shap
 
 export const HAND_FONT = "Patrick Hand";
 
-const SKY_Y: Partial<Record<StoryProp["type"], number>> = { sun: 0.17, moon: 0.17, planet: 0.24, globe: 0.24, question: 0.22, thought: 0.2, speech: 0.22, text: 0.24, dots: 0.22, arrow: 0.5, stars: 0.2 };
+const SKY_Y: Partial<Record<StoryProp["type"], number>> = { satellite: 0.2, sun: 0.17, moon: 0.17, planet: 0.24, globe: 0.24, question: 0.22, thought: 0.2, speech: 0.22, text: 0.24, dots: 0.22, arrow: 0.5, stars: 0.2 };
 
 export function isSkyProp(type: StoryProp["type"]): boolean {
   return type in SKY_Y;
@@ -26,6 +26,10 @@ const Icon: React.FC<{ kind: string; x: number; y: number; s: number; seed: numb
   switch (kind) {
     case "globe":
       return <Globe x={x} y={y} r={38 * s} seed={seed} />;
+    case "phone":
+      return <Phone x={x} y={y + 40 * s} s={0.55 * s} seed={seed} />;
+    case "satellite":
+      return <Satellite x={x} y={y} s={0.5 * s} seed={seed} t={0} />;
     case "clock":
       return <ClockFace x={x} y={y} r={34 * s} seed={seed} />;
     case "sun":
@@ -149,6 +153,34 @@ const Candle: React.FC<{ x: number; y: number; s: number; seed: number; t: numbe
   <g>
     <Shape d={rect(x - 14 * s, y - 90 * s, 28 * s, 90 * s, 3)} fill="#f3ead2" o={{ seed }} />
     <Shape d={`M${x} ${y - 132 * s - Math.sin(t * 12) * 3} C${x + 12 * s} ${y - 112 * s} ${x + 10 * s} ${y - 96 * s} ${x} ${y - 94 * s} C${x - 10 * s} ${y - 96 * s} ${x - 12 * s} ${y - 112 * s} ${x} ${y - 132 * s - Math.sin(t * 12) * 3} Z`} fill="#f2b14e" o={{ seed: seed + 1, width: 2 }} />
+  </g>
+);
+
+const Phone: React.FC<{ x: number; y: number; s: number; seed: number; text?: string }> = ({ x, y, s, seed, text }) => (
+  <g>
+    <Shape d={rect(x - 60 * s, y - 220 * s, 120 * s, 220 * s, 18 * s)} fill="#2f3340" o={{ seed }} />
+    <rect x={x - 50 * s} y={y - 202 * s} width={100 * s} height={180 * s} rx={6 * s} fill="#cfe3d2" />
+    <path d={`M${x - 50 * s} ${y - 150 * s} L${x + 50 * s} ${y - 120 * s} M${x - 20 * s} ${y - 202 * s} L${x + 10 * s} ${y - 22 * s}`} stroke="#f7f1e3" strokeWidth={8 * s} />
+    <path d={`M${x} ${y - 95 * s} C${x - 22 * s} ${y - 120 * s} ${x - 22 * s} ${y - 150 * s} ${x} ${y - 150 * s} C${x + 22 * s} ${y - 150 * s} ${x + 22 * s} ${y - 120 * s} ${x} ${y - 95 * s} Z`} fill="#c2553a" />
+    <circle cx={x} cy={y - 135 * s} r={7 * s} fill="#f7f1e3" />
+    {text && <Hand x={x} y={y - 45 * s} size={Math.min(26 * s, (180 * s) / Math.max(2, text.length))} text={text} />}
+  </g>
+);
+
+const Satellite: React.FC<{ x: number; y: number; s: number; seed: number; t: number }> = ({ x, y, s, seed, t }) => (
+  <g transform={`rotate(${-12 + Math.sin(t * 0.6) * 4} ${x} ${y})`}>
+    {[-1, 1].map((side) => (
+      <g key={side}>
+        <line x1={x + side * 45 * s} y1={y} x2={x + side * 70 * s} y2={y} stroke={INK} strokeWidth={4 * s} />
+        <Shape d={rect(side < 0 ? x - 190 * s : x + 70 * s, y - 32 * s, 120 * s, 64 * s, 3)} fill="#3d5a8a" o={{ seed: seed + side + 2 }} />
+        {[1, 2].map((k) => (
+          <line key={k} x1={(side < 0 ? x - 190 * s : x + 70 * s) + k * 40 * s} y1={y - 32 * s} x2={(side < 0 ? x - 190 * s : x + 70 * s) + k * 40 * s} y2={y + 32 * s} stroke="#8fb7cf" strokeWidth={2.5 * s} />
+        ))}
+      </g>
+    ))}
+    <Shape d={rect(x - 45 * s, y - 45 * s, 90 * s, 90 * s, 6)} fill="#d9b97e" o={{ seed: seed + 5 }} />
+    <Curve points={[[x - 26 * s, y + 70 * s], [x, y + 52 * s], [x + 26 * s, y + 70 * s]]} o={{ seed: seed + 6, width: 3 }} />
+    <line x1={x} y1={y + 45 * s} x2={x} y2={y + 60 * s} stroke={INK} strokeWidth={4 * s} />
   </g>
 );
 
@@ -509,6 +541,40 @@ export const PropView: React.FC<{ p: StoryProp; groundY: number; seed: number; t
           <Shape d={rect(x - 55 * s, y - 196 * s, 110 * s, 16 * s, 3)} fill="#8a6a46" o={o(74)} />
           <Shape d={`M${x - 42 * s} ${y - 180 * s} L${x + 42 * s} ${y - 180 * s} L${x + 6 * s} ${y - 100 * s} L${x + 42 * s} ${y - 16 * s} L${x - 42 * s} ${y - 16 * s} L${x - 6 * s} ${y - 100 * s} Z`} fill="rgba(210,228,236,0.6)" o={o(75, { width: 2.2 })} />
           <path d={`M${x - 30 * s} ${y - 16 * s} L${x} ${y - 52 * s} L${x + 30 * s} ${y - 16 * s} Z M${x - 20 * s} ${y - 150 * s} L${x + 20 * s} ${y - 150 * s} L${x} ${y - 112 * s} Z`} fill="#d9b97e" />
+        </g>
+      );
+    case "satellite":
+      return <Satellite x={x} y={y} s={s} seed={seed} t={t} />;
+    case "phone":
+      return (
+        <g>
+          {p.y === undefined && <GroundShadow cx={x} cy={y + 2} rx={70 * s} />}
+          <Phone x={x} y={y} s={s * 1.2} seed={seed} text={p.text} />
+        </g>
+      );
+    case "dish":
+      return (
+        <g>
+          <GroundShadow cx={x} cy={y + 2} rx={110 * s} />
+          <Shape d={`M${x - 40 * s} ${y} L${x} ${y - 120 * s} L${x + 40 * s} ${y} Z`} fill="#b9b2a4" o={o(80)} />
+          <g transform={`rotate(-28 ${x} ${y - 150 * s})`}>
+            <Shape d={`M${x - 130 * s} ${y - 190 * s} Q${x} ${y - 60 * s} ${x + 130 * s} ${y - 190 * s} Z`} fill="#efe8da" o={o(81)} />
+            <line x1={x} y1={y - 120 * s} x2={x} y2={y - 250 * s} stroke={INK} strokeWidth={5 * s} />
+            <circle cx={x} cy={y - 255 * s} r={9 * s} fill={c ?? "#c2553a"} />
+          </g>
+        </g>
+      );
+    case "telescope":
+      return (
+        <g>
+          <GroundShadow cx={x} cy={y + 2} rx={80 * s} />
+          <Line x1={x} y1={y - 120 * s} x2={x - 60 * s} y2={y} o={o(82, { width: 5 })} />
+          <Line x1={x} y1={y - 120 * s} x2={x + 60 * s} y2={y} o={o(83, { width: 5 })} />
+          <Line x1={x} y1={y - 120 * s} x2={x} y2={y} o={o(84, { width: 5 })} />
+          <g transform={`rotate(-32 ${x} ${y - 125 * s})`}>
+            <Shape d={rect(x - 110 * s, y - 150 * s, 220 * s, 50 * s, 10)} fill={c ?? "#3d5a8a"} o={o(85)} />
+            <Shape d={rect(x + 100 * s, y - 160 * s, 30 * s, 70 * s, 6)} fill="#d9b97e" o={o(86)} />
+          </g>
         </g>
       );
     case "candle":

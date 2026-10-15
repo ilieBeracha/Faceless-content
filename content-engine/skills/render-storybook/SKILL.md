@@ -55,7 +55,7 @@ keep the last scene up. So write the voiceover in short sentences and give each 
     "scale": 1,              // 1 ≈ 37% of the picture's height; 0.3–2.5
     "facing": "right",       // left | right
     "expression": "curious", // a key from the character's model.json → expressions
-    "hold": "clock",         // optional: cards | paper | book | clock | coins | drop | globe | sign | candle
+    "hold": "clock",         // optional: cards | paper | book | clock | coins | drop | globe | sign | candle | phone
     "hold_text": "52!"       // optional: ≤ 12 chars written on a held sign / paper / book
   },
   "others": [                // ≤ 4 extra figures (same look, they don't talk) — crowds, "you", a friend
@@ -86,7 +86,7 @@ height. Some props use `text`, `count`, `content`, or `x2`/`y2`.
 | `book` | a book lying flat | `color` |
 | `text` | big hand-lettered words or a number, outlined | `text` (required) |
 | `speech` | speech bubble | `text` (required) |
-| `thought` | thought cloud | `content` (globe, clock, question, cards, coins, sun, moon, planet, drop, money, heart) or `text` |
+| `thought` | thought cloud | `content` (globe, clock, question, cards, coins, sun, moon, planet, drop, money, heart, phone, satellite) or `text` |
 | `question` | big "?" | — |
 | `arrow` | curved arrow from (`x`,`y`) to (`x2`,`y2`) in the accent colour | `x2` (required), `y2`, `text` |
 | `footprints` | trail of footprints from `x` to `x2` | `x2` (required), `y2`, `count` |
@@ -101,9 +101,13 @@ height. Some props use `text`, `count`, `content`, or `x2`/`y2`.
 | `planet` | ringed planet | `color` |
 | `sun`, `moon` | in the sky | — |
 | `tree`, `palm`, `bush`, `mountain`, `house` | scenery | — |
+| `satellite` | a satellite with solar panels (sky thing, slowly turning) | — |
+| `phone` | a smartphone showing a map pin | `text` (small, on the screen) |
+| `dish` | a radio-telescope dish | `color` (tip) |
+| `telescope` | a telescope on a tripod | `color` |
 | `table`, `box`, `sack`, `bucket`, `drop`, `hourglass`, `candle`, `rocket`, `car` | objects | — |
 
-Sky things (default heights): `sun`, `moon`, `stars`, `planet`, `globe`, `thought`, `speech`, `question`, `text`,
+Sky things (default heights): `sun`, `moon`, `stars`, `planet`, `satellite`, `globe`, `thought`, `speech`, `question`, `text`,
 `dots`, `arrow`. Everything else is a ground thing.
 
 ## Layout rules (read before placing anything)

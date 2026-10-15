@@ -128,6 +128,9 @@ const SceneArt: React.FC<{ scene: StoryScene; seed: number; t: number; u: number
   if (scene.camera === "pan-left") transform = `translate(500 500) scale(1.06) translate(${-500 + 28 - 56 * k} -500)`;
   if (scene.camera === "pan-right") transform = `translate(500 500) scale(1.06) translate(${-500 - 28 + 56 * k} -500)`;
   const { model, expression } = figureFor(scene);
+  // On dark skies the ink lines vanish: draw a pale, thicker copy of each figure underneath as an outline.
+  const dark = scene.setting === "night" || scene.setting === "space" || scene.time === "night";
+  const halo: StickFigureModel = { ...model, params: { ...model.params, line: "#efe6cf", hair_color: "#efe6cf", line_width: model.params.line_width * 2.6 } };
   const sky = scene.props.filter((p) => isSkyProp(p.type) && p.type !== "thought" && p.type !== "speech" && p.type !== "question");
   const ground_ = scene.props.filter((p) => !isSkyProp(p.type));
   const overlay = scene.props.filter((p) => p.type === "thought" || p.type === "speech" || p.type === "question");
@@ -141,11 +144,15 @@ const SceneArt: React.FC<{ scene: StoryScene; seed: number; t: number; u: number
         <PropView key={`b${i}`} p={p} groundY={ground - 30} seed={seed + 100 + i * 7} t={t} accent={accent} />
       ))}
       {scene.others.map((f, i) => (
-        <StickFigure key={`o${i}`} figure={f} model={model} expression={expression(f.expression)} groundY={ground + 10 * (f.scale - 1)} t={t} mouth={0} blink={blinkAt(t, seed + i * 9.1)} seed={seed + 300 + i} />
+        <React.Fragment key={`o${i}`}>
+          {dark && <StickFigure figure={f} model={halo} expression={expression(f.expression)} groundY={ground + 10 * (f.scale - 1)} t={t} mouth={0} blink={blinkAt(t, seed + i * 9.1)} seed={seed + 300 + i} />}
+          <StickFigure figure={f} model={model} expression={expression(f.expression)} groundY={ground + 10 * (f.scale - 1)} t={t} mouth={0} blink={blinkAt(t, seed + i * 9.1)} seed={seed + 300 + i} />
+        </React.Fragment>
       ))}
       {ground_.filter((p) => !((p.y ?? 1) * 1000 <= ground - 1 || p.type === "mountain" || p.type === "house")).map((p, i) => (
         <PropView key={`g${i}`} p={p} groundY={ground} seed={seed + 200 + i * 7} t={t} accent={accent} />
       ))}
+      {scene.character && dark && <StickFigure figure={scene.character} model={halo} expression={expression(scene.character.expression)} groundY={ground} t={t} mouth={mouth} blink={blink} seed={seed} />}
       {scene.character && <StickFigure figure={scene.character} model={model} expression={expression(scene.character.expression)} groundY={ground} t={t} mouth={mouth} blink={blink} seed={seed} />}
       {overlay.map((p, i) => (
         <PropView key={`v${i}`} p={p} groundY={ground} seed={seed + 400 + i * 7} t={t} accent={accent} />

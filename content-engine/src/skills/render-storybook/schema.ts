@@ -16,9 +16,10 @@ export const PROPS = [
   "sign", "pile", "globe", "sun", "moon", "stars", "planet", "clock", "calendar", "jars", "cards", "coins", "money",
   "book", "paper", "tree", "palm", "bush", "mountain", "house", "footprints", "arrow", "question", "thought", "speech",
   "text", "dots", "drop", "bucket", "rocket", "car", "table", "sack", "box", "hourglass", "candle",
+  "satellite", "phone", "dish", "telescope",
 ] as const;
 /** Things a character can hold in its hands (drawn small at the hand). */
-export const HOLDABLE = ["cards", "paper", "book", "clock", "coins", "drop", "globe", "sign", "candle"] as const;
+export const HOLDABLE = ["cards", "paper", "book", "clock", "coins", "drop", "globe", "sign", "candle", "phone"] as const;
 
 export const figureSchema = z
   .object({
@@ -43,7 +44,7 @@ export const propSchema = z
     text: z.string().max(28).optional().describe("words or numbers drawn on the prop (sign, calendar, clock, paper, text, speech, thought, arrow)"),
     count: z.number().int().min(1).max(400).optional().describe("jars, coins, dots, stars, footprints"),
     color: color.optional(),
-    content: z.enum(["globe", "clock", "question", "cards", "coins", "sun", "moon", "planet", "drop", "money", "heart"]).optional().describe("small picture inside a thought bubble"),
+    content: z.enum(["globe", "clock", "question", "cards", "coins", "sun", "moon", "planet", "drop", "money", "heart", "phone", "satellite"]).optional().describe("small picture inside a thought bubble"),
   })
   .strict();
 
