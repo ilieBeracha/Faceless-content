@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-14-ballpoint-pen
 channel: pip-how-things-work
-status: pending
+status: approved
 script_hash: 1e8852060f863e979214dec74c1d76f6739178fc1637bc3d76b711036d2a83fb
 generated_at: 2026-10-14T20:04:02Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha (approved in chat)
+approved_at: 2026-10-15T11:57:32Z
 notes: null
 ---
 
