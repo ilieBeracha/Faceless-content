@@ -10,9 +10,10 @@ The engine marks an idea "used" when an episode is made from it.
 ## gps-needs-einstein
 - title: Your phone needs Einstein
 - series: tiny-clue-big-deal
-- status: new
+- status: used
 - angle: Satellite clocks gain a few millionths of a second a day — ignore Einstein and your map drifts by kilometres every day.
 - added: 2026-10-15
+- used_in: episodes/2026-10-15-gps-needs-einstein
 
 ## pigeons-and-the-big-bang
 - title: The pigeons that found the Big Bang
