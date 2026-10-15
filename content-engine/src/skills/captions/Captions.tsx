@@ -124,7 +124,7 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
                       borderRadius: 18,
                       padding: "2px 10px",
                       margin: "0 -10px",
-                      transform: `scale(${1 + 0.07 * pop})`,
+                      transform: `scale(${1 + Math.min(0.07, 14 / Math.max(1, estimateWidth(w.text, FONT_SIZE, upper))) * pop})`, // grows ≤ ~7px per side, so long words don't hit their neighbours
                       WebkitTextStroke: isActive ? "0px" : "10px rgba(0,0,0,0.85)",
                       paintOrder: "stroke fill",
                       textShadow: "0 6px 18px rgba(0,0,0,0.45)",
