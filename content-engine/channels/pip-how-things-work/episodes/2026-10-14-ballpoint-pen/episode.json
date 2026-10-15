@@ -5,7 +5,7 @@
   "idea": "ballpoint-pen",
   "title": "Inside It: a ballpoint pen",
   "created": "2026-10-14T20:00:39Z",
-  "updated": "2026-10-14T20:04:02Z",
+  "updated": "2026-10-15T11:58:50Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,14 @@
       "at": "2026-10-14T20:04:02Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-10-14T20:04:02Z"
+      "status": "done",
+      "at": "2026-10-15T11:57:48Z",
+      "note": "approved by ilieBeracha (approved in chat)"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-15T11:58:50Z",
+      "note": "37.27s"
     }
   }
 }

@@ -1,0 +1,863 @@
+{
+  "version": 2,
+  "hash": "bbdeb1ab08ccd79f5916ef5d9e23d57124a4b2982d139d1abb2045293d0e819a",
+  "fps": 30,
+  "frames": 1118,
+  "duration": 37.267,
+  "speech_start": 0.162,
+  "speech_end": 36.245,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Why",
+      "start": 0.162,
+      "end": 0.312
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "doesn't",
+      "start": 0.337,
+      "end": 0.537
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "your",
+      "start": 0.562,
+      "end": 0.637
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "pen",
+      "start": 0.687,
+      "end": 0.887
+    },
+    {
+      "i": 4,
+      "beat": "hook",
+      "text": "leak?",
+      "start": 0.937,
+      "end": 1.337
+    },
+    {
+      "i": 5,
+      "beat": "fly-in",
+      "text": "Okay",
+      "start": 1.64,
+      "end": 2.015
+    },
+    {
+      "i": 6,
+      "beat": "fly-in",
+      "text": "but…",
+      "start": 2.065,
+      "end": 2.265
+    },
+    {
+      "i": 7,
+      "beat": "fly-in",
+      "text": "WHY",
+      "start": 2.44,
+      "end": 2.665
+    },
+    {
+      "i": 8,
+      "beat": "fly-in",
+      "text": "though?",
+      "start": 2.715,
+      "end": 3.165
+    },
+    {
+      "i": 9,
+      "beat": "fly-in",
+      "text": "Let's",
+      "start": 3.34,
+      "end": 3.565
+    },
+    {
+      "i": 10,
+      "beat": "fly-in",
+      "text": "fly",
+      "start": 3.615,
+      "end": 3.865
+    },
+    {
+      "i": 11,
+      "beat": "fly-in",
+      "text": "inside",
+      "start": 3.89,
+      "end": 4.365
+    },
+    {
+      "i": 12,
+      "beat": "fly-in",
+      "text": "and",
+      "start": 4.39,
+      "end": 4.465
+    },
+    {
+      "i": 13,
+      "beat": "fly-in",
+      "text": "find",
+      "start": 4.515,
+      "end": 4.765
+    },
+    {
+      "i": 14,
+      "beat": "fly-in",
+      "text": "out.",
+      "start": 4.79,
+      "end": 5.315
+    },
+    {
+      "i": 15,
+      "beat": "fly-in",
+      "text": "The",
+      "start": 5.465,
+      "end": 5.54
+    },
+    {
+      "i": 16,
+      "beat": "fly-in",
+      "text": "secret",
+      "start": 5.615,
+      "end": 5.965
+    },
+    {
+      "i": 17,
+      "beat": "fly-in",
+      "text": "is",
+      "start": 5.99,
+      "end": 6.09
+    },
+    {
+      "i": 18,
+      "beat": "fly-in",
+      "text": "hiding",
+      "start": 6.14,
+      "end": 6.49
+    },
+    {
+      "i": 19,
+      "beat": "fly-in",
+      "text": "right",
+      "start": 6.565,
+      "end": 6.79
+    },
+    {
+      "i": 20,
+      "beat": "fly-in",
+      "text": "down",
+      "start": 6.84,
+      "end": 7.09
+    },
+    {
+      "i": 21,
+      "beat": "fly-in",
+      "text": "at",
+      "start": 7.115,
+      "end": 7.165
+    },
+    {
+      "i": 22,
+      "beat": "fly-in",
+      "text": "the",
+      "start": 7.19,
+      "end": 7.24
+    },
+    {
+      "i": 23,
+      "beat": "fly-in",
+      "text": "tip.",
+      "start": 7.315,
+      "end": 7.622
+    },
+    {
+      "i": 24,
+      "beat": "explode",
+      "text": "Here's",
+      "start": 8.007,
+      "end": 8.207
+    },
+    {
+      "i": 25,
+      "beat": "explode",
+      "text": "everything",
+      "start": 8.257,
+      "end": 8.682
+    },
+    {
+      "i": 26,
+      "beat": "explode",
+      "text": "in",
+      "start": 8.732,
+      "end": 8.807
+    },
+    {
+      "i": 27,
+      "beat": "explode",
+      "text": "there.",
+      "start": 8.857,
+      "end": 9.432
+    },
+    {
+      "i": 28,
+      "beat": "explode",
+      "text": "A",
+      "start": 9.607,
+      "end": 9.657
+    },
+    {
+      "i": 29,
+      "beat": "explode",
+      "text": "see-through",
+      "start": 9.757,
+      "end": 10.207
+    },
+    {
+      "i": 30,
+      "beat": "explode",
+      "text": "plastic",
+      "start": 10.257,
+      "end": 10.657
+    },
+    {
+      "i": 31,
+      "beat": "explode",
+      "text": "barrel.",
+      "start": 10.707,
+      "end": 11.357
+    },
+    {
+      "i": 32,
+      "beat": "explode",
+      "text": "A",
+      "start": 11.532,
+      "end": 11.582
+    },
+    {
+      "i": 33,
+      "beat": "explode",
+      "text": "thin",
+      "start": 11.657,
+      "end": 11.882
+    },
+    {
+      "i": 34,
+      "beat": "explode",
+      "text": "tube",
+      "start": 11.957,
+      "end": 12.282
+    },
+    {
+      "i": 35,
+      "beat": "explode",
+      "text": "full",
+      "start": 12.357,
+      "end": 12.532
+    },
+    {
+      "i": 36,
+      "beat": "explode",
+      "text": "of",
+      "start": 12.557,
+      "end": 12.632
+    },
+    {
+      "i": 37,
+      "beat": "explode",
+      "text": "thick,",
+      "start": 12.732,
+      "end": 12.982
+    },
+    {
+      "i": 38,
+      "beat": "explode",
+      "text": "oily",
+      "start": 13.107,
+      "end": 13.482
+    },
+    {
+      "i": 39,
+      "beat": "explode",
+      "text": "ink.",
+      "start": 13.532,
+      "end": 14.082
+    },
+    {
+      "i": 40,
+      "beat": "explode",
+      "text": "And",
+      "start": 14.207,
+      "end": 14.282
+    },
+    {
+      "i": 41,
+      "beat": "explode",
+      "text": "at",
+      "start": 14.307,
+      "end": 14.357
+    },
+    {
+      "i": 42,
+      "beat": "explode",
+      "text": "the",
+      "start": 14.382,
+      "end": 14.432
+    },
+    {
+      "i": 43,
+      "beat": "explode",
+      "text": "very",
+      "start": 14.482,
+      "end": 14.757
+    },
+    {
+      "i": 44,
+      "beat": "explode",
+      "text": "end,",
+      "start": 14.807,
+      "end": 15.157
+    },
+    {
+      "i": 45,
+      "beat": "explode",
+      "text": "a",
+      "start": 15.257,
+      "end": 15.307
+    },
+    {
+      "i": 46,
+      "beat": "explode",
+      "text": "tiny",
+      "start": 15.382,
+      "end": 15.732
+    },
+    {
+      "i": 47,
+      "beat": "explode",
+      "text": "metal",
+      "start": 15.782,
+      "end": 16.032
+    },
+    {
+      "i": 48,
+      "beat": "explode",
+      "text": "ball,",
+      "start": 16.082,
+      "end": 16.357
+    },
+    {
+      "i": 49,
+      "beat": "explode",
+      "text": "about",
+      "start": 16.407,
+      "end": 16.582
+    },
+    {
+      "i": 50,
+      "beat": "explode",
+      "text": "one",
+      "start": 16.632,
+      "end": 16.807
+    },
+    {
+      "i": 51,
+      "beat": "explode",
+      "text": "millimetre",
+      "start": 16.857,
+      "end": 17.232
+    },
+    {
+      "i": 52,
+      "beat": "explode",
+      "text": "wide.",
+      "start": 17.282,
+      "end": 17.723
+    },
+    {
+      "i": 53,
+      "beat": "key-part",
+      "text": "That",
+      "start": 18.08,
+      "end": 18.23
+    },
+    {
+      "i": 54,
+      "beat": "key-part",
+      "text": "ball",
+      "start": 18.28,
+      "end": 18.555
+    },
+    {
+      "i": 55,
+      "beat": "key-part",
+      "text": "sits",
+      "start": 18.63,
+      "end": 18.855
+    },
+    {
+      "i": 56,
+      "beat": "key-part",
+      "text": "in",
+      "start": 18.88,
+      "end": 18.93
+    },
+    {
+      "i": 57,
+      "beat": "key-part",
+      "text": "a",
+      "start": 18.955,
+      "end": 19.005
+    },
+    {
+      "i": 58,
+      "beat": "key-part",
+      "text": "snug",
+      "start": 19.105,
+      "end": 19.38
+    },
+    {
+      "i": 59,
+      "beat": "key-part",
+      "text": "little",
+      "start": 19.405,
+      "end": 19.58
+    },
+    {
+      "i": 60,
+      "beat": "key-part",
+      "text": "socket.",
+      "start": 19.655,
+      "end": 20.43
+    },
+    {
+      "i": 61,
+      "beat": "key-part",
+      "text": "When",
+      "start": 20.555,
+      "end": 20.655
+    },
+    {
+      "i": 62,
+      "beat": "key-part",
+      "text": "you",
+      "start": 20.705,
+      "end": 20.78
+    },
+    {
+      "i": 63,
+      "beat": "key-part",
+      "text": "write,",
+      "start": 20.83,
+      "end": 21.205
+    },
+    {
+      "i": 64,
+      "beat": "key-part",
+      "text": "it",
+      "start": 21.305,
+      "end": 21.38
+    },
+    {
+      "i": 65,
+      "beat": "key-part",
+      "text": "rolls,",
+      "start": 21.43,
+      "end": 22.055
+    },
+    {
+      "i": 66,
+      "beat": "key-part",
+      "text": "grabs",
+      "start": 22.205,
+      "end": 22.605
+    },
+    {
+      "i": 67,
+      "beat": "key-part",
+      "text": "ink",
+      "start": 22.68,
+      "end": 22.905
+    },
+    {
+      "i": 68,
+      "beat": "key-part",
+      "text": "from",
+      "start": 22.955,
+      "end": 23.08
+    },
+    {
+      "i": 69,
+      "beat": "key-part",
+      "text": "inside,",
+      "start": 23.13,
+      "end": 23.655
+    },
+    {
+      "i": 70,
+      "beat": "key-part",
+      "text": "and",
+      "start": 23.755,
+      "end": 23.83
+    },
+    {
+      "i": 71,
+      "beat": "key-part",
+      "text": "paints",
+      "start": 23.88,
+      "end": 24.155
+    },
+    {
+      "i": 72,
+      "beat": "key-part",
+      "text": "it",
+      "start": 24.18,
+      "end": 24.23
+    },
+    {
+      "i": 73,
+      "beat": "key-part",
+      "text": "onto",
+      "start": 24.255,
+      "end": 24.405
+    },
+    {
+      "i": 74,
+      "beat": "key-part",
+      "text": "the",
+      "start": 24.43,
+      "end": 24.48
+    },
+    {
+      "i": 75,
+      "beat": "key-part",
+      "text": "paper.",
+      "start": 24.53,
+      "end": 25.28
+    },
+    {
+      "i": 76,
+      "beat": "key-part",
+      "text": "When",
+      "start": 25.455,
+      "end": 25.555
+    },
+    {
+      "i": 77,
+      "beat": "key-part",
+      "text": "you",
+      "start": 25.58,
+      "end": 25.655
+    },
+    {
+      "i": 78,
+      "beat": "key-part",
+      "text": "stop",
+      "start": 25.705,
+      "end": 25.955
+    },
+    {
+      "i": 79,
+      "beat": "key-part",
+      "text": "writing,",
+      "start": 26.005,
+      "end": 26.455
+    },
+    {
+      "i": 80,
+      "beat": "key-part",
+      "text": "it",
+      "start": 26.595,
+      "end": 26.645
+    },
+    {
+      "i": 81,
+      "beat": "key-part",
+      "text": "just",
+      "start": 26.67,
+      "end": 26.87
+    },
+    {
+      "i": 82,
+      "beat": "key-part",
+      "text": "sits",
+      "start": 26.945,
+      "end": 27.17
+    },
+    {
+      "i": 83,
+      "beat": "key-part",
+      "text": "there",
+      "start": 27.22,
+      "end": 27.395
+    },
+    {
+      "i": 84,
+      "beat": "key-part",
+      "text": "and",
+      "start": 27.445,
+      "end": 27.52
+    },
+    {
+      "i": 85,
+      "beat": "key-part",
+      "text": "blocks",
+      "start": 27.57,
+      "end": 27.895
+    },
+    {
+      "i": 86,
+      "beat": "key-part",
+      "text": "the",
+      "start": 27.92,
+      "end": 27.995
+    },
+    {
+      "i": 87,
+      "beat": "key-part",
+      "text": "opening,",
+      "start": 28.045,
+      "end": 28.62
+    },
+    {
+      "i": 88,
+      "beat": "key-part",
+      "text": "like",
+      "start": 28.72,
+      "end": 28.845
+    },
+    {
+      "i": 89,
+      "beat": "key-part",
+      "text": "a",
+      "start": 28.87,
+      "end": 28.895
+    },
+    {
+      "i": 90,
+      "beat": "key-part",
+      "text": "tiny",
+      "start": 28.97,
+      "end": 29.345
+    },
+    {
+      "i": 91,
+      "beat": "key-part",
+      "text": "cork.",
+      "start": 29.42,
+      "end": 29.845
+    },
+    {
+      "i": 92,
+      "beat": "payoff",
+      "text": "So",
+      "start": 30.275,
+      "end": 30.375
+    },
+    {
+      "i": 93,
+      "beat": "payoff",
+      "text": "the",
+      "start": 30.4,
+      "end": 30.45
+    },
+    {
+      "i": 94,
+      "beat": "payoff",
+      "text": "ball",
+      "start": 30.525,
+      "end": 30.825
+    },
+    {
+      "i": 95,
+      "beat": "payoff",
+      "text": "is",
+      "start": 30.875,
+      "end": 30.975
+    },
+    {
+      "i": 96,
+      "beat": "payoff",
+      "text": "the",
+      "start": 31.025,
+      "end": 31.1
+    },
+    {
+      "i": 97,
+      "beat": "payoff",
+      "text": "lid!",
+      "start": 31.175,
+      "end": 31.75
+    },
+    {
+      "i": 98,
+      "beat": "payoff",
+      "text": "And",
+      "start": 31.875,
+      "end": 31.95
+    },
+    {
+      "i": 99,
+      "beat": "payoff",
+      "text": "the",
+      "start": 31.975,
+      "end": 32.05
+    },
+    {
+      "i": 100,
+      "beat": "payoff",
+      "text": "ink",
+      "start": 32.125,
+      "end": 32.35
+    },
+    {
+      "i": 101,
+      "beat": "payoff",
+      "text": "is",
+      "start": 32.4,
+      "end": 32.5
+    },
+    {
+      "i": 102,
+      "beat": "payoff",
+      "text": "way",
+      "start": 32.55,
+      "end": 32.725
+    },
+    {
+      "i": 103,
+      "beat": "payoff",
+      "text": "too",
+      "start": 32.8,
+      "end": 32.95
+    },
+    {
+      "i": 104,
+      "beat": "payoff",
+      "text": "thick",
+      "start": 33.025,
+      "end": 33.2
+    },
+    {
+      "i": 105,
+      "beat": "payoff",
+      "text": "to",
+      "start": 33.25,
+      "end": 33.3
+    },
+    {
+      "i": 106,
+      "beat": "payoff",
+      "text": "drip",
+      "start": 33.35,
+      "end": 33.525
+    },
+    {
+      "i": 107,
+      "beat": "payoff",
+      "text": "out",
+      "start": 33.55,
+      "end": 33.7
+    },
+    {
+      "i": 108,
+      "beat": "payoff",
+      "text": "on",
+      "start": 33.725,
+      "end": 33.8
+    },
+    {
+      "i": 109,
+      "beat": "payoff",
+      "text": "its",
+      "start": 33.825,
+      "end": 33.925
+    },
+    {
+      "i": 110,
+      "beat": "payoff",
+      "text": "own.",
+      "start": 33.975,
+      "end": 34.5
+    },
+    {
+      "i": 111,
+      "beat": "payoff",
+      "text": "No",
+      "start": 34.675,
+      "end": 34.85
+    },
+    {
+      "i": 112,
+      "beat": "payoff",
+      "text": "rolling,",
+      "start": 34.9,
+      "end": 35.375
+    },
+    {
+      "i": 113,
+      "beat": "payoff",
+      "text": "no",
+      "start": 35.475,
+      "end": 35.65
+    },
+    {
+      "i": 114,
+      "beat": "payoff",
+      "text": "leaking.",
+      "start": 35.7,
+      "end": 36.125
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "pip",
+      "start": 0.1,
+      "end": 1.357
+    },
+    {
+      "id": "fly-in",
+      "speaker": "pip",
+      "start": 1.577,
+      "end": 7.732
+    },
+    {
+      "id": "explode",
+      "speaker": "pip",
+      "start": 7.952,
+      "end": 17.823
+    },
+    {
+      "id": "key-part",
+      "speaker": "pip",
+      "start": 18.043,
+      "end": 29.975
+    },
+    {
+      "id": "payoff",
+      "speaker": "pip",
+      "start": 30.195,
+      "end": 36.245
+    }
+  ],
+  "voices": {
+    "pip": {
+      "provider": "kokoro",
+      "voice_id": "af_bella",
+      "speed": 1.1,
+      "pitch_semitones": 2.5,
+      "sentence_pause": 0.18,
+      "clause_pause": 0.07
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -14.92,
+    "true_peak_db": -1.49
+  }
+}
