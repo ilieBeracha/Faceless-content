@@ -8,7 +8,8 @@ description: Realistic footage - a photoreal fictional presenter filmed selfie-v
 # Skill: render-ai-video
 
 A scene skill for **realistic** videos. Every beat is 1–4 **shots**. In each shot the series' photoreal character
-says one line straight into the camera, lip-synced, with the place's real sound around them. The engine turns
+says one line, with the place's real sound around them: either straight into the camera (lip-synced), or from
+behind the phone while it films what they are talking about (`camera: "pov"`). The engine turns
 your shot descriptions into prompts:
 
 1. a first frame per shot, made by a Gemini image model from the character's approved face photos;
@@ -63,7 +64,7 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   "skill": "render-ai-video",
   "shots": [
     {
-      "camera": "selfie",            // selfie | selfie-walk | over-shoulder | wide
+      "camera": "selfie",            // selfie | selfie-walk | over-shoulder | wide | pov
       "place": "the vast frigidarium hall: marble columns, a coffered vaulted ceiling, a cold plunge pool, bathers in tunics",
       "action": "turning slowly so the hall fills the frame behind her",
       "line": "This is the cold room.", // EXACTLY the words said in this shot
@@ -82,6 +83,11 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   line. Shorter lines get shorter, cheaper clips (4 s ≈ up to 7 words, 6 s ≈ 12, 8 s ≈ 18).
 - **Hook:** the first shot's line starts with the hook sentence (≤ 5 words). Put the hook text in the first
   beat's `on_screen_text`. It is shown as a headline at the top, so keep it short.
+- **Show the thing, not just the face:** whenever a line is about something you can see (a room, an object,
+  a view, a crowd), use `camera: "pov"`: the phone turns around and films it while the character narrates off
+  screen. In a pov shot `place` is what fills the frame and `action` is what the camera does ("slowly tilts up
+  to the vaulted ceiling", "pans across the pool", "her hand holds up the coin"). Aim for **about half the shots
+  as pov**; keep the hook and the rating on camera so the audience knows who is talking.
 - **Pacing:** 8–12 shots per 45–55 s episode. Change the place or camera every shot: a new room, a new angle,
   walking somewhere. Jump cuts between shots are normal in vlogs.
 - **Places:** concrete, visible things, period-accurate: materials, light, crowd, weather. Never ask for

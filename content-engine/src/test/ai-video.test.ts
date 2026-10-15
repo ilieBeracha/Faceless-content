@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { checkAiBeat, maxWordsPerShot, type AiBeatVisual } from "../skills/render-ai-video/schema.ts";
-import { estimateClips, spent, withPronoun, type Ledger, type PlannedShot } from "../skills/render-ai-video/footage.ts";
+import { estimateClips, shotPrompts, spent, withPronoun, type Ledger, type PlannedShot } from "../skills/render-ai-video/footage.ts";
 import { tempWorkspace } from "./helpers.ts";
 
 const shot = (line: string) => ({ camera: "selfie" as const, place: "a marble hall with columns and a pool", action: "talking", line });
@@ -44,5 +44,18 @@ describe("render-ai-video", () => {
       ],
     };
     assert.equal(spent(ledger), 0.84);
+  });
+
+  it("pov shots film the place and keep the character off screen", () => {
+    const world = { world: "Rome, AD 216, the Baths of Caracalla", look: "handheld phone footage" };
+    const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a red cap", voice: "a bright London voice", fictional: true, references: ["references/ref-1.jpg"] };
+    const pov = shotPrompts(world, params, { camera: "pov", place: "a vast cold hall with a pool", action: "tilts up to the vaulted ceiling", line: "Look at this." }, "excited", "Look at this.");
+    assert.equal(pov.onCamera, false);
+    assert.ok(!pov.imagePrompt.includes(params.identity), "the still must not describe the character");
+    assert.match(pov.videoPrompt, /never seen/);
+    assert.match(pov.videoPrompt, /Off screen.*"Look at this\."/);
+    const selfie = shotPrompts(world, params, { camera: "selfie", place: "a vast cold hall with a pool", action: "grinning", line: "Look at this." }, "excited", "Look at this.");
+    assert.equal(selfie.onCamera, true);
+    assert.ok(selfie.imagePrompt.includes(params.identity));
   });
 });

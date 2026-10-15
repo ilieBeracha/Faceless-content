@@ -1,17 +1,19 @@
 /**
  * render-ai-video — realistic footage from a video model (Google Veo through the Gemini API, paid).
- * A beat is 1–4 shots; in each shot the photoreal character says one line on camera, lip-synced, in a
- * real-looking place. Scripts describe shots in words; the engine turns them into prompts.
+ * A beat is 1–4 shots; in each shot the photoreal character says one line, either on camera (lip-synced)
+ * or from behind the phone while it films the place (camera "pov"). Scripts describe shots in words; the engine turns them into prompts.
  */
 import { z } from "zod";
 import { voiceTokens } from "../write-script/schema.ts";
 
-export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide"] as const;
+export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide", "pov"] as const;
+/** Cameras that film the place instead of the character: the line is narrated from behind the phone. */
+export const OFF_CAMERA: readonly Shot["camera"][] = ["pov"];
 
 export const shotSchema = z
   .object({
     place: z.string().min(12).max(400).describe("where the shot is and what is visible, concrete and period-accurate"),
-    action: z.string().min(4).max(240).describe("what the character does while talking"),
+    action: z.string().min(4).max(240).describe("what the character does while talking (pov: what the camera does, e.g. tilts up to the ceiling)"),
     camera: z.enum(CAMERAS).default("selfie"),
     line: z.string().min(1).max(200).describe("exactly what the character says in this shot (a slice of the beat's voiceover)"),
     others: z.string().max(240).optional().describe("other people in the shot (they don't speak)"),

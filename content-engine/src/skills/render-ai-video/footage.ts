@@ -23,7 +23,7 @@ import { parseCharacterModel, type PhotorealModel } from "../render-talking-char
 import { voiceTokens, type Script } from "../write-script/schema.ts";
 import { kokoroLang, runKokoro, sayFor } from "../../voice/synthesize.ts";
 import * as gemini from "./gemini.ts";
-import type { AiBeatVisual, AiWorld, Shot } from "./schema.ts";
+import { OFF_CAMERA, type AiBeatVisual, type AiWorld, type Shot } from "./schema.ts";
 
 export const FOOTAGE_VERSION = 1;
 
@@ -51,6 +51,8 @@ export interface PlannedShot {
   line: string;
   words: number;
   seconds: number;
+  /** false for pov shots: the character narrates from behind the phone and is not in the picture. */
+  onCamera: boolean;
   imagePrompt: string;
   videoPrompt: string;
   negativePrompt: string;
@@ -120,7 +122,56 @@ const CAMERA: Record<Shot["camera"], { still: string; video: string }> = {
     still: "Handheld photo taken by a companion: {her} full upper body in the place, facing the camera, the surroundings clearly visible",
     video: "Handheld medium-wide shot filmed by a companion",
   },
+  pov: {
+    still: "Point-of-view phone photo: the phone's back camera points at the scene, which fills the whole frame; nobody is taking a selfie and the person filming is not in the picture (at most one hand at the edge of the frame)",
+    video: "Point-of-view handheld phone footage through the back camera, slow natural movement, the scene fills the frame",
+  },
 };
+
+/** The first-frame and video prompts for one shot. Pure, so it can be tested without a workspace. */
+export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: Shot, face: string, spoken: string): { onCamera: boolean; imagePrompt: string; videoPrompt: string } {
+  const cam = CAMERA[shot.camera];
+  const sayRule = `{She} says only that line, then stops talking. Ambient sound: ${shot.sound ?? "the natural sounds of the place"}. No music. No subtitles, no on-screen text.`;
+  if (OFF_CAMERA.includes(shot.camera)) {
+    return {
+      onCamera: false,
+      imagePrompt: [
+        `Photorealistic vertical 9:16 frame from a smartphone video. ${cam.still}.`,
+        `Setting: ${world.world}. ${shot.place}.`,
+        `The camera: ${shot.action}.`,
+        shot.others ? `Also in the frame: ${shot.others}.` : "",
+        `Style: ${world.look}. A real photograph: real light, real textures, no text, no captions, no logos, no watermark.`,
+      ].filter(Boolean).join("\n"),
+      videoPrompt: [
+        `${cam.video}, realistic smartphone footage. ${world.look}.`,
+        `Setting: ${world.world}; ${shot.place}.`,
+        `The camera: ${shot.action}.`,
+        shot.others ? `In the scene: ${shot.others}.` : "",
+        `The woman holding the phone stays behind the camera and is never seen. Off screen, in ${p.voice}, {she} says: "${spoken}"`,
+        sayRule,
+      ].filter(Boolean).join("\n"),
+    };
+  }
+  return {
+    onCamera: true,
+    imagePrompt: [
+      `Photorealistic vertical 9:16 frame from a smartphone video. ${cam.still}.`,
+      `The person: ${p.identity}. Wearing ${p.wardrobe}.${p.references.length ? " Exactly the same person as in the reference photos: same face, hair, skin and build." : ""}`,
+      `Setting: ${world.world}. ${shot.place}.`,
+      `{She} {is} ${shot.action}, mid-sentence, expression: ${face}.`,
+      shot.others ? `Also in the frame: ${shot.others}.` : "",
+      `Style: ${world.look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
+    ].filter(Boolean).join("\n"),
+    videoPrompt: [
+      `${cam.video}, realistic smartphone footage. ${world.look}.`,
+      `${p.identity}, wearing ${p.wardrobe}. Setting: ${world.world}; ${shot.place}.`,
+      `{She} {is} ${shot.action}; expression: ${face}.`,
+      shot.others ? `In the background: ${shot.others}.` : "",
+      `{She} looks into the camera and says, in ${p.voice}: "${spoken}"`,
+      sayRule,
+    ].filter(Boolean).join("\n"),
+  };
+}
 
 export function seriesUsesAiVideo(ep: EpisodeRef): boolean {
   const series = ep.channel.series.get(ep.series)!.data as unknown as SeriesData;
@@ -155,23 +206,7 @@ export function planShots(ws: Workspace, ep: EpisodeRef, script: Script): Planne
       const words = voiceTokens(shot.line).length;
       const face = model.expressions[shot.expression ?? beat.character.expression] ?? model.expressions.neutral ?? "relaxed, friendly";
       const spoken = voiceTokens(shot.line).map((t) => sayFor(t, pron)).join(" ");
-      const cam = CAMERA[shot.camera];
-      const imagePrompt = [
-        `Photorealistic vertical 9:16 frame from a smartphone video. ${cam.still}.`,
-        `The person: ${p.identity}. Wearing ${p.wardrobe}.${p.references.length ? " Exactly the same person as in the reference photos: same face, hair, skin and build." : ""}`,
-        `Setting: ${world.world}. ${shot.place}.`,
-        `{She} {is} ${shot.action}, mid-sentence, expression: ${face}.`,
-        shot.others ? `Also in the frame: ${shot.others}.` : "",
-        `Style: ${world.look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
-      ].filter(Boolean).join("\n");
-      const videoPromptRaw = [
-        `${cam.video}, realistic smartphone footage. ${world.look}.`,
-        `${p.identity}, wearing ${p.wardrobe}. Setting: ${world.world}; ${shot.place}.`,
-        `{She} {is} ${shot.action}; expression: ${face}.`,
-        shot.others ? `In the background: ${shot.others}.` : "",
-        `{She} looks into the camera and says, in ${p.voice}: "${spoken}"`,
-        `{She} says only that line, then stops talking. Ambient sound: ${shot.sound ?? "the natural sounds of the place"}. No music. No subtitles, no on-screen text.`,
-      ].filter(Boolean).join("\n");
+      const { onCamera, imagePrompt, videoPrompt } = shotPrompts(world, p, shot, face, spoken);
       shots.push({
         id: `${String(beatIndex).padStart(2, "0")}-${beat.id}-${shotIndex + 1}`,
         beat: beat.id,
@@ -181,8 +216,9 @@ export function planShots(ws: Workspace, ep: EpisodeRef, script: Script): Planne
         line: shot.line,
         words,
         seconds: clipSeconds(ws, words),
+        onCamera,
         imagePrompt: withPronoun(imagePrompt, pronoun),
-        videoPrompt: withPronoun(videoPromptRaw, pronoun),
+        videoPrompt: withPronoun(videoPrompt, pronoun),
         negativePrompt: NEGATIVE,
       });
     });
@@ -401,7 +437,9 @@ export async function runFootage(ws: Workspace, ep: EpisodeRef, script: Script, 
   // 2. Stills
   for (const shot of plan) {
     const s = (state.shots[shot.id] ??= { still_variant: 0, clip_variant: 0 });
-    const refs = referencesFor(ep, shot.speaker, be.fake);
+    // A pov shot doesn't show the character, so it gets no face references (the model would put her in).
+    const faceRefs = referencesFor(ep, shot.speaker, be.fake);
+    const refs = shot.onCamera ? faceRefs : { images: [], hash: "" };
     const key = stillKey(ws, shot, refs.hash, s.still_variant);
     const file = join(paths.stills, `${shot.id}.jpg`);
     if (s.still?.key === key && existsSync(file)) continue;
