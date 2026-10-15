@@ -1,0 +1,15 @@
+{
+  "output": "out/time-tourist/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real.mp4",
+  "rendered_at": "2026-10-15T21:58:28Z",
+  "seconds_to_render": 683,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1824,
+  "render_skills": [
+    "render-ai-video"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "1e62d2b4e8a484b3c238d8cb92c8110d55209cf60edaee322798b5bc752af106"
+}
