@@ -5,7 +5,7 @@
   "idea": "gps-needs-einstein",
   "title": "Your phone needs Einstein",
   "created": "2026-10-15T13:54:42Z",
-  "updated": "2026-10-15T13:55:22Z",
+  "updated": "2026-10-15T14:06:56Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -26,6 +26,11 @@
       "status": "done",
       "at": "2026-10-15T13:55:22Z",
       "note": "45.20s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-10-15T14:06:56Z",
+      "note": "out/cosmic-footnotes/2026-10-15-gps-needs-einstein.mp4"
     }
   }
 }

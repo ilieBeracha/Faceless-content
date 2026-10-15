@@ -1,0 +1,15 @@
+{
+  "output": "out/cosmic-footnotes/2026-10-15-gps-needs-einstein.mp4",
+  "rendered_at": "2026-10-15T14:06:56Z",
+  "seconds_to_render": 690,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1356,
+  "render_skills": [
+    "render-storybook"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "38b66874067db2c53be63d59d31b77ba86bfb7075aaf9ad8d4038d130d421e8d"
+}
