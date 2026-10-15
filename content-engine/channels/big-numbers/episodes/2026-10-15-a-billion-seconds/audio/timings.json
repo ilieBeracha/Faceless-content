@@ -1,0 +1,891 @@
+{
+  "version": 2,
+  "hash": "8cb6cf109a46312645136aaaa3cb9133f081f64e1eab43ecf5a2b8c33110b682",
+  "fps": 30,
+  "frames": 1364,
+  "duration": 45.467,
+  "speech_start": 0.219,
+  "speech_end": 44.456,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "A",
+      "start": 0.219,
+      "end": 0.269
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "billion",
+      "start": 0.319,
+      "end": 0.694
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "seconds.",
+      "start": 0.769,
+      "end": 1.319
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "How",
+      "start": 1.579,
+      "end": 1.754
+    },
+    {
+      "i": 4,
+      "beat": "hook",
+      "text": "long",
+      "start": 1.804,
+      "end": 2.004
+    },
+    {
+      "i": 5,
+      "beat": "hook",
+      "text": "is",
+      "start": 2.029,
+      "end": 2.129
+    },
+    {
+      "i": 6,
+      "beat": "hook",
+      "text": "that?",
+      "start": 2.179,
+      "end": 2.557
+    },
+    {
+      "i": 7,
+      "beat": "setup",
+      "text": "A",
+      "start": 3.063,
+      "end": 3.113
+    },
+    {
+      "i": 8,
+      "beat": "setup",
+      "text": "million",
+      "start": 3.188,
+      "end": 3.538
+    },
+    {
+      "i": 9,
+      "beat": "setup",
+      "text": "seconds",
+      "start": 3.613,
+      "end": 4.038
+    },
+    {
+      "i": 10,
+      "beat": "setup",
+      "text": "is",
+      "start": 4.088,
+      "end": 4.163
+    },
+    {
+      "i": 11,
+      "beat": "setup",
+      "text": "about",
+      "start": 4.188,
+      "end": 4.388
+    },
+    {
+      "i": 12,
+      "beat": "setup",
+      "text": "eleven",
+      "start": 4.438,
+      "end": 4.763
+    },
+    {
+      "i": 13,
+      "beat": "setup",
+      "text": "and",
+      "start": 4.788,
+      "end": 4.863
+    },
+    {
+      "i": 14,
+      "beat": "setup",
+      "text": "a",
+      "start": 4.888,
+      "end": 4.913
+    },
+    {
+      "i": 15,
+      "beat": "setup",
+      "text": "half",
+      "start": 4.963,
+      "end": 5.163
+    },
+    {
+      "i": 16,
+      "beat": "setup",
+      "text": "days.",
+      "start": 5.213,
+      "end": 5.913
+    },
+    {
+      "i": 17,
+      "beat": "setup",
+      "text": "A",
+      "start": 6.088,
+      "end": 6.138
+    },
+    {
+      "i": 18,
+      "beat": "setup",
+      "text": "billion",
+      "start": 6.188,
+      "end": 6.563
+    },
+    {
+      "i": 19,
+      "beat": "setup",
+      "text": "only",
+      "start": 6.613,
+      "end": 6.863
+    },
+    {
+      "i": 20,
+      "beat": "setup",
+      "text": "sounds",
+      "start": 6.938,
+      "end": 7.213
+    },
+    {
+      "i": 21,
+      "beat": "setup",
+      "text": "a",
+      "start": 7.238,
+      "end": 7.263
+    },
+    {
+      "i": 22,
+      "beat": "setup",
+      "text": "little",
+      "start": 7.288,
+      "end": 7.438
+    },
+    {
+      "i": 23,
+      "beat": "setup",
+      "text": "bigger.",
+      "start": 7.488,
+      "end": 8.063
+    },
+    {
+      "i": 24,
+      "beat": "setup",
+      "text": "A",
+      "start": 8.263,
+      "end": 8.313
+    },
+    {
+      "i": 25,
+      "beat": "setup",
+      "text": "few",
+      "start": 8.363,
+      "end": 8.513
+    },
+    {
+      "i": 26,
+      "beat": "setup",
+      "text": "months,",
+      "start": 8.563,
+      "end": 8.938
+    },
+    {
+      "i": 27,
+      "beat": "setup",
+      "text": "maybe?",
+      "start": 9.128,
+      "end": 9.778
+    },
+    {
+      "i": 28,
+      "beat": "setup",
+      "text": "Let's",
+      "start": 9.953,
+      "end": 10.178
+    },
+    {
+      "i": 29,
+      "beat": "setup",
+      "text": "test",
+      "start": 10.228,
+      "end": 10.528
+    },
+    {
+      "i": 30,
+      "beat": "setup",
+      "text": "it.",
+      "start": 10.578,
+      "end": 10.757
+    },
+    {
+      "i": 31,
+      "beat": "story",
+      "text": "Start",
+      "start": 11.326,
+      "end": 11.551
+    },
+    {
+      "i": 32,
+      "beat": "story",
+      "text": "a",
+      "start": 11.576,
+      "end": 11.601
+    },
+    {
+      "i": 33,
+      "beat": "story",
+      "text": "stopwatch",
+      "start": 11.651,
+      "end": 12.301
+    },
+    {
+      "i": 34,
+      "beat": "story",
+      "text": "the",
+      "start": 12.351,
+      "end": 12.401
+    },
+    {
+      "i": 35,
+      "beat": "story",
+      "text": "day",
+      "start": 12.451,
+      "end": 12.626
+    },
+    {
+      "i": 36,
+      "beat": "story",
+      "text": "you're",
+      "start": 12.676,
+      "end": 12.776
+    },
+    {
+      "i": 37,
+      "beat": "story",
+      "text": "born.",
+      "start": 12.826,
+      "end": 13.551
+    },
+    {
+      "i": 38,
+      "beat": "story",
+      "text": "On",
+      "start": 13.676,
+      "end": 13.776
+    },
+    {
+      "i": 39,
+      "beat": "story",
+      "text": "your",
+      "start": 13.801,
+      "end": 13.901
+    },
+    {
+      "i": 40,
+      "beat": "story",
+      "text": "first",
+      "start": 13.976,
+      "end": 14.226
+    },
+    {
+      "i": 41,
+      "beat": "story",
+      "text": "birthday,",
+      "start": 14.276,
+      "end": 14.901
+    },
+    {
+      "i": 42,
+      "beat": "story",
+      "text": "it",
+      "start": 15.026,
+      "end": 15.101
+    },
+    {
+      "i": 43,
+      "beat": "story",
+      "text": "reads",
+      "start": 15.151,
+      "end": 15.401
+    },
+    {
+      "i": 44,
+      "beat": "story",
+      "text": "about",
+      "start": 15.426,
+      "end": 15.676
+    },
+    {
+      "i": 45,
+      "beat": "story",
+      "text": "thirty-one",
+      "start": 15.776,
+      "end": 16.301
+    },
+    {
+      "i": 46,
+      "beat": "story",
+      "text": "and",
+      "start": 16.326,
+      "end": 16.401
+    },
+    {
+      "i": 47,
+      "beat": "story",
+      "text": "a",
+      "start": 16.426,
+      "end": 16.451
+    },
+    {
+      "i": 48,
+      "beat": "story",
+      "text": "half",
+      "start": 16.501,
+      "end": 16.701
+    },
+    {
+      "i": 49,
+      "beat": "story",
+      "text": "million.",
+      "start": 16.751,
+      "end": 17.551
+    },
+    {
+      "i": 50,
+      "beat": "story",
+      "text": "By",
+      "start": 17.701,
+      "end": 17.826
+    },
+    {
+      "i": 51,
+      "beat": "story",
+      "text": "your",
+      "start": 17.876,
+      "end": 17.976
+    },
+    {
+      "i": 52,
+      "beat": "story",
+      "text": "tenth,",
+      "start": 18.051,
+      "end": 18.451
+    },
+    {
+      "i": 53,
+      "beat": "story",
+      "text": "it's",
+      "start": 18.571,
+      "end": 18.721
+    },
+    {
+      "i": 54,
+      "beat": "story",
+      "text": "passed",
+      "start": 18.771,
+      "end": 19.121
+    },
+    {
+      "i": 55,
+      "beat": "story",
+      "text": "three",
+      "start": 19.221,
+      "end": 19.446
+    },
+    {
+      "i": 56,
+      "beat": "story",
+      "text": "hundred",
+      "start": 19.496,
+      "end": 19.796
+    },
+    {
+      "i": 57,
+      "beat": "story",
+      "text": "million.",
+      "start": 19.846,
+      "end": 20.621
+    },
+    {
+      "i": 58,
+      "beat": "story",
+      "text": "At",
+      "start": 20.821,
+      "end": 20.896
+    },
+    {
+      "i": 59,
+      "beat": "story",
+      "text": "twenty-one,",
+      "start": 20.946,
+      "end": 21.521
+    },
+    {
+      "i": 60,
+      "beat": "story",
+      "text": "it's",
+      "start": 21.691,
+      "end": 21.841
+    },
+    {
+      "i": 61,
+      "beat": "story",
+      "text": "past",
+      "start": 21.891,
+      "end": 22.216
+    },
+    {
+      "i": 62,
+      "beat": "story",
+      "text": "six",
+      "start": 22.291,
+      "end": 22.516
+    },
+    {
+      "i": 63,
+      "beat": "story",
+      "text": "hundred",
+      "start": 22.566,
+      "end": 22.891
+    },
+    {
+      "i": 64,
+      "beat": "story",
+      "text": "and",
+      "start": 22.916,
+      "end": 22.991
+    },
+    {
+      "i": 65,
+      "beat": "story",
+      "text": "sixty",
+      "start": 23.066,
+      "end": 23.366
+    },
+    {
+      "i": 66,
+      "beat": "story",
+      "text": "million.",
+      "start": 23.416,
+      "end": 24.191
+    },
+    {
+      "i": 67,
+      "beat": "story",
+      "text": "At",
+      "start": 24.391,
+      "end": 24.491
+    },
+    {
+      "i": 68,
+      "beat": "story",
+      "text": "thirty,",
+      "start": 24.566,
+      "end": 25.066
+    },
+    {
+      "i": 69,
+      "beat": "story",
+      "text": "it's",
+      "start": 25.191,
+      "end": 25.316
+    },
+    {
+      "i": 70,
+      "beat": "story",
+      "text": "around",
+      "start": 25.366,
+      "end": 25.616
+    },
+    {
+      "i": 71,
+      "beat": "story",
+      "text": "nine",
+      "start": 25.691,
+      "end": 25.966
+    },
+    {
+      "i": 72,
+      "beat": "story",
+      "text": "hundred",
+      "start": 26.016,
+      "end": 26.341
+    },
+    {
+      "i": 73,
+      "beat": "story",
+      "text": "and",
+      "start": 26.391,
+      "end": 26.466
+    },
+    {
+      "i": 74,
+      "beat": "story",
+      "text": "forty-seven",
+      "start": 26.541,
+      "end": 27.091
+    },
+    {
+      "i": 75,
+      "beat": "story",
+      "text": "million.",
+      "start": 27.141,
+      "end": 27.866
+    },
+    {
+      "i": 76,
+      "beat": "story",
+      "text": "And",
+      "start": 28.016,
+      "end": 28.091
+    },
+    {
+      "i": 77,
+      "beat": "story",
+      "text": "it",
+      "start": 28.116,
+      "end": 28.166
+    },
+    {
+      "i": 78,
+      "beat": "story",
+      "text": "still",
+      "start": 28.216,
+      "end": 28.441
+    },
+    {
+      "i": 79,
+      "beat": "story",
+      "text": "hasn't",
+      "start": 28.491,
+      "end": 28.766
+    },
+    {
+      "i": 80,
+      "beat": "story",
+      "text": "reached",
+      "start": 28.816,
+      "end": 29.091
+    },
+    {
+      "i": 81,
+      "beat": "story",
+      "text": "a",
+      "start": 29.116,
+      "end": 29.141
+    },
+    {
+      "i": 82,
+      "beat": "story",
+      "text": "billion.",
+      "start": 29.191,
+      "end": 29.686
+    },
+    {
+      "i": 83,
+      "beat": "twist",
+      "text": "It",
+      "start": 30.234,
+      "end": 30.334
+    },
+    {
+      "i": 84,
+      "beat": "twist",
+      "text": "finally",
+      "start": 30.409,
+      "end": 30.834
+    },
+    {
+      "i": 85,
+      "beat": "twist",
+      "text": "gets",
+      "start": 30.884,
+      "end": 31.109
+    },
+    {
+      "i": 86,
+      "beat": "twist",
+      "text": "there",
+      "start": 31.159,
+      "end": 31.309
+    },
+    {
+      "i": 87,
+      "beat": "twist",
+      "text": "a",
+      "start": 31.359,
+      "end": 31.409
+    },
+    {
+      "i": 88,
+      "beat": "twist",
+      "text": "few",
+      "start": 31.484,
+      "end": 31.634
+    },
+    {
+      "i": 89,
+      "beat": "twist",
+      "text": "months",
+      "start": 31.684,
+      "end": 31.959
+    },
+    {
+      "i": 90,
+      "beat": "twist",
+      "text": "before",
+      "start": 32.009,
+      "end": 32.259
+    },
+    {
+      "i": 91,
+      "beat": "twist",
+      "text": "your",
+      "start": 32.309,
+      "end": 32.434
+    },
+    {
+      "i": 92,
+      "beat": "twist",
+      "text": "thirty-second",
+      "start": 32.509,
+      "end": 33.084
+    },
+    {
+      "i": 93,
+      "beat": "twist",
+      "text": "birthday.",
+      "start": 33.134,
+      "end": 33.959
+    },
+    {
+      "i": 94,
+      "beat": "twist",
+      "text": "And",
+      "start": 34.134,
+      "end": 34.209
+    },
+    {
+      "i": 95,
+      "beat": "twist",
+      "text": "a",
+      "start": 34.234,
+      "end": 34.259
+    },
+    {
+      "i": 96,
+      "beat": "twist",
+      "text": "trillion",
+      "start": 34.309,
+      "end": 34.709
+    },
+    {
+      "i": 97,
+      "beat": "twist",
+      "text": "seconds?",
+      "start": 34.784,
+      "end": 35.484
+    },
+    {
+      "i": 98,
+      "beat": "twist",
+      "text": "Almost",
+      "start": 35.634,
+      "end": 36.034
+    },
+    {
+      "i": 99,
+      "beat": "twist",
+      "text": "thirty-two",
+      "start": 36.109,
+      "end": 36.659
+    },
+    {
+      "i": 100,
+      "beat": "twist",
+      "text": "thousand",
+      "start": 36.709,
+      "end": 37.084
+    },
+    {
+      "i": 101,
+      "beat": "twist",
+      "text": "years.",
+      "start": 37.134,
+      "end": 37.859
+    },
+    {
+      "i": 102,
+      "beat": "twist",
+      "text": "A",
+      "start": 38.009,
+      "end": 38.059
+    },
+    {
+      "i": 103,
+      "beat": "twist",
+      "text": "trillion",
+      "start": 38.109,
+      "end": 38.509
+    },
+    {
+      "i": 104,
+      "beat": "twist",
+      "text": "seconds",
+      "start": 38.559,
+      "end": 38.859
+    },
+    {
+      "i": 105,
+      "beat": "twist",
+      "text": "ago,",
+      "start": 38.884,
+      "end": 39.334
+    },
+    {
+      "i": 106,
+      "beat": "twist",
+      "text": "nobody",
+      "start": 39.484,
+      "end": 39.884
+    },
+    {
+      "i": 107,
+      "beat": "twist",
+      "text": "on",
+      "start": 39.909,
+      "end": 40.034
+    },
+    {
+      "i": 108,
+      "beat": "twist",
+      "text": "Earth",
+      "start": 40.109,
+      "end": 40.384
+    },
+    {
+      "i": 109,
+      "beat": "twist",
+      "text": "was",
+      "start": 40.434,
+      "end": 40.559
+    },
+    {
+      "i": 110,
+      "beat": "twist",
+      "text": "farming",
+      "start": 40.609,
+      "end": 40.984
+    },
+    {
+      "i": 111,
+      "beat": "twist",
+      "text": "yet.",
+      "start": 41.034,
+      "end": 41.315
+    },
+    {
+      "i": 112,
+      "beat": "kicker",
+      "text": "A",
+      "start": 41.862,
+      "end": 41.912
+    },
+    {
+      "i": 113,
+      "beat": "kicker",
+      "text": "billion",
+      "start": 41.962,
+      "end": 42.337
+    },
+    {
+      "i": 114,
+      "beat": "kicker",
+      "text": "seconds.",
+      "start": 42.412,
+      "end": 43.012
+    },
+    {
+      "i": 115,
+      "beat": "kicker",
+      "text": "Longer",
+      "start": 43.227,
+      "end": 43.552
+    },
+    {
+      "i": 116,
+      "beat": "kicker",
+      "text": "than",
+      "start": 43.577,
+      "end": 43.652
+    },
+    {
+      "i": 117,
+      "beat": "kicker",
+      "text": "you",
+      "start": 43.702,
+      "end": 43.777
+    },
+    {
+      "i": 118,
+      "beat": "kicker",
+      "text": "think.",
+      "start": 43.852,
+      "end": 44.237
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "dot",
+      "start": 0.1,
+      "end": 2.767
+    },
+    {
+      "id": "setup",
+      "speaker": "dot",
+      "start": 2.987,
+      "end": 10.987
+    },
+    {
+      "id": "story",
+      "speaker": "dot",
+      "start": 11.207,
+      "end": 29.916
+    },
+    {
+      "id": "twist",
+      "speaker": "dot",
+      "start": 30.136,
+      "end": 41.545
+    },
+    {
+      "id": "kicker",
+      "speaker": "dot",
+      "start": 41.765,
+      "end": 44.456
+    }
+  ],
+  "voices": {
+    "dot": {
+      "provider": "kokoro",
+      "voice_id": "af_heart",
+      "speed": 0.95,
+      "pitch_semitones": 0,
+      "sentence_pause": 0.3,
+      "clause_pause": 0.12
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -15,
+    "true_peak_db": -1.48
+  }
+}

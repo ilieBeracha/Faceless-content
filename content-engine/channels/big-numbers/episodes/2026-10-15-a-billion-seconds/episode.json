@@ -5,7 +5,7 @@
   "idea": "a-billion-seconds",
   "title": "How long is a billion seconds?",
   "created": "2026-10-15T11:57:48Z",
-  "updated": "2026-10-15T12:11:53Z",
+  "updated": "2026-10-15T12:18:46Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -21,6 +21,11 @@
       "status": "done",
       "at": "2026-10-15T12:11:53Z",
       "note": "approved by ilieBeracha (approved in chat)"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-15T12:18:46Z",
+      "note": "45.47s"
     }
   }
 }
