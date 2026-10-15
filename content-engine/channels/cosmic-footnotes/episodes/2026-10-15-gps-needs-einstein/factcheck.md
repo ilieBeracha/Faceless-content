@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-15-gps-needs-einstein
 channel: cosmic-footnotes
-status: pending
+status: approved
 script_hash: 33b59bf0772d30220e3f86f31b724c893be6a9a86bd410dce425c205f06b43d8
 generated_at: 2026-10-15T13:54:50Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha (approved in chat)
+approved_at: 2026-10-15T13:55:00Z
 notes: null
 ---
 
