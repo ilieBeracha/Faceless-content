@@ -1,0 +1,15 @@
+{
+  "output": "out/big-numbers/2026-10-15-a-billion-seconds.mp4",
+  "rendered_at": "2026-10-15T12:49:45Z",
+  "seconds_to_render": 1851,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1364,
+  "render_skills": [
+    "render-storybook"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "771c5865d350559d1c70490654982cdec21548f638a39d998f7b9f6f510c8229"
+}
