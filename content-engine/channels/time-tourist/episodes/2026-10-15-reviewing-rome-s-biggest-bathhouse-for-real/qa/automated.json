@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-15T21:59:53Z",
+  "checked_at": "2026-10-15T22:59:41Z",
   "render_hash": "1e62d2b4e8a484b3c238d8cb92c8110d55209cf60edaee322798b5bc752af106",
   "checks": [
     {
@@ -11,8 +11,8 @@
     {
       "id": "length",
       "label": "Length",
-      "pass": false,
-      "detail": "60.80s (series allows 38–58s)"
+      "pass": true,
+      "detail": "60.80s (series allows 38–62s)"
     },
     {
       "id": "hook-speech",

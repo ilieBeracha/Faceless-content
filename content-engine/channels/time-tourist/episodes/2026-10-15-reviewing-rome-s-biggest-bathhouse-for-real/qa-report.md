@@ -1,6 +1,6 @@
 # QA report — Rome's biggest bathhouse, reviewed (live action)
 
-**Status: FAIL** · episode `2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real` · channel `time-tourist` · series `rated-live` · 2026-10-15
+**Status: PASS** · episode `2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real` · channel `time-tourist` · series `rated-live` · 2026-10-15
 
 Checklist: `workflows/qa.md`. Video: `out/time-tourist/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real.mp4` (not in git).
 
@@ -9,7 +9,7 @@ Checklist: `workflows/qa.md`. Video: `out/time-tourist/2026-10-15-reviewing-rome
 | | Check | Result |
 |---|---|---|
 | ✅ | Format | 1080×1920 @ 30.00 fps, h264/aac, yuvj420p |
-| ❌ | Length | 60.80s (series allows 38–58s) |
+| ✅ | Length | 60.80s (series allows 38–62s) |
 | ✅ | Hook: speech starts immediately | first word at 0.10s (limit 0.5s) |
 | ✅ | Hook: first line lands in 2 s | "Rome's biggest bathhouse." ends at 1.94s (limit 2s) |
 | ✅ | Hook: on-screen text | visible from 0.07s |

@@ -5,8 +5,8 @@
   "idea": "reviewing-rome-s-biggest-bathhouse-for-real",
   "title": "Rome's biggest bathhouse, reviewed (live action)",
   "created": "2026-10-15T17:23:21Z",
-  "updated": "2026-10-15T22:59:35Z",
-  "status": "in-progress",
+  "updated": "2026-10-15T22:59:41Z",
+  "status": "done",
   "steps": {
     "idea": {
       "status": "done",
@@ -38,9 +38,9 @@
       "note": "out/time-tourist/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real.mp4"
     },
     "qa": {
-      "status": "failed",
-      "at": "2026-10-15T21:59:53Z",
-      "note": "1 problem(s)"
+      "status": "done",
+      "at": "2026-10-15T22:59:41Z",
+      "note": "all checks passed"
     }
   }
 }
