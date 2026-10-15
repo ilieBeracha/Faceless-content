@@ -74,8 +74,8 @@ interface Placed {
   appear: number;
 }
 
-const LABEL_W = 330;
-const LABEL_H = 92;
+const LABEL_W = 350;
+const LABEL_H = 104;
 
 function layoutCallouts(callouts: Part[], anchors: { x: number; y: number }[], area: Rect, avoid: Rect | null, centreX: number): Placed[] {
   const placed: Placed[] = callouts.map((part, i) => ({ part, anchor: anchors[i], side: anchors[i].x < centreX ? "left" : "right", y: anchors[i].y - LABEL_H / 2, appear: 0 }));
@@ -100,6 +100,9 @@ function layoutCallouts(callouts: Part[], anchors: { x: number; y: number }[], a
   return placed;
 }
 
+/** Largest font size (≤ max) at which `text` fits the label's inner width (em = average glyph width in ems, kept generous). */
+const fitSize = (text: string, max: number, em: number) => Math.min(max, Math.floor((LABEL_W - 44) / (Math.max(1, text.length) * em)));
+
 const Callout: React.FC<{ p: Placed; area: Rect; font: ReturnType<typeof fontFor>; accent: string; probe: boolean }> = ({ p, area, font, accent, probe }) => {
   const ref = useRef<HTMLDivElement>(null);
   useQaProbe(probe && p.appear > 0.5, ref, `label:${p.part.id}`, "label");
@@ -123,7 +126,7 @@ const Callout: React.FC<{ p: Placed; area: Rect; font: ReturnType<typeof fontFor
           width: LABEL_W,
           height: LABEL_H,
           boxSizing: "border-box",
-          padding: "10px 18px",
+          padding: "8px 18px",
           borderRadius: 22,
           background: "rgba(10, 14, 24, 0.82)",
           border: `4px solid ${accent}`,
@@ -134,11 +137,11 @@ const Callout: React.FC<{ p: Placed; area: Rect; font: ReturnType<typeof fontFor
           textAlign: p.side === "left" ? "right" : "left",
           overflow: "hidden",
           opacity: clamp(p.appear * 1.6),
-          transform: `translateX(${(1 - k) * (p.side === "left" ? -40 : 40)}px)`,
+          transform: `translateX(${(1 - k) * (p.side === "left" ? 40 : -40)}px)`, // slides in from the object's side, never past the safe edge
         }}
       >
-        <div style={{ fontFamily: font.family, fontWeight: font.heavy, fontSize: p.part.label.length > 16 ? 36 : 42, color: "#ffffff", lineHeight: 1.05, whiteSpace: "nowrap" }}>{p.part.label}</div>
-        {p.part.note && <div style={{ fontFamily: font.family, fontWeight: font.regular, fontSize: 28, color: "rgba(255,255,255,0.78)", marginTop: 4, whiteSpace: "nowrap" }}>{p.part.note}</div>}
+        <div style={{ fontFamily: font.family, fontWeight: font.heavy, fontSize: fitSize(p.part.label, 42, 0.66), color: "#ffffff", lineHeight: 1.05, whiteSpace: "nowrap" }}>{p.part.label}</div>
+        {p.part.note && <div style={{ fontFamily: font.family, fontWeight: font.regular, fontSize: fitSize(p.part.note, 28, 0.6), color: "rgba(255,255,255,0.78)", marginTop: 4, lineHeight: 1.1, whiteSpace: "nowrap" }}>{p.part.note}</div>}
       </div>
     </>
   );

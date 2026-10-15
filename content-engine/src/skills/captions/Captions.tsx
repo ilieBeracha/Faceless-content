@@ -7,7 +7,7 @@ import type { EpisodeProps } from "../../render/types.ts";
 import { activeWordIndex, buildPages, estimateWidth, pageAt } from "./pages.ts";
 
 const FONT_SIZE = 74;
-const GAP = 22;
+const GAP = 30;
 
 /**
  * Word-by-word captions: a short page of words at a time, the word being spoken highlighted.
@@ -103,7 +103,7 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
           }}
         >
           {page.lines.map((line, li) => (
-            <div key={li} style={{ display: "flex", gap: GAP, flexWrap: "nowrap", justifyContent: "center" }}>
+            <div key={li} style={{ display: "flex", gap: GAP, flexWrap: "nowrap", justifyContent: "center", padding: "0 10px" /* room for the highlight pill's negative margins */ }}>
               {line.words.map((w) => {
                 const isActive = w.i === active;
                 const spoken = w.i < active;

@@ -30,6 +30,8 @@ export function useQaProbe(enabled: boolean, ref: RefObject<HTMLElement | null>,
     const el = ref.current;
     const r = el.getBoundingClientRect();
     if (r.width === 0 && r.height === 0) return;
+    // Captions scale the spoken word up ~7% ("pop"), which the browser counts as scrollable overflow.
+    const tol = kind === "caption" ? 16 : 2;
     const record: ProbeRecord = {
       f: frame,
       id,
@@ -38,7 +40,7 @@ export function useQaProbe(enabled: boolean, ref: RefObject<HTMLElement | null>,
       y: Math.round(r.top),
       w: Math.round(r.width),
       h: Math.round(r.height),
-      overflow: el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2,
+      overflow: el.scrollWidth > el.clientWidth + tol || el.scrollHeight > el.clientHeight + tol,
       ...(word !== undefined ? { word } : {}),
     };
     console.log(QA_PREFIX + JSON.stringify(record));
