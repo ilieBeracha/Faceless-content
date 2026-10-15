@@ -21,9 +21,9 @@
     "captions": {
       "kind": "caption",
       "frames": 1091,
-      "minX": 182,
+      "minX": 163,
       "minY": 1263,
-      "maxX": 898,
+      "maxX": 916,
       "maxY": 1437
     },
     "headline:explode": {
@@ -37,26 +37,26 @@
     "label:barrel": {
       "kind": "label",
       "frames": 281,
-      "minX": 56,
+      "minX": 60,
       "minY": 460,
-      "maxX": 390,
-      "maxY": 742
+      "maxX": 414,
+      "maxY": 748
     },
     "label:ink": {
       "kind": "label",
       "frames": 267,
-      "minX": 600,
-      "minY": 794,
-      "maxX": 932,
-      "maxY": 891
+      "minX": 578,
+      "minY": 788,
+      "maxX": 930,
+      "maxY": 897
     },
     "label:ball": {
       "kind": "label",
       "frames": 597,
-      "minX": 56,
-      "minY": 789,
-      "maxX": 934,
-      "maxY": 1214
+      "minX": 60,
+      "minY": 783,
+      "maxX": 930,
+      "maxY": 1220
     },
     "headline:key-part": {
       "kind": "headline",
@@ -69,10 +69,10 @@
     "label:tip": {
       "kind": "label",
       "frames": 330,
-      "minX": 600,
+      "minX": 576,
       "minY": 460,
-      "maxX": 934,
-      "maxY": 552
+      "maxX": 930,
+      "maxY": 564
     },
     "headline:payoff": {
       "kind": "headline",
@@ -85,735 +85,164 @@
   },
   "violations": [
     {
-      "f": 4,
+      "f": 295,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        203,
-        1267,
-        674,
-        166
-      ]
-    },
-    {
-      "f": 5,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        192,
-        1264,
-        696,
-        172
-      ]
-    },
-    {
-      "f": 6,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        188,
+        241,
         1263,
-        705,
+        598,
         174
       ]
     },
     {
-      "f": 7,
+      "f": 296,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 8,
+      "f": 297,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 9,
+      "f": 298,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 10,
+      "f": 299,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 11,
+      "f": 300,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 12,
+      "f": 301,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 13,
+      "f": 302,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 14,
+      "f": 303,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 15,
+      "f": 304,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 16,
+      "f": 305,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 17,
+      "f": 306,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
+        598,
         174
       ]
     },
     {
-      "f": 18,
+      "f": 307,
       "id": "captions",
       "kind": "caption",
       "problem": "text-overflow",
       "box": [
-        187,
+        241,
         1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 19,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 20,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 21,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 22,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 23,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 24,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 25,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 26,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 27,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 28,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 29,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 30,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 31,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 32,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 33,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 34,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 35,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 36,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 37,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 38,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 39,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 40,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 41,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 42,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 43,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 44,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 45,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 46,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 47,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 48,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 49,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        187,
-        1263,
-        706,
-        174
-      ]
-    },
-    {
-      "f": 50,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        214,
-        1263,
-        651,
-        173
-      ]
-    },
-    {
-      "f": 51,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 52,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 53,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 54,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 55,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 56,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 57,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 58,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 59,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 60,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 61,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 62,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
-        174
-      ]
-    },
-    {
-      "f": 63,
-      "id": "captions",
-      "kind": "caption",
-      "problem": "text-overflow",
-      "box": [
-        213,
-        1263,
-        654,
+        598,
         174
       ]
     }
   ],
   "violationCounts": {
-    "captions:text-overflow": 1091,
-    "label:barrel:outside-safe-area": 1,
-    "label:barrel:text-overflow": 281,
-    "label:ink:text-overflow": 267,
-    "label:ball:outside-safe-area": 3,
-    "label:ball:text-overflow": 597,
-    "label:tip:outside-safe-area": 2,
-    "label:tip:text-overflow": 330
+    "captions:text-overflow": 13
   },
   "captionWord": {
     "4": -1,

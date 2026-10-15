@@ -5,7 +5,7 @@
   "idea": "ballpoint-pen",
   "title": "Inside It: a ballpoint pen",
   "created": "2026-10-14T20:00:39Z",
-  "updated": "2026-10-15T12:11:35Z",
+  "updated": "2026-10-15T13:38:20Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -29,7 +29,7 @@
     },
     "render": {
       "status": "done",
-      "at": "2026-10-15T12:11:35Z",
+      "at": "2026-10-15T13:38:20Z",
       "note": "out/pip-how-things-work/2026-10-14-ballpoint-pen.mp4"
     }
   }
