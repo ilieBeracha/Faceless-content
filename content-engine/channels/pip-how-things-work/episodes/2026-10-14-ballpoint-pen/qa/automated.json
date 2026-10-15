@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-15T12:11:40Z",
-  "render_hash": "6d52bbcf0cd05c3a57da674fc740ed94a9dfdd1635742e7339b84e36cdb25d44",
+  "checked_at": "2026-10-15T13:38:24Z",
+  "render_hash": "4033f02111099b560842c149560b724723b1b33a108454506fec4ffa7837aaec",
   "checks": [
     {
       "id": "format",
@@ -35,14 +35,14 @@
     {
       "id": "safe-areas",
       "label": "Text inside safe areas",
-      "pass": false,
-      "detail": "label:barrel (1 frames), label:ball (3 frames), label:tip (2 frames)"
+      "pass": true,
+      "detail": "9 text elements checked on every frame (3466 measurements)"
     },
     {
       "id": "cut-off",
       "label": "Nothing cut off",
       "pass": false,
-      "detail": "captions:text-overflow (1091 frames), label:barrel:text-overflow (281 frames), label:ink:text-overflow (267 frames), label:ball:text-overflow (597 frames), label:tip:text-overflow (330 frames)"
+      "detail": "captions:text-overflow (13 frames)"
     },
     {
       "id": "captions-sync",

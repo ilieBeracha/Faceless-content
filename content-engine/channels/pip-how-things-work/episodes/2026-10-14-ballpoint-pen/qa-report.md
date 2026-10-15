@@ -13,8 +13,8 @@ Checklist: `workflows/qa.md`. Video: `out/pip-how-things-work/2026-10-14-ballpoi
 | ✅ | Hook: speech starts immediately | first word at 0.16s (limit 0.5s) |
 | ✅ | Hook: first line lands in 2 s | "Why doesn't your pen leak?" ends at 1.34s (limit 2s) |
 | ✅ | Hook: on-screen text | visible from 0.07s |
-| ❌ | Text inside safe areas | label:barrel (1 frames), label:ball (3 frames), label:tip (2 frames) |
-| ❌ | Nothing cut off | captions:text-overflow (1091 frames), label:barrel:text-overflow (281 frames), label:ink:text-overflow (267 frames), label:ball:text-overflow (597 frames), label:tip:text-overflow (330 frames) |
+| ✅ | Text inside safe areas | 9 text elements checked on every frame (3466 measurements) |
+| ❌ | Nothing cut off | captions:text-overflow (13 frames) |
 | ✅ | Captions in sync | 115 words; text matches script: yes; highlight off on 0/1090 frames; words over silent audio: 0 |
 | ✅ | Loudness | -14.9 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1) |
 | ✅ | Banned topics (keyword screen) | none of 6 banned topics mentioned |
