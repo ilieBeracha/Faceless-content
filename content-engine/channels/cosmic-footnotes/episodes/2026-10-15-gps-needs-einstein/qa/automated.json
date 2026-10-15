@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-10-15T14:07:24Z",
+  "render_hash": "38b66874067db2c53be63d59d31b77ba86bfb7075aaf9ad8d4038d130d421e8d",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": true,
+      "detail": "45.20s (series allows 40–58s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.19s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"Your phone needs Einstein.\" ends at 1.76s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: on-screen text",
+      "pass": true,
+      "detail": "visible from 0.07s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "2 text elements checked on every frame (2660 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "130 words; text matches script: yes; highlight off on 0/1306 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-15.2 LUFS (target -14 ±1.5), true peak -4.2 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 6 banned topics mentioned"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by ilieBeracha (approved in chat) (8 claims)"
+    }
+  ]
+}

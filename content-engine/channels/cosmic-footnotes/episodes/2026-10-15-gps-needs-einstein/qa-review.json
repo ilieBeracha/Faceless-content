@@ -1,0 +1,14 @@
+{
+  "render_hash": "38b66874067db2c53be63d59d31b77ba86bfb7075aaf9ad8d4038d130d421e8d",
+  "tone": { "pass": true, "notes": "Curious and clear; one true story with a concrete point ('your map would drift more than ten kilometres a day'); the kicker ties back to the hook. No hype words." },
+  "banned_topics": { "pass": true, "notes": "Physics and everyday technology only." },
+  "visuals": { "pass": true, "notes": "A new picture per sentence; satellite/phone/clock props make each step concrete; title on one line; captions clear of faces; Ori visible on dark skies thanks to the pale outline." },
+  "character": { "pass": true, "notes": "Ori on-model (bubble helmet, bun, navy tunic) in every scene; mouth follows the voice." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "The 'point' beat works best as a consequence for the viewer ('your map would drift…'), not as 'this changed science'.",
+    "On night/space scenes, put numbers on a sign — hand-lettered text is low-contrast on dark skies.",
+    "Very short sentences (e.g. 'That sounds like nothing.') get a scene for under a second; merge them into the next sentence's scene."
+  ]
+}

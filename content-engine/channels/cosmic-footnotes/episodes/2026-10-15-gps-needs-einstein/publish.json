@@ -1,0 +1,42 @@
+{
+  "status": "not-posted",
+  "$comment": "Posting is not built yet. Nothing here is sent anywhere.",
+  "title": "Your phone needs Einstein #shorts",
+  "description": "GPS satellite clocks gain 38 millionths of a second a day. Here's why that would throw your map off by kilometres — and how Einstein fixes it.",
+  "hashtags": [
+    "#space",
+    "#einstein",
+    "#gps",
+    "#physics",
+    "#shorts"
+  ],
+  "video": "out/cosmic-footnotes/2026-10-15-gps-needs-einstein.mp4",
+  "ai_disclosure": {
+    "ai_generated": true,
+    "label_as_ai_generated": true,
+    "details": "Script drafted by an AI agent, voice synthesised (Kokoro TTS), visuals rendered procedurally. Facts reviewed by a person.",
+    "platforms": {
+      "youtube-shorts": {
+        "label_required": "check at posting time",
+        "how": "YouTube Studio > 'Altered or synthetic content'. Required for realistic content; optional (but allowed) for clearly animated content.",
+        "labeled": false
+      },
+      "tiktok": {
+        "label_required": "check at posting time",
+        "how": "Post settings > 'AI-generated content' toggle. Required when content is significantly AI-generated and realistic.",
+        "labeled": false
+      },
+      "instagram-reels": {
+        "label_required": "check at posting time",
+        "how": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio.",
+        "labeled": false
+      }
+    }
+  },
+  "made_for_kids": false,
+  "platforms": [
+    "youtube-shorts",
+    "tiktok",
+    "instagram-reels"
+  ]
+}

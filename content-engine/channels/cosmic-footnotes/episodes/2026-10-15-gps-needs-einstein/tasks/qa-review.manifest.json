@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-10-15-gps-needs-einstein",
+  "purpose": "qa-review",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "created": "2026-10-15T14:07:02Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "a5b872bc9825bd6e7e45206c3a3edf4d60e90f29dceffc35fe6605fb64393240",
+      "bytes": 2291
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "2105648dc18a2df27a34e4ebed21cfe5588c262595eb4ba17f6569ea4a35c312",
+      "bytes": 3741
+    },
+    {
+      "path": "channels/cosmic-footnotes/series/tiny-clue-big-deal.md",
+      "role": "channel",
+      "sha256": "33e76ef050c371308b3922b8db0d032b09911dd13cdc07a769305a1262fd3b51",
+      "bytes": 3478
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori.md",
+      "role": "channel",
+      "sha256": "eec7ad49aa635481ecab9377564a8a64aa1e51fb9c970ccee2787ab5752fea35",
+      "bytes": 2854
+    },
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-10-15-gps-needs-einstein/script.json",
+      "role": "channel",
+      "sha256": "af7a0d65fa6e828ca7e516e8d266e881a8490041eef7144f89befa07009716c9",
+      "bytes": 13481
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "9c862b9b9e635db6b82684b95463020bc73a1c86ec720a017a422d4ef52c81a6",
+      "bytes": 822
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-10-15-gps-needs-einstein/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel cosmic-footnotes --series tiny-clue-big-deal"
+}
