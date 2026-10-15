@@ -1,0 +1,16 @@
+{
+  "output": "out/pip-how-things-work/2026-10-14-ballpoint-pen.mp4",
+  "rendered_at": "2026-10-15T12:11:35Z",
+  "seconds_to_render": 742,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1118,
+  "render_skills": [
+    "render-3d-explainer",
+    "render-talking-character"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "6d52bbcf0cd05c3a57da674fc740ed94a9dfdd1635742e7339b84e36cdb25d44"
+}
