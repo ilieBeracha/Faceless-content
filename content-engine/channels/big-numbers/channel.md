@@ -3,7 +3,7 @@
 # Annotation format: <required|optional> <type> [min=N] [max=N] — meaning
 slug: big-numbers                # required slug — folder name under channels/; never changes
 name: "Big Numbers, Tiny Stories"                # required string — public channel name
-status: active                  # required enum(draft|active|paused) — draft until you approve it; paused stops new episodes
+status: paused                  # required enum(draft|active|paused) — draft until you approve it; paused stops new episodes
 niche: "Mind-bending numbers (billions, light-years, doublings, odds) made graspable through one short illustrated story each."  # required string — one sentence: what every video is about
 audience:                       # required object
   who: "Curious teens and adults who love 'wait, that can't be true' facts about maths, time and scale"  # required string — who watches, in plain words
