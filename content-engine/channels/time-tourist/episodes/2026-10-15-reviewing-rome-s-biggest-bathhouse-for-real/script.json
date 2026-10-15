@@ -15,7 +15,7 @@
         "shots": [
           {
             "camera": "selfie",
-            "place": "outside the brand-new Baths of Caracalla: towering red-brick walls faced with marble, a huge arched entrance, people in tunics streaming in under bright summer sun",
+            "place": "outside the gleaming, just-finished Baths of Caracalla, whole and undamaged: towering red-brick walls faced with white marble, a huge arched entrance with bronze doors, statues in wall niches, a crowd of ancient Romans in tunics and sandals streaming in under bright summer sun",
             "action": "grinning into the phone with the giant entrance behind her",
             "line": "Rome's biggest bathhouse. Reviewed.",
             "sound": "a busy crowd, footsteps on stone",
@@ -88,7 +88,7 @@
           },
           {
             "camera": "selfie",
-            "place": "a quiet library room inside the baths: wall niches stacked with rolled papyrus scrolls, people reading on stone benches",
+            "place": "a quiet library hall inside the baths: tall marble wall niches with wooden shelves holding rolled papyrus scrolls on wooden rods, people in tunics reading unrolled scrolls on stone benches",
             "action": "whispering, eyebrows raised, glancing at the scrolls",
             "line": "Oh, and there's a library. At the baths.",
             "others": "two readers unrolling scrolls",
@@ -150,7 +150,7 @@
         "shots": [
           {
             "camera": "selfie",
-            "place": "back outside on the sunny stone steps of the baths, the massive building behind her",
+            "place": "back outside on the sunny white marble steps at the entrance of the baths, the just-built, undamaged red-brick and marble front of the bathhouse with tall arched windows filling the background, ancient Romans in tunics passing by",
             "action": "counting on her fingers",
             "line": "Okay, review time: the building gets five out of five. The soap situation gets one.",
             "sound": "a busy crowd",
@@ -158,7 +158,7 @@
           },
           {
             "camera": "selfie-walk",
-            "place": "walking along a busy Roman street at golden hour, the huge baths behind her",
+            "place": "walking along a busy ancient Roman street at golden hour, the long, straight, undamaged red-brick side wall of the bathhouse with tall arched windows running beside her, people in tunics and sandals",
             "action": "smiling, a little wistful",
             "line": "A gym, a spa and a library for one coin? Rome, I get it.",
             "others": "people in tunics walking by",
