@@ -156,8 +156,8 @@ a reference image of Dot so the character stays the same):
 
 Remotion renders locally at no cost. Its license is free for individuals and companies of up to 3 people;
 bigger companies need a company license (from $25 per seat per month, or $0.01 per render with a $100 / month
-minimum). Rendering takes about 1–2 minutes per 45-second video for the storybook channel, longer for 3D on a
-machine without a GPU.
+minimum). On a 4-core machine without a GPU, a 45-second episode takes about 11 minutes (storybook) to
+13 minutes (3D) to render; a GPU or more cores make it much faster (`RENDER_CONCURRENCY` in `.env`).
 
 ## Folder map
 
