@@ -77,3 +77,11 @@ The engine marks an idea "used" when an episode is made from it.
 - status: new
 - angle: Camels, traders from three continents and a courtyard hotel with no room service.
 - added: 2026-10-15
+
+## reviewing-rome-s-biggest-bathhouse-for-real
+- title: Reviewing Rome's biggest bathhouse, for real
+- series: rated-live
+- status: used
+- angle: The same Baths of Caracalla review, filmed live-action: gym, spa and library for one tiny coin — but no soap, and enslaved workers stoking the fires.
+- added: 2026-10-15
+- used_in: episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real
