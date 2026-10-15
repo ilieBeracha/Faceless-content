@@ -5,7 +5,7 @@
   "idea": "reviewing-rome-s-biggest-bathhouse-for-real",
   "title": "Rome's biggest bathhouse, reviewed (live action)",
   "created": "2026-10-15T17:23:21Z",
-  "updated": "2026-10-15T18:40:17Z",
+  "updated": "2026-10-15T21:45:43Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -21,6 +21,11 @@
       "status": "done",
       "at": "2026-10-15T18:40:17Z",
       "note": "approved by Ilie"
+    },
+    "footage": {
+      "status": "done",
+      "at": "2026-10-15T21:45:43Z",
+      "note": "11 clips, $10.25 spent"
     }
   }
 }
