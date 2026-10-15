@@ -1,0 +1,996 @@
+{
+  "version": 2,
+  "hash": "7bdc1b02c040f5a74795ec8ce522065dd92197ea9178ddaf6819ce4e96e2ecb6",
+  "fps": 30,
+  "frames": 1383,
+  "duration": 46.1,
+  "speech_start": 0.194,
+  "speech_end": 45.096,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Rome's",
+      "start": 0.194,
+      "end": 0.494
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "biggest",
+      "start": 0.544,
+      "end": 0.819
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "bathhouse.",
+      "start": 0.869,
+      "end": 1.519
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "Reviewed.",
+      "start": 1.734,
+      "end": 2.238
+    },
+    {
+      "i": 4,
+      "beat": "arrival",
+      "text": "It's",
+      "start": 2.608,
+      "end": 2.608
+    },
+    {
+      "i": 5,
+      "beat": "arrival",
+      "text": "around",
+      "start": 2.652,
+      "end": 2.777
+    },
+    {
+      "i": 6,
+      "beat": "arrival",
+      "text": "the",
+      "start": 2.827,
+      "end": 3.052
+    },
+    {
+      "i": 7,
+      "beat": "arrival",
+      "text": "year",
+      "start": 3.077,
+      "end": 3.127
+    },
+    {
+      "i": 8,
+      "beat": "arrival",
+      "text": "two",
+      "start": 3.152,
+      "end": 3.327
+    },
+    {
+      "i": 9,
+      "beat": "arrival",
+      "text": "hundred",
+      "start": 3.402,
+      "end": 3.552
+    },
+    {
+      "i": 10,
+      "beat": "arrival",
+      "text": "and",
+      "start": 3.602,
+      "end": 3.902
+    },
+    {
+      "i": 11,
+      "beat": "arrival",
+      "text": "sixteen,",
+      "start": 3.927,
+      "end": 4.002
+    },
+    {
+      "i": 12,
+      "beat": "arrival",
+      "text": "and",
+      "start": 4.052,
+      "end": 4.727
+    },
+    {
+      "i": 13,
+      "beat": "arrival",
+      "text": "the",
+      "start": 4.942,
+      "end": 5.017
+    },
+    {
+      "i": 14,
+      "beat": "arrival",
+      "text": "Baths",
+      "start": 5.042,
+      "end": 5.092
+    },
+    {
+      "i": 15,
+      "beat": "arrival",
+      "text": "of",
+      "start": 5.142,
+      "end": 5.467
+    },
+    {
+      "i": 16,
+      "beat": "arrival",
+      "text": "Caracalla",
+      "start": 5.492,
+      "end": 5.567
+    },
+    {
+      "i": 17,
+      "beat": "arrival",
+      "text": "are",
+      "start": 5.617,
+      "end": 6.292
+    },
+    {
+      "i": 18,
+      "beat": "arrival",
+      "text": "brand",
+      "start": 6.342,
+      "end": 6.417
+    },
+    {
+      "i": 19,
+      "beat": "arrival",
+      "text": "new.",
+      "start": 6.467,
+      "end": 6.767
+    },
+    {
+      "i": 20,
+      "beat": "arrival",
+      "text": "Entry",
+      "start": 6.817,
+      "end": 7.467
+    },
+    {
+      "i": 21,
+      "beat": "arrival",
+      "text": "costs",
+      "start": 7.642,
+      "end": 8.042
+    },
+    {
+      "i": 22,
+      "beat": "arrival",
+      "text": "one",
+      "start": 8.117,
+      "end": 8.442
+    },
+    {
+      "i": 23,
+      "beat": "arrival",
+      "text": "tiny",
+      "start": 8.517,
+      "end": 8.767
+    },
+    {
+      "i": 24,
+      "beat": "arrival",
+      "text": "coin.",
+      "start": 8.842,
+      "end": 9.217
+    },
+    {
+      "i": 25,
+      "beat": "arrival",
+      "text": "And",
+      "start": 9.292,
+      "end": 9.967
+    },
+    {
+      "i": 26,
+      "beat": "arrival",
+      "text": "there's",
+      "start": 10.117,
+      "end": 10.192
+    },
+    {
+      "i": 27,
+      "beat": "arrival",
+      "text": "room",
+      "start": 10.217,
+      "end": 10.392
+    },
+    {
+      "i": 28,
+      "beat": "arrival",
+      "text": "for",
+      "start": 10.442,
+      "end": 10.692
+    },
+    {
+      "i": 29,
+      "beat": "arrival",
+      "text": "about",
+      "start": 10.742,
+      "end": 10.842
+    },
+    {
+      "i": 30,
+      "beat": "arrival",
+      "text": "sixteen",
+      "start": 10.867,
+      "end": 11.117
+    },
+    {
+      "i": 31,
+      "beat": "arrival",
+      "text": "hundred",
+      "start": 11.192,
+      "end": 11.542
+    },
+    {
+      "i": 32,
+      "beat": "arrival",
+      "text": "people",
+      "start": 11.592,
+      "end": 11.817
+    },
+    {
+      "i": 33,
+      "beat": "arrival",
+      "text": "at",
+      "start": 11.867,
+      "end": 12.167
+    },
+    {
+      "i": 34,
+      "beat": "arrival",
+      "text": "once.",
+      "start": 12.192,
+      "end": 12.682
+    },
+    {
+      "i": 35,
+      "beat": "tour",
+      "text": "First",
+      "start": 13.194,
+      "end": 13.419
+    },
+    {
+      "i": 36,
+      "beat": "tour",
+      "text": "stop,",
+      "start": 13.444,
+      "end": 13.769
+    },
+    {
+      "i": 37,
+      "beat": "tour",
+      "text": "the",
+      "start": 13.904,
+      "end": 13.954
+    },
+    {
+      "i": 38,
+      "beat": "tour",
+      "text": "warm",
+      "start": 14.004,
+      "end": 14.229
+    },
+    {
+      "i": 39,
+      "beat": "tour",
+      "text": "room.",
+      "start": 14.279,
+      "end": 14.829
+    },
+    {
+      "i": 40,
+      "beat": "tour",
+      "text": "Then",
+      "start": 14.979,
+      "end": 15.129
+    },
+    {
+      "i": 41,
+      "beat": "tour",
+      "text": "the",
+      "start": 15.154,
+      "end": 15.204
+    },
+    {
+      "i": 42,
+      "beat": "tour",
+      "text": "hot",
+      "start": 15.254,
+      "end": 15.504
+    },
+    {
+      "i": 43,
+      "beat": "tour",
+      "text": "room,",
+      "start": 15.554,
+      "end": 15.829
+    },
+    {
+      "i": 44,
+      "beat": "tour",
+      "text": "heated",
+      "start": 16.024,
+      "end": 16.299
+    },
+    {
+      "i": 45,
+      "beat": "tour",
+      "text": "by",
+      "start": 16.324,
+      "end": 16.474
+    },
+    {
+      "i": 46,
+      "beat": "tour",
+      "text": "fires",
+      "start": 16.549,
+      "end": 16.899
+    },
+    {
+      "i": 47,
+      "beat": "tour",
+      "text": "under",
+      "start": 16.924,
+      "end": 17.074
+    },
+    {
+      "i": 48,
+      "beat": "tour",
+      "text": "the",
+      "start": 17.099,
+      "end": 17.149
+    },
+    {
+      "i": 49,
+      "beat": "tour",
+      "text": "floor.",
+      "start": 17.224,
+      "end": 17.849
+    },
+    {
+      "i": 50,
+      "beat": "tour",
+      "text": "Then",
+      "start": 17.974,
+      "end": 18.074
+    },
+    {
+      "i": 51,
+      "beat": "tour",
+      "text": "a",
+      "start": 18.099,
+      "end": 18.149
+    },
+    {
+      "i": 52,
+      "beat": "tour",
+      "text": "cold",
+      "start": 18.224,
+      "end": 18.549
+    },
+    {
+      "i": 53,
+      "beat": "tour",
+      "text": "pool",
+      "start": 18.624,
+      "end": 18.899
+    },
+    {
+      "i": 54,
+      "beat": "tour",
+      "text": "under",
+      "start": 18.924,
+      "end": 19.124
+    },
+    {
+      "i": 55,
+      "beat": "tour",
+      "text": "a",
+      "start": 19.149,
+      "end": 19.199
+    },
+    {
+      "i": 56,
+      "beat": "tour",
+      "text": "ceiling",
+      "start": 19.274,
+      "end": 19.624
+    },
+    {
+      "i": 57,
+      "beat": "tour",
+      "text": "over",
+      "start": 19.649,
+      "end": 19.849
+    },
+    {
+      "i": 58,
+      "beat": "tour",
+      "text": "thirty",
+      "start": 19.924,
+      "end": 20.149
+    },
+    {
+      "i": 59,
+      "beat": "tour",
+      "text": "metres",
+      "start": 20.174,
+      "end": 20.424
+    },
+    {
+      "i": 60,
+      "beat": "tour",
+      "text": "high.",
+      "start": 20.474,
+      "end": 21.074
+    },
+    {
+      "i": 61,
+      "beat": "tour",
+      "text": "Oh,",
+      "start": 21.249,
+      "end": 21.624
+    },
+    {
+      "i": 62,
+      "beat": "tour",
+      "text": "and",
+      "start": 21.784,
+      "end": 21.859
+    },
+    {
+      "i": 63,
+      "beat": "tour",
+      "text": "there's",
+      "start": 21.884,
+      "end": 22.034
+    },
+    {
+      "i": 64,
+      "beat": "tour",
+      "text": "a",
+      "start": 22.059,
+      "end": 22.084
+    },
+    {
+      "i": 65,
+      "beat": "tour",
+      "text": "library.",
+      "start": 22.134,
+      "end": 22.909
+    },
+    {
+      "i": 66,
+      "beat": "tour",
+      "text": "At",
+      "start": 23.059,
+      "end": 23.134
+    },
+    {
+      "i": 67,
+      "beat": "tour",
+      "text": "the",
+      "start": 23.159,
+      "end": 23.209
+    },
+    {
+      "i": 68,
+      "beat": "tour",
+      "text": "baths.",
+      "start": 23.259,
+      "end": 23.739
+    },
+    {
+      "i": 69,
+      "beat": "catch",
+      "text": "The",
+      "start": 24.215,
+      "end": 24.265
+    },
+    {
+      "i": 70,
+      "beat": "catch",
+      "text": "catch:",
+      "start": 24.315,
+      "end": 24.69
+    },
+    {
+      "i": 71,
+      "beat": "catch",
+      "text": "there's",
+      "start": 24.805,
+      "end": 24.98
+    },
+    {
+      "i": 72,
+      "beat": "catch",
+      "text": "no",
+      "start": 25.03,
+      "end": 25.205
+    },
+    {
+      "i": 73,
+      "beat": "catch",
+      "text": "soap.",
+      "start": 25.28,
+      "end": 25.83
+    },
+    {
+      "i": 74,
+      "beat": "catch",
+      "text": "You",
+      "start": 25.98,
+      "end": 26.08
+    },
+    {
+      "i": 75,
+      "beat": "catch",
+      "text": "rub",
+      "start": 26.13,
+      "end": 26.305
+    },
+    {
+      "i": 76,
+      "beat": "catch",
+      "text": "olive",
+      "start": 26.38,
+      "end": 26.68
+    },
+    {
+      "i": 77,
+      "beat": "catch",
+      "text": "oil",
+      "start": 26.755,
+      "end": 27.005
+    },
+    {
+      "i": 78,
+      "beat": "catch",
+      "text": "on",
+      "start": 27.03,
+      "end": 27.105
+    },
+    {
+      "i": 79,
+      "beat": "catch",
+      "text": "your",
+      "start": 27.13,
+      "end": 27.23
+    },
+    {
+      "i": 80,
+      "beat": "catch",
+      "text": "skin,",
+      "start": 27.305,
+      "end": 27.755
+    },
+    {
+      "i": 81,
+      "beat": "catch",
+      "text": "then",
+      "start": 27.855,
+      "end": 28.005
+    },
+    {
+      "i": 82,
+      "beat": "catch",
+      "text": "scrape",
+      "start": 28.08,
+      "end": 28.33
+    },
+    {
+      "i": 83,
+      "beat": "catch",
+      "text": "it",
+      "start": 28.355,
+      "end": 28.405
+    },
+    {
+      "i": 84,
+      "beat": "catch",
+      "text": "off",
+      "start": 28.455,
+      "end": 28.63
+    },
+    {
+      "i": 85,
+      "beat": "catch",
+      "text": "with",
+      "start": 28.655,
+      "end": 28.755
+    },
+    {
+      "i": 86,
+      "beat": "catch",
+      "text": "a",
+      "start": 28.78,
+      "end": 28.83
+    },
+    {
+      "i": 87,
+      "beat": "catch",
+      "text": "curved",
+      "start": 28.905,
+      "end": 29.255
+    },
+    {
+      "i": 88,
+      "beat": "catch",
+      "text": "metal",
+      "start": 29.305,
+      "end": 29.555
+    },
+    {
+      "i": 89,
+      "beat": "catch",
+      "text": "tool",
+      "start": 29.605,
+      "end": 29.88
+    },
+    {
+      "i": 90,
+      "beat": "catch",
+      "text": "called",
+      "start": 29.93,
+      "end": 30.155
+    },
+    {
+      "i": 91,
+      "beat": "catch",
+      "text": "a",
+      "start": 30.18,
+      "end": 30.205
+    },
+    {
+      "i": 92,
+      "beat": "catch",
+      "text": "strigil.",
+      "start": 30.255,
+      "end": 31.155
+    },
+    {
+      "i": 93,
+      "beat": "catch",
+      "text": "And",
+      "start": 31.305,
+      "end": 31.38
+    },
+    {
+      "i": 94,
+      "beat": "catch",
+      "text": "those",
+      "start": 31.405,
+      "end": 31.68
+    },
+    {
+      "i": 95,
+      "beat": "catch",
+      "text": "fires",
+      "start": 31.73,
+      "end": 32.08
+    },
+    {
+      "i": 96,
+      "beat": "catch",
+      "text": "under",
+      "start": 32.105,
+      "end": 32.255
+    },
+    {
+      "i": 97,
+      "beat": "catch",
+      "text": "the",
+      "start": 32.28,
+      "end": 32.33
+    },
+    {
+      "i": 98,
+      "beat": "catch",
+      "text": "floor?",
+      "start": 32.405,
+      "end": 32.93
+    },
+    {
+      "i": 99,
+      "beat": "catch",
+      "text": "Enslaved",
+      "start": 33.08,
+      "end": 33.605
+    },
+    {
+      "i": 100,
+      "beat": "catch",
+      "text": "workers",
+      "start": 33.655,
+      "end": 34.03
+    },
+    {
+      "i": 101,
+      "beat": "catch",
+      "text": "keep",
+      "start": 34.08,
+      "end": 34.205
+    },
+    {
+      "i": 102,
+      "beat": "catch",
+      "text": "them",
+      "start": 34.23,
+      "end": 34.33
+    },
+    {
+      "i": 103,
+      "beat": "catch",
+      "text": "going.",
+      "start": 34.38,
+      "end": 34.771
+    },
+    {
+      "i": 104,
+      "beat": "rating",
+      "text": "Okay,",
+      "start": 35.171,
+      "end": 35.171
+    },
+    {
+      "i": 105,
+      "beat": "rating",
+      "text": "review",
+      "start": 35.243,
+      "end": 35.668
+    },
+    {
+      "i": 106,
+      "beat": "rating",
+      "text": "time:",
+      "start": 35.743,
+      "end": 36.018
+    },
+    {
+      "i": 107,
+      "beat": "rating",
+      "text": "the",
+      "start": 36.068,
+      "end": 36.593
+    },
+    {
+      "i": 108,
+      "beat": "rating",
+      "text": "building",
+      "start": 36.693,
+      "end": 36.743
+    },
+    {
+      "i": 109,
+      "beat": "rating",
+      "text": "gets",
+      "start": 36.793,
+      "end": 37.118
+    },
+    {
+      "i": 110,
+      "beat": "rating",
+      "text": "five",
+      "start": 37.168,
+      "end": 37.393
+    },
+    {
+      "i": 111,
+      "beat": "rating",
+      "text": "out",
+      "start": 37.443,
+      "end": 37.668
+    },
+    {
+      "i": 112,
+      "beat": "rating",
+      "text": "of",
+      "start": 37.693,
+      "end": 37.843
+    },
+    {
+      "i": 113,
+      "beat": "rating",
+      "text": "five.",
+      "start": 37.893,
+      "end": 38.543
+    },
+    {
+      "i": 114,
+      "beat": "rating",
+      "text": "The",
+      "start": 38.668,
+      "end": 38.743
+    },
+    {
+      "i": 115,
+      "beat": "rating",
+      "text": "soap",
+      "start": 38.818,
+      "end": 39.068
+    },
+    {
+      "i": 116,
+      "beat": "rating",
+      "text": "situation",
+      "start": 39.118,
+      "end": 39.668
+    },
+    {
+      "i": 117,
+      "beat": "rating",
+      "text": "gets",
+      "start": 39.718,
+      "end": 39.943
+    },
+    {
+      "i": 118,
+      "beat": "rating",
+      "text": "one.",
+      "start": 39.993,
+      "end": 40.468
+    },
+    {
+      "i": 119,
+      "beat": "rating",
+      "text": "A",
+      "start": 40.618,
+      "end": 40.668
+    },
+    {
+      "i": 120,
+      "beat": "rating",
+      "text": "gym,",
+      "start": 40.743,
+      "end": 41.193
+    },
+    {
+      "i": 121,
+      "beat": "rating",
+      "text": "a",
+      "start": 41.323,
+      "end": 41.373
+    },
+    {
+      "i": 122,
+      "beat": "rating",
+      "text": "spa",
+      "start": 41.473,
+      "end": 41.823
+    },
+    {
+      "i": 123,
+      "beat": "rating",
+      "text": "and",
+      "start": 41.873,
+      "end": 41.948
+    },
+    {
+      "i": 124,
+      "beat": "rating",
+      "text": "a",
+      "start": 41.973,
+      "end": 41.998
+    },
+    {
+      "i": 125,
+      "beat": "rating",
+      "text": "library",
+      "start": 42.048,
+      "end": 42.498
+    },
+    {
+      "i": 126,
+      "beat": "rating",
+      "text": "for",
+      "start": 42.548,
+      "end": 42.648
+    },
+    {
+      "i": 127,
+      "beat": "rating",
+      "text": "one",
+      "start": 42.698,
+      "end": 42.873
+    },
+    {
+      "i": 128,
+      "beat": "rating",
+      "text": "coin?",
+      "start": 42.923,
+      "end": 43.548
+    },
+    {
+      "i": 129,
+      "beat": "rating",
+      "text": "Rome,",
+      "start": 43.773,
+      "end": 44.173
+    },
+    {
+      "i": 130,
+      "beat": "rating",
+      "text": "I",
+      "start": 44.303,
+      "end": 44.403
+    },
+    {
+      "i": 131,
+      "beat": "rating",
+      "text": "get",
+      "start": 44.453,
+      "end": 44.553
+    },
+    {
+      "i": 132,
+      "beat": "rating",
+      "text": "it",
+      "start": 44.578,
+      "end": 44.628
+    },
+    {
+      "i": 133,
+      "beat": "rating",
+      "text": "now.",
+      "start": 44.653,
+      "end": 44.916
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly",
+      "start": 0.1,
+      "end": 2.388
+    },
+    {
+      "id": "arrival",
+      "speaker": "tilly",
+      "start": 2.608,
+      "end": 12.862
+    },
+    {
+      "id": "tour",
+      "speaker": "tilly",
+      "start": 13.082,
+      "end": 23.929
+    },
+    {
+      "id": "catch",
+      "speaker": "tilly",
+      "start": 24.149,
+      "end": 34.951
+    },
+    {
+      "id": "rating",
+      "speaker": "tilly",
+      "start": 35.171,
+      "end": 45.096
+    }
+  ],
+  "voices": {
+    "tilly": {
+      "provider": "kokoro",
+      "voice_id": "af_heart",
+      "speed": 1.1,
+      "pitch_semitones": 0,
+      "sentence_pause": 0.24,
+      "clause_pause": 0.1
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -15.13,
+    "true_peak_db": -1.49
+  }
+}
