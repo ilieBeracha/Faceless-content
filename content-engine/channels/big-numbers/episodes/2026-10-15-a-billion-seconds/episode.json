@@ -5,8 +5,8 @@
   "idea": "a-billion-seconds",
   "title": "How long is a billion seconds?",
   "created": "2026-10-15T11:57:48Z",
-  "updated": "2026-10-15T13:27:14Z",
-  "status": "in-progress",
+  "updated": "2026-10-15T13:27:47Z",
+  "status": "done",
   "steps": {
     "idea": {
       "status": "done",
@@ -31,6 +31,11 @@
       "status": "done",
       "at": "2026-10-15T13:27:14Z",
       "note": "out/big-numbers/2026-10-15-a-billion-seconds.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-15T13:27:47Z",
+      "note": "all checks passed"
     }
   }
 }

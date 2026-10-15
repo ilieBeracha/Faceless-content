@@ -1,0 +1,42 @@
+{
+  "status": "not-posted",
+  "$comment": "Posting is not built yet. Nothing here is sent anywhere.",
+  "title": "How long is a billion seconds? #shorts",
+  "description": "A million seconds is about eleven and a half days. A billion? Start a stopwatch the day you're born and find out.",
+  "hashtags": [
+    "#math",
+    "#bignumbers",
+    "#billion",
+    "#time",
+    "#shorts"
+  ],
+  "video": "out/big-numbers/2026-10-15-a-billion-seconds.mp4",
+  "ai_disclosure": {
+    "ai_generated": true,
+    "label_as_ai_generated": true,
+    "details": "Script drafted by an AI agent, voice synthesised (Kokoro TTS), visuals rendered procedurally. Facts reviewed by a person.",
+    "platforms": {
+      "youtube-shorts": {
+        "label_required": "check at posting time",
+        "how": "YouTube Studio > 'Altered or synthetic content'. Required for realistic content; optional (but allowed) for clearly animated content.",
+        "labeled": false
+      },
+      "tiktok": {
+        "label_required": "check at posting time",
+        "how": "Post settings > 'AI-generated content' toggle. Required when content is significantly AI-generated and realistic.",
+        "labeled": false
+      },
+      "instagram-reels": {
+        "label_required": "check at posting time",
+        "how": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio.",
+        "labeled": false
+      }
+    }
+  },
+  "made_for_kids": false,
+  "platforms": [
+    "youtube-shorts",
+    "tiktok",
+    "instagram-reels"
+  ]
+}
