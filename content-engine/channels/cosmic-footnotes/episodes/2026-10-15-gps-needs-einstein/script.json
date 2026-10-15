@@ -1,0 +1,474 @@
+{
+  "schema": "script/v1",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "idea": "gps-needs-einstein",
+  "title": "Your phone needs Einstein",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "ori",
+      "voiceover": "Your phone needs Einstein.",
+      "on_screen_text": "Your phone needs Einstein",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "city",
+            "time": "dusk",
+            "camera": "push-in",
+            "character": {
+              "pose": "hold",
+              "hold": "phone",
+              "x": 0.32,
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "thought",
+                "x": 0.66,
+                "y": 0.2,
+                "content": "satellite"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "clue",
+      "speaker": "ori",
+      "voiceover": "Your map finds you using satellites about twenty thousand kilometres up. Each one carries an atomic clock. And up there, those clocks run fast.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "night",
+            "camera": "pan-right",
+            "character": {
+              "pose": "look-up",
+              "x": 0.28,
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "satellite",
+                "x": 0.72,
+                "y": 0.14
+              },
+              {
+                "type": "text",
+                "x": 0.42,
+                "y": 0.24,
+                "scale": 0.6,
+                "text": "20,000 km up"
+              }
+            ]
+          },
+          {
+            "setting": "space",
+            "character": null,
+            "props": [
+              {
+                "type": "globe",
+                "x": 0.5,
+                "y": 0.72,
+                "scale": 1.6
+              },
+              {
+                "type": "satellite",
+                "x": 0.42,
+                "y": 0.22,
+                "scale": 0.8
+              },
+              {
+                "type": "clock",
+                "x": 0.72,
+                "y": 0.22,
+                "scale": 0.7
+              }
+            ]
+          },
+          {
+            "setting": "space",
+            "camera": "push-in",
+            "character": {
+              "pose": "shrug",
+              "x": 0.3,
+              "scale": 0.9,
+              "expression": "surprised"
+            },
+            "props": [
+              {
+                "type": "clock",
+                "x": 0.7,
+                "y": 0.6,
+                "scale": 1.1
+              },
+              {
+                "type": "arrow",
+                "x": 0.6,
+                "y": 0.4,
+                "x2": 0.82,
+                "y2": 0.36,
+                "text": "fast!"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "story",
+      "speaker": "ori",
+      "voiceover": "Einstein said time runs faster where gravity is weaker. Up there, that adds about forty-five millionths of a second a day. Their speed takes away about seven. So every day, they gain thirty-eight millionths of a second.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "room",
+            "camera": "push-in",
+            "character": {
+              "pose": "think",
+              "x": 0.34,
+              "expression": "pondering"
+            },
+            "props": [
+              {
+                "type": "book",
+                "x": 0.72,
+                "y": 0.62
+              },
+              {
+                "type": "thought",
+                "x": 0.62,
+                "y": 0.2,
+                "content": "planet"
+              }
+            ]
+          },
+          {
+            "setting": "space",
+            "character": {
+              "pose": "point",
+              "x": 0.26,
+              "scale": 0.9,
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "satellite",
+                "x": 0.7,
+                "y": 0.25
+              },
+              {
+                "type": "text",
+                "x": 0.66,
+                "y": 0.62,
+                "scale": 0.75,
+                "text": "+45 µs a day"
+              }
+            ]
+          },
+          {
+            "setting": "space",
+            "camera": "pan-left",
+            "character": {
+              "pose": "point",
+              "x": 0.26,
+              "scale": 0.9,
+              "expression": "neutral"
+            },
+            "props": [
+              {
+                "type": "satellite",
+                "x": 0.7,
+                "y": 0.25
+              },
+              {
+                "type": "text",
+                "x": 0.66,
+                "y": 0.62,
+                "scale": 0.75,
+                "text": "-7 µs a day"
+              }
+            ]
+          },
+          {
+            "setting": "space",
+            "camera": "push-in",
+            "character": {
+              "pose": "cheer",
+              "x": 0.3,
+              "scale": 0.9,
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "clock",
+                "x": 0.7,
+                "y": 0.42,
+                "scale": 0.9
+              },
+              {
+                "type": "text",
+                "x": 0.68,
+                "y": 0.72,
+                "scale": 0.75,
+                "text": "+38 µs a day"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "point",
+      "speaker": "ori",
+      "voiceover": "That sounds like nothing. But your phone works out where you are from how long the signals take to arrive. Light travels about three hundred metres in a millionth of a second. Ignore Einstein, and your map would drift by more than ten kilometres every single day.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "plain",
+            "character": {
+              "pose": "shrug",
+              "x": 0.4,
+              "expression": "amused"
+            },
+            "props": [
+              {
+                "type": "thought",
+                "x": 0.66,
+                "y": 0.2,
+                "text": "tiny!"
+              }
+            ]
+          },
+          {
+            "setting": "city",
+            "camera": "push-in",
+            "character": {
+              "pose": "hold",
+              "hold": "phone",
+              "x": 0.3,
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "satellite",
+                "x": 0.72,
+                "y": 0.16,
+                "scale": 0.7
+              },
+              {
+                "type": "arrow",
+                "x": 0.68,
+                "y": 0.26,
+                "x2": 0.42,
+                "y2": 0.5
+              }
+            ]
+          },
+          {
+            "setting": "plain",
+            "camera": "pan-right",
+            "character": {
+              "pose": "walk",
+              "x": 0.3,
+              "expression": "neutral"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.72,
+                "scale": 0.8,
+                "text": "300 m per µs"
+              }
+            ]
+          },
+          {
+            "setting": "desert",
+            "camera": "pull-out",
+            "character": {
+              "pose": "facepalm",
+              "x": 0.26,
+              "expression": "surprised"
+            },
+            "props": [
+              {
+                "type": "phone",
+                "x": 0.72,
+                "y": 0.66
+              },
+              {
+                "type": "text",
+                "x": 0.5,
+                "y": 0.22,
+                "scale": 0.9,
+                "text": "10+ km off"
+              },
+              {
+                "type": "footprints",
+                "x": 0.3,
+                "x2": 0.9,
+                "y": 0.9
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "kicker",
+      "speaker": "ori",
+      "voiceover": "So engineers set the clocks to tick a little slow before launch. Your phone really does need Einstein.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "room",
+            "character": {
+              "pose": "point",
+              "x": 0.3,
+              "expression": "amused"
+            },
+            "props": [
+              {
+                "type": "rocket",
+                "x": 0.72
+              },
+              {
+                "type": "clock",
+                "x": 0.5,
+                "y": 0.22,
+                "scale": 0.6
+              }
+            ]
+          },
+          {
+            "setting": "city",
+            "time": "dusk",
+            "camera": "pull-out",
+            "character": {
+              "pose": "wave",
+              "x": 0.4,
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "satellite",
+                "x": 0.75,
+                "y": 0.16,
+                "scale": 0.7
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-storybook": {
+      "title": "Your phone needs Einstein",
+      "highlight": [
+        "Einstein"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "GPS satellites orbit at an altitude of about 20,200 km (said as 'about twenty thousand kilometres').",
+      "beat": "clue",
+      "source": "https://www.gps.gov/systems/gps/space/ (medium Earth orbit, approximately 20,200 km)",
+      "confidence": "high",
+      "note": "On screen: \"20,000 km up\"."
+    },
+    {
+      "id": "c2",
+      "claim": "Each GPS satellite carries atomic clocks.",
+      "beat": "clue",
+      "source": "https://www.gps.gov/systems/gps/space/ ; Ashby, N. (2003) 'Relativity in the Global Positioning System', Living Reviews in Relativity 6:1",
+      "confidence": "high"
+    },
+    {
+      "id": "c3",
+      "claim": "Relativity predicts clocks run faster where gravity is weaker (general relativity) and slower when moving fast (special relativity).",
+      "beat": "story",
+      "source": "Ashby 2003, Living Reviews in Relativity 6:1; Ohio State Univ. Astronomy 162 (R. Pogge), 'Real-World Relativity: The GPS Navigation System'",
+      "confidence": "high"
+    },
+    {
+      "id": "c4",
+      "claim": "Weaker gravity at orbit makes GPS clocks gain about 45 microseconds a day; their orbital speed makes them lose about 7, so they gain about 38 microseconds a day overall.",
+      "beat": "story",
+      "source": "R. Pogge, Ohio State Univ. Astronomy 162, 'Real-World Relativity: The GPS Navigation System' (45 − 7 = 38 µs/day); Ashby 2003",
+      "confidence": "high",
+      "note": "On screen: \"+45 µs a day\", \"-7 µs a day\", \"+38 µs a day\"."
+    },
+    {
+      "id": "c5",
+      "claim": "GPS receivers work out position from how long the satellites' signals take to arrive.",
+      "beat": "point",
+      "source": "https://www.gps.gov/systems/gps/ ; Ashby 2003",
+      "confidence": "high"
+    },
+    {
+      "id": "c6",
+      "claim": "Light travels about 300 metres in a microsecond (299.79 m).",
+      "beat": "point",
+      "source": "Speed of light 299,792,458 m/s (exact, SI definition): https://physics.nist.gov/cgi-bin/cuu/Value?c",
+      "confidence": "high",
+      "note": "On screen: \"300 m per µs\"."
+    },
+    {
+      "id": "c7",
+      "claim": "Without the relativity correction, GPS position errors would grow by more than 10 km per day.",
+      "beat": "point",
+      "source": "R. Pogge, Ohio State 'Real-World Relativity' (about 10 km/day); Ashby 2003 (range error ≈ 11.6 km/day); 38 µs × c ≈ 11.4 km",
+      "confidence": "high",
+      "note": "Sources give 10–11.6 km/day, so the script says 'more than ten kilometres'. On screen: \"10+ km off\"."
+    },
+    {
+      "id": "c8",
+      "claim": "Engineers set the satellite clocks to tick slightly slow before launch (10.22999999543 MHz instead of 10.23 MHz) to cancel the effect.",
+      "beat": "kicker",
+      "source": "Ashby 2003, Living Reviews in Relativity 6:1 (factory frequency offset); GPS World, 'Inside the Box: GPS and Relativity'",
+      "confidence": "high"
+    }
+  ],
+  "pronunciations": {},
+  "publish": {
+    "title": "Your phone needs Einstein #shorts",
+    "description": "GPS satellite clocks gain 38 millionths of a second a day. Here's why that would throw your map off by kilometres — and how Einstein fixes it.",
+    "hashtags": [
+      "#space",
+      "#einstein",
+      "#gps",
+      "#physics",
+      "#shorts"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-15-gps-needs-einstein",
+  "purpose": "script",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "created": "2026-10-15T13:54:42Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "2105648dc18a2df27a34e4ebed21cfe5588c262595eb4ba17f6569ea4a35c312",
+      "bytes": 3741
+    },
+    {
+      "path": "channels/cosmic-footnotes/series/tiny-clue-big-deal.md",
+      "role": "channel",
+      "sha256": "33e76ef050c371308b3922b8db0d032b09911dd13cdc07a769305a1262fd3b51",
+      "bytes": 3478
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori.md",
+      "role": "channel",
+      "sha256": "eec7ad49aa635481ecab9377564a8a64aa1e51fb9c970ccee2787ab5752fea35",
+      "bytes": 2854
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori/model.json",
+      "role": "channel",
+      "sha256": "98a16681a12345133a2a3f62eaeeeaf414e5c744bc4c3eb4e614aad7fbc13683",
+      "bytes": 967
+    },
+    {
+      "path": "channels/cosmic-footnotes/learnings.md",
+      "role": "channel",
+      "sha256": "066d035ba1e0d714ccb3d04bc29b1febe52b931a6545354b052c82f0056c0cde",
+      "bytes": 229
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-storybook/SKILL.md",
+      "role": "skill",
+      "sha256": "67ff27003eee143312e40fcf012a17c89885d8f8798f79e026e30169c3f36c1c",
+      "bytes": 8851
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "18a41d2f868db94e64e088b73da8519405934d43e1a2a14adfac7264abe4d346",
+      "bytes": 192
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-10-15-gps-needs-einstein/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel cosmic-footnotes --series tiny-clue-big-deal"
+}
