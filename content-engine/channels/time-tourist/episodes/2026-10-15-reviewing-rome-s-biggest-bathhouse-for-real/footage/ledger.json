@@ -89,6 +89,38 @@
       "model": "gemini-2.5-flash-image",
       "usd": 0.039,
       "ok": true
+    },
+    {
+      "at": "2026-10-15T18:51:30Z",
+      "shot": "00-hook-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:51:39Z",
+      "shot": "02-tour-3",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:51:46Z",
+      "shot": "04-rating-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T18:51:53Z",
+      "shot": "04-rating-2",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
     }
   ]
 }
