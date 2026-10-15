@@ -10,9 +10,10 @@ The engine marks an idea "used" when an episode is made from it.
 ## roman-baths
 - title: Reviewing Rome's biggest bathhouse
 - series: rated
-- status: new
+- status: used
 - angle: A gym, spa and library for one tiny coin — but no soap, and enslaved workers stoking the floor fires.
 - added: 2026-10-15
+- used_in: episodes/2026-10-15-roman-baths
 
 ## great-pyramid-building-site
 - title: Visiting the Great Pyramid while it's being built
