@@ -5,7 +5,7 @@
   "idea": "roman-baths",
   "title": "Rome's biggest bathhouse, reviewed",
   "created": "2026-10-15T15:08:28Z",
-  "updated": "2026-10-15T15:08:35Z",
+  "updated": "2026-10-15T15:08:46Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,9 @@
       "at": "2026-10-15T15:08:35Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-10-15T15:08:35Z"
+      "status": "done",
+      "at": "2026-10-15T15:08:46Z",
+      "note": "approved by ilieBeracha (approved in chat)"
     }
   }
 }
