@@ -1,6 +1,6 @@
 # Footage plan — 2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real
 Video model `veo-3.1-fast-generate-preview` at 720p. 11 shots, 74s of clips ≈ **$7.42** (≤ $14.84 if every shot needs a retry).
-Spent so far: $0.59 of the $25.00 budget.
+Spent so far: $9.45 of the $25.00 budget.
 Check each first frame: same person every time, period-correct place, no text or logos, the face clear of the caption area (lower third).
 | shot | clip | line | still |
 |---|---|---|---|

@@ -167,9 +167,9 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/03-catch-2.jpg",
-        "sha": "cf65f63e388a0360e2b08c6c09eafcb6c96f3f554686d02db8ec70a4e71ab792",
-        "key": "953460bc95d6f3d89089dbf891b58b7ee99f8db608234c3e6c6625e3fa6e26e0",
-        "at": "2026-10-15T18:41:17Z"
+        "sha": "dcf1ab8ccc0e1261dd6b90b7bf1e89cfcb41d055e202a414c6c822b696ec6acb",
+        "key": "6b241c690018e8037d7bc85cbc80d9da499063539cbeb13f2c332ca2dc0fe8d4",
+        "at": "2026-10-15T21:18:54Z"
       }
     },
     "03-catch-3": {
@@ -246,5 +246,9 @@
     "hash": "8c31a220446cab1ce4f35aab66b9de1b50f532ea87fb3e19b4558c3c2cfc52fa",
     "by": "Ilie",
     "at": "2026-10-15T19:30:08Z"
+  },
+  "pending": {
+    "hash": "0a53ad6f3bfb962de3658527ca62ea61525ce35ffa61c8e275db6fc2121b5c2a",
+    "estimate_usd": 7.42
   }
 }
