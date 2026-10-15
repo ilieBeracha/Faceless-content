@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-15-a-billion-seconds",
+  "purpose": "script",
+  "channel": "big-numbers",
+  "series": "bigger-than-you-think",
+  "created": "2026-10-15T11:57:51Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/big-numbers/channel.md",
+      "role": "channel",
+      "sha256": "29ff10755ed51a71f8b67fc457db87b2a97a62a1324bc2ca57a3b5cf1bb9473b",
+      "bytes": 3476
+    },
+    {
+      "path": "channels/big-numbers/series/bigger-than-you-think.md",
+      "role": "channel",
+      "sha256": "aef8a90ca26f583f2fefc624e0094ae8eb4beb78250c9185153c30c4aa06c74b",
+      "bytes": 3672
+    },
+    {
+      "path": "channels/big-numbers/characters/dot.md",
+      "role": "channel",
+      "sha256": "867cd20dd0b8312bc34ac88fb9929bba5988fbe00f6a2edff398b21b50e6082e",
+      "bytes": 2907
+    },
+    {
+      "path": "channels/big-numbers/characters/dot/model.json",
+      "role": "channel",
+      "sha256": "dc2adf3cacfe2bfc7e085a412e8b794592b35de1e9fb31455cd85abe9d7e32b9",
+      "bytes": 1041
+    },
+    {
+      "path": "channels/big-numbers/learnings.md",
+      "role": "channel",
+      "sha256": "441ef09fab12a217d91a54ace4bd7f7834a8e0f13c2170d4ed28992dfa919bd0",
+      "bytes": 254
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-storybook/SKILL.md",
+      "role": "skill",
+      "sha256": "bbaba0d4a64202261d6b5cdd8196edde2cab68b264107c5cde8ca3e7bb08a5d6",
+      "bytes": 8549
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "ce0bda8a5cf7a4f460eb273ca70aaa11709f954ece429df435f630735df4aeb5",
+      "bytes": 192
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/big-numbers/episodes/2026-10-15-a-billion-seconds/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel big-numbers --series bigger-than-you-think"
+}

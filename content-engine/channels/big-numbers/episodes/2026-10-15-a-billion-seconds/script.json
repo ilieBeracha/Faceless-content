@@ -1,0 +1,480 @@
+{
+  "schema": "script/v1",
+  "channel": "big-numbers",
+  "series": "bigger-than-you-think",
+  "idea": "a-billion-seconds",
+  "title": "How long is a billion seconds?",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "dot",
+      "voiceover": "A billion seconds. How long is that?",
+      "on_screen_text": "How long is a billion seconds?",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "hills",
+            "camera": "push-in",
+            "character": {
+              "pose": "point",
+              "x": 0.28,
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.68,
+                "text": "1,000,000,000",
+                "scale": 0.9
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "setup",
+      "speaker": "dot",
+      "voiceover": "A million seconds is about eleven and a half days. A billion only sounds a little bigger. A few months, maybe? Let's test it.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "plain",
+            "character": {
+              "pose": "hold",
+              "hold": "clock",
+              "x": 0.32,
+              "expression": "neutral"
+            },
+            "props": [
+              {
+                "type": "calendar",
+                "x": 0.72,
+                "text": "11.5 days"
+              }
+            ]
+          },
+          {
+            "setting": "hills",
+            "camera": "pan-right",
+            "character": {
+              "pose": "shrug",
+              "x": 0.5,
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.2,
+                "scale": 0.72,
+                "text": "1,000,000"
+              },
+              {
+                "type": "sign",
+                "x": 0.8,
+                "scale": 0.72,
+                "text": "1,000,000,000"
+              }
+            ]
+          },
+          {
+            "setting": "room",
+            "character": {
+              "pose": "think",
+              "x": 0.36,
+              "expression": "thinking"
+            },
+            "props": [
+              {
+                "type": "thought",
+                "x": 0.66,
+                "y": 0.2,
+                "text": "months?"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "story",
+      "speaker": "dot",
+      "voiceover": "Start a stopwatch the day you're born. On your first birthday, it reads about thirty-one and a half million. By your tenth, it's passed three hundred million. At twenty-one, it's past six hundred and sixty million. At thirty, it's around nine hundred and forty-seven million. And it still hasn't reached a billion.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "room",
+            "character": {
+              "pose": "point",
+              "x": 0.3,
+              "expression": "happy"
+            },
+            "props": [
+              {
+                "type": "clock",
+                "x": 0.72,
+                "scale": 1.15,
+                "text": "0"
+              }
+            ]
+          },
+          {
+            "setting": "hills",
+            "character": {
+              "pose": "cheer",
+              "x": 0.28,
+              "expression": "happy"
+            },
+            "props": [
+              {
+                "type": "candle",
+                "x": 0.47,
+                "scale": 1.2
+              },
+              {
+                "type": "sign",
+                "x": 0.76,
+                "scale": 0.8,
+                "text": "31.5 million"
+              }
+            ]
+          },
+          {
+            "setting": "beach",
+            "camera": "pan-left",
+            "character": {
+              "pose": "walk",
+              "x": 0.34,
+              "expression": "neutral"
+            },
+            "props": [
+              {
+                "type": "footprints",
+                "x": 0.04,
+                "x2": 0.28,
+                "y": 0.9
+              },
+              {
+                "type": "sign",
+                "x": 0.76,
+                "scale": 0.8,
+                "text": "300,000,000"
+              }
+            ]
+          },
+          {
+            "setting": "city",
+            "time": "dusk",
+            "character": {
+              "pose": "stand",
+              "x": 0.3,
+              "expression": "thinking"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.72,
+                "scale": 0.8,
+                "text": "660,000,000"
+              }
+            ]
+          },
+          {
+            "setting": "plain",
+            "camera": "push-in",
+            "character": {
+              "pose": "facepalm",
+              "x": 0.3,
+              "expression": "worried"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.72,
+                "scale": 0.8,
+                "text": "947 million"
+              }
+            ]
+          },
+          {
+            "setting": "night",
+            "camera": "push-in",
+            "character": {
+              "pose": "look-up",
+              "x": 0.36,
+              "expression": "worried"
+            },
+            "props": [
+              {
+                "type": "clock",
+                "x": 0.72
+              },
+              {
+                "type": "moon",
+                "x": 0.8,
+                "y": 0.14
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "twist",
+      "speaker": "dot",
+      "voiceover": "It finally gets there a few months before your thirty-second birthday. And a trillion seconds? Almost thirty-two thousand years. A trillion seconds ago, nobody on Earth was farming yet.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "hills",
+            "time": "dusk",
+            "camera": "pull-out",
+            "character": {
+              "pose": "cheer",
+              "x": 0.3,
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.68,
+                "text": "1,000,000,000",
+                "scale": 0.9
+              },
+              {
+                "type": "text",
+                "x": 0.5,
+                "y": 0.2,
+                "text": "31.7 years"
+              }
+            ]
+          },
+          {
+            "setting": "plain",
+            "character": {
+              "pose": "shrug",
+              "x": 0.42,
+              "expression": "surprised"
+            },
+            "props": [
+              {
+                "type": "text",
+                "x": 0.5,
+                "y": 0.2,
+                "scale": 0.8,
+                "text": "1,000,000,000,000"
+              }
+            ]
+          },
+          {
+            "setting": "desert",
+            "camera": "push-in",
+            "character": {
+              "pose": "look-up",
+              "x": 0.3,
+              "scale": 0.85,
+              "expression": "surprised"
+            },
+            "props": [
+              {
+                "type": "hourglass",
+                "x": 0.68,
+                "scale": 1.7
+              },
+              {
+                "type": "text",
+                "x": 0.55,
+                "y": 0.2,
+                "text": "31,688 years"
+              }
+            ]
+          },
+          {
+            "setting": "plain",
+            "time": "dusk",
+            "camera": "pan-right",
+            "character": {
+              "pose": "stand",
+              "x": 0.24,
+              "expression": "thinking"
+            },
+            "props": [
+              {
+                "type": "mountain",
+                "x": 0.78,
+                "scale": 1.3
+              },
+              {
+                "type": "tree",
+                "x": 0.55
+              },
+              {
+                "type": "bush",
+                "x": 0.66
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "kicker",
+      "speaker": "dot",
+      "voiceover": "A billion seconds. Longer than you think.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "hills",
+            "camera": "push-in",
+            "character": {
+              "pose": "point",
+              "x": 0.28,
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "sign",
+                "x": 0.68,
+                "text": "1,000,000,000",
+                "scale": 0.9
+              }
+            ]
+          },
+          {
+            "setting": "hills",
+            "camera": "pull-out",
+            "character": {
+              "pose": "wave",
+              "x": 0.5,
+              "expression": "happy"
+            },
+            "props": [
+              {
+                "type": "sun",
+                "x": 0.8
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "happy"
+      }
+    }
+  ],
+  "visuals": {
+    "render-storybook": {
+      "title": "How long is a billion seconds?",
+      "highlight": [
+        "billion seconds"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "A billion is 1,000,000,000 (a thousand million, the short-scale billion used in English today).",
+      "beat": "hook",
+      "source": "https://en.wikipedia.org/wiki/Billion",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "claim": "A million seconds is about eleven and a half days (1,000,000 ÷ 86,400 s per day = 11.57 days).",
+      "beat": "setup",
+      "source": "https://en.wikipedia.org/wiki/Orders_of_magnitude_(time) (1 megasecond ≈ 11.6 days); a day is 86,400 s",
+      "confidence": "high"
+    },
+    {
+      "id": "c3",
+      "claim": "On a first birthday a stopwatch started at birth reads about 31.5 million seconds (one year = 365.25 × 86,400 = 31,557,600 s; 31.5–31.6 million for a 365- or 366-day year).",
+      "beat": "story",
+      "source": "https://en.wikipedia.org/wiki/Julian_year_(astronomy) (365.25 days of 86,400 s = 31,557,600 s)",
+      "confidence": "high",
+      "note": "Shown on screen as \"31.5 million\"."
+    },
+    {
+      "id": "c4",
+      "claim": "By age ten it has passed 300 million seconds (10 × 31,557,600 ≈ 315.6 million).",
+      "beat": "story",
+      "source": "Arithmetic from the Julian-year length: https://en.wikipedia.org/wiki/Julian_year_(astronomy)",
+      "confidence": "high",
+      "note": "Shown on screen as \"300,000,000\" (it has passed that)."
+    },
+    {
+      "id": "c5",
+      "claim": "At age twenty-one it is past 660 million seconds (21 × 31,557,600 ≈ 662.7 million).",
+      "beat": "story",
+      "source": "Arithmetic from the Julian-year length: https://en.wikipedia.org/wiki/Julian_year_(astronomy)",
+      "confidence": "high",
+      "note": "Shown on screen as \"660,000,000\"."
+    },
+    {
+      "id": "c6",
+      "claim": "At age thirty it reads around 947 million seconds (30 × 31,557,600 = 946,728,000).",
+      "beat": "story",
+      "source": "Arithmetic from the Julian-year length: https://en.wikipedia.org/wiki/Julian_year_(astronomy)",
+      "confidence": "high",
+      "note": "Shown on screen as \"947 million\" (946.7 million rounded)."
+    },
+    {
+      "id": "c7",
+      "claim": "A billion seconds is about 31.7 years, so it is reached a few months (about 3.7) before a 32nd birthday.",
+      "beat": "twist",
+      "source": "https://en.wikipedia.org/wiki/Orders_of_magnitude_(time) (1 gigasecond ≈ 31.7 years); 1,000,000,000 ÷ 31,557,600 = 31.69",
+      "confidence": "high",
+      "note": "Leap seconds ignored (27 since 1972 — under half a minute)."
+    },
+    {
+      "id": "c8",
+      "claim": "A trillion seconds is almost thirty-two thousand years (1,000,000,000,000 ÷ 31,557,600 ≈ 31,688 years).",
+      "beat": "twist",
+      "source": "https://en.wikipedia.org/wiki/Orders_of_magnitude_(time) (1 terasecond ≈ 31,700 years)",
+      "confidence": "high",
+      "note": "On screen: \"1,000,000,000,000\" and \"31,688 years\"."
+    },
+    {
+      "id": "c9",
+      "claim": "About 31,700 years ago nobody on Earth was farming yet: farming began about 12,000 years ago, and the earliest known small-scale trial cultivation (Ohalo II, Israel) is about 23,000 years old.",
+      "beat": "twist",
+      "source": "https://en.wikipedia.org/wiki/Neolithic_Revolution ; Snir et al. 2015, PLOS ONE 10(7): e0131422 (Ohalo II, 23,000-year-old trial cultivation)",
+      "confidence": "high",
+      "note": "Even the earliest trial cultivation is ~8,700 years after the trillion-second mark."
+    }
+  ],
+  "pronunciations": {},
+  "publish": {
+    "title": "How long is a billion seconds? #shorts",
+    "description": "A million seconds is about eleven and a half days. A billion? Start a stopwatch the day you're born and find out.",
+    "hashtags": [
+      "#math",
+      "#bignumbers",
+      "#billion",
+      "#time",
+      "#shorts"
+    ]
+  }
+}
