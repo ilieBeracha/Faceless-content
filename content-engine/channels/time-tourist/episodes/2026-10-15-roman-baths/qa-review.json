@@ -1,0 +1,14 @@
+{
+  "render_hash": "6f9701afca1e9f5f73c82fe7fe4f182c843d9ed98bc7eb1f3c0deb044f87dedb",
+  "tone": { "pass": true, "notes": "Casual selfie-vlog voice with real details; jokes are about the experience (no soap), and the enslaved workers are mentioned plainly, not as a joke. Rating lands as a point about Roman life." },
+  "banned_topics": { "pass": true, "notes": "No gore, no jokes about victims, no glorifying; slavery stated factually and briefly." },
+  "visuals": { "pass": true, "notes": "Roman street and bathhouse settings read clearly; selfie shots keep Tilly's face above the caption; signs and lettering legible; background bathers are now varied strangers." },
+  "character": { "pass": true, "notes": "Tilly on-model (red cap, mustard tunic, curly hair, phone) in every scene; mouth follows the voice." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "Selfie shots (hold phone, scale 2.0) at the start and end make the vlog format instantly readable — keep both bookends.",
+    "Crowd scenes sell scale (~1,600 bathers) better than a number alone; use 3–4 background figures.",
+    "Hand-lettered labels inside the bathhouse sit on the vault line; place sky text at y ≤ 0.16 in 'baths' scenes."
+  ]
+}

@@ -1,6 +1,6 @@
 # QA report — Rome's biggest bathhouse, reviewed
 
-**Status: PENDING REVIEW** · episode `2026-10-15-roman-baths` · channel `time-tourist` · series `rated` · 2026-10-15
+**Status: PASS** · episode `2026-10-15-roman-baths` · channel `time-tourist` · series `rated` · 2026-10-15
 
 Checklist: `workflows/qa.md`. Video: `out/time-tourist/2026-10-15-roman-baths.mp4` (not in git).
 
@@ -24,7 +24,10 @@ Checklist: `workflows/qa.md`. Video: `out/time-tourist/2026-10-15-roman-baths.mp
 
 | | Area | Notes |
 |---|---|---|
-| ⏳ | agent review | waiting for `qa-review.json` |
+| ✅ | tone | Casual selfie-vlog voice with real details; jokes are about the experience (no soap), and the enslaved workers are mentioned plainly, not as a joke. Rating lands as a point about Roman life. |
+| ✅ | banned topics | No gore, no jokes about victims, no glorifying; slavery stated factually and briefly. |
+| ✅ | visuals | Roman street and bathhouse settings read clearly; selfie shots keep Tilly's face above the caption; signs and lettering legible; background bathers are now varied strangers. |
+| ✅ | character | Tilly on-model (red cap, mustard tunic, curly hair, phone) in every scene; mouth follows the voice. |
 
 
 ## Sampled frames

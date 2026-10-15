@@ -22,7 +22,7 @@ Review the rendered episode **2026-10-15-roman-baths** against `workflows/qa.md`
 
 ```json
 {
-  "render_hash": "e4a849a9f2f5782e64278da6e52ee07a6d538218d67ab8989bc4b3098a84b43f",
+  "render_hash": "6f9701afca1e9f5f73c82fe7fe4f182c843d9ed98bc7eb1f3c0deb044f87dedb",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
