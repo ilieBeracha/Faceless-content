@@ -9,16 +9,42 @@
         "sha": "d3eade7f8d61539c7f871d2605df935967682e3a168a762473daca703b0c96c5",
         "key": "6034213b204bd032ac56e9ba8387b8ece194fb72770852af848c5d29008b6db6",
         "at": "2026-10-15T18:51:31Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/00-hook-1.mp4",
+        "sha": "26e78a14d9d0670528f4bb6e76762f236f70a1a938973c4b1bf4b88cd36bc50f",
+        "key": "c9ae4126f7d89325382b66093e9988f9cc4206b3d8ed6dd725bb8c82d350a3a1",
+        "at": "2026-10-15T19:30:57Z",
+        "seconds": 4,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Rome's biggest bathhouse. Reviewed.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "01-arrival-1": {
       "still_variant": 0,
-      "clip_variant": 0,
+      "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/01-arrival-1.jpg",
         "sha": "bd191530a79b3cd160a4aa6bb6bf42e661528cbe77fce362b083ca6cfabb4479",
         "key": "707c4a05c673c89a442f4dfc48a69e3a99aa210005e45a523558cc6d5fc5b170",
         "at": "2026-10-15T18:40:32Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/01-arrival-1.mp4",
+        "sha": "6e4c79375159b4bea06b3793bc4186a53a555cee58b43a3e60794d4997a0817b",
+        "key": "155ca1dd124f04a44661b394ef1def6a9437a7453601b4a03c1274e758217f93",
+        "at": "2026-10-15T19:32:03Z",
+        "seconds": 8,
+        "attempts": 2,
+        "speech": {
+          "transcript": "It's around the year two hundred and sixteen, and the Baths of Caracalla are brand new.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "01-arrival-2": {
@@ -29,6 +55,19 @@
         "sha": "42af6cd2673a635308945a3d2586a6d7549954ab4418b1e5fd805b5396e9f88c",
         "key": "0d3c65b869078f886b873a96a65d3cf9982ef00c6c5e06c92dca6d61befeb41a",
         "at": "2026-10-15T18:40:39Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/01-arrival-2.mp4",
+        "sha": "61f6eca024866aa3b438511f7076c2c27cdd92cfceedc8f70e270052b63d69e8",
+        "key": "0ad024fa940ffb5ab45e64d419f09b8c35ceda2d0e61287ed21479355bddad21",
+        "at": "2026-10-15T19:31:52Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Entry costs one tiny coin. And there's room for about sixteen hundred people at once.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-1": {
@@ -39,6 +78,19 @@
         "sha": "9eec11fe42fc8a0764219015506e216664b213782d9bfb629ef5771351393447",
         "key": "2e4d3d824b3c24cdce385cdda35c6aa3f3316a8912cffc3f6a08bcece069f552",
         "at": "2026-10-15T18:40:47Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/02-tour-1.mp4",
+        "sha": "005fe16ef7f77dab912a4aa94f8e6bc84849df4ea495864572eb0e9260182cd2",
+        "key": "21542eea57204356d4551a985eec5b6c1e6a70958733a0e49ed8b508748ec5d9",
+        "at": "2026-10-15T19:32:47Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "First stop, the warm room. Then the hot room, heated by fires under the floor.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "02-tour-2": {
@@ -49,16 +101,42 @@
         "sha": "b67643927cf54925bfa13aeaec0ca74cfaef98cc60af48d52e9043f8585bb11f",
         "key": "a244b80e8d2b2f5451ab7f2c9fcca11d44240183fd13058e0c8cd21692e3c6d1",
         "at": "2026-10-15T18:40:54Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/02-tour-2.mp4",
+        "sha": "e2e7b9c981bec93693e644f4af55985c2a8d4545bb1789bc1cd7cc8c1473d0b8",
+        "key": "40f2550cd656f00cc6187fd4689e1166c1e173d69bbbe5ad606c5bfb2aabae43",
+        "at": "2026-10-15T19:32:58Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Then a cold pool under a ceiling over thirty metres high.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-3": {
       "still_variant": 0,
-      "clip_variant": 0,
+      "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/stills/02-tour-3.jpg",
         "sha": "652c8f48913eb90093ceb4e699528963bd6bc5db0faa7dbddb44ff58b382060a",
         "key": "024f9faad12c6fdea3e5cf7d5fb71fd7758c8371f08cc805241df3b03ddf573b",
         "at": "2026-10-15T18:51:39Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/02-tour-3.mp4",
+        "sha": "cfba9270a79186548d43024df0b90e81ab9d3090cebb572cf8267123de51f7c1",
+        "key": "008dfe68302b4c1c1609fca2126963287443153b52514046656347b1ec6805cb",
+        "at": "2026-10-15T19:34:40Z",
+        "seconds": 6,
+        "attempts": 2,
+        "speech": {
+          "transcript": "Oh, and there's a library. Um, at the baths.",
+          "same_words": true,
+          "differences": "No significant differences, only a filler word 'Um' was added."
+        }
       }
     },
     "03-catch-1": {
@@ -69,6 +147,19 @@
         "sha": "4e38df8bd97109f0d9712f82c73027dbcee86d3250b5aaf6e98b95fbb8d4aa3e",
         "key": "c0d328b850b2bea93a44840c5bb7559670a6690546f064dfd7255a69fc5bd862",
         "at": "2026-10-15T18:41:09Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/03-catch-1.mp4",
+        "sha": "b63c19f23d4ea13a4a675382510a56b674ac03b1683d1be180adf80d4ad3f593",
+        "key": "8fdf8cbf2dffd2598f2b30d77db472ec1662f8e03c2fca1183d8a497f072ff42",
+        "at": "2026-10-15T19:33:42Z",
+        "seconds": 4,
+        "attempts": 1,
+        "speech": {
+          "transcript": "The catch, there's no soap.",
+          "same_words": true,
+          "differences": "None"
+        }
       }
     },
     "03-catch-2": {
@@ -89,6 +180,19 @@
         "sha": "7e5f31c2983bd35e105864e8995be1852f8df3de6287b3b56d7498861de14a23",
         "key": "cbf425697304c71fb495583d8368303e369df45542ca855d00bd5a891afc6096",
         "at": "2026-10-15T18:41:24Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/03-catch-3.mp4",
+        "sha": "430d8a2fd08454b035dea7f623bcb099f7705f69a64a16e9f6851568a5ea4fc2",
+        "key": "0b7a9ca13c7fcb65c7399bb17d2aabdb7fc537af76ed90f1c7bdce8a00155fb8",
+        "at": "2026-10-15T19:35:29Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "And those fires under the floor? Enslaved workers keep them going.",
+          "same_words": true,
+          "differences": "None"
+        }
       }
     },
     "04-rating-1": {
@@ -99,6 +203,19 @@
         "sha": "98d77047743b36f108dab47cf4ad958ed7366d6eaafca903c3e768dc527e432a",
         "key": "5f2bfc3804a0f3978d9a27fbc7d7f08bbda3ef43e074cb41276513f5e8eb6ccd",
         "at": "2026-10-15T18:51:46Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/04-rating-1.mp4",
+        "sha": "a827580cff35220a25207d6d18bffbe8991a303c56f95b8b4962f88d47d532f6",
+        "key": "42811cace62b1307bbbc6233f9a7ce4f27a3939179f1a9230db759de31f29060",
+        "at": "2026-10-15T19:35:35Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Okay, review time. The building gets five out of five. The soap situation gets one.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "04-rating-2": {
@@ -109,6 +226,19 @@
         "sha": "c5ee38a95925dc1012805abe387343d91174b0609a29f14ee7f6b0c20df6ea90",
         "key": "fe20714b0a8271fc4c55543e0fcb0ea4241f45408ee851f001c77c69f8160804",
         "at": "2026-10-15T18:51:53Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/footage/clips/04-rating-2.mp4",
+        "sha": "16e1400c5833ba47e98a078acb56ddf5229e8778a1593d73b2642bc1387cf6cd",
+        "key": "cc8f463b82c976d986b41593cd93ee1260aed32b21348eb12a671b0ee337c7b3",
+        "at": "2026-10-15T19:36:24Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "A gym, a spa and a library for one coin? Rome, I get it.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     }
   },

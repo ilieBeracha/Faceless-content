@@ -121,6 +121,232 @@
       "model": "gemini-2.5-flash-image",
       "usd": 0.039,
       "ok": true
+    },
+    {
+      "at": "2026-10-15T19:30:55Z",
+      "shot": "00-hook-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 4,
+      "usd": 0.4,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:30:57Z",
+      "shot": "00-hook-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:31:05Z",
+      "shot": "01-arrival-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:31:08Z",
+      "shot": "01-arrival-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "wrong words: The word 'brand' is repeated in the transcript ('brand brand new') where it only appears once in the intended line ('brand new')."
+    },
+    {
+      "at": "2026-10-15T19:31:49Z",
+      "shot": "01-arrival-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:31:52Z",
+      "shot": "01-arrival-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:32:00Z",
+      "shot": "01-arrival-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:32:03Z",
+      "shot": "01-arrival-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:32:44Z",
+      "shot": "02-tour-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:32:47Z",
+      "shot": "02-tour-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:32:55Z",
+      "shot": "02-tour-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:32:58Z",
+      "shot": "02-tour-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:33:29Z",
+      "shot": "02-tour-3",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:33:34Z",
+      "shot": "02-tour-3",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "wrong words: The transcription includes an extra phrase 'There's a library' after the first 'Oh, and there's a library.' and before 'At the baths.' which is not present in the intended line."
+    },
+    {
+      "at": "2026-10-15T19:33:39Z",
+      "shot": "03-catch-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 4,
+      "usd": 0.4,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:33:42Z",
+      "shot": "03-catch-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:34:33Z",
+      "shot": "03-catch-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": false,
+      "note": "Veo returned no video (filtered: We encountered an issue with the audio for your prompt, which means we could not create your video. This can sometimes happen due to our safety filters or other proces"
+    },
+    {
+      "at": "2026-10-15T19:34:36Z",
+      "shot": "02-tour-3",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:34:40Z",
+      "shot": "02-tour-3",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:35:25Z",
+      "shot": "03-catch-3",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:35:29Z",
+      "shot": "03-catch-3",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:35:32Z",
+      "shot": "04-rating-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:35:35Z",
+      "shot": "04-rating-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-15T19:36:21Z",
+      "shot": "04-rating-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-15T19:36:24Z",
+      "shot": "04-rating-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
     }
   ]
 }
