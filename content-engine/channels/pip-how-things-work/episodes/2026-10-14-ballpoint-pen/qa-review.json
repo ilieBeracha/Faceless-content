@@ -1,0 +1,14 @@
+{
+  "render_hash": "179d47dba535e848504459ca3446f415e9b1bf4ed74f7f537eeb63bb130462c8",
+  "tone": { "pass": true, "notes": "Fast, curious and a little cheeky; the catchphrase lands once in the fly-in; the 'the ball is the lid' payoff is clear for a general audience." },
+  "banned_topics": { "pass": true, "notes": "An everyday object and how it works; nothing near the banned list." },
+  "visuals": { "pass": true, "notes": "Explode view separates barrel, ink tube and tip clearly; every label fits its box and points at the right part; captions never touch each other; headlines stay inside the safe area." },
+  "character": { "pass": true, "notes": "Pip matches the model (chrome orb, one big eye, antenna, LED mouth) and the mouth follows the voice; expressions fit the lines." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "Keep callout labels short (≤ 14 characters) — longer ones get auto-shrunk and read small on a phone.",
+    "The fly-in to the tip followed by a focus on the ball explains 'how it works' better than labels alone; reuse fly-in → focus for the key part.",
+    "A one-line physical payoff ('the ball is the lid') works as the ending; aim for one per object."
+  ]
+}

@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-15T13:38:24Z",
-  "render_hash": "4033f02111099b560842c149560b724723b1b33a108454506fec4ffa7837aaec",
+  "checked_at": "2026-10-15T13:50:24Z",
+  "render_hash": "179d47dba535e848504459ca3446f415e9b1bf4ed74f7f537eeb63bb130462c8",
   "checks": [
     {
       "id": "format",
@@ -41,8 +41,8 @@
     {
       "id": "cut-off",
       "label": "Nothing cut off",
-      "pass": false,
-      "detail": "captions:text-overflow (13 frames)"
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
     },
     {
       "id": "captions-sync",

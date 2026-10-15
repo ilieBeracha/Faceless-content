@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "pip-how-things-work",
   "series": "inside-it",
-  "created": "2026-10-15T13:38:25Z",
+  "created": "2026-10-15T13:50:04Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -45,8 +45,8 @@
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "bb0726c1bebe033d39896d70db8a92a4c1452f9d84ff5e71946b49abba28c3ae",
-      "bytes": 808
+      "sha256": "68808472fa996c38aece7c9afeccb04e6d48ed848389b2a7385a037c4dbe71d1",
+      "bytes": 822
     }
   ],
   "outputs": [

@@ -1,0 +1,41 @@
+{
+  "status": "not-posted",
+  "$comment": "Posting is not built yet. Nothing here is sent anywhere.",
+  "title": "Why doesn't your pen leak? 🖊️ Inside It",
+  "description": "Pip flies inside a ballpoint pen to find the tiny part that stops it from leaking. Spoiler: it's a 1 mm ball.",
+  "hashtags": [
+    "#howitworks",
+    "#science",
+    "#ballpointpen",
+    "#insideit"
+  ],
+  "video": "out/pip-how-things-work/2026-10-14-ballpoint-pen.mp4",
+  "ai_disclosure": {
+    "ai_generated": true,
+    "label_as_ai_generated": true,
+    "details": "Script drafted by an AI agent, voice synthesised (Kokoro TTS), visuals rendered procedurally. Facts reviewed by a person.",
+    "platforms": {
+      "youtube-shorts": {
+        "label_required": "check at posting time",
+        "how": "YouTube Studio > 'Altered or synthetic content'. Required for realistic content; optional (but allowed) for clearly animated content.",
+        "labeled": false
+      },
+      "tiktok": {
+        "label_required": "check at posting time",
+        "how": "Post settings > 'AI-generated content' toggle. Required when content is significantly AI-generated and realistic.",
+        "labeled": false
+      },
+      "instagram-reels": {
+        "label_required": "check at posting time",
+        "how": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio.",
+        "labeled": false
+      }
+    }
+  },
+  "made_for_kids": false,
+  "platforms": [
+    "youtube-shorts",
+    "tiktok",
+    "instagram-reels"
+  ]
+}

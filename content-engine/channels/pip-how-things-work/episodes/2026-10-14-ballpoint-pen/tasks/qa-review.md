@@ -22,7 +22,7 @@ Review the rendered episode **2026-10-14-ballpoint-pen** against `workflows/qa.m
 
 ```json
 {
-  "render_hash": "4033f02111099b560842c149560b724723b1b33a108454506fec4ffa7837aaec",
+  "render_hash": "179d47dba535e848504459ca3446f415e9b1bf4ed74f7f537eeb63bb130462c8",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -630,7 +630,7 @@ objects it hasn't opened yet (it's very long).
 - [x] Hook: first line lands in 2 s: "Why doesn't your pen leak?" ends at 1.34s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.07s
 - [x] Text inside safe areas: 9 text elements checked on every frame (3466 measurements)
-- [ ] Nothing cut off: captions:text-overflow (13 frames)
+- [x] Nothing cut off: no element leaves the frame or overflows its box
 - [x] Captions in sync: 115 words; text matches script: yes; highlight off on 0/1090 frames; words over silent audio: 0
 - [x] Loudness: -14.9 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
