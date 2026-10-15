@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-10-14-ballpoint-pen",
+  "purpose": "qa-review",
+  "channel": "pip-how-things-work",
+  "series": "inside-it",
+  "created": "2026-10-15T12:11:40Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "a5b872bc9825bd6e7e45206c3a3edf4d60e90f29dceffc35fe6605fb64393240",
+      "bytes": 2291
+    },
+    {
+      "path": "channels/pip-how-things-work/channel.md",
+      "role": "channel",
+      "sha256": "f9d1c89f63a41a76d3bd7de48579ef801f8c032de47f550e209591f6e2947d78",
+      "bytes": 3503
+    },
+    {
+      "path": "channels/pip-how-things-work/series/inside-it.md",
+      "role": "channel",
+      "sha256": "076ea747b886a88528068d82f23ba81a5b1ec0c9eda102aac5eb0dc363f2435d",
+      "bytes": 2063
+    },
+    {
+      "path": "channels/pip-how-things-work/characters/pip.md",
+      "role": "channel",
+      "sha256": "cb159370a108f819a4d10e7437279ad807dfcd4fbf88478ecd27ae287bdff824",
+      "bytes": 1864
+    },
+    {
+      "path": "channels/pip-how-things-work/episodes/2026-10-14-ballpoint-pen/script.json",
+      "role": "channel",
+      "sha256": "7e685c940e4a399e75ea915c9ac57e82a564be5401fe5eec1e93fbabbeb1ee10",
+      "bytes": 8409
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "8006b5f2dae908a8aea73aa376cf7227fe5f20b471d3cb52a6d26d9f142ac416",
+      "bytes": 976
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/pip-how-things-work/episodes/2026-10-14-ballpoint-pen/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel pip-how-things-work --series inside-it"
+}
