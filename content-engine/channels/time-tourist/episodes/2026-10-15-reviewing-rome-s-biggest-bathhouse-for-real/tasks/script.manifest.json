@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real",
+  "purpose": "script",
+  "channel": "time-tourist",
+  "series": "rated-live",
+  "created": "2026-10-15T17:23:21Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "aa5f07cb2e49ea48e2a6a613bab37af202f63de3503429e58933bfec6e69d2bf",
+      "bytes": 3699
+    },
+    {
+      "path": "channels/time-tourist/series/rated-live.md",
+      "role": "channel",
+      "sha256": "d2bc8e9cdd237fdd8c23b8885c400ffb0b64abd22881f5f17154c68fe1aa770b",
+      "bytes": 3412
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly-live.md",
+      "role": "channel",
+      "sha256": "e7b38f75a185ecf86fcec8d40e6ed3738e0b0d371d132c422b36f76a1c65c026",
+      "bytes": 2610
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly-live/model.json",
+      "role": "channel",
+      "sha256": "687bca35d7735ebf91fe85a328981da275769b21a1eea88ab0bc586e29f535ba",
+      "bytes": 952
+    },
+    {
+      "path": "channels/time-tourist/learnings.md",
+      "role": "channel",
+      "sha256": "9b25d3d98f8550ff41de1bed9700f4d6d46c42347b92d0fa8a245d9f72dda4ad",
+      "bytes": 712
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-ai-video/SKILL.md",
+      "role": "skill",
+      "sha256": "0e521940029b945c390193673e6ffc581d74bd60eadae2653cbf9eb8e4da4bb2",
+      "bytes": 6438
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "b84b4ca36ab1ad0bb925d1bb730af4b032295bfa553509d2050e292eb6c4f863",
+      "bytes": 266
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series rated-live"
+}

@@ -1,0 +1,281 @@
+{
+  "schema": "script/v1",
+  "channel": "time-tourist",
+  "series": "rated-live",
+  "idea": "reviewing-rome-s-biggest-bathhouse-for-real",
+  "title": "Rome's biggest bathhouse, reviewed (live action)",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly-live",
+      "voiceover": "Rome's biggest bathhouse. Reviewed.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "selfie",
+            "place": "outside the brand-new Baths of Caracalla: towering red-brick walls faced with marble, a huge arched entrance, people in tunics streaming in under bright summer sun",
+            "action": "grinning into the phone with the giant entrance behind her",
+            "line": "Rome's biggest bathhouse. Reviewed.",
+            "sound": "a busy crowd, footsteps on stone",
+            "expression": "excited"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      },
+      "on_screen_text": "Rome's biggest bathhouse"
+    },
+    {
+      "id": "arrival",
+      "speaker": "tilly-live",
+      "voiceover": "It's around the year two hundred and sixteen, and the Baths of Caracalla are brand new. Entry costs one tiny coin. And there's room for about sixteen hundred people at once.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "selfie-walk",
+            "place": "walking through a vast arched entrance hall with polished marble floors, painted walls and tall bronze doors",
+            "action": "walking and glancing up at the ceiling",
+            "line": "It's around the year two hundred and sixteen, and the Baths of Caracalla are brand new.",
+            "others": "bathers in tunics walking past",
+            "sound": "echoing footsteps and voices",
+            "expression": "curious"
+          },
+          {
+            "camera": "wide",
+            "place": "the edge of an enormous open courtyard surrounded by colonnades, crowded with hundreds of bathers",
+            "action": "holding up a tiny bronze coin between two fingers toward the camera",
+            "line": "Entry costs one tiny coin. And there's room for about sixteen hundred people at once.",
+            "others": "crowds of bathers in the courtyard behind her",
+            "sound": "a crowd murmuring",
+            "expression": "surprised"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "tour",
+      "speaker": "tilly-live",
+      "voiceover": "First stop, the warm room. Then the hot room, heated by fires under the floor. Then a cold pool under a ceiling over thirty metres high. Oh, and there's a library. At the baths.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "selfie",
+            "place": "a steamy warm room with marble benches, a mosaic floor and soft light from high windows, then a doorway glowing with heat",
+            "action": "fanning her face with her hand",
+            "line": "First stop, the warm room. Then the hot room, heated by fires under the floor.",
+            "others": "a few bathers relaxing on benches",
+            "sound": "soft voices, dripping water",
+            "expression": "excited"
+          },
+          {
+            "camera": "over-shoulder",
+            "place": "the enormous cold hall: a wide pool of clear water, giant marble columns and a vaulted ceiling soaring far overhead",
+            "action": "turning back to the lens from the pool's edge, pointing up",
+            "line": "Then a cold pool under a ceiling over thirty metres high.",
+            "others": "swimmers in the pool",
+            "sound": "splashing water echoing in a huge hall",
+            "expression": "surprised"
+          },
+          {
+            "camera": "selfie",
+            "place": "a quiet library room inside the baths: wall niches stacked with rolled papyrus scrolls, people reading on stone benches",
+            "action": "whispering, eyebrows raised, glancing at the scrolls",
+            "line": "Oh, and there's a library. At the baths.",
+            "others": "two readers unrolling scrolls",
+            "sound": "near silence, pages rustling",
+            "expression": "surprised"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "catch",
+      "speaker": "tilly-live",
+      "voiceover": "The catch: there's no soap. You rub olive oil on your skin, then scrape it off with a curved metal strigil. And those fires under the floor? Enslaved workers keep them going.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "selfie",
+            "place": "a changing room with stone benches and rows of wall niches for clothes",
+            "action": "looking around, then back at the lens deadpan",
+            "line": "The catch: there's no soap.",
+            "sound": "distant splashing",
+            "expression": "unimpressed"
+          },
+          {
+            "camera": "selfie",
+            "place": "beside a marble bench in a warm room, a small glass flask of olive oil on the bench",
+            "action": "holding up a curved bronze scraping tool and miming scraping her forearm",
+            "line": "You rub olive oil on your skin, then scrape it off with a curved metal strigil.",
+            "sound": "soft echoing voices",
+            "expression": "unimpressed"
+          },
+          {
+            "camera": "selfie",
+            "place": "a dim brick service tunnel beneath the baths, the orange glow of a wood-fired furnace mouth, stacks of firewood",
+            "action": "speaking quietly and seriously",
+            "line": "And those fires under the floor? Enslaved workers keep them going.",
+            "others": "a worker in a plain tunic carrying firewood, far in the background, face not visible",
+            "sound": "the low roar of a fire",
+            "expression": "gentle"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "unimpressed"
+      }
+    },
+    {
+      "id": "rating",
+      "speaker": "tilly-live",
+      "voiceover": "Okay, review time: the building gets five out of five. The soap situation gets one. A gym, a spa and a library for one coin? Rome, I get it.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "selfie",
+            "place": "back outside on the sunny stone steps of the baths, the massive building behind her",
+            "action": "counting on her fingers",
+            "line": "Okay, review time: the building gets five out of five. The soap situation gets one.",
+            "sound": "a busy crowd",
+            "expression": "excited"
+          },
+          {
+            "camera": "selfie-walk",
+            "place": "walking along a busy Roman street at golden hour, the huge baths behind her",
+            "action": "smiling, a little wistful",
+            "line": "A gym, a spa and a library for one coin? Rome, I get it.",
+            "others": "people in tunics walking by",
+            "sound": "street noise, carts on stone",
+            "expression": "neutral"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-ai-video": {
+      "world": "ancient Rome, around AD 216, the newly opened Baths of Caracalla on a hot, bright summer day",
+      "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field, true-to-life colour"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Around AD 216 the Baths of Caracalla were Rome's largest public baths (the later Baths of Diocletian, about AD 306, became bigger).",
+      "beat": "hook",
+      "source": "https://en.wikipedia.org/wiki/Baths_of_Caracalla",
+      "confidence": "high",
+      "note": "The video is set in AD 216, so 'biggest' is true for that moment. On screen: the hook headline \"Rome's biggest bathhouse\"."
+    },
+    {
+      "id": "c2",
+      "claim": "The Baths of Caracalla were built about AD 212–216 and opened around AD 216.",
+      "beat": "arrival",
+      "source": "https://en.wikipedia.org/wiki/Baths_of_Caracalla ; https://madainproject.com/baths_of_caracalla",
+      "confidence": "high",
+      "note": "Sources give completion as 216 or 216/217, so the script says 'around'."
+    },
+    {
+      "id": "c3",
+      "claim": "Entry to Roman public baths usually cost a quadrans, the smallest Roman coin (and was sometimes free).",
+      "beat": "arrival",
+      "source": "https://scienceinsights.org/what-was-a-roman-bath-public-bathing-in-ancient-rome/ ; PBS NOVA 'Roman Baths' (pbs.org/wgbh/nova/lostempires/roman)",
+      "confidence": "medium",
+      "note": "General Roman practice, not a recorded price list for Caracalla's baths; said as 'one tiny coin'."
+    },
+    {
+      "id": "c4",
+      "claim": "The Baths of Caracalla could hold about 1,600 bathers at once.",
+      "beat": "arrival",
+      "source": "https://en.wikipedia.org/wiki/Baths_of_Caracalla ; https://www.ancient-history-sites.com/sites/baths-of-caracalla/",
+      "confidence": "high",
+      "note": "Said as 'about sixteen hundred'."
+    },
+    {
+      "id": "c5",
+      "claim": "Bathers moved between a warm room (tepidarium), a hot room (caldarium) and a cold pool (frigidarium/natatio).",
+      "beat": "tour",
+      "source": "https://www.pbs.org/wgbh/nova/lostempires/roman/tepidarium.html ; https://en.wikipedia.org/wiki/Caldarium",
+      "confidence": "high",
+      "note": "The order varied by person and bath; the script gives one common route."
+    },
+    {
+      "id": "c6",
+      "claim": "Hot rooms were heated by a hypocaust: furnace fires sending hot air under raised floors.",
+      "beat": "tour",
+      "source": "https://en.wikipedia.org/wiki/Caldarium ; https://www.vita-romae.com/hypocaust-system.html",
+      "confidence": "high"
+    },
+    {
+      "id": "c7",
+      "claim": "The main cold hall (frigidarium) was roofed by vaults about 32.9 metres high.",
+      "beat": "tour",
+      "source": "https://en.wikipedia.org/wiki/Baths_of_Caracalla (frigidarium under three 32.9 m groin vaults)",
+      "confidence": "high",
+      "note": "Said as 'over thirty metres'."
+    },
+    {
+      "id": "c8",
+      "claim": "The Baths of Caracalla complex included public libraries.",
+      "beat": "tour",
+      "source": "https://en.wikipedia.org/wiki/Baths_of_Caracalla (libraries in the east and west exedrae)",
+      "confidence": "high"
+    },
+    {
+      "id": "c9",
+      "claim": "Romans did not use soap at the baths; they rubbed olive oil on the skin and scraped it off with a curved metal strigil.",
+      "beat": "catch",
+      "source": "https://scienceinsights.org/what-was-a-roman-bath-public-bathing-in-ancient-rome/ ; https://www.thearchaeologist.org/blog/roman-bathing-culture-socializing-and-hygiene-in-the-ancient-world",
+      "confidence": "high",
+      "note": "Said as 'a curved metal strigil'."
+    },
+    {
+      "id": "c10",
+      "claim": "The bath furnaces were tended by enslaved workers.",
+      "beat": "catch",
+      "source": "https://en.wikipedia.org/wiki/Caldarium (hypocaust furnace tended by slaves)",
+      "confidence": "high"
+    },
+    {
+      "id": "c11",
+      "claim": "The complex had exercise courts (palaestrae) as well as baths and libraries — a gym, spa and library in one.",
+      "beat": "rating",
+      "source": "https://en.wikipedia.org/wiki/Baths_of_Caracalla (two palaestrae)",
+      "confidence": "high",
+      "note": "The ratings (5/5, 1/5) are Tilly's opinion, not claims."
+    }
+  ],
+  "pronunciations": {},
+  "publish": {
+    "title": "I reviewed Rome's biggest bathhouse (AD 216) #shorts",
+    "description": "A gym, a spa and a library for one tiny coin — but no soap. Tilly reviews the Baths of Caracalla.",
+    "hashtags": [
+      "#history",
+      "#ancientrome",
+      "#timetravel",
+      "#romanbaths",
+      "#shorts"
+    ]
+  }
+}
