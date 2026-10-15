@@ -83,11 +83,11 @@ Run it again after each stop; it continues from the first unfinished step.
 | It prints | You do |
 |---|---|
 | `⏸ Waiting for the agent` | The agent opens the task file it names (e.g. `…/tasks/script.md`), writes the output, re-runs the command. |
-| `✋ STOP — human approval needed` | Read `…/factcheck.md` (every claim + source + the full transcript), then `./engine approve factcheck --channel <slug> --episode <id> --by "Your Name"`, or `./engine reject factcheck … --reason "…"`. |
+| `✋ STOP — human approval needed` | Read `…/factcheck.md` (every claim + source + the full transcript), then `./engine approve factcheck --channel <slug> --episode <id> --by "Your Name"`, or `./engine reject factcheck … --reason "…"`. Realistic series stop once more after the stills: read `…/footage/storyboard.md`, then `./engine approve footage … --by "Your Name"`. |
 | `✔ done` | Watch `out/<channel>/<episode>.mp4`; read `qa-report.md` and `publish.json` in the episode folder. |
 
 Options: `--idea <id>` (pick the idea), `--new` (another episode while one is open), `--episode <id>`,
-`--redo voice,render,qa`.
+`--redo footage,voice,render,qa`.
 
 ### Look around
 
@@ -107,7 +107,7 @@ task and re-runs the command. You can simply say "make the next episode for big-
 
 `--llm anthropic` makes the engine call the Claude API itself instead (paid, see below; needs `ANTHROPIC_API_KEY`).
 
-## The two example channels
+## The example channels
 
 | | Pip: How Things Work | Big Numbers, Tiny Stories |
 |---|---|---|
@@ -116,6 +116,11 @@ task and re-runs the command. You can simply say "make the next episode for big-
 | Series | *Inside It* (35–50 s): fly into the object, explode view, labelled parts | *Bigger Than You Think* (40–55 s): one number, one escalating story |
 | Look | `render-3d-explainer` + `render-talking-character`, highlighted caption pages | `render-storybook`: hand-drawn scenes, title bar, one-word captions |
 | Voice | Kokoro `af_bella`, faster, pitched up | Kokoro `af_heart`, calm |
+
+Also in `channels/`: **Cosmic Footnotes** (Ori explains small space findings that turned out to matter, storybook
+style) and **Time Tourist** (Tilly reviews moments in history like a travel vlogger), with two series. *Rated* is
+storybook. *Rated (live action)* uses `render-ai-video`: realistic footage of a photoreal, fictional Tilly.
+Big Numbers is paused.
 
 ## Costs and options
 
@@ -143,6 +148,29 @@ a reference image of Dot so the character stays the same):
 | Gemini 2.5 Flash Image | $0.039 ($0.0195 in batch) | ≈ $0.30–0.65 |
 | OpenAI GPT Image | ≈ $0.005–0.21 depending on size and quality | ≈ $0.10–3.40 |
 | FLUX.2 [pro] (Black Forest Labs) | ≈ $0.03 for the first megapixel | ≈ $0.50–0.60 |
+
+### Realistic video (`render-ai-video`, chosen: Google Veo 3.1 via the Gemini API)
+
+A photoreal, fictional presenter filmed selfie-vlog style, speaking every line on camera (voice and lip-sync
+come from the video model). It needs `GEMINI_API_KEY` (Google AI Studio, billing on) in `.env` or the
+environment. Model ids and rates are in `engine.config.json → ai_video`; `./engine ai-video models` lists
+the models your key can use.
+
+| Item | Price | Per 45-s episode (≈ 11 shots, ≈ 74 s of clips) |
+|---|---|---|
+| Veo 3.1 Fast, 720p (in use) | ≈ $0.10 per second of clip | ≈ $7.40 |
+| Veo 3.1 (standard) | ≈ $0.40 per second | ≈ $30 (over the default cap) |
+| First frame per shot (Gemini 2.5 Flash Image) | $0.039 per image | ≈ $0.45 |
+| Speech check per clip (Gemini Flash) | < $0.01 | ≈ $0.02 |
+| Face candidates for a new character (once) | $0.039 each, capped at $2 per character | ≈ $0.16 |
+
+Safeguards: each episode has a budget (`budget_per_episode_usd`, default **$25**, retries included). The
+engine stops and asks before going over (`./engine ai-video budget … --by <you>` raises it). It also stops
+after the stills so a person can approve the look and the cost before any video is generated
+(`./engine approve footage`). Every paid call is logged in `footage/ledger.json`
+(`./engine ai-video ledger`). A clip that says the wrong words is regenerated once. Replaced stills and
+clips are kept in `footage/rejected/`. Clips are committed to git (≈ 2–5 MB each) so paid footage is never
+lost. `ENGINE_AI_VIDEO_FAKE=1` runs the whole flow with local placeholders for free; QA refuses those.
 
 ### Script writing (LLM)
 

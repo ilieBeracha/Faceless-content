@@ -40,7 +40,9 @@ export function useQaProbe(enabled: boolean, ref: RefObject<HTMLElement | null>,
       y: Math.round(r.top),
       w: Math.round(r.width),
       h: Math.round(r.height),
-      overflow: el.scrollWidth > el.clientWidth + tol || el.scrollHeight > el.clientHeight + tol,
+      // Captions have no fixed height: only a line wider than its box is a real overflow (tall fonts such as
+      // Anton report glyph ascent above the line box as vertical "overflow", but nothing is clipped).
+      overflow: el.scrollWidth > el.clientWidth + tol || (kind !== "caption" && el.scrollHeight > el.clientHeight + tol),
       ...(word !== undefined ? { word } : {}),
     };
     console.log(QA_PREFIX + JSON.stringify(record));
