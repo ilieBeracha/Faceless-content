@@ -1,0 +1,15 @@
+{
+  "output": "out/time-tourist/2026-10-15-roman-baths.mp4",
+  "rendered_at": "2026-10-15T15:21:30Z",
+  "seconds_to_render": 728,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1383,
+  "render_skills": [
+    "render-storybook"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "e4a849a9f2f5782e64278da6e52ee07a6d538218d67ab8989bc4b3098a84b43f"
+}

@@ -5,7 +5,7 @@
   "idea": "roman-baths",
   "title": "Rome's biggest bathhouse, reviewed",
   "created": "2026-10-15T15:08:28Z",
-  "updated": "2026-10-15T15:09:10Z",
+  "updated": "2026-10-15T15:21:30Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -26,6 +26,11 @@
       "status": "done",
       "at": "2026-10-15T15:09:10Z",
       "note": "46.10s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-10-15T15:21:30Z",
+      "note": "out/time-tourist/2026-10-15-roman-baths.mp4"
     }
   }
 }
