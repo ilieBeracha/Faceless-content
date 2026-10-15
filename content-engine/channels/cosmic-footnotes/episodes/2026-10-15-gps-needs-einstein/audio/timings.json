@@ -1,0 +1,968 @@
+{
+  "version": 2,
+  "hash": "9581fd94ad5b43ced7e58622eadb96f601be34c272f8998cd249066b7a7d1cb9",
+  "fps": 30,
+  "frames": 1356,
+  "duration": 45.2,
+  "speech_start": 0.19,
+  "speech_end": 44.179,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Your",
+      "start": 0.19,
+      "end": 0.34
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "phone",
+      "start": 0.415,
+      "end": 0.69
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "needs",
+      "start": 0.74,
+      "end": 0.99
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "Einstein.",
+      "start": 1.04,
+      "end": 1.764
+    },
+    {
+      "i": 4,
+      "beat": "clue",
+      "text": "Your",
+      "start": 2.297,
+      "end": 2.397
+    },
+    {
+      "i": 5,
+      "beat": "clue",
+      "text": "map",
+      "start": 2.447,
+      "end": 2.647
+    },
+    {
+      "i": 6,
+      "beat": "clue",
+      "text": "finds",
+      "start": 2.697,
+      "end": 2.972
+    },
+    {
+      "i": 7,
+      "beat": "clue",
+      "text": "you",
+      "start": 2.997,
+      "end": 3.072
+    },
+    {
+      "i": 8,
+      "beat": "clue",
+      "text": "using",
+      "start": 3.122,
+      "end": 3.372
+    },
+    {
+      "i": 9,
+      "beat": "clue",
+      "text": "satellites",
+      "start": 3.422,
+      "end": 3.947
+    },
+    {
+      "i": 10,
+      "beat": "clue",
+      "text": "about",
+      "start": 3.972,
+      "end": 4.172
+    },
+    {
+      "i": 11,
+      "beat": "clue",
+      "text": "twenty",
+      "start": 4.222,
+      "end": 4.497
+    },
+    {
+      "i": 12,
+      "beat": "clue",
+      "text": "thousand",
+      "start": 4.547,
+      "end": 4.897
+    },
+    {
+      "i": 13,
+      "beat": "clue",
+      "text": "kilometres",
+      "start": 4.947,
+      "end": 5.397
+    },
+    {
+      "i": 14,
+      "beat": "clue",
+      "text": "up.",
+      "start": 5.447,
+      "end": 6.022
+    },
+    {
+      "i": 15,
+      "beat": "clue",
+      "text": "Each",
+      "start": 6.197,
+      "end": 6.422
+    },
+    {
+      "i": 16,
+      "beat": "clue",
+      "text": "one",
+      "start": 6.447,
+      "end": 6.622
+    },
+    {
+      "i": 17,
+      "beat": "clue",
+      "text": "carries",
+      "start": 6.672,
+      "end": 7.022
+    },
+    {
+      "i": 18,
+      "beat": "clue",
+      "text": "an",
+      "start": 7.047,
+      "end": 7.097
+    },
+    {
+      "i": 19,
+      "beat": "clue",
+      "text": "atomic",
+      "start": 7.147,
+      "end": 7.522
+    },
+    {
+      "i": 20,
+      "beat": "clue",
+      "text": "clock.",
+      "start": 7.572,
+      "end": 8.172
+    },
+    {
+      "i": 21,
+      "beat": "clue",
+      "text": "And",
+      "start": 8.297,
+      "end": 8.372
+    },
+    {
+      "i": 22,
+      "beat": "clue",
+      "text": "up",
+      "start": 8.397,
+      "end": 8.522
+    },
+    {
+      "i": 23,
+      "beat": "clue",
+      "text": "there,",
+      "start": 8.572,
+      "end": 8.772
+    },
+    {
+      "i": 24,
+      "beat": "clue",
+      "text": "those",
+      "start": 8.822,
+      "end": 9.022
+    },
+    {
+      "i": 25,
+      "beat": "clue",
+      "text": "clocks",
+      "start": 9.072,
+      "end": 9.347
+    },
+    {
+      "i": 26,
+      "beat": "clue",
+      "text": "run",
+      "start": 9.397,
+      "end": 9.572
+    },
+    {
+      "i": 27,
+      "beat": "clue",
+      "text": "fast.",
+      "start": 9.647,
+      "end": 10.096
+    },
+    {
+      "i": 28,
+      "beat": "story",
+      "text": "Einstein",
+      "start": 10.556,
+      "end": 10.556
+    },
+    {
+      "i": 29,
+      "beat": "story",
+      "text": "said",
+      "start": 10.556,
+      "end": 10.556
+    },
+    {
+      "i": 30,
+      "beat": "story",
+      "text": "time",
+      "start": 10.629,
+      "end": 11.179
+    },
+    {
+      "i": 31,
+      "beat": "story",
+      "text": "runs",
+      "start": 11.229,
+      "end": 11.379
+    },
+    {
+      "i": 32,
+      "beat": "story",
+      "text": "faster",
+      "start": 11.429,
+      "end": 11.754
+    },
+    {
+      "i": 33,
+      "beat": "story",
+      "text": "where",
+      "start": 11.804,
+      "end": 12.029
+    },
+    {
+      "i": 34,
+      "beat": "story",
+      "text": "gravity",
+      "start": 12.079,
+      "end": 12.454
+    },
+    {
+      "i": 35,
+      "beat": "story",
+      "text": "is",
+      "start": 12.504,
+      "end": 12.604
+    },
+    {
+      "i": 36,
+      "beat": "story",
+      "text": "weaker.",
+      "start": 12.654,
+      "end": 13.054
+    },
+    {
+      "i": 37,
+      "beat": "story",
+      "text": "Up",
+      "start": 13.104,
+      "end": 13.204
+    },
+    {
+      "i": 38,
+      "beat": "story",
+      "text": "there,",
+      "start": 13.254,
+      "end": 14.129
+    },
+    {
+      "i": 39,
+      "beat": "story",
+      "text": "that",
+      "start": 14.329,
+      "end": 14.479
+    },
+    {
+      "i": 40,
+      "beat": "story",
+      "text": "adds",
+      "start": 14.529,
+      "end": 14.929
+    },
+    {
+      "i": 41,
+      "beat": "story",
+      "text": "about",
+      "start": 15.029,
+      "end": 15.204
+    },
+    {
+      "i": 42,
+      "beat": "story",
+      "text": "forty-five",
+      "start": 15.254,
+      "end": 15.504
+    },
+    {
+      "i": 43,
+      "beat": "story",
+      "text": "millionths",
+      "start": 15.529,
+      "end": 15.804
+    },
+    {
+      "i": 44,
+      "beat": "story",
+      "text": "of",
+      "start": 15.879,
+      "end": 16.479
+    },
+    {
+      "i": 45,
+      "beat": "story",
+      "text": "a",
+      "start": 16.529,
+      "end": 16.929
+    },
+    {
+      "i": 46,
+      "beat": "story",
+      "text": "second",
+      "start": 16.954,
+      "end": 17.054
+    },
+    {
+      "i": 47,
+      "beat": "story",
+      "text": "a",
+      "start": 17.104,
+      "end": 17.429
+    },
+    {
+      "i": 48,
+      "beat": "story",
+      "text": "day.",
+      "start": 17.454,
+      "end": 17.479
+    },
+    {
+      "i": 49,
+      "beat": "story",
+      "text": "Their",
+      "start": 17.529,
+      "end": 18.229
+    },
+    {
+      "i": 50,
+      "beat": "story",
+      "text": "speed",
+      "start": 18.354,
+      "end": 18.479
+    },
+    {
+      "i": 51,
+      "beat": "story",
+      "text": "takes",
+      "start": 18.529,
+      "end": 18.854
+    },
+    {
+      "i": 52,
+      "beat": "story",
+      "text": "away",
+      "start": 18.904,
+      "end": 19.104
+    },
+    {
+      "i": 53,
+      "beat": "story",
+      "text": "about",
+      "start": 19.129,
+      "end": 19.354
+    },
+    {
+      "i": 54,
+      "beat": "story",
+      "text": "seven.",
+      "start": 19.379,
+      "end": 19.604
+    },
+    {
+      "i": 55,
+      "beat": "story",
+      "text": "So",
+      "start": 19.679,
+      "end": 20.379
+    },
+    {
+      "i": 56,
+      "beat": "story",
+      "text": "every",
+      "start": 20.554,
+      "end": 20.654
+    },
+    {
+      "i": 57,
+      "beat": "story",
+      "text": "day,",
+      "start": 20.704,
+      "end": 20.954
+    },
+    {
+      "i": 58,
+      "beat": "story",
+      "text": "they",
+      "start": 21.004,
+      "end": 21.204
+    },
+    {
+      "i": 59,
+      "beat": "story",
+      "text": "gain",
+      "start": 21.354,
+      "end": 21.429
+    },
+    {
+      "i": 60,
+      "beat": "story",
+      "text": "thirty-eight",
+      "start": 21.479,
+      "end": 21.704
+    },
+    {
+      "i": 61,
+      "beat": "story",
+      "text": "millionths",
+      "start": 21.779,
+      "end": 22.279
+    },
+    {
+      "i": 62,
+      "beat": "story",
+      "text": "of",
+      "start": 22.329,
+      "end": 22.729
+    },
+    {
+      "i": 63,
+      "beat": "story",
+      "text": "a",
+      "start": 22.754,
+      "end": 22.854
+    },
+    {
+      "i": 64,
+      "beat": "story",
+      "text": "second.",
+      "start": 22.904,
+      "end": 23.392
+    },
+    {
+      "i": 65,
+      "beat": "point",
+      "text": "That",
+      "start": 23.862,
+      "end": 23.862
+    },
+    {
+      "i": 66,
+      "beat": "point",
+      "text": "sounds",
+      "start": 23.91,
+      "end": 24.085
+    },
+    {
+      "i": 67,
+      "beat": "point",
+      "text": "like",
+      "start": 24.135,
+      "end": 24.41
+    },
+    {
+      "i": 68,
+      "beat": "point",
+      "text": "nothing.",
+      "start": 24.435,
+      "end": 24.56
+    },
+    {
+      "i": 69,
+      "beat": "point",
+      "text": "But",
+      "start": 24.61,
+      "end": 25.385
+    },
+    {
+      "i": 70,
+      "beat": "point",
+      "text": "your",
+      "start": 25.485,
+      "end": 25.585
+    },
+    {
+      "i": 71,
+      "beat": "point",
+      "text": "phone",
+      "start": 25.635,
+      "end": 25.76
+    },
+    {
+      "i": 72,
+      "beat": "point",
+      "text": "works",
+      "start": 25.835,
+      "end": 26.06
+    },
+    {
+      "i": 73,
+      "beat": "point",
+      "text": "out",
+      "start": 26.11,
+      "end": 26.36
+    },
+    {
+      "i": 74,
+      "beat": "point",
+      "text": "where",
+      "start": 26.385,
+      "end": 26.535
+    },
+    {
+      "i": 75,
+      "beat": "point",
+      "text": "you",
+      "start": 26.585,
+      "end": 26.71
+    },
+    {
+      "i": 76,
+      "beat": "point",
+      "text": "are",
+      "start": 26.76,
+      "end": 26.835
+    },
+    {
+      "i": 77,
+      "beat": "point",
+      "text": "from",
+      "start": 26.885,
+      "end": 26.96
+    },
+    {
+      "i": 78,
+      "beat": "point",
+      "text": "how",
+      "start": 27.01,
+      "end": 27.11
+    },
+    {
+      "i": 79,
+      "beat": "point",
+      "text": "long",
+      "start": 27.16,
+      "end": 27.335
+    },
+    {
+      "i": 80,
+      "beat": "point",
+      "text": "the",
+      "start": 27.385,
+      "end": 27.585
+    },
+    {
+      "i": 81,
+      "beat": "point",
+      "text": "signals",
+      "start": 27.61,
+      "end": 27.66
+    },
+    {
+      "i": 82,
+      "beat": "point",
+      "text": "take",
+      "start": 27.71,
+      "end": 28.06
+    },
+    {
+      "i": 83,
+      "beat": "point",
+      "text": "to",
+      "start": 28.11,
+      "end": 28.31
+    },
+    {
+      "i": 84,
+      "beat": "point",
+      "text": "arrive.",
+      "start": 28.36,
+      "end": 28.46
+    },
+    {
+      "i": 85,
+      "beat": "point",
+      "text": "Light",
+      "start": 28.51,
+      "end": 29.485
+    },
+    {
+      "i": 86,
+      "beat": "point",
+      "text": "travels",
+      "start": 29.635,
+      "end": 29.86
+    },
+    {
+      "i": 87,
+      "beat": "point",
+      "text": "about",
+      "start": 29.91,
+      "end": 30.26
+    },
+    {
+      "i": 88,
+      "beat": "point",
+      "text": "three",
+      "start": 30.285,
+      "end": 30.535
+    },
+    {
+      "i": 89,
+      "beat": "point",
+      "text": "hundred",
+      "start": 30.61,
+      "end": 30.785
+    },
+    {
+      "i": 90,
+      "beat": "point",
+      "text": "metres",
+      "start": 30.835,
+      "end": 31.135
+    },
+    {
+      "i": 91,
+      "beat": "point",
+      "text": "in",
+      "start": 31.185,
+      "end": 31.585
+    },
+    {
+      "i": 92,
+      "beat": "point",
+      "text": "a",
+      "start": 31.635,
+      "end": 31.685
+    },
+    {
+      "i": 93,
+      "beat": "point",
+      "text": "millionth",
+      "start": 31.71,
+      "end": 31.735
+    },
+    {
+      "i": 94,
+      "beat": "point",
+      "text": "of",
+      "start": 31.785,
+      "end": 32.11
+    },
+    {
+      "i": 95,
+      "beat": "point",
+      "text": "a",
+      "start": 32.135,
+      "end": 32.26
+    },
+    {
+      "i": 96,
+      "beat": "point",
+      "text": "second.",
+      "start": 32.31,
+      "end": 33.16
+    },
+    {
+      "i": 97,
+      "beat": "point",
+      "text": "Ignore",
+      "start": 33.335,
+      "end": 33.66
+    },
+    {
+      "i": 98,
+      "beat": "point",
+      "text": "Einstein,",
+      "start": 33.71,
+      "end": 34.585
+    },
+    {
+      "i": 99,
+      "beat": "point",
+      "text": "and",
+      "start": 34.71,
+      "end": 34.785
+    },
+    {
+      "i": 100,
+      "beat": "point",
+      "text": "your",
+      "start": 34.81,
+      "end": 34.885
+    },
+    {
+      "i": 101,
+      "beat": "point",
+      "text": "map",
+      "start": 34.935,
+      "end": 35.16
+    },
+    {
+      "i": 102,
+      "beat": "point",
+      "text": "would",
+      "start": 35.185,
+      "end": 35.26
+    },
+    {
+      "i": 103,
+      "beat": "point",
+      "text": "drift",
+      "start": 35.31,
+      "end": 35.585
+    },
+    {
+      "i": 104,
+      "beat": "point",
+      "text": "by",
+      "start": 35.635,
+      "end": 35.785
+    },
+    {
+      "i": 105,
+      "beat": "point",
+      "text": "more",
+      "start": 35.835,
+      "end": 35.96
+    },
+    {
+      "i": 106,
+      "beat": "point",
+      "text": "than",
+      "start": 35.985,
+      "end": 36.11
+    },
+    {
+      "i": 107,
+      "beat": "point",
+      "text": "ten",
+      "start": 36.16,
+      "end": 36.36
+    },
+    {
+      "i": 108,
+      "beat": "point",
+      "text": "kilometres",
+      "start": 36.41,
+      "end": 36.935
+    },
+    {
+      "i": 109,
+      "beat": "point",
+      "text": "every",
+      "start": 36.985,
+      "end": 37.235
+    },
+    {
+      "i": 110,
+      "beat": "point",
+      "text": "single",
+      "start": 37.31,
+      "end": 37.61
+    },
+    {
+      "i": 111,
+      "beat": "point",
+      "text": "day.",
+      "start": 37.66,
+      "end": 37.985
+    },
+    {
+      "i": 112,
+      "beat": "kicker",
+      "text": "So",
+      "start": 38.55,
+      "end": 38.65
+    },
+    {
+      "i": 113,
+      "beat": "kicker",
+      "text": "engineers",
+      "start": 38.7,
+      "end": 39.2
+    },
+    {
+      "i": 114,
+      "beat": "kicker",
+      "text": "set",
+      "start": 39.25,
+      "end": 39.4
+    },
+    {
+      "i": 115,
+      "beat": "kicker",
+      "text": "the",
+      "start": 39.425,
+      "end": 39.475
+    },
+    {
+      "i": 116,
+      "beat": "kicker",
+      "text": "clocks",
+      "start": 39.525,
+      "end": 39.85
+    },
+    {
+      "i": 117,
+      "beat": "kicker",
+      "text": "to",
+      "start": 39.9,
+      "end": 39.95
+    },
+    {
+      "i": 118,
+      "beat": "kicker",
+      "text": "tick",
+      "start": 40,
+      "end": 40.125
+    },
+    {
+      "i": 119,
+      "beat": "kicker",
+      "text": "a",
+      "start": 40.15,
+      "end": 40.175
+    },
+    {
+      "i": 120,
+      "beat": "kicker",
+      "text": "little",
+      "start": 40.2,
+      "end": 40.425
+    },
+    {
+      "i": 121,
+      "beat": "kicker",
+      "text": "slow",
+      "start": 40.5,
+      "end": 40.8
+    },
+    {
+      "i": 122,
+      "beat": "kicker",
+      "text": "before",
+      "start": 40.85,
+      "end": 41.1
+    },
+    {
+      "i": 123,
+      "beat": "kicker",
+      "text": "launch.",
+      "start": 41.15,
+      "end": 41.9
+    },
+    {
+      "i": 124,
+      "beat": "kicker",
+      "text": "Your",
+      "start": 42.025,
+      "end": 42.175
+    },
+    {
+      "i": 125,
+      "beat": "kicker",
+      "text": "phone",
+      "start": 42.25,
+      "end": 42.475
+    },
+    {
+      "i": 126,
+      "beat": "kicker",
+      "text": "really",
+      "start": 42.525,
+      "end": 42.8
+    },
+    {
+      "i": 127,
+      "beat": "kicker",
+      "text": "does",
+      "start": 42.85,
+      "end": 43.025
+    },
+    {
+      "i": 128,
+      "beat": "kicker",
+      "text": "need",
+      "start": 43.075,
+      "end": 43.25
+    },
+    {
+      "i": 129,
+      "beat": "kicker",
+      "text": "Einstein.",
+      "start": 43.3,
+      "end": 43.939
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "ori",
+      "start": 0.1,
+      "end": 2.004
+    },
+    {
+      "id": "clue",
+      "speaker": "ori",
+      "start": 2.224,
+      "end": 10.336
+    },
+    {
+      "id": "story",
+      "speaker": "ori",
+      "start": 10.556,
+      "end": 23.642
+    },
+    {
+      "id": "point",
+      "speaker": "ori",
+      "start": 23.862,
+      "end": 38.215
+    },
+    {
+      "id": "kicker",
+      "speaker": "ori",
+      "start": 38.435,
+      "end": 44.179
+    }
+  ],
+  "voices": {
+    "ori": {
+      "provider": "kokoro",
+      "voice_id": "bf_emma",
+      "speed": 1,
+      "pitch_semitones": 0,
+      "sentence_pause": 0.3,
+      "clause_pause": 0.12
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -15.15,
+    "true_peak_db": -1.18
+  }
+}
