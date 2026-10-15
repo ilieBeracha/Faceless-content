@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-15-roman-baths",
+  "purpose": "script",
+  "channel": "time-tourist",
+  "series": "rated",
+  "created": "2026-10-15T15:08:28Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "aa5f07cb2e49ea48e2a6a613bab37af202f63de3503429e58933bfec6e69d2bf",
+      "bytes": 3699
+    },
+    {
+      "path": "channels/time-tourist/series/rated.md",
+      "role": "channel",
+      "sha256": "6f45846a347490ed048765be8c08ec1eee5b30ac77d622f85166f667f34010d3",
+      "bytes": 3252
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly.md",
+      "role": "channel",
+      "sha256": "5dff77892739552d507a670a54a9d3f9c8dba8e3a9b651d6aea55bf7b6382efb",
+      "bytes": 2792
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly/model.json",
+      "role": "channel",
+      "sha256": "c9e5a538842a24881461b23a29ba0f6beaf5ce58887a25240916c8768e7bde0c",
+      "bytes": 933
+    },
+    {
+      "path": "channels/time-tourist/learnings.md",
+      "role": "channel",
+      "sha256": "066d035ba1e0d714ccb3d04bc29b1febe52b931a6545354b052c82f0056c0cde",
+      "bytes": 229
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-storybook/SKILL.md",
+      "role": "skill",
+      "sha256": "f719ad472a34cf0666ef31de0818fb204cd0fa7922df59791b0289e92c5f8ba1",
+      "bytes": 9024
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "925f81af5a03209b0ed4133a82df86730613c53e1e550bd221330f4d1f4f9556",
+      "bytes": 176
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-15-roman-baths/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series rated"
+}

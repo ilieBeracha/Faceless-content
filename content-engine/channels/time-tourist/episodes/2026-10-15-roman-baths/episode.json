@@ -3,15 +3,19 @@
   "channel": "time-tourist",
   "series": "rated",
   "idea": "roman-baths",
-  "title": "Reviewing Rome's biggest bathhouse",
+  "title": "Rome's biggest bathhouse, reviewed",
   "created": "2026-10-15T15:08:28Z",
-  "updated": "2026-10-15T15:08:28Z",
+  "updated": "2026-10-15T15:08:35Z",
   "status": "in-progress",
   "steps": {
     "idea": {
       "status": "done",
       "at": "2026-10-15T15:08:28Z",
       "note": "Reviewing Rome's biggest bathhouse"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-10-15T15:08:35Z"
     }
   }
 }
