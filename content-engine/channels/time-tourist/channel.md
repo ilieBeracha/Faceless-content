@@ -3,7 +3,7 @@
 # Annotation format: <required|optional> <type> [min=N] [max=N] — meaning
 slug: time-tourist                # required slug — folder name under channels/; never changes
 name: "Time Tourist"                # required string — public channel name
-status: draft                   # required enum(draft|active|paused) — draft until you approve it; paused stops new episodes
+status: active                  # required enum(draft|active|paused) — draft until you approve it; paused stops new episodes
 niche: "A budget time-traveller vlogs famous places and moments in history and reviews them like a travel influencer — real facts, honest star ratings."                       # required string — one sentence: what every video is about
 audience:                       # required object
   who: "Teens and adults who like history best when it feels like scrolling a travel feed"                       # required string — who watches, in plain words
@@ -30,8 +30,8 @@ brand:                          # required object — the channel's look
   caption_case: normal          # optional enum(normal|upper) — UPPERCASE captions or not
   caption_color: "#ffe08a"      # optional color — single-word captions (defaults to the accent colour)
 created: 2026-10-15             # required date — when the channel was created
-approved: ""                    # optional date — set by `./engine approve channel`
-approved_by: ""                 # optional string — who approved it
+approved: "2026-10-15"          # optional date — set by `./engine approve channel`
+approved_by: "ilieBeracha (approved in chat)" # optional string — who approved it
 ---
 
 # Time Tourist
