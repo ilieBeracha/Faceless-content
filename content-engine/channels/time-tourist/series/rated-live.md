@@ -8,7 +8,7 @@ format: "Tilly visits one famous place or moment in history, films it selfie-sty
 characters: [tilly-live]        # required list(ref(character)) min=1 — characters from THIS channel; the first one narrates
 length:                         # required object — overrides the engine default (20–60 s)
   min_seconds: 38               # required number min=5 max=180 — shortest acceptable video
-  max_seconds: 58               # required number min=5 max=180 — longest acceptable video
+  max_seconds: 62               # required number min=5 max=180 — longest acceptable video
 hook_pattern: "Selfie greeting naming the place in five words or fewer (\"Reviewing Rome's biggest bathhouse.\"), Tilly already inside the place, the hook as a short headline."  # required text — how the first 2 seconds grab attention
 beats:                          # required list(object) min=2 max=8 — the structure every episode follows, in order
   - id: hook                    # required slug — beat name used in scripts
