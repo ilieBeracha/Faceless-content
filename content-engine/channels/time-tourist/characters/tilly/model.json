@@ -1,0 +1,23 @@
+{
+  "rig": "stick-figure",
+  "params": {
+    "head": "#f2d3ae",
+    "line": "#2e2622",
+    "line_width": 5.5,
+    "head_size": 1.08,
+    "hair": "curl",
+    "hair_color": "#3b2a22",
+    "body_style": "tunic",
+    "body_color": "#e0a83c",
+    "accessory": "cap",
+    "accessory_color": "#d1495b"
+  },
+  "expressions": {
+    "neutral": { "eye_scale": 1, "brow": "flat", "mouth_curve": 0.3, "bounce": 0.35 },
+    "curious": { "eye_scale": 1.12, "brow": "up", "tilt_deg": 8, "look": [0.3, 0.1], "mouth_curve": 0.2, "bounce": 0.4 },
+    "excited": { "eye_scale": 1.22, "brow": "up", "mouth_curve": 0.8, "bounce": 0.7 },
+    "surprised": { "eye_scale": 1.35, "pupil_scale": 0.8, "brow": "up", "mouth_curve": 0, "bounce": 0.4 },
+    "unimpressed": { "eye_scale": 0.95, "lid": 0.4, "brow": "flat", "mouth_curve": -0.2, "bounce": 0.2 },
+    "gentle": { "eye_scale": 1, "lid": 0.15, "brow": "worried", "mouth_curve": 0, "bounce": 0.15 }
+  }
+}

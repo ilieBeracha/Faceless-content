@@ -46,7 +46,7 @@ keep the last scene up. So write the voiceover in short sentences and give each 
 
 ```jsonc
 {
-  "setting": "hills",        // hills | beach | sea | plain | desert | snow | night | space | room | city
+  "setting": "hills",        // hills | beach | sea | plain | desert | snow | night | space | room | city | rome | baths
   "time": "day",             // day | dusk | night   (night and space settings are always night)
   "camera": "push-in",       // still | push-in | pull-out | pan-left | pan-right   (slow move over the scene)
   "character": {             // the beat's speaker, posed in the scene; null = no character in this scene
@@ -69,7 +69,8 @@ keep the last scene up. So write the voiceover in short sentences and give each 
 
 Settings: `hills` rolling sage hills · `plain` flat grassland · `beach` sand, sea and a headland · `sea` open water
 with a strip of shore · `desert` dunes · `snow` white hills · `night` hills under stars · `space` stars only ·
-`room` wall, floor, window · `city` skyline behind a street.
+`room` wall, floor, window · `city` skyline behind a street · `rome` a Roman street with a temple and an arch ·
+`baths` inside a Roman bathhouse (vaulted hall, columns, steaming pool; figures stand on the pool edge).
 
 ### Props
 

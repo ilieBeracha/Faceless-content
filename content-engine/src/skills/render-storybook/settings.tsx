@@ -2,7 +2,7 @@ import React from "react";
 import type { StoryScene } from "./schema.ts";
 import { Circle, Curve, INK, Line, rect, rnd, shade, Shape } from "./sketch.tsx";
 
-export const GROUND_Y: Record<StoryScene["setting"], number> = { hills: 830, beach: 845, sea: 860, plain: 830, desert: 830, snow: 830, night: 830, space: 820, room: 845, city: 845 };
+export const GROUND_Y: Record<StoryScene["setting"], number> = { hills: 830, beach: 845, sea: 860, plain: 830, desert: 830, snow: 830, night: 830, space: 820, room: 845, city: 845, rome: 850, baths: 740 };
 
 const SKY: Record<StoryScene["time"], [string, string]> = {
   day: ["#dfe0d2", "#efe7d2"],
@@ -152,6 +152,59 @@ export const SettingView: React.FC<{ setting: StoryScene["setting"]; time: Story
         </g>
       );
       break;
+    case "rome": {
+      // A Roman street: a temple front with columns, an arch, cypress trees, paving.
+      const col = (x: number, h: number, w: number, k: number) => (
+        <g key={k}>
+          <Shape d={rect(x - w / 2, 620 - h, w, h)} fill={c("#efe2c6")} o={{ seed: seed + 40 + k, width: 2 }} />
+          <rect x={x - w / 2 - 6} y={620 - h - 12} width={w + 12} height={12} fill={c("#e2d2b0")} />
+          {[0.3, 0.55, 0.8].map((f, j) => <line key={j} x1={x - w / 2 + w * f} y1={620 - h + 6} x2={x - w / 2 + w * f} y2={614} stroke={c("#cdb98f")} strokeWidth={2} />)}
+        </g>
+      );
+      land = (
+        <g>
+          <Shape d="M520 300 L760 210 L1000 300 Z" fill={c("#e9d8b6")} o={{ seed: seed + 1, width: 2.2 }} />
+          <rect x={520} y={300} width={480} height={26} fill={c("#dcc7a0")} />
+          {[560, 650, 740, 830, 920].map((x, k) => col(x, 294, 46, k))}
+          <Shape d="M120 620 L120 380 C120 300 330 300 330 380 L330 620 L280 620 L280 400 C280 350 170 350 170 400 L170 620 Z" fill={c("#d8b98c")} o={{ seed: seed + 2, width: 2.2 }} />
+          {[40, 400].map((x, k) => (
+            <Shape key={k} d={`M${x} 640 C${x - 26} 560 ${x - 14} 470 ${x} 430 C${x + 14} 470 ${x + 26} 560 ${x} 640 Z`} fill={c("#6f8256")} o={{ seed: seed + 60 + k, width: 2 }} />
+          ))}
+          <Shape d="M0 620 L1000 620 L1000 1000 L0 1000 Z" fill={c("#d9c7a3")} o={{ seed: seed + 3, width: 2.2 }} />
+          {Array.from({ length: 5 }, (_, i) => <line key={i} x1={0} y1={680 + i * 70} x2={1000} y2={672 + i * 72} stroke={c("#bfa982")} strokeWidth={2} opacity={0.7} />)}
+          {Array.from({ length: 9 }, (_, i) => <line key={`v${i}`} x1={60 + i * 115} y1={620} x2={30 + i * 118} y2={1000} stroke={c("#bfa982")} strokeWidth={1.6} opacity={0.5} />)}
+        </g>
+      );
+      break;
+    }
+    case "baths": {
+      // Inside a Roman bathhouse: a huge vaulted hall, columns, a pool with steam.
+      land = (
+        <g>
+          <rect x={0} y={0} width={1000} height={1000} fill={c("#e7d3b0")} />
+          <Shape d="M60 700 L60 260 C60 40 940 40 940 260 L940 700 Z" fill={c("#d9c09a")} o={{ seed: seed + 1, width: 2.4 }} />
+          <Shape d="M200 700 L200 330 C200 170 800 170 800 330 L800 700 Z" fill={c("#c7d8d6")} o={{ seed: seed + 2, width: 2.2 }} />
+          {[110, 890].map((x, k) => (
+            <g key={k}>
+              <Shape d={rect(x - 32, 230, 64, 470)} fill={c("#b98f6a")} o={{ seed: seed + 10 + k, width: 2 }} />
+              <rect x={x - 42} y={218} width={84} height={16} fill={c("#a87e5c")} />
+            </g>
+          ))}
+          <rect x={0} y={700} width={1000} height={300} fill={c("#cdb48c")} />
+          <Shape d="M120 760 L880 760 L940 900 L60 900 Z" fill={c("#7fa9b4")} o={{ seed: seed + 3, width: 2.4 }} />
+          {Array.from({ length: 4 }, (_, i) => (
+            <Curve key={i} points={[[180 + i * 170, 820], [230 + i * 170, 812 + Math.sin(t * 1.4 + i) * 3], [280 + i * 170, 820]]} o={{ stroke: c("#cfe2e6"), width: 2.2, seed: seed + 20 + i }} />
+          ))}
+          {Array.from({ length: 5 }, (_, i) => {
+            const x = 180 + i * 150;
+            const rise = (t * 22 + i * 37) % 120;
+            return <ellipse key={`st${i}`} cx={x + Math.sin(t + i) * 12} cy={740 - rise} rx={46} ry={20} fill="#ffffff" opacity={0.18 * (1 - rise / 120)} />;
+          })}
+          {Array.from({ length: 12 }, (_, i) => <line key={`t${i}`} x1={i * 90} y1={900} x2={i * 90 - 30} y2={1000} stroke={c("#b39a73")} strokeWidth={1.6} opacity={0.6} />)}
+        </g>
+      );
+      break;
+    }
     case "space":
       land = <circle cx={880} cy={1180} r={420} fill="#33405f" opacity={0.9} />;
       break;

@@ -8,7 +8,7 @@ import { z } from "zod";
 const color = z.string().regex(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i, 'must be a hex color like "#ff8800"');
 const unit = z.number().min(0).max(1);
 
-export const SETTINGS = ["hills", "beach", "sea", "plain", "desert", "snow", "night", "space", "room", "city"] as const;
+export const SETTINGS = ["hills", "beach", "sea", "plain", "desert", "snow", "night", "space", "room", "city", "rome", "baths"] as const;
 export const TIMES = ["day", "dusk", "night"] as const;
 export const CAMERAS = ["still", "push-in", "pull-out", "pan-left", "pan-right"] as const;
 export const POSES = ["stand", "point", "wave", "think", "shrug", "cheer", "hold", "walk", "sit", "look-up", "facepalm"] as const;
