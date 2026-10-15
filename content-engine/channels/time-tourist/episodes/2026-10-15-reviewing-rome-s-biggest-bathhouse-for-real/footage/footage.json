@@ -243,12 +243,8 @@
     }
   },
   "approval": {
-    "hash": "8c31a220446cab1ce4f35aab66b9de1b50f532ea87fb3e19b4558c3c2cfc52fa",
-    "by": "Ilie",
-    "at": "2026-10-15T19:30:08Z"
-  },
-  "pending": {
     "hash": "0a53ad6f3bfb962de3658527ca62ea61525ce35ffa61c8e275db6fc2121b5c2a",
-    "estimate_usd": 7.42
+    "by": "Ilie",
+    "at": "2026-10-15T21:44:45Z"
   }
 }
