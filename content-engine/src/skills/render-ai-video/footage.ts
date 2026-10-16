@@ -122,6 +122,18 @@ const CAMERA: Record<Shot["camera"], { still: string; video: string }> = {
     still: "Handheld photo taken by a companion: {her} full upper body in the place, facing the camera, the surroundings clearly visible",
     video: "Handheld medium-wide shot filmed by a companion",
   },
+  closeup: {
+    still: "Cinematic medium close-up of {her}, chest up, face a little above centre, {she} speaks to the lens like a documentary host, the setting softly out of focus behind {her}, soft key light and a warm rim light",
+    video: "Cinematic medium close-up on a slow, steady dolly push-in (not handheld), shallow depth of field",
+  },
+  establishing: {
+    still: "Cinematic establishing shot of the setting at epic scale: the subject fills the frame, nobody in the foreground, no phone, screen or hand in the picture",
+    video: "Cinematic establishing shot with a smooth, slow, steady camera move (dolly, orbit or crane), epic scale, nobody in the shot",
+  },
+  silhouette: {
+    still: "Cinematic wide shot from behind {her}: {she} is a small figure seen only from the back, near the bottom of the frame, dwarfed by the view in front of {her}; {her} face is not visible",
+    video: "Cinematic wide shot from behind, slow steady push-in toward the view, the figure stays seen from the back and never turns around",
+  },
   pov: {
     still: "First-person view: exactly what the person filming sees, the scene fills the whole frame; nobody is in the foreground, and no phone, screen, camera or hand appears in the picture",
     video: "First-person handheld footage of exactly what the person filming sees, slow natural movement, the scene fills the frame, no phone or screen in the picture",
@@ -131,23 +143,34 @@ const CAMERA: Record<Shot["camera"], { still: string; video: string }> = {
 /** The first-frame and video prompts for one shot. Pure, so it can be tested without a workspace. */
 export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: Shot, face: string, spoken: string): { onCamera: boolean; imagePrompt: string; videoPrompt: string } {
   const cam = CAMERA[shot.camera];
+  // Phone cameras read as a vlog; the cinematic ones (closeup, establishing, silhouette) as a film.
+  const film = ["closeup", "establishing", "silhouette"].includes(shot.camera);
+  const frameOf = film ? "from a film" : "from a smartphone video";
+  const footage = film ? "realistic live-action film footage" : "realistic smartphone footage";
   const sayRule = `{She} says only that line, then stops talking. Ambient sound: ${shot.sound ?? "the natural sounds of the place"}. No music. No subtitles, no on-screen text.`;
   if (OFF_CAMERA.includes(shot.camera)) {
+    const fromBehind = shot.camera === "silhouette";
+    const figure = fromBehind ? `The figure, seen only from behind: ${p.wardrobe}; dark curly shoulder-length hair.` : "";
+    const voiceOver = fromBehind
+      ? `{She} is seen only from behind and never turns to the camera. In a voice-over, in ${p.voice}, {she} says: "${spoken}"`
+      : `The woman holding the phone stays behind the camera and is never seen. Off screen, in ${p.voice}, {she} says: "${spoken}"`;
     return {
       onCamera: false,
       imagePrompt: [
-        `Photorealistic vertical 9:16 frame from a smartphone video. ${cam.still}.`,
+        `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
+        figure,
         `Setting: ${world.world}. ${shot.place}.`,
         `The camera: ${shot.action}.`,
         shot.others ? `Also in the frame: ${shot.others}.` : "",
         `Style: ${world.look}. A real photograph: real light, real textures, no text, no captions, no logos, no watermark.`,
       ].filter(Boolean).join("\n"),
       videoPrompt: [
-        `${cam.video}, realistic smartphone footage. ${world.look}.`,
+        `${cam.video}, ${footage}. ${world.look}.`,
         `Setting: ${world.world}; ${shot.place}.`,
         `The camera: ${shot.action}.`,
         shot.others ? `In the scene: ${shot.others}.` : "",
-        `The woman holding the phone stays behind the camera and is never seen. Off screen, in ${p.voice}, {she} says: "${spoken}"`,
+        figure,
+        voiceOver,
         sayRule,
       ].filter(Boolean).join("\n"),
     };
@@ -155,7 +178,7 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
   return {
     onCamera: true,
     imagePrompt: [
-      `Photorealistic vertical 9:16 frame from a smartphone video. ${cam.still}.`,
+      `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
       `The person: ${p.identity}. Wearing ${p.wardrobe}.${p.references.length ? " Exactly the same person as in the reference photos: same face, hair, skin and build." : ""}`,
       `Setting: ${world.world}. ${shot.place}.`,
       `{She} {is} ${shot.action}, mid-sentence, expression: ${face}.`,
@@ -163,7 +186,7 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
       `Style: ${world.look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
     ].filter(Boolean).join("\n"),
     videoPrompt: [
-      `${cam.video}, realistic smartphone footage. ${world.look}.`,
+      `${cam.video}, ${footage}. ${world.look}.`,
       `${p.identity}, wearing ${p.wardrobe}. Setting: ${world.world}; ${shot.place}.`,
       `{She} {is} ${shot.action}; expression: ${face}.`,
       shot.others ? `In the background: ${shot.others}.` : "",

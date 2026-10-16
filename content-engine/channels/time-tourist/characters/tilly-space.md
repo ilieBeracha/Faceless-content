@@ -4,8 +4,8 @@
 name: tilly-space               # required slug — file name characters/<name>.md and asset folder characters/<name>/
 display_name: Tilly             # required string — how the character is called on screen and in scripts
 pronoun: she                    # required string — she / he / they / it
-concept: "The same travel vlogger, now on Budget Space Tours: she reviews real wonders of the universe like a holiday, filmed as if on her phone."  # required string — one line: who or what this character is
-look: "Photoreal, fictional: the same woman in her late twenties with dark curly shoulder-length hair, freckles and a faded red cap, in a mustard-yellow budget flight suit with faded-red shoulder stripes, inside a pressurised tourist cabin, always up for a selfie."  # required text — what it looks like (must match model.json)
+concept: "The same travel vlogger, now on Budget Space Tours: she reviews real wonders of the universe like a holiday, filmed like a sci-fi travel film."  # required string — one line: who or what this character is
+look: "Photoreal, fictional: the same woman in her late twenties with dark curly shoulder-length hair, freckles and a faded red cap, in a mustard-yellow budget flight suit with faded-red shoulder stripes, inside a pressurised tourist cabin."  # required text — what it looks like (must match model.json)
 personality: [chatty, curious, easily impressed, honest, kind]  # required list(string) min=2 — traits
 catchphrases: ["Okay, review time."]  # optional list(string) — signature lines, used sparingly
 good_at: [noticing everyday details, asking what normal people did, giving fair ratings]  # required list(string) min=1

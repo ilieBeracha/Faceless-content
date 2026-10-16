@@ -53,7 +53,9 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
 ```jsonc
 {
   "world": "Rome, 216 AD, the Baths of Caracalla on a hot summer afternoon",   // era, place, season, light
-  "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field"  // optional
+  "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field",  // optional
+  "grade": "natural",     // optional: "cinematic" adds a film grade, vignette, grain and a slow push-in per shot
+  "score": "none"         // optional: "space-drone" lays a generated ambient music bed under the voice (free)
 }
 ```
 
@@ -64,7 +66,8 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   "skill": "render-ai-video",
   "shots": [
     {
-      "camera": "selfie",            // selfie | selfie-walk | over-shoulder | wide | pov
+      "camera": "selfie",            // vlog: selfie | selfie-walk | over-shoulder | wide | pov
+                                     // film: closeup | establishing | silhouette
       "place": "the vast frigidarium hall: marble columns, a coffered vaulted ceiling, a cold plunge pool, bathers in tunics",
       "action": "turning slowly so the hall fills the frame behind her",
       "line": "This is the cold room.", // EXACTLY the words said in this shot
@@ -88,6 +91,13 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   screen. In a pov shot `place` is what fills the frame and `action` is what the camera does ("slowly tilts up
   to the vaulted ceiling", "pans across the pool", "her hand holds up the coin"). Aim for **about half the shots
   as pov**; keep the hook and the rating on camera so the audience knows who is talking.
+- **Cinematic episodes** (a series whose visual style says film, not vlog): use the film cameras.
+  `closeup` = the character talks to the lens like a documentary host (slow dolly push-in, rim light);
+  `establishing` = the wonder itself at epic scale with a slow dolly/orbit/crane move, narrated off screen;
+  `silhouette` = the character small and seen from behind against the view, narrated as a voice-over.
+  Mix them like a trailer: open on a striking close-up, then alternate establishing and silhouette shots, and
+  return to a close-up for the verdict. Set `look` to a film look ("cinematic sci-fi film, anamorphic lens,
+  dramatic rim light, volumetric haze, deep blacks"), `grade: "cinematic"` and a `score`.
 - **Pacing:** 8–12 shots per 45–55 s episode. Change the place or camera every shot: a new room, a new angle,
   walking somewhere. Jump cuts between shots are normal in vlogs.
 - **Places:** concrete, visible things, period-accurate: materials, light, crowd, weather. Never ask for

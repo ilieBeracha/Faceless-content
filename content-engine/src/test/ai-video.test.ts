@@ -47,7 +47,7 @@ describe("render-ai-video", () => {
   });
 
   it("pov shots film the place and keep the character off screen", () => {
-    const world = { world: "Rome, AD 216, the Baths of Caracalla", look: "handheld phone footage" };
+    const world = { world: "Rome, AD 216, the Baths of Caracalla", look: "handheld phone footage", grade: "natural" as const, score: "none" as const };
     const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a red cap", voice: "a bright London voice", fictional: true as const, references: ["references/ref-1.jpg"] };
     const pov = shotPrompts(world, params, { camera: "pov", place: "a vast cold hall with a pool", action: "tilts up to the vaulted ceiling", line: "Look at this." }, "excited", "Look at this.");
     assert.equal(pov.onCamera, false);
@@ -58,4 +58,19 @@ describe("render-ai-video", () => {
     assert.equal(selfie.onCamera, true);
     assert.ok(selfie.imagePrompt.includes(params.identity));
   });
+
+  it("cinematic cameras read as film; a silhouette narrates from behind", () => {
+    const world = { world: "Saturn from orbit", look: "cinematic", grade: "cinematic" as const, score: "space-drone" as const };
+    const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a mustard flight suit", voice: "a bright London voice", fictional: true as const, references: ["references/ref-1.jpg"] };
+    const close = shotPrompts(world, params, { camera: "closeup", place: "a cabin", action: "smiling", line: "Hi." }, "excited", "Hi.");
+    assert.equal(close.onCamera, true);
+    assert.match(close.imagePrompt, /frame from a film/);
+    assert.match(close.videoPrompt, /live-action film footage/);
+    const back = shotPrompts(world, params, { camera: "silhouette", place: "a giant window onto Saturn", action: "slowly pushes in", line: "Look." }, "excited", "Look.");
+    assert.equal(back.onCamera, false);
+    assert.ok(!back.imagePrompt.includes(params.identity), "a silhouette never describes the face");
+    assert.match(back.imagePrompt, /mustard flight suit/);
+    assert.match(back.videoPrompt, /voice-over.*"Look\."/);
+  });
 });
+

@@ -6,9 +6,9 @@
 import { z } from "zod";
 import { voiceTokens } from "../write-script/schema.ts";
 
-export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide", "pov"] as const;
-/** Cameras that film the place instead of the character: the line is narrated from behind the phone. */
-export const OFF_CAMERA: readonly Shot["camera"][] = ["pov"];
+export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide", "pov", "closeup", "establishing", "silhouette"] as const;
+/** Cameras that don't show the character's face: the line is narrated off screen (voice-over). */
+export const OFF_CAMERA: readonly Shot["camera"][] = ["pov", "establishing", "silhouette"];
 
 export const shotSchema = z
   .object({
@@ -33,6 +33,8 @@ export const worldSchema = z
   .object({
     world: z.string().min(12).max(400).describe("when and where the whole episode happens (era, city, season, light)"),
     look: z.string().max(240).default("handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field"),
+    grade: z.enum(["natural", "cinematic"]).default("natural").describe("cinematic: film grade, vignette, grain and a slow push-in on every shot"),
+    score: z.enum(["none", "space-drone"]).default("none").describe("a generated music bed under the voice (free, made locally)"),
   })
   .strict();
 
