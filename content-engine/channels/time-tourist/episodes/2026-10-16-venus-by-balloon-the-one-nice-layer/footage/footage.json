@@ -96,14 +96,14 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/04-rating-2.jpg",
-        "sha": "5debc7398d60a69bacbda4dcc9fc28291b88c7981d63a7cb128449d125ee985d",
-        "key": "872bc33704bd313f71a12deb44980a6bdbea533b101a1e1d809fe30c2b6417a3",
-        "at": "2026-10-16T13:51:35Z"
+        "sha": "a3adce2f27d83f0af9544bdf7d5a3f5a116e888ba7cf9a8f83f0294960bc9231",
+        "key": "5bb2bc134c2ce35c25d0da87ded4798cc334f18352f6188b31c38050d37096e1",
+        "at": "2026-10-16T13:51:57Z"
       }
     }
   },
   "pending": {
-    "hash": "ed6258c4edb9b824b68cb1236dfe5e8f2fb1fab711f237b17a579ccddae4051a",
+    "hash": "fe39e28682b166e82e19bf6cb1e4ecce80cb12e2792350c29795332e4273ca03",
     "estimate_usd": 6.62
   }
 }
