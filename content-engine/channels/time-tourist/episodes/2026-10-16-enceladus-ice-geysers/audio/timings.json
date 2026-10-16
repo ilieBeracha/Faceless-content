@@ -1,0 +1,940 @@
+{
+  "version": 1,
+  "hash": "bc130d5031f85d572dcbbc7ffc49b90c4301d411df17da676c9a7ac8ce84205a",
+  "fps": 30,
+  "frames": 1567,
+  "duration": 52.233,
+  "speech_start": 0.1,
+  "speech_end": 51.7,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Ice",
+      "start": 0.1,
+      "end": 0.57
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "everywhere.",
+      "start": 0.63,
+      "end": 1.72
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "I'm",
+      "start": 2.01,
+      "end": 2.15
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "standing",
+      "start": 2.18,
+      "end": 2.64
+    },
+    {
+      "i": 4,
+      "beat": "hook",
+      "text": "on",
+      "start": 2.64,
+      "end": 2.81
+    },
+    {
+      "i": 5,
+      "beat": "hook",
+      "text": "Enceladus,",
+      "start": 2.85,
+      "end": 3.71
+    },
+    {
+      "i": 6,
+      "beat": "hook",
+      "text": "one",
+      "start": 3.87,
+      "end": 4
+    },
+    {
+      "i": 7,
+      "beat": "hook",
+      "text": "of",
+      "start": 4.02,
+      "end": 4.07
+    },
+    {
+      "i": 8,
+      "beat": "hook",
+      "text": "Saturn's",
+      "start": 4.17,
+      "end": 4.65
+    },
+    {
+      "i": 9,
+      "beat": "hook",
+      "text": "moons.",
+      "start": 4.72,
+      "end": 5.22
+    },
+    {
+      "i": 10,
+      "beat": "arrival",
+      "text": "This",
+      "start": 5.67,
+      "end": 5.88
+    },
+    {
+      "i": 11,
+      "beat": "arrival",
+      "text": "whole",
+      "start": 5.96,
+      "end": 6.26
+    },
+    {
+      "i": 12,
+      "beat": "arrival",
+      "text": "moon",
+      "start": 6.4,
+      "end": 6.74
+    },
+    {
+      "i": 13,
+      "beat": "arrival",
+      "text": "is",
+      "start": 6.78,
+      "end": 6.87
+    },
+    {
+      "i": 14,
+      "beat": "arrival",
+      "text": "only",
+      "start": 6.94,
+      "end": 7.22
+    },
+    {
+      "i": 15,
+      "beat": "arrival",
+      "text": "about",
+      "start": 7.29,
+      "end": 7.57
+    },
+    {
+      "i": 16,
+      "beat": "arrival",
+      "text": "five",
+      "start": 7.7,
+      "end": 8.06
+    },
+    {
+      "i": 17,
+      "beat": "arrival",
+      "text": "hundred",
+      "start": 8.12,
+      "end": 8.43
+    },
+    {
+      "i": 18,
+      "beat": "arrival",
+      "text": "kilometres",
+      "start": 8.45,
+      "end": 9.06
+    },
+    {
+      "i": 19,
+      "beat": "arrival",
+      "text": "wide.",
+      "start": 9.2,
+      "end": 9.68
+    },
+    {
+      "i": 20,
+      "beat": "arrival",
+      "text": "And",
+      "start": 10.13,
+      "end": 10.26
+    },
+    {
+      "i": 21,
+      "beat": "arrival",
+      "text": "it's",
+      "start": 10.29,
+      "end": 10.45
+    },
+    {
+      "i": 22,
+      "beat": "arrival",
+      "text": "so",
+      "start": 10.54,
+      "end": 10.77
+    },
+    {
+      "i": 23,
+      "beat": "arrival",
+      "text": "bright,",
+      "start": 10.91,
+      "end": 11.4
+    },
+    {
+      "i": 24,
+      "beat": "arrival",
+      "text": "it",
+      "start": 11.54,
+      "end": 11.6
+    },
+    {
+      "i": 25,
+      "beat": "arrival",
+      "text": "reflects",
+      "start": 11.63,
+      "end": 12.09
+    },
+    {
+      "i": 26,
+      "beat": "arrival",
+      "text": "almost",
+      "start": 12.16,
+      "end": 12.65
+    },
+    {
+      "i": 27,
+      "beat": "arrival",
+      "text": "all",
+      "start": 12.79,
+      "end": 13.07
+    },
+    {
+      "i": 28,
+      "beat": "arrival",
+      "text": "the",
+      "start": 13.09,
+      "end": 13.16
+    },
+    {
+      "i": 29,
+      "beat": "arrival",
+      "text": "sunlight",
+      "start": 13.27,
+      "end": 13.68
+    },
+    {
+      "i": 30,
+      "beat": "arrival",
+      "text": "that",
+      "start": 13.7,
+      "end": 13.87
+    },
+    {
+      "i": 31,
+      "beat": "arrival",
+      "text": "hits",
+      "start": 13.92,
+      "end": 14.18
+    },
+    {
+      "i": 32,
+      "beat": "arrival",
+      "text": "it.",
+      "start": 14.21,
+      "end": 14.29
+    },
+    {
+      "i": 33,
+      "beat": "tour",
+      "text": "Saturn",
+      "start": 14.74,
+      "end": 14.75
+    },
+    {
+      "i": 34,
+      "beat": "tour",
+      "text": "hangs",
+      "start": 14.85,
+      "end": 15.41
+    },
+    {
+      "i": 35,
+      "beat": "tour",
+      "text": "right",
+      "start": 15.49,
+      "end": 15.9
+    },
+    {
+      "i": 36,
+      "beat": "tour",
+      "text": "there",
+      "start": 16.07,
+      "end": 16.38
+    },
+    {
+      "i": 37,
+      "beat": "tour",
+      "text": "in",
+      "start": 16.44,
+      "end": 16.71
+    },
+    {
+      "i": 38,
+      "beat": "tour",
+      "text": "the",
+      "start": 16.74,
+      "end": 16.93
+    },
+    {
+      "i": 39,
+      "beat": "tour",
+      "text": "sky.",
+      "start": 16.98,
+      "end": 17.82
+    },
+    {
+      "i": 40,
+      "beat": "tour",
+      "text": "It",
+      "start": 18.09,
+      "end": 18.18
+    },
+    {
+      "i": 41,
+      "beat": "tour",
+      "text": "never",
+      "start": 18.3,
+      "end": 18.58
+    },
+    {
+      "i": 42,
+      "beat": "tour",
+      "text": "moves.",
+      "start": 18.65,
+      "end": 19.41
+    },
+    {
+      "i": 43,
+      "beat": "tour",
+      "text": "Down",
+      "start": 19.78,
+      "end": 19.79
+    },
+    {
+      "i": 44,
+      "beat": "tour",
+      "text": "south,",
+      "start": 19.79,
+      "end": 19.79
+    },
+    {
+      "i": 45,
+      "beat": "tour",
+      "text": "there",
+      "start": 19.81,
+      "end": 20.08
+    },
+    {
+      "i": 46,
+      "beat": "tour",
+      "text": "are",
+      "start": 20.19,
+      "end": 20.69
+    },
+    {
+      "i": 47,
+      "beat": "tour",
+      "text": "long",
+      "start": 20.8,
+      "end": 21.07
+    },
+    {
+      "i": 48,
+      "beat": "tour",
+      "text": "cracks",
+      "start": 21.18,
+      "end": 21.57
+    },
+    {
+      "i": 49,
+      "beat": "tour",
+      "text": "in",
+      "start": 21.62,
+      "end": 22.03
+    },
+    {
+      "i": 50,
+      "beat": "tour",
+      "text": "the",
+      "start": 22.03,
+      "end": 22.25
+    },
+    {
+      "i": 51,
+      "beat": "tour",
+      "text": "ice",
+      "start": 22.29,
+      "end": 22.79
+    },
+    {
+      "i": 52,
+      "beat": "tour",
+      "text": "called",
+      "start": 22.88,
+      "end": 23.24
+    },
+    {
+      "i": 53,
+      "beat": "tour",
+      "text": "tiger",
+      "start": 23.35,
+      "end": 23.81
+    },
+    {
+      "i": 54,
+      "beat": "tour",
+      "text": "stripes.",
+      "start": 23.87,
+      "end": 24.51
+    },
+    {
+      "i": 55,
+      "beat": "tour",
+      "text": "And",
+      "start": 24.96,
+      "end": 25.07
+    },
+    {
+      "i": 56,
+      "beat": "tour",
+      "text": "they",
+      "start": 25.11,
+      "end": 25.26
+    },
+    {
+      "i": 57,
+      "beat": "tour",
+      "text": "spray",
+      "start": 25.33,
+      "end": 25.76
+    },
+    {
+      "i": 58,
+      "beat": "tour",
+      "text": "giant",
+      "start": 25.9,
+      "end": 26.34
+    },
+    {
+      "i": 59,
+      "beat": "tour",
+      "text": "jets",
+      "start": 26.44,
+      "end": 26.91
+    },
+    {
+      "i": 60,
+      "beat": "tour",
+      "text": "of",
+      "start": 26.99,
+      "end": 27.1
+    },
+    {
+      "i": 61,
+      "beat": "tour",
+      "text": "ice",
+      "start": 27.14,
+      "end": 27.52
+    },
+    {
+      "i": 62,
+      "beat": "tour",
+      "text": "into",
+      "start": 27.6,
+      "end": 27.86
+    },
+    {
+      "i": 63,
+      "beat": "tour",
+      "text": "space.",
+      "start": 27.93,
+      "end": 28.57
+    },
+    {
+      "i": 64,
+      "beat": "catch",
+      "text": "The",
+      "start": 29.02,
+      "end": 29.11
+    },
+    {
+      "i": 65,
+      "beat": "catch",
+      "text": "catch?",
+      "start": 29.18,
+      "end": 29.97
+    },
+    {
+      "i": 66,
+      "beat": "catch",
+      "text": "Under",
+      "start": 30.33,
+      "end": 30.57
+    },
+    {
+      "i": 67,
+      "beat": "catch",
+      "text": "all",
+      "start": 30.64,
+      "end": 30.9
+    },
+    {
+      "i": 68,
+      "beat": "catch",
+      "text": "this",
+      "start": 30.93,
+      "end": 31.08
+    },
+    {
+      "i": 69,
+      "beat": "catch",
+      "text": "ice,",
+      "start": 31.14,
+      "end": 31.63
+    },
+    {
+      "i": 70,
+      "beat": "catch",
+      "text": "there's",
+      "start": 31.74,
+      "end": 31.91
+    },
+    {
+      "i": 71,
+      "beat": "catch",
+      "text": "a",
+      "start": 31.99,
+      "end": 32
+    },
+    {
+      "i": 72,
+      "beat": "catch",
+      "text": "whole",
+      "start": 32.17,
+      "end": 32.58
+    },
+    {
+      "i": 73,
+      "beat": "catch",
+      "text": "ocean",
+      "start": 32.73,
+      "end": 33.28
+    },
+    {
+      "i": 74,
+      "beat": "catch",
+      "text": "of",
+      "start": 33.39,
+      "end": 33.46
+    },
+    {
+      "i": 75,
+      "beat": "catch",
+      "text": "liquid",
+      "start": 33.54,
+      "end": 33.86
+    },
+    {
+      "i": 76,
+      "beat": "catch",
+      "text": "water.",
+      "start": 33.97,
+      "end": 34.4
+    },
+    {
+      "i": 77,
+      "beat": "catch",
+      "text": "Some",
+      "start": 34.85,
+      "end": 34.86
+    },
+    {
+      "i": 78,
+      "beat": "catch",
+      "text": "of",
+      "start": 34.97,
+      "end": 35.16
+    },
+    {
+      "i": 79,
+      "beat": "catch",
+      "text": "the",
+      "start": 35.19,
+      "end": 35.39
+    },
+    {
+      "i": 80,
+      "beat": "catch",
+      "text": "spray",
+      "start": 35.45,
+      "end": 35.79
+    },
+    {
+      "i": 81,
+      "beat": "catch",
+      "text": "even",
+      "start": 35.99,
+      "end": 36.25
+    },
+    {
+      "i": 82,
+      "beat": "catch",
+      "text": "ends",
+      "start": 36.3,
+      "end": 36.55
+    },
+    {
+      "i": 83,
+      "beat": "catch",
+      "text": "up",
+      "start": 36.55,
+      "end": 36.72
+    },
+    {
+      "i": 84,
+      "beat": "catch",
+      "text": "feeding",
+      "start": 36.82,
+      "end": 37.13
+    },
+    {
+      "i": 85,
+      "beat": "catch",
+      "text": "one",
+      "start": 37.23,
+      "end": 37.34
+    },
+    {
+      "i": 86,
+      "beat": "catch",
+      "text": "of",
+      "start": 37.37,
+      "end": 37.44
+    },
+    {
+      "i": 87,
+      "beat": "catch",
+      "text": "Saturn's",
+      "start": 37.54,
+      "end": 37.99
+    },
+    {
+      "i": 88,
+      "beat": "catch",
+      "text": "rings.",
+      "start": 38.09,
+      "end": 38.7
+    },
+    {
+      "i": 89,
+      "beat": "rating",
+      "text": "Okay,",
+      "start": 39.08,
+      "end": 39.09
+    },
+    {
+      "i": 90,
+      "beat": "rating",
+      "text": "review",
+      "start": 39.2,
+      "end": 39.62
+    },
+    {
+      "i": 91,
+      "beat": "rating",
+      "text": "time.",
+      "start": 39.74,
+      "end": 40.07
+    },
+    {
+      "i": 92,
+      "beat": "rating",
+      "text": "View,",
+      "start": 40.15,
+      "end": 40.97
+    },
+    {
+      "i": 93,
+      "beat": "rating",
+      "text": "five",
+      "start": 41.02,
+      "end": 41.48
+    },
+    {
+      "i": 94,
+      "beat": "rating",
+      "text": "out",
+      "start": 41.71,
+      "end": 42.14
+    },
+    {
+      "i": 95,
+      "beat": "rating",
+      "text": "of",
+      "start": 42.16,
+      "end": 42.33
+    },
+    {
+      "i": 96,
+      "beat": "rating",
+      "text": "five.",
+      "start": 42.4,
+      "end": 43.15
+    },
+    {
+      "i": 97,
+      "beat": "rating",
+      "text": "Minus",
+      "start": 43.39,
+      "end": 43.71
+    },
+    {
+      "i": 98,
+      "beat": "rating",
+      "text": "two",
+      "start": 43.78,
+      "end": 43.91
+    },
+    {
+      "i": 99,
+      "beat": "rating",
+      "text": "hundred",
+      "start": 43.93,
+      "end": 44.21
+    },
+    {
+      "i": 100,
+      "beat": "rating",
+      "text": "degrees?",
+      "start": 44.23,
+      "end": 44.99
+    },
+    {
+      "i": 101,
+      "beat": "rating",
+      "text": "One",
+      "start": 45.28,
+      "end": 45.49
+    },
+    {
+      "i": 102,
+      "beat": "rating",
+      "text": "star.",
+      "start": 45.55,
+      "end": 45.98
+    },
+    {
+      "i": 103,
+      "beat": "rating",
+      "text": "A",
+      "start": 46.43,
+      "end": 46.54
+    },
+    {
+      "i": 104,
+      "beat": "rating",
+      "text": "tiny",
+      "start": 46.71,
+      "end": 47.32
+    },
+    {
+      "i": 105,
+      "beat": "rating",
+      "text": "moon",
+      "start": 47.45,
+      "end": 47.93
+    },
+    {
+      "i": 106,
+      "beat": "rating",
+      "text": "with",
+      "start": 47.98,
+      "end": 48.12
+    },
+    {
+      "i": 107,
+      "beat": "rating",
+      "text": "a",
+      "start": 48.18,
+      "end": 48.23
+    },
+    {
+      "i": 108,
+      "beat": "rating",
+      "text": "secret",
+      "start": 48.36,
+      "end": 48.98
+    },
+    {
+      "i": 109,
+      "beat": "rating",
+      "text": "ocean.",
+      "start": 49.06,
+      "end": 50.17
+    },
+    {
+      "i": 110,
+      "beat": "rating",
+      "text": "I'm",
+      "start": 50.55,
+      "end": 50.73
+    },
+    {
+      "i": 111,
+      "beat": "rating",
+      "text": "obsessed.",
+      "start": 50.79,
+      "end": 51.7
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly-space",
+      "start": 0.1,
+      "end": 5.22
+    },
+    {
+      "id": "arrival",
+      "speaker": "tilly-space",
+      "start": 5.67,
+      "end": 14.29
+    },
+    {
+      "id": "tour",
+      "speaker": "tilly-space",
+      "start": 14.74,
+      "end": 28.57
+    },
+    {
+      "id": "catch",
+      "speaker": "tilly-space",
+      "start": 29.02,
+      "end": 38.7
+    },
+    {
+      "id": "rating",
+      "speaker": "tilly-space",
+      "start": 39.08,
+      "end": 51.7
+    }
+  ],
+  "voices": {
+    "tilly-space": {
+      "provider": "veo",
+      "voice_id": "veo-3.1-fast-generate-preview"
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -14.99,
+    "true_peak_db": -2.21
+  },
+  "clips": [
+    {
+      "id": "00-hook-1",
+      "beat": "hook",
+      "file": "clips/00-hook-1.mp4",
+      "start": 0,
+      "duration": 5.52,
+      "trim": 0.28,
+      "align": "dtw",
+      "align_cost": 0.5314
+    },
+    {
+      "id": "01-arrival-1",
+      "beat": "arrival",
+      "file": "clips/01-arrival-1.mp4",
+      "start": 5.52,
+      "duration": 4.46,
+      "trim": 1.19,
+      "align": "dtw",
+      "align_cost": 0.5381
+    },
+    {
+      "id": "01-arrival-2",
+      "beat": "arrival",
+      "file": "clips/01-arrival-2.mp4",
+      "start": 9.98,
+      "duration": 4.61,
+      "trim": 0.29,
+      "align": "dtw",
+      "align_cost": 0.4906
+    },
+    {
+      "id": "02-tour-1",
+      "beat": "tour",
+      "file": "clips/02-tour-1.mp4",
+      "start": 14.59,
+      "duration": 5.04,
+      "trim": 0.96,
+      "align": "dtw",
+      "align_cost": 0.5079
+    },
+    {
+      "id": "02-tour-2",
+      "beat": "tour",
+      "file": "clips/02-tour-2.mp4",
+      "start": 19.63,
+      "duration": 5.18,
+      "trim": 0.7,
+      "align": "dtw",
+      "align_cost": 0.4409
+    },
+    {
+      "id": "02-tour-3",
+      "beat": "tour",
+      "file": "clips/02-tour-3.mp4",
+      "start": 24.81,
+      "duration": 4.06,
+      "trim": 1.67,
+      "align": "dtw",
+      "align_cost": 0.4783
+    },
+    {
+      "id": "03-catch-1",
+      "beat": "catch",
+      "file": "clips/03-catch-1.mp4",
+      "start": 28.87,
+      "duration": 5.83,
+      "trim": 0.04,
+      "align": "dtw",
+      "align_cost": 0.4736
+    },
+    {
+      "id": "03-catch-2",
+      "beat": "catch",
+      "file": "clips/03-catch-2.mp4",
+      "start": 34.7,
+      "duration": 4.3,
+      "trim": 0.06,
+      "align": "dtw",
+      "align_cost": 0.4499
+    },
+    {
+      "id": "04-rating-1",
+      "beat": "rating",
+      "file": "clips/04-rating-1.mp4",
+      "start": 39,
+      "duration": 7.28,
+      "trim": 0,
+      "align": "dtw",
+      "align_cost": 0.4998
+    },
+    {
+      "id": "04-rating-2",
+      "beat": "rating",
+      "file": "clips/04-rating-2.mp4",
+      "start": 46.28,
+      "duration": 5.96,
+      "trim": 0.04,
+      "align": "dtw",
+      "align_cost": 0.5417
+    }
+  ]
+}
