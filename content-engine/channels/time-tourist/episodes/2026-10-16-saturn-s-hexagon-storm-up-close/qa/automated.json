@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-16T09:56:39Z",
-  "render_hash": "d54756089cb5affce5a1bce97021dd37c8286acee97ecfe70ac439f30761ce67",
+  "checked_at": "2026-10-16T12:32:34Z",
+  "render_hash": "a206cf9830728908d8c9356f43ad76226f83c5203281f85ca8e5c84784db757d",
   "checks": [
     {
       "id": "format",
@@ -12,7 +12,7 @@
       "id": "length",
       "label": "Length",
       "pass": true,
-      "detail": "57.54s (series allows 38–62s)"
+      "detail": "57.60s (series allows 38–62s)"
     },
     {
       "id": "hook-speech",
@@ -24,7 +24,7 @@
       "id": "hook-line",
       "label": "Hook: first line lands in 2 s",
       "pass": true,
-      "detail": "\"A hexagon.\" ends at 1.49s (limit 2s)"
+      "detail": "\"A hexagon.\" ends at 1.28s (limit 2s)"
     },
     {
       "id": "hook-text",
@@ -36,7 +36,7 @@
       "id": "safe-areas",
       "label": "Text inside safe areas",
       "pass": true,
-      "detail": "2 text elements checked on every frame (1869 measurements)"
+      "detail": "2 text elements checked on every frame (1868 measurements)"
     },
     {
       "id": "cut-off",
@@ -54,7 +54,7 @@
       "id": "loudness",
       "label": "Loudness",
       "pass": true,
-      "detail": "-15.0 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1)"
+      "detail": "-15.2 LUFS (target -14 ±1.5), true peak -5.0 dBTP (max -1)"
     },
     {
       "id": "banned-topics",
@@ -78,7 +78,7 @@
       "id": "footage-budget",
       "label": "Within budget",
       "pass": true,
-      "detail": "$8.80 spent of $25.00 (51 paid calls logged in footage/ledger.json)"
+      "detail": "$15.97 spent of $25.00 (87 paid calls logged in footage/ledger.json)"
     },
     {
       "id": "factcheck",

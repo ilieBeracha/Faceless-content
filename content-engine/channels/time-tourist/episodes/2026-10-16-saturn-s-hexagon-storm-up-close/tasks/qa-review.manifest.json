@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "time-tourist",
   "series": "rated-space",
-  "created": "2026-10-16T09:56:15Z",
+  "created": "2026-10-16T12:31:37Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -27,26 +27,26 @@
     {
       "path": "channels/time-tourist/series/rated-space.md",
       "role": "channel",
-      "sha256": "a9cccd59af2d38dd817dae275ee78065ad3ce70e7d17cccda61c8ab7368b4c9c",
-      "bytes": 3901
+      "sha256": "f36884964340f9c870d72b036b8539432acdbd2e79c556b09f45598f4e2cacb5",
+      "bytes": 4202
     },
     {
       "path": "channels/time-tourist/characters/tilly-space.md",
       "role": "channel",
-      "sha256": "b0ab2ba7ae98cdf929a3e7e8cd0b065d5b252470bdc763bc3b58f29fec4fbc83",
-      "bytes": 2919
+      "sha256": "699f14a596283f44492ea1e743d756fdd139dc34e923088ea4ca5992370d123c",
+      "bytes": 2902
     },
     {
       "path": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/script.json",
       "role": "channel",
-      "sha256": "154f6df44dc651000a5739254406641c6b5216d254bd15bbe2d17e34ea2111f3",
-      "bytes": 13245
+      "sha256": "05d23b1ed14205d07b9c9b15f91f199f436b1587afb0da7b30a35c6d44ed2d3e",
+      "bytes": 13204
     },
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "e11f6d31b3dbb86cfde2cd0424cc1d48d5265b01dd3a114c71d10fe25f4859e4",
-      "bytes": 1083
+      "sha256": "57ccbec2067236eb2975b69ce39951d244d7f9005628d421e09319b4fffe9a62",
+      "bytes": 1084
     }
   ],
   "outputs": [

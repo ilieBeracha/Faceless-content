@@ -5,7 +5,7 @@
   "idea": "saturn-s-hexagon-storm-up-close",
   "title": "Saturn's hexagon storm, reviewed",
   "created": "2026-10-16T09:00:32Z",
-  "updated": "2026-10-16T12:31:31Z",
+  "updated": "2026-10-16T12:32:34Z",
   "status": "done",
   "steps": {
     "idea": {
@@ -39,7 +39,7 @@
     },
     "qa": {
       "status": "done",
-      "at": "2026-10-16T09:56:39Z",
+      "at": "2026-10-16T12:32:34Z",
       "note": "all checks passed"
     }
   }

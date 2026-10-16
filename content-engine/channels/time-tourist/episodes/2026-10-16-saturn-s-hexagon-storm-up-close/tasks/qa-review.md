@@ -13,9 +13,9 @@ Review the rendered episode **2026-10-16-saturn-s-hexagon-storm-up-close** again
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t008.1s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t016.3s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t024.4s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t032.5s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t032.6s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t040.7s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t048.8s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t048.9s.jpg`
    The full video is `out/time-tourist/2026-10-16-saturn-s-hexagon-storm-up-close.mp4`.
    This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.
 2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
@@ -23,7 +23,7 @@ Review the rendered episode **2026-10-16-saturn-s-hexagon-storm-up-close** again
 
 ```json
 {
-  "render_hash": "d54756089cb5affce5a1bce97021dd37c8286acee97ecfe70ac439f30761ce67",
+  "render_hash": "a206cf9830728908d8c9356f43ad76226f83c5203281f85ca8e5c84784db757d",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -226,29 +226,29 @@ be like to be there, what nobody tells you, and an honest rating at the end.
 slug: rated-space               # required slug — file name series/<slug>.md
 name: "Rated: Space"           # required string — shown in titles
 status: active                  # required enum(draft|active|paused|retired)
-format: "Tilly takes a Budget Space Tour to one real wonder of the universe, films it on her phone like a real travel vlog (half selfies, half the view itself), and gives it an honest rating."  # required string — one line: what happens in every episode
+format: "Tilly takes a Budget Space Tour to one real wonder of the universe, shot like a sci-fi film trailer (epic views of the wonder, Tilly as a small figure against it, close-ups when she speaks to us), and gives it an honest rating."  # required string — one line: what happens in every episode
 characters: [tilly-space]       # required list(ref(character)) min=1 — characters from THIS channel; the first one narrates
 length:                         # required object — overrides the engine default (20–60 s)
   min_seconds: 38               # required number min=5 max=180 — shortest acceptable video
   max_seconds: 62               # required number min=5 max=180 — longest acceptable video
-hook_pattern: "Helmet selfie naming the wonder in five words or fewer (\"Saturn has a hexagon.\"), the wonder already visible behind her or reflected in her visor, the hook as a short headline."  # required text — how the first 2 seconds grab attention
+hook_pattern: "A striking cinematic close-up of Tilly naming the wonder in a two-word first sentence (\"A hexagon.\"), the wonder glowing behind her, the hook as a short headline."  # required text — how the first 2 seconds grab attention
 beats:                          # required list(object) min=2 max=8 — the structure every episode follows, in order
   - id: hook                    # required slug — beat name used in scripts
     seconds: 3                  # required number min=1 max=60 — target duration
-    purpose: "Helmet selfie naming the wonder."
+    purpose: "Cinematic close-up naming the wonder."
   - id: arrival
     seconds: 9
     purpose: "Where we are, how far from Earth, and one fact that sets the scene."
   - id: tour
     seconds: 15
-    purpose: "Three things she sees, each with a real detail, mostly pov shots of the view itself."
+    purpose: "Three things she sees, each with a real detail, as epic establishing shots of the wonder itself."
   - id: catch
     seconds: 10
     purpose: "The extreme or unexplained part: what would happen to you there, or what scientists still cannot explain (said plainly)."
   - id: rating
     seconds: 7
     purpose: "The rating, said out loud as 'N out of 5', and one line on what it says about our universe."
-visual_style: "Live-action look: realistic handheld phone footage from a budget spacecraft or spacesuit: helmet selfies of a real-looking Tilly, and pov shots of the real wonder through the window or her visor, scientifically plausible, jump cuts, natural sound, word-by-word captions in the lower third."  # required text — what the screen looks like
+visual_style: "Cinematic sci-fi film look: steady slow camera moves, epic establishing shots of the real wonder, Tilly as a silhouette against it, documentary-style close-ups when she speaks to us, film grade with grain and vignette, an ambient space score under her voice, word-by-word captions in the lower third."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON
   render: [render-ai-video]     # required list(ref(skill:render)) min=1 — visual styles; mix and match
@@ -264,8 +264,10 @@ created: 2026-10-16             # required date
 
 - Paid footage (Veo): about $6–9 an episode, capped at $25 including retries. Stills are approved before any
   video is made.
-- 8–12 shots per episode; about half are `pov` shots of the wonder itself (through the window, the visor, or
-  her phone pointed at it). Hook and rating are helmet selfies.
+- 8–12 shots per episode, filmed like a trailer: `establishing` shots of the wonder (about half), `silhouette`
+  shots of Tilly against it, `closeup` for the hook, the catch and the rating. No phone, no selfie framing.
+- `visuals["render-ai-video"]`: a film `look`, `grade: "cinematic"`, `score: "space-drone"`.
+- The hook's first sentence is two words: Veo speaks slowly, so longer openers miss the 2-second mark.
 - Tilly is always somewhere a person could survive: inside a ship, in orbit, in a suit at a safe distance, or a
   balloon in a breathable layer. Never pretend the impossible is safe.
 - Sizes, distances and temperatures are real and sourced (NASA, ESA, JPL). Unexplained things are said to be
@@ -280,8 +282,8 @@ created: 2026-10-16             # required date
 name: tilly-space               # required slug — file name characters/<name>.md and asset folder characters/<name>/
 display_name: Tilly             # required string — how the character is called on screen and in scripts
 pronoun: she                    # required string — she / he / they / it
-concept: "The same travel vlogger, now on Budget Space Tours: she reviews real wonders of the universe like a holiday, filmed as if on her phone."  # required string — one line: who or what this character is
-look: "Photoreal, fictional: the same woman in her late twenties with dark curly shoulder-length hair, freckles and a faded red cap, in a mustard-yellow budget flight suit with faded-red shoulder stripes, inside a pressurised tourist cabin, always up for a selfie."  # required text — what it looks like (must match model.json)
+concept: "The same travel vlogger, now on Budget Space Tours: she reviews real wonders of the universe like a holiday, filmed like a sci-fi travel film."  # required string — one line: who or what this character is
+look: "Photoreal, fictional: the same woman in her late twenties with dark curly shoulder-length hair, freckles and a faded red cap, in a mustard-yellow budget flight suit with faded-red shoulder stripes, inside a pressurised tourist cabin."  # required text — what it looks like (must match model.json)
 personality: [chatty, curious, easily impressed, honest, kind]  # required list(string) min=2 — traits
 catchphrases: ["Okay, review time."]  # optional list(string) — signature lines, used sparingly
 good_at: [noticing everyday details, asking what normal people did, giving fair ratings]  # required list(string) min=1
@@ -330,11 +332,11 @@ when posted).
         "skill": "render-ai-video",
         "shots": [
           {
-            "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; through the big round window behind her, Saturn's north pole with its golden six-sided storm and a blue swirl at its centre",
-            "action": "floating weightless, grinning, curls drifting out from under her cap",
+            "camera": "closeup",
+            "place": "inside a dim, sleek budget spacecraft cabin; through the giant round window behind her, Saturn's north pole: a golden hexagon of cloud with exactly six straight sides and a blue spiral storm at its centre; warm golden light rims her hair and cheek",
+            "action": "floating weightless in the dim cabin, eyes wide, a slow awed smile, curls drifting",
             "line": "A hexagon. On Saturn. And I'm floating right above it.",
-            "sound": "the soft hum of cabin fans",
+            "sound": "the low hum of the spacecraft cabin",
             "expression": "excited"
           }
         ]
@@ -353,19 +355,18 @@ when posted).
         "skill": "render-ai-video",
         "shots": [
           {
-            "camera": "pov",
-            "place": "Saturn's north pole seen from high above: a huge golden hexagon of cloud circling the pole, with exactly six long straight sides and six sharp corners, a deep blue swirling storm at the very centre, the edge of the planet curving away into black space",
-            "action": "looks out through the round cabin window, slowly drifting closer to the glass",
+            "camera": "establishing",
+            "place": "far out in space, a tiny white tourist spacecraft, just a small glint with one lit window, glides over the vast curved golden horizon of the planet Saturn, its bright rings stretching away into the distance, black starry sky above",
+            "action": "a slow, graceful tracking move alongside the tiny spacecraft as Saturn's horizon slides past below",
             "line": "We're over a billion kilometres from home, above Saturn's north pole.",
-            "sound": "the soft hum of cabin fans"
+            "sound": "a faint deep rumble"
           },
           {
-            "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; Saturn's banded golden clouds filling the window behind her",
-            "action": "shrugging, deadpan",
+            "camera": "silhouette",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; Saturn's banded golden cloud tops fill the whole window in front of her",
+            "action": "slowly pushes in past her shoulders toward the window as she gives a small shrug",
             "line": "No landing, by the way. Saturn has no solid surface to stand on.",
-            "sound": "the soft hum of cabin fans",
-            "expression": "unimpressed"
+            "sound": "the low hum of the spacecraft cabin"
           }
         ]
       },
@@ -382,25 +383,25 @@ when posted).
         "skill": "render-ai-video",
         "shots": [
           {
-            "camera": "pov",
-            "place": "Saturn's north pole seen from high above: a huge golden hexagon of cloud circling the pole, with exactly six long straight sides and six sharp corners, a deep blue swirling storm at the very centre, the edge of the planet curving away into black space",
-            "action": "slowly pans along one long straight edge of the hexagon to one of its sharp corners",
+            "camera": "establishing",
+            "place": "seen from high above, Saturn's north pole: a huge golden hexagon of cloud circling the pole, with exactly six long straight sides and six sharp corners, a deep blue spiral storm at its centre, the planet's curve falling away into black space",
+            "action": "a slow crane down toward the hexagon so its six straight sides fill the frame",
             "line": "First, the shape. A six-sided storm, and each side is wider than Earth.",
-            "sound": "the soft hum of cabin fans"
+            "sound": "a faint deep rumble"
           },
           {
-            "camera": "pov",
-            "place": "close view of one straight edge of Saturn's golden six-sided hexagon: long streaks of cloud racing along a straight band, darker and lighter stripes on either side",
-            "action": "follows the racing cloud streaks along the band",
+            "camera": "establishing",
+            "place": "racing along one straight edge of Saturn's golden hexagon: a fast jet stream of cloud streaks with darker and lighter bands on either side, lit by low golden sunlight",
+            "action": "tracks fast and low along the racing clouds of the edge",
             "line": "The wind racing along its edge? Over three hundred kilometres an hour.",
-            "sound": "the soft hum of cabin fans"
+            "sound": "a faint deep rumble"
           },
           {
-            "camera": "pov",
-            "place": "the whole of Saturn's north pole with the golden six-sided hexagon in the middle, the thin bright rings arcing across the bottom of the frame, black space all around",
-            "action": "slowly pulls back from the window so the whole hexagon and the rings fit in the frame",
+            "camera": "establishing",
+            "place": "the whole planet Saturn from space, the golden six-sided hexagon on its north pole, the bright rings sweeping across the frame, stars in the black",
+            "action": "a slow pull back that reveals the whole planet and its rings",
             "line": "And it's not new. Voyager spotted it in the early eighties. Cassini found it still there, decades later.",
-            "sound": "the soft hum of cabin fans"
+            "sound": "a faint deep rumble"
           }
         ]
       },
@@ -417,27 +418,26 @@ when posted).
         "skill": "render-ai-video",
         "shots": [
           {
-            "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; Saturn's north pole with its golden six-sided storm visible through the window behind her",
-            "action": "leaning close to the camera, eyebrows raised, almost whispering",
+            "camera": "closeup",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; the golden glow of Saturn through the window lights one side of her face",
+            "action": "leaning slightly toward the lens, eyebrows raised, speaking quietly",
             "line": "The catch? Nobody's totally sure why it has six sides.",
-            "sound": "the soft hum of cabin fans",
+            "sound": "the low hum of the spacecraft cabin",
             "expression": "curious"
           },
           {
-            "camera": "pov",
-            "place": "the centre of Saturn's north pole seen from straight above: pale golden-tan and cream cloud bands of a gas giant spiralling into a small dark blue-grey eye, no oceans, no land",
-            "action": "slowly zooms toward the turning blue storm in the centre",
+            "camera": "establishing",
+            "place": "the deep blue spiral storm at the exact centre of Saturn's hexagon seen from straight above: pale golden and cream cloud bands spiralling into a small dark blue-grey eye, no oceans, no land",
+            "action": "a slow rotating push-in toward the eye of the storm",
             "line": "Lab tanks of spinning water make shapes like it.",
-            "sound": "the soft hum of cabin fans"
+            "sound": "a faint deep rumble"
           },
           {
-            "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; through the window, the curve of Saturn's pale southern half and the rings",
-            "action": "pointing a thumb back over her shoulder at the window, deadpan",
+            "camera": "silhouette",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; through the window, the pale curve of Saturn's southern half and the rings",
+            "action": "holds still as she tilts her head at the view",
             "line": "And the south pole? No hexagon. Weird.",
-            "sound": "the soft hum of cabin fans",
-            "expression": "unimpressed"
+            "sound": "the low hum of the spacecraft cabin"
           }
         ]
       },
@@ -454,20 +454,19 @@ when posted).
         "skill": "render-ai-video",
         "shots": [
           {
-            "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; a squashed foil snack pouch floating next to her, Saturn's north pole with its golden six-sided storm in the window",
-            "action": "holding up five fingers, then catching the floating snack pouch and frowning at it",
+            "camera": "closeup",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; a squashed silver foil snack pouch floats beside her face, Saturn's golden glow behind her",
+            "action": "holding up five fingers with a grin, then frowning at the floating snack pouch",
             "line": "Okay, review time. View, five out of five. Snacks, one out of five.",
-            "sound": "the soft hum of cabin fans and a crinkling foil pouch",
+            "sound": "the low hum of the spacecraft cabin",
             "expression": "excited"
           },
           {
-            "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; Saturn's golden six-sided polar storm fills the window right behind her head",
-            "action": "glancing back at the window, then turning to the lens, smiling",
+            "camera": "silhouette",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin; the whole pale-golden planet Saturn with its bright rings fills the giant round window in front of her, a small golden hexagon visible on its north pole",
+            "action": "a slow, steady pull back that leaves her a tiny figure against the glowing planet",
             "line": "The universe makes hexagons for fun. I'm obsessed.",
-            "sound": "the soft hum of cabin fans",
-            "expression": "excited"
+            "sound": "the low hum of the spacecraft cabin"
           }
         ]
       },
@@ -479,8 +478,10 @@ when posted).
   ],
   "visuals": {
     "render-ai-video": {
-      "world": "Saturn, seen from a small budget tourist spacecraft in a high orbit above its north pole during northern summer: dim, warm sunlight, the black of space outside",
-      "look": "handheld smartphone vlog footage, realistic, natural cabin light, realistic skin texture, true-to-life colour, shallow depth of field"
+      "world": "Saturn, seen from a small budget tourist spacecraft in a high orbit above its north pole during northern summer: dim, warm sunlight, the black of space",
+      "look": "cinematic sci-fi film, large-format cinema camera with anamorphic lenses, dramatic rim light, soft volumetric haze in the cabin, deep blacks, rich amber and teal colour",
+      "grade": "cinematic",
+      "score": "space-drone"
     }
   },
   "claims": [
@@ -566,17 +567,17 @@ when posted).
 
 <file path="(inline) automated QA results" role="input">
 - [x] Format: 1080×1920 @ 30.00 fps, h264/aac, yuvj420p
-- [x] Length: 57.54s (series allows 38–62s)
+- [x] Length: 57.60s (series allows 38–62s)
 - [x] Hook: speech starts immediately: first word at 0.10s (limit 0.5s)
-- [x] Hook: first line lands in 2 s: "A hexagon." ends at 1.49s (limit 2s)
+- [x] Hook: first line lands in 2 s: "A hexagon." ends at 1.28s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.07s
-- [x] Text inside safe areas: 2 text elements checked on every frame (1869 measurements)
+- [x] Text inside safe areas: 2 text elements checked on every frame (1868 measurements)
 - [x] Nothing cut off: no element leaves the frame or overflows its box
 - [x] Captions in sync: 124 words; text matches script: yes; highlight off on 0/1707 frames; words over silent audio: 0
-- [x] Loudness: -15.0 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1)
+- [x] Loudness: -15.2 LUFS (target -14 ±1.5), true peak -5.0 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
 - [x] Footage is real (not placeholders): 11 clips from veo-3.1-fast-generate-preview
 - [x] Every clip says its line: 11 clips checked by ear
-- [x] Within budget: $8.80 spent of $25.00 (51 paid calls logged in footage/ledger.json)
+- [x] Within budget: $15.97 spent of $25.00 (87 paid calls logged in footage/ledger.json)
 - [x] Fact-check approved: approved by Ilie (delegated to Claude: 'decide by yourself'; hook reworded, same claims) (8 claims)
 </file>

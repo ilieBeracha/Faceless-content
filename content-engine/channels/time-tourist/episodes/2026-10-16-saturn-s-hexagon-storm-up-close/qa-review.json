@@ -1,16 +1,15 @@
 {
-  "render_hash": "d54756089cb5affce5a1bce97021dd37c8286acee97ecfe70ac439f30761ce67",
-  "tone": { "pass": true, "notes": "Casual first-person vlog in Tilly's voice: punchy hook ('A hexagon. On Saturn.'), facts land as surprises, the unexplained part is said plainly ('Nobody's totally sure why'), 'Okay, review time' used once, rating said out loud. Fits 13+." },
-  "banned_topics": { "pass": true, "notes": "Pure planetary science; no violence, politics, religion or health advice. Nothing is presented as fact that sources don't support; the cause of the six sides is labelled uncertain." },
-  "visuals": { "pass": true, "notes": "5 of 11 shots show Saturn itself through the cabin window (pov, no phone or person in frame), the rest are cabin selfies with Saturn in the window. Captions and the hook headline are readable and inside safe areas. Every clip was checked for burned-in text: the first rating-1 clip had garbled Veo subtitles for ~2 s and was regenerated; the final clips have none. Saturn is a little stylised (glowing hexagon outline in tour-1, a bluish centre) but six-sided as the claims say. Minor: a small striped patch on her shoulder in a few shots." },
-  "character": { "pass": true, "notes": "Same face as tilly-live's approved reference in every shot, mustard flight suit with red shoulder stripes and the faded red cap, matching tilly-space's model.json. Expressions fit the lines (excited hook, deadpan 'No landing', curious catch, frown at the snack pouch). Lip-sync judged from frames; every clip's audio was transcribed and says its exact line." },
+  "render_hash": "a206cf9830728908d8c9356f43ad76226f83c5203281f85ca8e5c84784db757d",
+  "tone": { "pass": true, "notes": "Same approved script in Tilly's voice: punchy two-word hook, facts as surprises, the unexplained part said plainly, one 'Okay, review time', spoken rating. Fits 13+." },
+  "banned_topics": { "pass": true, "notes": "Planetary science only; the cause of the six sides is labelled uncertain." },
+  "visuals": { "pass": true, "notes": "Cinematic remake: Saturn-lit close-ups for hook, catch and rating; establishing shots of the wonder (a tiny ship gliding over Saturn's horizon, a crane down onto the hexagon, tracking along its edge, a pull-back revealing the rings, the blue eye); silhouettes of Tilly against the giant window. Film grade, vignette, grain, slow push-ins and an ambient score under the voice. Captions and headline readable and inside safe areas. Every clip's bottom third was scanned: no burned-in text. One clip (catch-1) glitches into a teal frame after 5.5 s, but only 0–5.3 s is used. The hexagon reads stylised (a glowing outline) in tour-1." },
+  "character": { "pass": true, "notes": "Same face as the approved reference in every close-up; mustard flight suit with red shoulder stripes and faded red cap in close-ups and silhouettes. Lip-sync judged from frames; every clip's audio was transcribed and says its exact line." },
   "overall": "pass",
   "fixes": [],
   "learnings": [
-    "pov shots work: Saturn through the window carries the episode. Prompts must not mention a phone or camera, or the image model draws a phone screen inside the shot.",
-    "Ask for 'exactly six long straight sides and six sharp corners' or the hexagon comes out with eight sides.",
-    "Veo speaks the hook slowly: a 4-word first sentence ran 2.7 s. Open with a 2-word sentence ('A hexagon.') to land under 2 s.",
-    "Veo occasionally burns in garbled subtitles despite the negative prompt (1 of 11 clips here). Scan the bottom third of every clip before approving the render.",
-    "A pressurised cabin with no helmet keeps Tilly's face visible and consistent; helmets came and went between stills."
+    "Cinematic cameras (closeup / establishing / silhouette) plus grade: cinematic and score: space-drone look far more like a film than phone-vlog framing; use them for every Rated: Space episode.",
+    "Silhouettes from behind keep the character in the shot without risking a changed face, and narrate cleanly as voice-over.",
+    "An establishing shot with a spacecraft AND a planet feature confuses the image model (a bus-sized ship parked on a six-pointed star). Give it one subject: the tiny ship over the horizon, or the hexagon, not both.",
+    "'Blue spiral storm' in a planet prompt can drift toward Earth-like oceans; name the gas giant's own colours (pale gold, cream) and say 'no oceans, no land'."
   ]
 }
