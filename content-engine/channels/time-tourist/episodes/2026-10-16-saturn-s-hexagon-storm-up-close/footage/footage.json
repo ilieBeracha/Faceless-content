@@ -12,9 +12,9 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/00-hook-1.mp4",
-        "sha": "6e7859fa31fee8bf1ec4712e929da69043dec8e7c25fba8163738898ab643118",
-        "key": "5c329f2358f602ed8fbb7ea1aadf62da5c2be58f24adf94019b806ac7dd261d5",
-        "at": "2026-10-16T09:27:45Z",
+        "sha": "81430d615c1ed9821bdfdeeb1c2122e2758d609992814fec29921c5932013878",
+        "key": "0f7d4bae0d5d243ff375fb5abe9d6287267ae5c298090e06c9b67ffcc8b56bc6",
+        "at": "2026-10-16T11:09:45Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
@@ -35,9 +35,9 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/01-arrival-1.mp4",
-        "sha": "101dd06f0d6254b7f4ead3dadeedafec678d2b65844864af3c8ba3199e991e88",
-        "key": "74237093d2bd8152f3fa8a0b6471df7a4ba1702f411719a2eea139a976afc91b",
-        "at": "2026-10-16T09:08:06Z",
+        "sha": "11757213cd5771c5c24cbd32619c1f5b2d36833ce4755c2d5ae426c33c40ecbb",
+        "key": "6ab72e683b61c901ea787db270ee00a6f8f7299361a5857c1f5a3d8f4910ee0c",
+        "at": "2026-10-16T11:09:45Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
@@ -58,15 +58,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/01-arrival-2.mp4",
-        "sha": "4cc5efe11e0eaa9b7b5ba5ac21ba344c1ed7609edf9f8d529df91c01b5f2e449",
-        "key": "25bf2418cc7f29fa676b7ebcebed1241ff5df9f986ee6fe4930f2ee0a5c2953b",
-        "at": "2026-10-16T09:08:49Z",
+        "sha": "f5c43f6211a884ef682ad8f246322602225a5602e2de865fbdb40091c9e8b6cc",
+        "key": "d0c045960560031599f156e09dec82bcf75326d3ba187c8774f23a52f62001a7",
+        "at": "2026-10-16T11:10:30Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
           "transcript": "No landing, by the way. Saturn has no solid surface to stand on.",
           "same_words": true,
-          "differences": "None"
+          "differences": ""
         }
       }
     },
@@ -81,15 +81,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/02-tour-1.mp4",
-        "sha": "598fe868a93dc2779ffab065bc17d672ffc410546310da0a480d0c48928da3cf",
-        "key": "9fe70089e73bd3ae9205da34b86c65fd295511205f9248e6862ea65514936c4b",
-        "at": "2026-10-16T09:09:00Z",
+        "sha": "d5c8e19f6e0c85e9d64296cd8276107396dc1258223878426435951653c47edb",
+        "key": "2cabd51530f372ad61f7f73baa1f6d4f35931567d21879c2464abb046f63fe9a",
+        "at": "2026-10-16T11:10:30Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
           "transcript": "First, the shape. A six-sided storm, and each side is wider than Earth.",
           "same_words": true,
-          "differences": "No differences."
+          "differences": ""
         }
       }
     },
@@ -104,15 +104,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/02-tour-2.mp4",
-        "sha": "a557ae4d174d02a79e8712f78592522491f30022f2d520ae091888819e7d522d",
-        "key": "a0eb4d3aeb0b508c7ad72173ff2e8d4114d2a552e690618d1f91b8c0571b52df",
-        "at": "2026-10-16T09:09:44Z",
+        "sha": "3d967e2e017cee48793af06f39d71c3b9f79d3a948e8abf5bf60af4108185882",
+        "key": "ad4d3277c47d220fa03b1215be17abdb4aff7c7ea52eb04cfcb40db8e23e3551",
+        "at": "2026-10-16T11:11:24Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
-          "transcript": "The wind racing along its edge? Over three hundred kilometers an hour.",
+          "transcript": "The wind racing along its edge? Over three hundred kilometres an hour.",
           "same_words": true,
-          "differences": ""
+          "differences": "No differences."
         }
       }
     },
@@ -127,15 +127,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/02-tour-3.mp4",
-        "sha": "0d7d5fc351e8181f3526ccff5e77047f2b03c04f20e710285a2fc05df2b36896",
-        "key": "76b16288db2788ff0046f955499b87b4efffc97d8280be3d72b5de3fbbbdfa9d",
-        "at": "2026-10-16T09:09:54Z",
+        "sha": "ca44a716f950535fdc0332e68a336e2d3a3d0827c2098cb2319f189fdbe7a88e",
+        "key": "8ada101b1b59b104a5ec9c076bb3944998e05c6ad47d5801e1766169a3915061",
+        "at": "2026-10-16T11:11:24Z",
         "seconds": 8,
         "attempts": 1,
         "speech": {
           "transcript": "And it's not new. Voyager spotted it in the early eighties. Cassini found it still there, decades later.",
           "same_words": true,
-          "differences": "None"
+          "differences": ""
         }
       }
     },
@@ -150,9 +150,9 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/03-catch-1.mp4",
-        "sha": "6cd9967b44cb8fa346beae09eba109692de2b344cb6737e0f7152eee746bbe1d",
-        "key": "65c1d66bf90816dc8e035a99b9beccafb13bd9e18ee1eee94f9ffdc72a9bb0f5",
-        "at": "2026-10-16T09:10:39Z",
+        "sha": "1795cb977eb6fe8a23b0cdd96e0e2a24f722c6bdab9b16e01f17838b8bf18caa",
+        "key": "2fa4501ae13c0101b0b5f6651b16e960f9f0cc8471a553e3f962c32ba5aa4b10",
+        "at": "2026-10-16T11:12:29Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
@@ -173,9 +173,9 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/03-catch-2.mp4",
-        "sha": "25c43468ab87870722e2becc8f33582c06fc3ec14b16b07d85818375d4809a87",
-        "key": "2f19baaac36e71b61a80adda833daa9ca0db362302f6570c327fab596f7e1b30",
-        "at": "2026-10-16T09:10:39Z",
+        "sha": "eeb1c9fb17b98d1dc338d94070734d93a66c0e6e0ce383dd0dee6d0020323a8f",
+        "key": "b9bf223379399285bf5cefb423f85394dc72a1f0722710ac85370444237c6b5a",
+        "at": "2026-10-16T11:12:18Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
@@ -196,15 +196,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/03-catch-3.mp4",
-        "sha": "efa205823ebaa9ccb83343c09c6dc84143fe9e798d73ee2cb8997631e9242f71",
-        "key": "5c163276fb0c8f5052043ffb467318f262d645ed8190bdc803cd6a044db39c00",
-        "at": "2026-10-16T09:11:23Z",
+        "sha": "7daef1720d67ff6da3eebe7edd61e487c8aa850c3e798c9fb1f400f5fc7cbcab",
+        "key": "4efb73cbb32709dc045661dcf90e59c64b580d73deec4cd5ccc81e02a0bf69df",
+        "at": "2026-10-16T11:13:13Z",
         "seconds": 4,
         "attempts": 1,
         "speech": {
           "transcript": "And the south pole? No hexagon. Weird.",
           "same_words": true,
-          "differences": "No differences."
+          "differences": ""
         }
       }
     },
@@ -219,9 +219,9 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/04-rating-1.mp4",
-        "sha": "6e904e0757c76856a03a9d92992a478323a87f2c5b6c68b1769defabae388e3a",
-        "key": "bab326d7d1667635f72529771aa02b4f0dfa6c1c90782992c4ba44b54418e4f6",
-        "at": "2026-10-16T09:43:34Z",
+        "sha": "73e3e2048da0cfc0ab0c9c05c732d55af8d3f86e294e5e7647289f94af6b8a87",
+        "key": "65a2bc50caeafefdf1ef81bbb0caaef4b60c79d158804b94c1aaa124a9c9ed63",
+        "at": "2026-10-16T11:13:23Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
@@ -242,15 +242,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/04-rating-2.mp4",
-        "sha": "a37cb4cc4ed9333401bd339043e2aee5cdbbb37be6cabb8503de6a3a0e3e5b75",
-        "key": "1b7e99c2b489af0408adda36201edadb846d2d91234720083234a248c154a442",
-        "at": "2026-10-16T09:12:07Z",
+        "sha": "d81a4095b9c69e2db2fd9e211bd1189c92baf10b510184be84f50853d8877fce",
+        "key": "3a20060c7def4f70d4d91f1d2571aa804847df2a6b956cbf3f6811a14a3e5f94",
+        "at": "2026-10-16T11:14:07Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
           "transcript": "The universe makes hexagons for fun. I'm obsessed.",
           "same_words": true,
-          "differences": "No differences. The transcription is an exact match of the intended line."
+          "differences": "No differences found. The transcription matches the intended line exactly."
         }
       }
     }
