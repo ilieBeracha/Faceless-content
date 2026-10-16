@@ -313,6 +313,24 @@
       "model": "gemini-2.5-flash-image",
       "usd": 0.039,
       "ok": true
+    },
+    {
+      "at": "2026-10-16T16:39:49Z",
+      "shot": "01-arrival-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T16:39:52Z",
+      "shot": "01-arrival-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
     }
   ]
 }

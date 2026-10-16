@@ -35,13 +35,13 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/01-arrival-1.mp4",
-        "sha": "ce411ed2b7e8f3a173a85b67579d0799a0a97bd0827e6689953f044a9edcc35b",
-        "key": "b8433fd59c148cf43e6444e303dbf0f22d6619f7662eea8f806fefec8926de5b",
-        "at": "2026-10-16T16:26:01Z",
+        "sha": "95300775cf44560a0b4455fbfd8df1e7a61b316ad10ae9b864809039991691bc",
+        "key": "fb98b128f20234b2e9c109b7d22ea8fcbe462cea1bb196a621b9dd926553314c",
+        "at": "2026-10-16T16:39:52Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
-          "transcript": "This whole moon is only about five hundred kilometres wide.",
+          "transcript": "This whole moon is only about five hundred kilometers wide.",
           "same_words": true,
           "differences": ""
         }
