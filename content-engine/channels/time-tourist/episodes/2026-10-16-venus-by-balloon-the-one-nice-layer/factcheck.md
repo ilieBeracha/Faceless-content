@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-16-venus-by-balloon-the-one-nice-layer
 channel: time-tourist
-status: pending
+status: approved
 script_hash: b5eb2efd1d8e40e510fe41c1f9a5a97953a2c5a4d82fdd5b4a43c1398d7c48e1
 generated_at: 2026-10-16T13:50:08Z
-approved_by: null
-approved_at: null
+approved_by: "Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+approved_at: 2026-10-16T13:50:12Z
 notes: null
 ---
 
