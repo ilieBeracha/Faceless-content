@@ -26,7 +26,7 @@
     },
     "01-arrival-1": {
       "still_variant": 0,
-      "clip_variant": 0,
+      "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/01-arrival-1.jpg",
         "sha": "315b2bf89e8e01abfab5ebdddbd3d0be0e07faf3134dd4dda021951c2a4650a7",
