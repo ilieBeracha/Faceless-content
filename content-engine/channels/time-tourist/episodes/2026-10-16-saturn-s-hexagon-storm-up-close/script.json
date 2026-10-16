@@ -15,8 +15,8 @@
         "shots": [
           {
             "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; through the window behind her, Saturn's golden six-sided polar storm, the same hexagon reflected on the curved glass of her bubble helmet",
-            "action": "floating weightless, grinning, hair drifting inside the helmet",
+            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; through the big round window behind her, Saturn's north pole with its golden six-sided storm and a blue swirl at its centre",
+            "action": "floating weightless, grinning, curls drifting out from under her cap",
             "line": "Saturn has a hexagon. And I'm floating right above it.",
             "sound": "the soft hum of cabin fans",
             "expression": "excited"
@@ -38,7 +38,7 @@
         "shots": [
           {
             "camera": "pov",
-            "place": "Saturn's north pole seen from high above: a huge golden six-sided cloud band with straight edges and sharp corners circling the pole, a deep blue swirling storm at the very centre, the edge of the planet curving away into black space",
+            "place": "Saturn's north pole seen from high above: a huge golden hexagon of cloud circling the pole, with exactly six long straight sides and six sharp corners, a deep blue swirling storm at the very centre, the edge of the planet curving away into black space",
             "action": "looks out through the round cabin window, slowly drifting closer to the glass",
             "line": "We're over a billion kilometres from home, above Saturn's north pole.",
             "sound": "the soft hum of cabin fans"
@@ -46,7 +46,7 @@
           {
             "camera": "selfie",
             "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; Saturn's banded golden clouds filling the window behind her",
-            "action": "shrugging inside the bubble helmet, phone on its orange tether",
+            "action": "shrugging, deadpan",
             "line": "No landing, by the way. Saturn has no solid surface to stand on.",
             "sound": "the soft hum of cabin fans",
             "expression": "unimpressed"
@@ -67,21 +67,21 @@
         "shots": [
           {
             "camera": "pov",
-            "place": "Saturn's north pole seen from high above: a huge golden six-sided cloud band with straight edges and sharp corners circling the pole, a deep blue swirling storm at the very centre, the edge of the planet curving away into black space",
+            "place": "Saturn's north pole seen from high above: a huge golden hexagon of cloud circling the pole, with exactly six long straight sides and six sharp corners, a deep blue swirling storm at the very centre, the edge of the planet curving away into black space",
             "action": "slowly pans along one long straight edge of the hexagon to one of its sharp corners",
             "line": "First, the shape. A six-sided storm, and each side is wider than Earth.",
             "sound": "the soft hum of cabin fans"
           },
           {
             "camera": "pov",
-            "place": "close view of the edge of Saturn's golden hexagon: long streaks of cloud racing along a straight band, darker and lighter stripes on either side",
+            "place": "close view of one straight edge of Saturn's golden six-sided hexagon: long streaks of cloud racing along a straight band, darker and lighter stripes on either side",
             "action": "follows the racing cloud streaks along the band",
             "line": "The wind racing along its edge? Over three hundred kilometres an hour.",
             "sound": "the soft hum of cabin fans"
           },
           {
             "camera": "pov",
-            "place": "the whole of Saturn's north pole with the golden hexagon in the middle, the thin bright rings arcing across the bottom of the frame, black space all around",
+            "place": "the whole of Saturn's north pole with the golden six-sided hexagon in the middle, the thin bright rings arcing across the bottom of the frame, black space all around",
             "action": "slowly pulls back from the window so the whole hexagon and the rings fit in the frame",
             "line": "And it's not new. Voyager spotted it in the early eighties. Cassini found it still there, decades later.",
             "sound": "the soft hum of cabin fans"
@@ -102,7 +102,7 @@
         "shots": [
           {
             "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; the hexagon glowing gold through the window behind her",
+            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; Saturn's north pole with its golden six-sided storm visible through the window behind her",
             "action": "leaning close to the camera, eyebrows raised, almost whispering",
             "line": "The catch? Nobody's totally sure why it has six sides.",
             "sound": "the soft hum of cabin fans",
@@ -110,7 +110,7 @@
           },
           {
             "camera": "pov",
-            "place": "the deep blue spiral storm at the exact centre of Saturn's hexagon, seen from straight above, clouds slowly turning around a dark eye",
+            "place": "the centre of Saturn's north pole seen from straight above: pale golden-tan and cream cloud bands of a gas giant spiralling into a small dark blue-grey eye, no oceans, no land",
             "action": "slowly zooms toward the turning blue storm in the centre",
             "line": "Lab tanks of spinning water make shapes like it.",
             "sound": "the soft hum of cabin fans"
@@ -139,7 +139,7 @@
         "shots": [
           {
             "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; a squashed foil snack pouch floating next to her, Saturn's golden hexagon in the window",
+            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; a squashed foil snack pouch floating next to her, Saturn's north pole with its golden six-sided storm in the window",
             "action": "holding up five fingers, then catching the floating snack pouch and frowning at it",
             "line": "Okay, review time. View, five out of five. Snacks, one out of five.",
             "sound": "the soft hum of cabin fans and a crinkling foil pouch",
@@ -147,8 +147,8 @@
           },
           {
             "camera": "selfie",
-            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; she has turned so the hexagon fills the window right behind her head",
-            "action": "pressing the helmet against the window glass to look out, then turning back to the lens, smiling",
+            "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; Saturn's golden six-sided polar storm fills the window right behind her head",
+            "action": "glancing back at the window, then turning to the lens, smiling",
             "line": "The universe makes hexagons for fun. I'm obsessed.",
             "sound": "the soft hum of cabin fans",
             "expression": "excited"

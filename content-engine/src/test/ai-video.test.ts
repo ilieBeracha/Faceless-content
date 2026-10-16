@@ -48,7 +48,7 @@ describe("render-ai-video", () => {
 
   it("pov shots film the place and keep the character off screen", () => {
     const world = { world: "Rome, AD 216, the Baths of Caracalla", look: "handheld phone footage" };
-    const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a red cap", voice: "a bright London voice", fictional: true, references: ["references/ref-1.jpg"] };
+    const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a red cap", voice: "a bright London voice", fictional: true as const, references: ["references/ref-1.jpg"] };
     const pov = shotPrompts(world, params, { camera: "pov", place: "a vast cold hall with a pool", action: "tilts up to the vaulted ceiling", line: "Look at this." }, "excited", "Look at this.");
     assert.equal(pov.onCamera, false);
     assert.ok(!pov.imagePrompt.includes(params.identity), "the still must not describe the character");

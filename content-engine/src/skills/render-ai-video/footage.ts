@@ -123,8 +123,8 @@ const CAMERA: Record<Shot["camera"], { still: string; video: string }> = {
     video: "Handheld medium-wide shot filmed by a companion",
   },
   pov: {
-    still: "Point-of-view phone photo: the phone's back camera points at the scene, which fills the whole frame; nobody is taking a selfie and the person filming is not in the picture (at most one hand at the edge of the frame)",
-    video: "Point-of-view handheld phone footage through the back camera, slow natural movement, the scene fills the frame",
+    still: "First-person view: exactly what the person filming sees, the scene fills the whole frame; nobody is in the foreground, and no phone, screen, camera or hand appears in the picture",
+    video: "First-person handheld footage of exactly what the person filming sees, slow natural movement, the scene fills the frame, no phone or screen in the picture",
   },
 };
 
