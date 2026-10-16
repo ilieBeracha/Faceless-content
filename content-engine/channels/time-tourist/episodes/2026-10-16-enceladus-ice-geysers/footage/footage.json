@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "shots": {
+    "00-hook-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/00-hook-1.jpg",
+        "sha": "4d5fe89bfe9bde4a5bc8c8729f821a2541d919bbabb0f946a6cbfa8d9e2360c8",
+        "key": "1b11d611786a9abfda5d14c7b1d7c8fe51480eb28f916219b980f4a14fc74639",
+        "at": "2026-10-16T16:06:01Z"
+      }
+    },
+    "01-arrival-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/01-arrival-1.jpg",
+        "sha": "315b2bf89e8e01abfab5ebdddbd3d0be0e07faf3134dd4dda021951c2a4650a7",
+        "key": "c2ee96fea0803bf8b4adb11c6826c13435e6e840d5b386e02938443b45dd7c32",
+        "at": "2026-10-16T16:06:06Z"
+      }
+    },
+    "01-arrival-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/01-arrival-2.jpg",
+        "sha": "7825fec996a114a085e2665909a7aa4c181b9b702e61875c108c3229acfe4672",
+        "key": "d865b32603cb976822fc1f08604720c654275d783818d6693f5f5f48cf1fa2ed",
+        "at": "2026-10-16T16:06:14Z"
+      }
+    },
+    "02-tour-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/02-tour-1.jpg",
+        "sha": "66f8b82f1ff405e1bcf3d38014264d0464f425387ed69ddc5eff9d21f4cfcbf9",
+        "key": "29a4197a9037b6d9d561277513bfc173015f5009ac931c499ceb75d588a7cdba",
+        "at": "2026-10-16T16:06:20Z"
+      }
+    },
+    "02-tour-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/02-tour-2.jpg",
+        "sha": "f074277443f1c334fd520ae298f8fcd447046750fe8f85d339f814ead427de72",
+        "key": "5478a80a661f95e24f8c75c837be9a825e1ecdfc0260bd31a889da4cf15d1dd6",
+        "at": "2026-10-16T16:06:25Z"
+      }
+    },
+    "02-tour-3": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/02-tour-3.jpg",
+        "sha": "0f0e007585e1c8e368271c7cc67cc780dfc00ed12f8512d32c29468bd5d88b64",
+        "key": "994853a45e47520f9e1c03360bba4ef6c782f4d489b092e5f1644c5716129ada",
+        "at": "2026-10-16T16:06:31Z"
+      }
+    },
+    "03-catch-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/03-catch-1.jpg",
+        "sha": "4c46450c5b4daf2165e8be42bf731426b5349b3d75869228ee4b6c25a6e0f3ec",
+        "key": "abce8c46ff7d30bfd65f9970069c71763f97326d8fa8630e1b5c33fc4aadc44e",
+        "at": "2026-10-16T16:06:39Z"
+      }
+    },
+    "03-catch-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/03-catch-2.jpg",
+        "sha": "afe91c2f71afe67a2cb0738e3dfb4a3fe4154ef0fbf048bb3f6d91e739ce7739",
+        "key": "c456929bda436ad0868135f8b37fdd3a4c02f574abae8a3a976e179e729842c0",
+        "at": "2026-10-16T16:06:44Z"
+      }
+    },
+    "04-rating-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/04-rating-1.jpg",
+        "sha": "af543af351c40a35b12bb2fbf9c1577ca22234c5c396f5d1e43ab753d3a0639c",
+        "key": "2d7c14e98a5c693eec4e7a7348894b79140be923a5b48d97817ed53a586ed4bb",
+        "at": "2026-10-16T16:06:52Z"
+      }
+    },
+    "04-rating-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/04-rating-2.jpg",
+        "sha": "ef2e7c9bef8d57d8b7b3a901abdbe9b6bfa5ddae627f1242ceca2b9269ea8aed",
+        "key": "dbe494a5da278d84331f7f440d1b12fd59a57960ee449ef3bb5b00cfadfb730e",
+        "at": "2026-10-16T16:06:57Z"
+      }
+    }
+  },
+  "pending": {
+    "hash": "39681bf2b2dcc98ba119402b9021c44964f8312d26dfd46f4ffd24afcca54946",
+    "estimate_usd": 6.22
+  }
+}
