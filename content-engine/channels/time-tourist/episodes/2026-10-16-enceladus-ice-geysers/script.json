@@ -1,0 +1,241 @@
+{
+  "schema": "script/v1",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "idea": "enceladus-ice-geysers",
+  "title": "Standing on Enceladus, reviewed",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly-space",
+      "voiceover": "Ice everywhere. I'm standing on Enceladus, one of Saturn's moons.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "on-location",
+            "place": "standing on the bright white-and-blue ice plain of Enceladus, soft rounded craters around her, black starry sky above, Saturn with its rings huge in the sky behind her",
+            "action": "standing steadily on the ice, turning calmly to the camera",
+            "line": "Ice everywhere. I'm standing on Enceladus, one of Saturn's moons.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet",
+            "expression": "excited"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      },
+      "on_screen_text": "Standing on Enceladus"
+    },
+    {
+      "id": "arrival",
+      "speaker": "tilly-space",
+      "voiceover": "This whole moon is only about five hundred kilometres wide. And it's so bright, it reflects almost all the sunlight that hits it.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "establishing",
+            "place": "the whole small icy moon Enceladus seen from space, a bright white ball with blue cracks, tiny next to the huge ringed planet Saturn",
+            "action": "a slow, smooth push-in toward the little white moon",
+            "line": "This whole moon is only about five hundred kilometres wide.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet"
+          },
+          {
+            "camera": "on-location",
+            "place": "standing on the bright white-and-blue ice plain of Enceladus, soft rounded craters around her, black starry sky above, the ice glittering brilliantly white in the sunlight",
+            "action": "standing still, shielding her visor with one hand for a moment",
+            "line": "And it's so bright, it reflects almost all the sunlight that hits it.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet",
+            "expression": "surprised"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "tour",
+      "speaker": "tilly-space",
+      "voiceover": "Saturn hangs right there in the sky. It never moves. Down south, there are long cracks in the ice called tiger stripes. And they spray giant jets of ice into space.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "establishing",
+            "place": "the icy horizon of Enceladus with the enormous ringed planet Saturn hanging low in the starry sky, filling a large part of it",
+            "action": "a slow, gentle pan across the horizon up to Saturn",
+            "line": "Saturn hangs right there in the sky. It never moves.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet"
+          },
+          {
+            "camera": "first-person",
+            "place": "a long, deep blue crack in the white ice running away toward the horizon, frost crystals sparkling along its edges",
+            "action": "her mustard-gloved hand reaches toward the edge of the crack",
+            "line": "Down south, there are long cracks in the ice called tiger stripes.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet"
+          },
+          {
+            "camera": "establishing",
+            "place": "tall white jets of ice spray shooting high up from long blue cracks in the ice into the black starry sky, glittering in the sunlight, Saturn in the background",
+            "action": "a slow tilt up following the jets into space",
+            "line": "And they spray giant jets of ice into space.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "catch",
+      "speaker": "tilly-space",
+      "voiceover": "The catch? Under all this ice, there's a whole ocean of liquid water. Some of the spray even ends up feeding one of Saturn's rings.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "standing on the bright white-and-blue ice plain of Enceladus, soft rounded craters around her, black starry sky above, a tall jet of ice spray rising in the distance behind her",
+            "action": "standing still, speaking quietly and seriously to the lens",
+            "line": "The catch? Under all this ice, there's a whole ocean of liquid water.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet",
+            "expression": "gentle"
+          },
+          {
+            "camera": "establishing",
+            "place": "from high above, a faint glittering stream of ice spray from the little moon Enceladus drifting out into a wide, faint outer ring of Saturn",
+            "action": "a slow drift along the faint ring",
+            "line": "Some of the spray even ends up feeding one of Saturn's rings.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "gentle"
+      }
+    },
+    {
+      "id": "rating",
+      "speaker": "tilly-space",
+      "voiceover": "Okay, review time. View, five out of five. Minus two hundred degrees? One star. A tiny moon with a secret ocean. I'm obsessed.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "on-location",
+            "place": "standing on the bright white-and-blue ice plain of Enceladus, soft rounded craters around her, black starry sky above, soft even light, no glare across her helmet visor",
+            "action": "standing still on the ice facing the camera, speaking calmly with a small smile, not walking toward the camera",
+            "line": "Okay, review time. View, five out of five. Minus two hundred degrees? One star.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet",
+            "expression": "neutral"
+          },
+          {
+            "camera": "silhouette",
+            "place": "seen from behind: she stands on the ice plain looking up at the enormous ringed planet Saturn, ice jets glittering far away on the horizon",
+            "action": "a slow, steady pull back that leaves her a small figure on the ice",
+            "line": "A tiny moon with a secret ocean. I'm obsessed.",
+            "sound": "near silence, the soft crunch of ice and her steady breathing in the helmet"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-ai-video": {
+      "world": "Enceladus, Saturn's small icy moon: a bright white-and-blue ice surface with soft craters and long blue cracks near the south pole, a black starry sky, Saturn and its rings huge in the sky",
+      "look": "flat 2D vector illustration like a modern animated space poster: deep blues and violets, glowing white ice, soft starlight, twinkling stars, a bright distant sun",
+      "grade": "natural",
+      "score": "space-drone",
+      "direction": "documentary",
+      "style": "illustrated",
+      "wardrobe": "a fitted mustard-yellow spacesuit with faded-red shoulder stripes, a clear round bubble helmet showing her whole face and dark curly hair, mustard gloves and a slim white backpack"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Enceladus is about 500 km (about 313 miles) across.",
+      "beat": "arrival",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ (about 313 miles / 504 km in diameter)",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "claim": "Enceladus's fresh, clean ice reflects almost all the sunlight that hits it; it is one of the most reflective bodies in the solar system.",
+      "beat": "arrival",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ ; HyperPhysics, Enceladus, https://hyperphysics.gsu.edu/hbase/Solar/enceladus.html",
+      "confidence": "high",
+      "note": "Bond albedo about 0.8, geometric albedo above 1; said as 'almost all'."
+    },
+    {
+      "id": "c3",
+      "claim": "Enceladus is tidally locked to Saturn, so from its Saturn-facing side Saturn stays in the same place in the sky.",
+      "beat": "tour",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ (synchronous rotation) ; Online Astronomy eText, https://cseligman.com/text/moons/enceladus.htm",
+      "confidence": "high",
+      "note": "True for the Saturn-facing hemisphere; the shots show that side."
+    },
+    {
+      "id": "c4",
+      "claim": "Near Enceladus's south pole are long parallel fractures nicknamed 'tiger stripes', found by Cassini in 2005.",
+      "beat": "tour",
+      "source": "EarthSky, https://earthsky.org/space/enceladus-saturn-moon-tiger-stripe-explained ; NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/",
+      "confidence": "high"
+    },
+    {
+      "id": "c5",
+      "claim": "Jets (plumes) of water vapour and ice grains spray from the tiger stripes into space.",
+      "beat": "tour",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ ; AAS Nova, 'Geysers from the Tiger Stripes of Enceladus', https://aasnova.org/?p=336",
+      "confidence": "high"
+    },
+    {
+      "id": "c6",
+      "claim": "Enceladus has a global ocean of liquid salty water beneath its icy shell.",
+      "beat": "catch",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ (Cassini gravity and libration data, 2015)",
+      "confidence": "high"
+    },
+    {
+      "id": "c7",
+      "claim": "Material from Enceladus's plumes supplies Saturn's E ring.",
+      "beat": "catch",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ ; EarthSky, https://earthsky.org/space/enceladus-saturn-moon-tiger-stripe-explained",
+      "confidence": "high"
+    },
+    {
+      "id": "c8",
+      "claim": "Enceladus's surface is about minus 200 °C (around -198 to -201 °C).",
+      "beat": "rating",
+      "source": "NASA Science, Enceladus, https://science.nasa.gov/saturn/moons/enceladus/ (about -330 °F / -201 °C) ; HyperPhysics (-198 °C at noon)",
+      "confidence": "high",
+      "note": "Said as 'minus two hundred degrees'."
+    }
+  ],
+  "pronunciations": {
+    "Enceladus": "en-SELL-uh-dus"
+  },
+  "publish": {
+    "title": "I stood on Saturn's icy moon",
+    "description": "A moon 500 km wide that shoots giant jets of ice into space and hides a whole ocean under its ice. Tilly reviews Enceladus.",
+    "hashtags": [
+      "#enceladus",
+      "#saturn",
+      "#space",
+      "#astronomy",
+      "#shorts"
+    ]
+  }
+}

@@ -3,15 +3,19 @@
   "channel": "time-tourist",
   "series": "rated-space",
   "idea": "enceladus-ice-geysers",
-  "title": "Enceladus ice geysers",
+  "title": "Standing on Enceladus, reviewed",
   "created": "2026-10-16T16:05:41Z",
-  "updated": "2026-10-16T16:05:41Z",
+  "updated": "2026-10-16T16:05:43Z",
   "status": "in-progress",
   "steps": {
     "idea": {
       "status": "done",
       "at": "2026-10-16T16:05:41Z",
       "note": "Enceladus ice geysers"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-10-16T16:05:43Z"
     }
   }
 }
