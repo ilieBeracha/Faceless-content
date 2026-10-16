@@ -12,13 +12,13 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/00-hook-1.mp4",
-        "sha": "6d42a391ecf804cc5e074a50d677ca19599d4508464719d439d058b1f50ab88d",
-        "key": "8cc3df0969adbeb011a7b9631502efc9cdf9d2f21da62c6baf7a723ce46ca07d",
-        "at": "2026-10-16T09:07:55Z",
+        "sha": "6e7859fa31fee8bf1ec4712e929da69043dec8e7c25fba8163738898ab643118",
+        "key": "5c329f2358f602ed8fbb7ea1aadf62da5c2be58f24adf94019b806ac7dd261d5",
+        "at": "2026-10-16T09:27:45Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
-          "transcript": "Saturn has a hexagon. And I'm floating right above it.",
+          "transcript": "A hexagon. On Saturn. And I'm floating right above it.",
           "same_words": true,
           "differences": ""
         }
