@@ -93,6 +93,10 @@ export interface Ledger {
 }
 
 const NEGATIVE = "subtitles, captions, on-screen text, letters, watermark, logo, music, cartoon, animation, CGI, illustration, deformed face, extra fingers, morphing, flicker";
+/** direction: "documentary" — real-world acting and real-world looks. */
+const DOC_ACTING = "Natural, calm, believable body language, like a real documentary presenter: standing or sitting steadily, small natural hand movements at most; no jumping, no floating poses, no waving, no thumbs-up, no counting on fingers, no exaggerated faces or gestures";
+const DOC_LOOK = "Strictly photorealistic, like real footage and real spacecraft photography: physically accurate light and scale, no glowing outlines, no neon, no stylised graphics, no video-game or CGI look";
+const DOC_NEGATIVE = ", glowing outlines, neon lines, stylised graphics, video game, 3D render look, jumping, waving, thumbs up, exaggerated gestures, posing";
 
 /** Prompt text is written with {She}/{she}/{her}/{is}; swapped for the character's pronoun. */
 export function withPronoun(text: string, pronoun: string): string {
@@ -134,6 +138,14 @@ const CAMERA: Record<Shot["camera"], { still: string; video: string }> = {
     still: "Cinematic wide shot from behind {her}: {she} is a small figure seen only from the back, near the bottom of the frame, dwarfed by the view in front of {her}; {her} face is not visible",
     video: "Cinematic wide shot from behind, slow steady push-in toward the view, the figure stays seen from the back and never turns around",
   },
+  "first-person": {
+    still: "First-person view through {her} own eyes, physically inside the scene: {her} gloved hands or forearms may reach into the bottom of the frame; no phone, screen or camera in the picture",
+    video: "First-person view through {her} own eyes, physically inside the scene, gentle natural head movement; {her} gloved hands may reach into the frame",
+  },
+  "on-location": {
+    still: "Documentary medium-wide shot of {her} standing in the place itself, the environment all around {her}, filmed by a camera operator a few metres away; {she} is fully inside the scene, not behind glass",
+    video: "Documentary medium-wide shot filmed by a camera operator on a steady handheld rig a few metres away; {she} stands in the environment and speaks to the lens",
+  },
   pov: {
     still: "First-person view: exactly what the person filming sees, the scene fills the whole frame; nobody is in the foreground, and no phone, screen, camera or hand appears in the picture",
     video: "First-person handheld footage of exactly what the person filming sees, slow natural movement, the scene fills the frame, no phone or screen in the picture",
@@ -144,13 +156,16 @@ const CAMERA: Record<Shot["camera"], { still: string; video: string }> = {
 export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: Shot, face: string, spoken: string): { onCamera: boolean; imagePrompt: string; videoPrompt: string } {
   const cam = CAMERA[shot.camera];
   // Phone cameras read as a vlog; the cinematic ones (closeup, establishing, silhouette) as a film.
-  const film = ["closeup", "establishing", "silhouette"].includes(shot.camera);
+  const film = ["closeup", "establishing", "silhouette", "first-person", "on-location"].includes(shot.camera);
+  const doc = world.direction === "documentary";
+  const outfit = world.wardrobe ?? p.wardrobe;
+  const look = doc ? `${world.look}. ${DOC_LOOK}` : world.look;
   const frameOf = film ? "from a film" : "from a smartphone video";
   const footage = film ? "realistic live-action film footage" : "realistic smartphone footage";
   const sayRule = `{She} says only that line, then stops talking. Ambient sound: ${shot.sound ?? "the natural sounds of the place"}. No music. No subtitles, no on-screen text.`;
   if (OFF_CAMERA.includes(shot.camera)) {
     const fromBehind = shot.camera === "silhouette";
-    const figure = fromBehind ? `The figure, seen only from behind: ${p.wardrobe}; dark curly shoulder-length hair.` : "";
+    const figure = fromBehind ? `The figure, seen only from behind: ${outfit}; dark curly shoulder-length hair.` : "";
     const voiceOver = fromBehind
       ? `{She} is seen only from behind and never turns to the camera. In a voice-over, in ${p.voice}, {she} says: "${spoken}"`
       : `The woman holding the phone stays behind the camera and is never seen. Off screen, in ${p.voice}, {she} says: "${spoken}"`;
@@ -162,10 +177,10 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
         `Setting: ${world.world}. ${shot.place}.`,
         `The camera: ${shot.action}.`,
         shot.others ? `Also in the frame: ${shot.others}.` : "",
-        `Style: ${world.look}. A real photograph: real light, real textures, no text, no captions, no logos, no watermark.`,
+        `Style: ${look}. A real photograph: real light, real textures, no text, no captions, no logos, no watermark.`,
       ].filter(Boolean).join("\n"),
       videoPrompt: [
-        `${cam.video}, ${footage}. ${world.look}.`,
+        `${cam.video}, ${footage}. ${look}.`,
         `Setting: ${world.world}; ${shot.place}.`,
         `The camera: ${shot.action}.`,
         shot.others ? `In the scene: ${shot.others}.` : "",
@@ -179,16 +194,18 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
     onCamera: true,
     imagePrompt: [
       `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
-      `The person: ${p.identity}. Wearing ${p.wardrobe}.${p.references.length ? " Exactly the same person as in the reference photos: same face, hair, skin and build." : ""}`,
+      `The person: ${p.identity}. Wearing ${outfit}.${p.references.length ? " Exactly the same person as in the reference photos: same face, hair, skin and build." : ""}`,
       `Setting: ${world.world}. ${shot.place}.`,
       `{She} {is} ${shot.action}, mid-sentence, expression: ${face}.`,
+      doc ? `${DOC_ACTING}.` : "",
       shot.others ? `Also in the frame: ${shot.others}.` : "",
-      `Style: ${world.look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
+      `Style: ${look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
     ].filter(Boolean).join("\n"),
     videoPrompt: [
-      `${cam.video}, ${footage}. ${world.look}.`,
-      `${p.identity}, wearing ${p.wardrobe}. Setting: ${world.world}; ${shot.place}.`,
+      `${cam.video}, ${footage}. ${look}.`,
+      `${p.identity}, wearing ${outfit}. Setting: ${world.world}; ${shot.place}.`,
       `{She} {is} ${shot.action}; expression: ${face}.`,
+      doc ? `${DOC_ACTING}.` : "",
       shot.others ? `In the background: ${shot.others}.` : "",
       `{She} looks into the camera and says, in ${p.voice}: "${spoken}"`,
       sayRule,
@@ -242,7 +259,7 @@ export function planShots(ws: Workspace, ep: EpisodeRef, script: Script): Planne
         onCamera,
         imagePrompt: withPronoun(imagePrompt, pronoun),
         videoPrompt: withPronoun(videoPrompt, pronoun),
-        negativePrompt: NEGATIVE,
+        negativePrompt: world.direction === "documentary" ? NEGATIVE + DOC_NEGATIVE : NEGATIVE,
       });
     });
   });

@@ -10,11 +10,11 @@
     ]
   },
   "expressions": {
-    "neutral": "relaxed, friendly half-smile",
-    "curious": "eyebrows raised, head tilted slightly, interested",
-    "excited": "wide-eyed, big open grin",
-    "surprised": "eyebrows high, mouth open in disbelief",
-    "unimpressed": "flat mouth, one eyebrow raised, deadpan",
+    "neutral": "relaxed and attentive, a faint natural smile",
+    "curious": "thoughtful, eyes slightly narrowed, head still",
+    "excited": "quietly thrilled, a small bright natural smile",
+    "surprised": "eyes slightly widened, lips just parted",
+    "unimpressed": "dry, deadpan, one corner of the mouth up",
     "gentle": "soft eyes, calm and serious, no smile"
   }
 }

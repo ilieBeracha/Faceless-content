@@ -47,7 +47,7 @@ describe("render-ai-video", () => {
   });
 
   it("pov shots film the place and keep the character off screen", () => {
-    const world = { world: "Rome, AD 216, the Baths of Caracalla", look: "handheld phone footage", grade: "natural" as const, score: "none" as const };
+    const world = { world: "Rome, AD 216, the Baths of Caracalla", look: "handheld phone footage", grade: "natural" as const, score: "none" as const, direction: "vlog" as const };
     const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a red cap", voice: "a bright London voice", fictional: true as const, references: ["references/ref-1.jpg"] };
     const pov = shotPrompts(world, params, { camera: "pov", place: "a vast cold hall with a pool", action: "tilts up to the vaulted ceiling", line: "Look at this." }, "excited", "Look at this.");
     assert.equal(pov.onCamera, false);
@@ -60,7 +60,7 @@ describe("render-ai-video", () => {
   });
 
   it("cinematic cameras read as film; a silhouette narrates from behind", () => {
-    const world = { world: "Saturn from orbit", look: "cinematic", grade: "cinematic" as const, score: "space-drone" as const };
+    const world = { world: "Saturn from orbit", look: "cinematic", grade: "cinematic" as const, score: "space-drone" as const, direction: "vlog" as const };
     const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a mustard flight suit", voice: "a bright London voice", fictional: true as const, references: ["references/ref-1.jpg"] };
     const close = shotPrompts(world, params, { camera: "closeup", place: "a cabin", action: "smiling", line: "Hi." }, "excited", "Hi.");
     assert.equal(close.onCamera, true);
@@ -71,6 +71,19 @@ describe("render-ai-video", () => {
     assert.ok(!back.imagePrompt.includes(params.identity), "a silhouette never describes the face");
     assert.match(back.imagePrompt, /mustard flight suit/);
     assert.match(back.videoPrompt, /voice-over.*"Look\."/);
+  });
+
+  it("documentary direction asks for calm acting, photoreal looks and an episode outfit", () => {
+    const world = { world: "Venus clouds", look: "cinematic", grade: "cinematic" as const, score: "space-drone" as const, direction: "documentary" as const, wardrobe: "a mustard pressure suit with a clear full-face helmet" };
+    const params = { identity: "a fictional woman in her late twenties with dark curly hair and freckles", wardrobe: "a flight suit and a red cap", voice: "a bright London voice", fictional: true as const, references: ["references/ref-1.jpg"] };
+    const close = shotPrompts(world, params, { camera: "closeup", place: "a balloon deck in yellow haze", action: "standing at the rail", line: "Hi." }, "calm", "Hi.");
+    assert.match(close.imagePrompt, /no jumping/);
+    assert.match(close.imagePrompt, /Strictly photorealistic/);
+    assert.match(close.imagePrompt, /pressure suit/);
+    assert.ok(!close.imagePrompt.includes("red cap"));
+    const eyes = shotPrompts(world, params, { camera: "first-person", place: "yellow acid haze", action: "a gloved hand reaches out", line: "Look." }, "calm", "Look.");
+    assert.equal(eyes.onCamera, false);
+    assert.match(eyes.imagePrompt, /own eyes/);
   });
 });
 

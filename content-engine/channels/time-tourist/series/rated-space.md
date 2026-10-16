@@ -4,7 +4,7 @@
 slug: rated-space               # required slug — file name series/<slug>.md
 name: "Rated: Space"           # required string — shown in titles
 status: active                  # required enum(draft|active|paused|retired)
-format: "Tilly takes a Budget Space Tour to one real wonder of the universe, shot like a sci-fi film trailer (epic views of the wonder, Tilly as a small figure against it, close-ups when she speaks to us), and gives it an honest rating."  # required string — one line: what happens in every episode
+format: "Tilly takes a Budget Space Tour into one real wonder of the universe and is physically there (on its surface, in its clouds, inside its light), filmed like a photoreal nature documentary, and gives it an honest rating."  # required string — one line: what happens in every episode
 characters: [tilly-space]       # required list(ref(character)) min=1 — characters from THIS channel; the first one narrates
 length:                         # required object — overrides the engine default (20–60 s)
   min_seconds: 38               # required number min=5 max=180 — shortest acceptable video
@@ -26,7 +26,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
   - id: rating
     seconds: 7
     purpose: "The rating, said out loud as 'N out of 5', and one line on what it says about our universe."
-visual_style: "Cinematic sci-fi film look: steady slow camera moves, epic establishing shots of the real wonder, Tilly as a silhouette against it, documentary-style close-ups when she speaks to us, film grade with grain and vignette, an ambient space score under her voice, word-by-word captions in the lower third."  # required text — what the screen looks like
+visual_style: "Photoreal documentary footage from inside the wonder: Tilly physically on location in a suit, first-person views through her own eyes, epic establishing shots, calm natural acting, film grade with grain and vignette, an ambient space score under her voice, word-by-word captions in the lower third."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON
   render: [render-ai-video]     # required list(ref(skill:render)) min=1 — visual styles; mix and match
@@ -42,9 +42,15 @@ created: 2026-10-16             # required date
 
 - Paid footage (Veo): about $6–9 an episode, capped at $25 including retries. Stills are approved before any
   video is made.
-- 8–12 shots per episode, filmed like a trailer: `establishing` shots of the wonder (about half), `silhouette`
-  shots of Tilly against it, `closeup` for the hook, the catch and the rating. No phone, no selfie framing.
-- `visuals["render-ai-video"]`: a film `look`, `grade: "cinematic"`, `score: "space-drone"`.
+- Tilly is **inside** the place, never behind a window: on the surface, on a balloon deck in the clouds, on the
+  ice. She wears an episode suit (`visuals["render-ai-video"].wardrobe`, clear full-face helmet so her face
+  shows) when the place isn't breathable.
+- 8–12 shots: `on-location` and `closeup` when she speaks to us, `first-person` (her gloved hands reaching
+  into the scene), `establishing` shots of the wonder, `silhouette` against it. No phone, no selfie framing.
+- `visuals["render-ai-video"]`: `direction: "documentary"` (calm acting, strictly photoreal), a real-footage
+  `look`, `grade: "cinematic"`, `score: "space-drone"`.
+- Actions are small and real: standing at a rail, turning to look, touching a surface. No jumping, waving,
+  thumbs-up or counting on fingers.
 - The hook's first sentence is two words: Veo speaks slowly, so longer openers miss the 2-second mark.
 - Tilly is always somewhere a person could survive: inside a ship, in orbit, in a suit at a safe distance, or a
   balloon in a breathable layer. Never pretend the impossible is safe.

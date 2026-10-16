@@ -55,7 +55,9 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   "world": "Rome, 216 AD, the Baths of Caracalla on a hot summer afternoon",   // era, place, season, light
   "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field",  // optional
   "grade": "natural",     // optional: "cinematic" adds a film grade, vignette, grain and a slow push-in per shot
-  "score": "none"         // optional: "space-drone" lays a generated ambient music bed under the voice (free)
+  "score": "none",        // optional: "space-drone" lays a generated ambient music bed under the voice (free)
+  "direction": "vlog",    // optional: "documentary" = calm, natural acting and strictly photoreal, unstylised visuals
+  "wardrobe": "…"         // optional: this episode's outfit (e.g. a pressure suit); the face stays the same
 }
 ```
 
@@ -67,7 +69,7 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   "shots": [
     {
       "camera": "selfie",            // vlog: selfie | selfie-walk | over-shoulder | wide | pov
-                                     // film: closeup | establishing | silhouette
+                                     // film: closeup | establishing | silhouette | first-person | on-location
       "place": "the vast frigidarium hall: marble columns, a coffered vaulted ceiling, a cold plunge pool, bathers in tunics",
       "action": "turning slowly so the hall fills the frame behind her",
       "line": "This is the cold room.", // EXACTLY the words said in this shot
@@ -94,7 +96,9 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
 - **Cinematic episodes** (a series whose visual style says film, not vlog): use the film cameras.
   `closeup` = the character talks to the lens like a documentary host (slow dolly push-in, rim light);
   `establishing` = the wonder itself at epic scale with a slow dolly/orbit/crane move, narrated off screen;
-  `silhouette` = the character small and seen from behind against the view, narrated as a voice-over.
+  `silhouette` = the character small and seen from behind against the view, narrated as a voice-over;
+  `first-person` = through the character's own eyes, physically inside the scene (gloved hands may reach in);
+  `on-location` = a camera operator films the character standing in the place itself, not behind glass.
   Mix them like a trailer: open on a striking close-up, then alternate establishing and silhouette shots, and
   return to a close-up for the verdict. Set `look` to a film look ("cinematic sci-fi film, anamorphic lens,
   dramatic rim light, volumetric haze, deep blacks"), `grade: "cinematic"` and a `score`.

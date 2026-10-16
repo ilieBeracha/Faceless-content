@@ -6,9 +6,9 @@
 import { z } from "zod";
 import { voiceTokens } from "../write-script/schema.ts";
 
-export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide", "pov", "closeup", "establishing", "silhouette"] as const;
+export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide", "pov", "closeup", "establishing", "silhouette", "first-person", "on-location"] as const;
 /** Cameras that don't show the character's face: the line is narrated off screen (voice-over). */
-export const OFF_CAMERA: readonly Shot["camera"][] = ["pov", "establishing", "silhouette"];
+export const OFF_CAMERA: readonly Shot["camera"][] = ["pov", "establishing", "silhouette", "first-person"];
 
 export const shotSchema = z
   .object({
@@ -35,6 +35,11 @@ export const worldSchema = z
     look: z.string().max(240).default("handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field"),
     grade: z.enum(["natural", "cinematic"]).default("natural").describe("cinematic: film grade, vignette, grain and a slow push-in on every shot"),
     score: z.enum(["none", "space-drone"]).default("none").describe("a generated music bed under the voice (free, made locally)"),
+    direction: z
+      .enum(["vlog", "documentary"])
+      .default("vlog")
+      .describe("documentary: calm, natural acting (no jumping, posing or big gestures) and strictly photoreal, unstylised visuals"),
+    wardrobe: z.string().max(300).optional().describe("this episode's outfit instead of the character's usual one (same face), e.g. a pressure suit"),
   })
   .strict();
 
