@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-16-enceladus-ice-geysers
 channel: time-tourist
-status: pending
+status: approved
 script_hash: 5c1a64abd9b476a93a5720cd4bd3e1921d6843192f10e2f06599f73fbd39cf51
 generated_at: 2026-10-16T16:05:43Z
-approved_by: null
-approved_at: null
+approved_by: "Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+approved_at: 2026-10-16T16:05:52Z
 notes: null
 ---
 
