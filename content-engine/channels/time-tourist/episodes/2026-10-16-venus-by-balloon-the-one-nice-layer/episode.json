@@ -5,7 +5,7 @@
   "idea": "venus-by-balloon-the-one-nice-layer",
   "title": "Floating in Venus's clouds, reviewed",
   "created": "2026-10-16T13:49:40Z",
-  "updated": "2026-10-16T13:58:47Z",
+  "updated": "2026-10-16T14:49:38Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -31,6 +31,11 @@
       "status": "done",
       "at": "2026-10-16T13:58:47Z",
       "note": "51.53s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-10-16T14:49:38Z",
+      "note": "out/time-tourist/2026-10-16-venus-by-balloon-the-one-nice-layer.mp4"
     }
   }
 }
