@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "shots": {
+    "00-hook-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/00-hook-1.jpg",
+        "sha": "8846a9fe3466253b309732e790b4b926ecb0d3d15a5bfd8258fe96202ed427c5",
+        "key": "1e425f58ce7802051d29199af12d57708454fdc223f662114024ab0d47432d23",
+        "at": "2026-10-16T13:50:26Z"
+      }
+    },
+    "01-arrival-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/01-arrival-1.jpg",
+        "sha": "e5e1a3a12d77a4cf5e0d839712b09a0ade589041588de93f404f079f54c8360c",
+        "key": "fc74aac19e72d4a8cf63aa88242698f4d419e92367ddfd7f3651af0d2eff9af2",
+        "at": "2026-10-16T13:50:32Z"
+      }
+    },
+    "01-arrival-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/01-arrival-2.jpg",
+        "sha": "b83e24c91e1b1cf8e3e2623b9dac266525e76816758b42b4f674ccbb8a67910d",
+        "key": "fae2dcc8d4e120774826ae2f27e9e79cb4cccabd4e1c41b47916c833afa4aed7",
+        "at": "2026-10-16T13:50:41Z"
+      }
+    },
+    "02-tour-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/02-tour-1.jpg",
+        "sha": "d1ee0d911aaa4a9baf821f5a69b3b2d0a1cf0c4ec1185f09a9f4bc9575b3c33e",
+        "key": "ec3f7e2778ed8b3492db08e874ced3674feae2f6cf0aefa3c15d979ee0c6c56e",
+        "at": "2026-10-16T13:50:46Z"
+      }
+    },
+    "02-tour-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/02-tour-2.jpg",
+        "sha": "45607ade2fcf4d97a6844ff25a1b6d53b6e42de3f3af2c74e2c40a1e415b4dda",
+        "key": "d75152a0e0c1359216d2290f1b69a40a3bb48867f9592938a60748f406f33046",
+        "at": "2026-10-16T13:50:53Z"
+      }
+    },
+    "02-tour-3": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/02-tour-3.jpg",
+        "sha": "26879d49a00bca0b17f6750db43696fea1632e5abe260ce7545ed76d91a97f02",
+        "key": "879527211d6e20fa164b0e22593720e4c93788c33383af2035972fbd677d145b",
+        "at": "2026-10-16T13:50:59Z"
+      }
+    },
+    "03-catch-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/03-catch-1.jpg",
+        "sha": "1e4d9e2c69e6bc2ff99e2d4763234568d2c7538a2e45460292c2798e620cc6b1",
+        "key": "3643b74a53ab7ca6cc5f3ad4649c6f207bcca79308f084eaa78f1bf9d6044e55",
+        "at": "2026-10-16T13:51:10Z"
+      }
+    },
+    "03-catch-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/03-catch-2.jpg",
+        "sha": "142259bc3514948799377dae408f0981229bdf4526750520b544d502efe2f69b",
+        "key": "f3ba59fef046e3f203e2c72f7df0399f79f4b6db4729bb908b4bd5db5bb259f2",
+        "at": "2026-10-16T13:51:17Z"
+      }
+    },
+    "04-rating-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/04-rating-1.jpg",
+        "sha": "176d931dda7acbb348f1399930dcba58c38ebb141641685d26eeb46344c2b990",
+        "key": "f0d69290d0e988515cec8d8b04e9b53b33705d5819dab5361f4443f49246ac51",
+        "at": "2026-10-16T13:51:26Z"
+      }
+    },
+    "04-rating-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/04-rating-2.jpg",
+        "sha": "5debc7398d60a69bacbda4dcc9fc28291b88c7981d63a7cb128449d125ee985d",
+        "key": "872bc33704bd313f71a12deb44980a6bdbea533b101a1e1d809fe30c2b6417a3",
+        "at": "2026-10-16T13:51:35Z"
+      }
+    }
+  },
+  "pending": {
+    "hash": "ed6258c4edb9b824b68cb1236dfe5e8f2fb1fab711f237b17a579ccddae4051a",
+    "estimate_usd": 6.62
+  }
+}
