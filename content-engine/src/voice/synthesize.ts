@@ -246,11 +246,13 @@ export function normalizeLoudness(input: string, output: string, targetLufs: num
   runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", output], "normalising loudness");
   // loudnorm falls back to its dynamic mode when the input's loudness range is wide (speech with pauses and
   // ambient sound) and can land a dB or two under target. Close the gap with plain gain, never past the peak cap.
+  // When the peaks are already at the cap, a gentle limiter (1 dB under the cap, for true-peak overshoot) makes room.
   const out = measureLoudness(output);
-  const gain = Math.min(targetLufs - out.integratedLufs, truePeak - out.truePeakDb);
+  const gain = targetLufs - out.integratedLufs;
   if (gain > 0.3) {
+    const limit = Math.pow(10, (truePeak - 1) / 20).toFixed(4);
     const tmp = output.replace(/\.wav$/, "") + ".gain.wav";
-    runFfmpeg(["-y", "-i", output, "-af", `volume=${gain.toFixed(2)}dB`, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", tmp], "correcting loudness");
+    runFfmpeg(["-y", "-i", output, "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=${limit}:attack=5:release=50:level=false`, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", tmp], "correcting loudness");
     renameSync(tmp, output);
   }
 }
