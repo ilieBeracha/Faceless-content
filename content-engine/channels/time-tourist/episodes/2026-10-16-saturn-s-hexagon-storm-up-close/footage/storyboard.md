@@ -1,10 +1,10 @@
 # Footage plan — 2026-10-16-saturn-s-hexagon-storm-up-close
 Video model `veo-3.1-fast-generate-preview` at 720p. 11 shots, 66s of clips ≈ **$6.62** (≤ $13.24 if every shot needs a retry).
-Spent so far: $0.98 of the $25.00 budget.
+Spent so far: $9.23 of the $25.00 budget.
 Check each first frame: same person every time, period-correct place, no text or logos, the face clear of the caption area (lower third).
 | shot | clip | line | still |
 |---|---|---|---|
-| `00-hook-1` | 6s | Saturn has a hexagon. And I'm floating right above it. | ![00-hook-1](stills/00-hook-1.jpg) |
+| `00-hook-1` | 6s | A hexagon. On Saturn. And I'm floating right above it. | ![00-hook-1](stills/00-hook-1.jpg) |
 | `01-arrival-1` | 6s | We're over a billion kilometres from home, above Saturn's north pole. | ![01-arrival-1](stills/01-arrival-1.jpg) |
 | `01-arrival-2` | 6s | No landing, by the way. Saturn has no solid surface to stand on. | ![01-arrival-2](stills/01-arrival-2.jpg) |
 | `02-tour-1` | 6s | First, the shape. A six-sided storm, and each side is wider than Earth. | ![02-tour-1](stills/02-tour-1.jpg) |
