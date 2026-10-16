@@ -121,8 +121,9 @@ The engine marks an idea "used" when an episode is made from it.
 ## enceladus-ice-geysers
 - title: Enceladus ice geysers
 - series: rated-space
-- status: new
+- status: used
 - added: 2026-10-16
+- used_in: episodes/2026-10-16-enceladus-ice-geysers
 
 ## jupiter-s-great-red-spot-from-the-window
 - title: Jupiter's Great Red Spot from the window
