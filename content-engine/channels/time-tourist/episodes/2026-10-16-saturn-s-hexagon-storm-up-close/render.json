@@ -1,0 +1,15 @@
+{
+  "output": "out/time-tourist/2026-10-16-saturn-s-hexagon-storm-up-close.mp4",
+  "rendered_at": "2026-10-16T09:25:08Z",
+  "seconds_to_render": 709,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1680,
+  "render_skills": [
+    "render-ai-video"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "d95fa206da5253fada39bc64cd5f9828906917a946f2f6038737438f037b2e86"
+}
