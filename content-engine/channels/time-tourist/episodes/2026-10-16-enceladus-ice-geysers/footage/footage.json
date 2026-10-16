@@ -233,12 +233,8 @@
     }
   },
   "approval": {
-    "hash": "02b77cd6ff9bb9fc0806707779cf03198c0ea106a6bc7cbe358a78b32e63c6ec",
-    "by": "Ilie (delegated to Claude: 'decide by yourself')",
-    "at": "2026-10-16T16:07:23Z"
-  },
-  "pending": {
     "hash": "82ea818a661250961cd1bd1434fda114d9329f5dac77712257c54d7378bfdcb3",
-    "estimate_usd": 6.22
+    "by": "Ilie (delegated to Claude: 'decide by yourself')",
+    "at": "2026-10-16T16:39:05Z"
   }
 }
