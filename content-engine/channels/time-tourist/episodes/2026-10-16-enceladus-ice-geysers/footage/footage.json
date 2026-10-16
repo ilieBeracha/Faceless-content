@@ -35,9 +35,9 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/01-arrival-1.mp4",
-        "sha": "c436e347001199db9d0f123d215c77f73b2368030239af005e30a230bc2e0500",
-        "key": "2c04a0e925bd7656d379eb1afe0dd9c47ae3db19ad37c97fc404d6cc057dafa0",
-        "at": "2026-10-16T16:08:14Z",
+        "sha": "ce411ed2b7e8f3a173a85b67579d0799a0a97bd0827e6689953f044a9edcc35b",
+        "key": "b8433fd59c148cf43e6444e303dbf0f22d6619f7662eea8f806fefec8926de5b",
+        "at": "2026-10-16T16:26:01Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
@@ -173,15 +173,15 @@
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/03-catch-2.mp4",
-        "sha": "76bbff9a63542ea6200183e2eed085676a958299a0a86c1eb8ccd5ae5ebf0bb8",
-        "key": "5f2439e60cd8b6ca335481ea1b28fdb19089b3cb3db5e34085c32b74f0a84b6f",
-        "at": "2026-10-16T16:10:50Z",
+        "sha": "de8bf9f175b9d77f4eede79ff024ae85c7adef1de3cdebbb5d7d69feba020503",
+        "key": "d54c7b60ee9d7e74466ba1898da5b0c826e6da69f6425c656f28c1d3b046263f",
+        "at": "2026-10-16T16:26:02Z",
         "seconds": 6,
         "attempts": 1,
         "speech": {
           "transcript": "Some of the spray even ends up feeding one of Saturn's rings.",
           "same_words": true,
-          "differences": "No differences."
+          "differences": ""
         }
       }
     },

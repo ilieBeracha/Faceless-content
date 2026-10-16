@@ -269,6 +269,42 @@
       "usd": 0.002,
       "ok": true,
       "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T16:25:59Z",
+      "shot": "01-arrival-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T16:25:59Z",
+      "shot": "03-catch-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T16:26:01Z",
+      "shot": "01-arrival-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T16:26:02Z",
+      "shot": "03-catch-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
     }
   ]
 }
