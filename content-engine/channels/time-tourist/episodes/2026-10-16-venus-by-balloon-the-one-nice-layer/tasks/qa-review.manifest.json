@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "time-tourist",
   "series": "rated-space",
-  "created": "2026-10-16T14:49:44Z",
+  "created": "2026-10-16T15:51:37Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -39,13 +39,13 @@
     {
       "path": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/script.json",
       "role": "channel",
-      "sha256": "7701f86a9b7f9b0244f75b10ccfb181198a42c79c5e5e15505839dbce18adee2",
-      "bytes": 12035
+      "sha256": "9f1da90790e55dffccc7eadf39a63fcd04345f4e40c2d199a9dc800d3649705d",
+      "bytes": 12146
     },
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "2ffd5f8478f579353e86c36eb405b087406adb44ae0c3914fff9991411d50464",
+      "sha256": "9062f70830fae67611ed89a65ff3196fe7261808f9597632f400f7d224e6c0c0",
       "bytes": 1085
     }
   ],

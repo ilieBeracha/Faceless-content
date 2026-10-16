@@ -1,0 +1,15 @@
+{
+  "render_hash": "c210300e665911efa407ab890f2ae6627b9207996b8b02da41c39cf52a39ec59",
+  "tone": { "pass": true, "notes": "Tilly's voice, calmer delivery: two-word hook, facts as discoveries, a plain serious catch, one 'Okay, review time', spoken rating. Fits 13+." },
+  "banned_topics": { "pass": true, "notes": "Planetary science only. The balloon platform is the channel's fictional budget tour; the physics (breathable air is a lifting gas on Venus) is from a NASA paper and listed as a claim." },
+  "visuals": { "pass": true, "notes": "Tilly is physically inside Venus's cloud layer on an open balloon deck in a pressure suit: on-location and close-up shots at the rail, a first-person shot of her gloved hand reaching into the acid haze, establishing shots down through the cloud decks, along the streaming cloud sea and up the balloon cables, silhouettes at sunrise and under the balloon. Photoreal, no stylised graphics. Every clip scanned: no burned-in text. The first rating close-up had a visor glare band that doubled her eyes when she walked toward the lens; it was replaced by a steady medium shot." },
+  "character": { "pass": true, "notes": "Same face as the approved reference, visible through the clear helmet; consistent mustard pressure suit with red shoulder stripes. Calm, natural body language throughout (standing at the rail, turning her head, one small hand movement); no jumping or posing. Every clip's audio was transcribed and says its exact line." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "Putting Tilly physically on location (an open deck, a pressure suit, her gloved hand reaching into the scene) feels far more 'there' than a window view; keep doing it.",
+    "direction: documentary keeps her acting calm; describe actions as small and steady and say 'not walking toward the camera'.",
+    "Bubble-helmet close-ups that move toward the lens get a glare band across the eyes that doubles the face; use a steady medium shot with 'soft even light, no reflections across the visor'.",
+    "The cinematic grade/grain makes renders slow on this machine (36–44 min); plan for it."
+  ]
+}

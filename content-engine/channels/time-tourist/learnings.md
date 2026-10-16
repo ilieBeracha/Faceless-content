@@ -28,3 +28,11 @@ QA (with the agent's notes); script writing reads this file. Never copy learning
 - Veo speaks the hook slowly: a 4-word first sentence ran 2.7 s. Open with a 2-word sentence ('A hexagon.') to land under 2 s.
 - Veo occasionally burns in garbled subtitles despite the negative prompt (1 of 11 clips here). Scan the bottom third of every clip before approving the render.
 - A pressurised cabin with no helmet keeps Tilly's face visible and consistent; helmets came and went between stills.
+
+## 2026-10-16 · 2026-10-16-venus-by-balloon-the-one-nice-layer
+
+- Episode: "Floating in Venus's clouds, reviewed" (rated-space) — 51.6s, 116 words, -15.2 LUFS. QA passed.
+- Putting Tilly physically on location (an open deck, a pressure suit, her gloved hand reaching into the scene) feels far more 'there' than a window view; keep doing it.
+- direction: documentary keeps her acting calm; describe actions as small and steady and say 'not walking toward the camera'.
+- Bubble-helmet close-ups that move toward the lens get a glare band across the eyes that doubles the face; use a steady medium shot with 'soft even light, no reflections across the visor'.
+- The cinematic grade/grain makes renders slow on this machine (36–44 min); plan for it.
