@@ -9,6 +9,19 @@
         "sha": "4d5fe89bfe9bde4a5bc8c8729f821a2541d919bbabb0f946a6cbfa8d9e2360c8",
         "key": "1b11d611786a9abfda5d14c7b1d7c8fe51480eb28f916219b980f4a14fc74639",
         "at": "2026-10-16T16:06:01Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/00-hook-1.mp4",
+        "sha": "7b490e8954871e484e9bdabe777ce51ad7ca794a53e7da68afea02357c6d6c91",
+        "key": "f4a9f9d503122af32e52ce638293cc21cb380a83c2a7e725e09062a8abbd925b",
+        "at": "2026-10-16T16:08:13Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Ice everywhere. I'm standing on Enceladus, one of Saturn's moons.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "01-arrival-1": {
@@ -19,6 +32,19 @@
         "sha": "315b2bf89e8e01abfab5ebdddbd3d0be0e07faf3134dd4dda021951c2a4650a7",
         "key": "c2ee96fea0803bf8b4adb11c6826c13435e6e840d5b386e02938443b45dd7c32",
         "at": "2026-10-16T16:06:06Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/01-arrival-1.mp4",
+        "sha": "c436e347001199db9d0f123d215c77f73b2368030239af005e30a230bc2e0500",
+        "key": "2c04a0e925bd7656d379eb1afe0dd9c47ae3db19ad37c97fc404d6cc057dafa0",
+        "at": "2026-10-16T16:08:14Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "This whole moon is only about five hundred kilometres wide.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "01-arrival-2": {
@@ -29,6 +55,19 @@
         "sha": "7825fec996a114a085e2665909a7aa4c181b9b702e61875c108c3229acfe4672",
         "key": "d865b32603cb976822fc1f08604720c654275d783818d6693f5f5f48cf1fa2ed",
         "at": "2026-10-16T16:06:14Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/01-arrival-2.mp4",
+        "sha": "40abcd25c9c258741b9a715e6e58d75ea3c5df6cfa5369a83eec52ee44f0329f",
+        "key": "b4f37b22e5a3d4f5c3cafab5353ad66c747d216615a28a234b259ab29fbb74a7",
+        "at": "2026-10-16T16:08:59Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "And it's so bright, it reflects almost all the sunlight that hits it.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-1": {
@@ -39,6 +78,19 @@
         "sha": "66f8b82f1ff405e1bcf3d38014264d0464f425387ed69ddc5eff9d21f4cfcbf9",
         "key": "29a4197a9037b6d9d561277513bfc173015f5009ac931c499ceb75d588a7cdba",
         "at": "2026-10-16T16:06:20Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/02-tour-1.mp4",
+        "sha": "cd92b9a713d3c35127b3aa9b7b496da5dcfc1d0a2a6556902189c794f9cf6b32",
+        "key": "795f71b86577d0db09aadc4fe8c24e92e2b7086e1dc65ee81ed4273fd10918a8",
+        "at": "2026-10-16T16:09:09Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Saturn hangs right there in the sky. It never moves.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-2": {
@@ -49,6 +101,19 @@
         "sha": "f074277443f1c334fd520ae298f8fcd447046750fe8f85d339f814ead427de72",
         "key": "5478a80a661f95e24f8c75c837be9a825e1ecdfc0260bd31a889da4cf15d1dd6",
         "at": "2026-10-16T16:06:25Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/02-tour-2.mp4",
+        "sha": "2545c79cc23a2131e652335568b50142a86bc3746140c8308556b2ecec5b045c",
+        "key": "1eb5b8d8f36f0a6af52a952beb53f9241116b234ee235634225d00b6eb914973",
+        "at": "2026-10-16T16:09:44Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Down south, there are long cracks in the ice called tiger stripes.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-3": {
@@ -59,6 +124,19 @@
         "sha": "0f0e007585e1c8e368271c7cc67cc780dfc00ed12f8512d32c29468bd5d88b64",
         "key": "994853a45e47520f9e1c03360bba4ef6c782f4d489b092e5f1644c5716129ada",
         "at": "2026-10-16T16:06:31Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/02-tour-3.mp4",
+        "sha": "6bb47d8de6191cb8e44aa70858d3e11e0bf1e7b21b3f67e175a42f09a7b2f681",
+        "key": "38bc17e8c37f91a475669a1ce944e4d327c712d92b54cfc18b77127e1ab38a8d",
+        "at": "2026-10-16T16:10:05Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "And they spray giant jets of ice into space.",
+          "same_words": true,
+          "differences": "None"
+        }
       }
     },
     "03-catch-1": {
@@ -69,6 +147,19 @@
         "sha": "8d40385760b6f8ff4a41e345cc52c29b7f75b2f0e46bc20498dc41a6a57ea6c2",
         "key": "1f11be4d0d63b9457ced807c9f15c13d0d0d3fed615a389377b448004c812be5",
         "at": "2026-10-16T16:07:14Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/03-catch-1.mp4",
+        "sha": "c8814956bc332cbf5a30923be79fe491b6eb4797715fc5bf24b84b63ebce1585",
+        "key": "ca980546e3600e916b3543d73d8305e2fcf0afb8ee6667ecbfef839a51a5c216",
+        "at": "2026-10-16T16:11:00Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "The catch? Under all this ice, there's a whole ocean of liquid water.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "03-catch-2": {
@@ -79,6 +170,19 @@
         "sha": "afe91c2f71afe67a2cb0738e3dfb4a3fe4154ef0fbf048bb3f6d91e739ce7739",
         "key": "c456929bda436ad0868135f8b37fdd3a4c02f574abae8a3a976e179e729842c0",
         "at": "2026-10-16T16:06:44Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/03-catch-2.mp4",
+        "sha": "76bbff9a63542ea6200183e2eed085676a958299a0a86c1eb8ccd5ae5ebf0bb8",
+        "key": "5f2439e60cd8b6ca335481ea1b28fdb19089b3cb3db5e34085c32b74f0a84b6f",
+        "at": "2026-10-16T16:10:50Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Some of the spray even ends up feeding one of Saturn's rings.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "04-rating-1": {
@@ -89,6 +193,19 @@
         "sha": "af543af351c40a35b12bb2fbf9c1577ca22234c5c396f5d1e43ab753d3a0639c",
         "key": "2d7c14e98a5c693eec4e7a7348894b79140be923a5b48d97817ed53a586ed4bb",
         "at": "2026-10-16T16:06:52Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/04-rating-1.mp4",
+        "sha": "68bce6786bdfe326b918c02f4a5d024f0d38b1653e3b3e56c1841eb20f2aefd9",
+        "key": "50c65458184e78d515d43866c669fad004f31c6f0b1658929ee24b0eb2936427",
+        "at": "2026-10-16T16:11:46Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Okay, review time. View, five out of five. Minus two hundred degrees? One star.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "04-rating-2": {
@@ -99,6 +216,19 @@
         "sha": "ef2e7c9bef8d57d8b7b3a901abdbe9b6bfa5ddae627f1242ceca2b9269ea8aed",
         "key": "dbe494a5da278d84331f7f440d1b12fd59a57960ee449ef3bb5b00cfadfb730e",
         "at": "2026-10-16T16:06:57Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/04-rating-2.mp4",
+        "sha": "2617c48423f5de6cd80610cbf427bd2580fc76f5d3847faa8a8149cd95b973ff",
+        "key": "438062914ec2b5f76877d6a3c789dfd1829ee18e54701d7834053e528558ac93",
+        "at": "2026-10-16T16:12:06Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "A tiny moon with a secret ocean. I'm obsessed.",
+          "same_words": true,
+          "differences": "None"
+        }
       }
     }
   },
