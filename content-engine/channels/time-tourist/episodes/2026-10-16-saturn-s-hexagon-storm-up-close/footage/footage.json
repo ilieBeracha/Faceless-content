@@ -210,7 +210,7 @@
     },
     "04-rating-1": {
       "still_variant": 0,
-      "clip_variant": 0,
+      "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/04-rating-1.jpg",
         "sha": "19b770e0904315619d6788ff04062199f1e7cf3b254b248ab989cdaa8561834f",
