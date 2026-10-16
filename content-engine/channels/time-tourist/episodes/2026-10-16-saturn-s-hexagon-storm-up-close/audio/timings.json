@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "hash": "2eec4ab53e2d297acc912b19705df85fb8a0a4cf5a8d328cf6e83755abd71fc2",
+  "hash": "dfe71f319ec0a2c2a12c2fb95d9affc074386b203cdc1609864a73bfb343fc7f",
   "fps": 30,
-  "frames": 1707,
-  "duration": 56.9,
+  "frames": 1726,
+  "duration": 57.533,
   "speech_start": 0.1,
-  "speech_end": 55.98,
+  "speech_end": 56.63,
   "outro_padding": 0,
   "words": [
     {
@@ -733,148 +733,148 @@
       "i": 103,
       "beat": "rating",
       "text": "Okay,",
-      "start": 46.07,
-      "end": 46.08
+      "start": 45.99,
+      "end": 46
     },
     {
       "i": 104,
       "beat": "rating",
       "text": "review",
-      "start": 46.08,
-      "end": 46.08
+      "start": 46,
+      "end": 46
     },
     {
       "i": 105,
       "beat": "rating",
       "text": "time.",
-      "start": 46.12,
-      "end": 46.38
+      "start": 46,
+      "end": 46.47
     },
     {
       "i": 106,
       "beat": "rating",
       "text": "View,",
-      "start": 46.48,
-      "end": 46.77
+      "start": 46.56,
+      "end": 46.87
     },
     {
       "i": 107,
       "beat": "rating",
       "text": "five",
-      "start": 46.8,
-      "end": 47.29
+      "start": 46.9,
+      "end": 47.64
     },
     {
       "i": 108,
       "beat": "rating",
       "text": "out",
-      "start": 47.51,
-      "end": 47.99
+      "start": 47.85,
+      "end": 48.37
     },
     {
       "i": 109,
       "beat": "rating",
       "text": "of",
-      "start": 48.2,
-      "end": 48.42
+      "start": 48.54,
+      "end": 48.78
     },
     {
       "i": 110,
       "beat": "rating",
       "text": "five.",
-      "start": 48.43,
-      "end": 48.6
+      "start": 48.82,
+      "end": 48.97
     },
     {
       "i": 111,
       "beat": "rating",
       "text": "Snacks,",
-      "start": 48.63,
-      "end": 49.21
+      "start": 49.01,
+      "end": 49.92
     },
     {
       "i": 112,
       "beat": "rating",
       "text": "one",
-      "start": 49.26,
-      "end": 49.73
+      "start": 50.02,
+      "end": 50.6
     },
     {
       "i": 113,
       "beat": "rating",
       "text": "out",
-      "start": 50.06,
-      "end": 50.24
+      "start": 50.85,
+      "end": 51.03
     },
     {
       "i": 114,
       "beat": "rating",
       "text": "of",
-      "start": 50.26,
-      "end": 50.4
+      "start": 51.06,
+      "end": 51.2
     },
     {
       "i": 115,
       "beat": "rating",
       "text": "five.",
-      "start": 50.44,
-      "end": 50.98
+      "start": 51.25,
+      "end": 51.7
     },
     {
       "i": 116,
       "beat": "rating",
       "text": "The",
-      "start": 51.43,
-      "end": 51.52
+      "start": 52.08,
+      "end": 52.17
     },
     {
       "i": 117,
       "beat": "rating",
       "text": "universe",
-      "start": 51.6,
-      "end": 52.11
+      "start": 52.25,
+      "end": 52.76
     },
     {
       "i": 118,
       "beat": "rating",
       "text": "makes",
-      "start": 52.22,
-      "end": 52.46
+      "start": 52.87,
+      "end": 53.11
     },
     {
       "i": 119,
       "beat": "rating",
       "text": "hexagons",
-      "start": 52.57,
-      "end": 53.24
+      "start": 53.22,
+      "end": 53.89
     },
     {
       "i": 120,
       "beat": "rating",
       "text": "for",
-      "start": 53.27,
-      "end": 53.39
+      "start": 53.92,
+      "end": 54.04
     },
     {
       "i": 121,
       "beat": "rating",
       "text": "fun.",
-      "start": 53.5,
-      "end": 54.23
+      "start": 54.15,
+      "end": 54.88
     },
     {
       "i": 122,
       "beat": "rating",
       "text": "I'm",
-      "start": 54.61,
-      "end": 54.93
+      "start": 55.26,
+      "end": 55.58
     },
     {
       "i": 123,
       "beat": "rating",
       "text": "obsessed.",
-      "start": 55.03,
-      "end": 55.98
+      "start": 55.68,
+      "end": 56.63
     }
   ],
   "beats": [
@@ -905,8 +905,8 @@
     {
       "id": "rating",
       "speaker": "tilly-space",
-      "start": 46.07,
-      "end": 55.98
+      "start": 45.99,
+      "end": 56.63
     }
   ],
   "voices": {
@@ -916,7 +916,7 @@
     }
   },
   "loudness": {
-    "integrated_lufs": -14.96,
+    "integrated_lufs": -15,
     "true_peak_db": -1.43
   },
   "clips": [
@@ -1015,16 +1015,16 @@
       "beat": "rating",
       "file": "clips/04-rating-1.mp4",
       "start": 45.93,
-      "duration": 5.35,
+      "duration": 6,
       "trim": 0,
       "align": "dtw",
-      "align_cost": 0.5194
+      "align_cost": 0.5925
     },
     {
       "id": "04-rating-2",
       "beat": "rating",
       "file": "clips/04-rating-2.mp4",
-      "start": 51.28,
+      "start": 51.93,
       "duration": 5.63,
       "trim": 0.37,
       "align": "dtw",
