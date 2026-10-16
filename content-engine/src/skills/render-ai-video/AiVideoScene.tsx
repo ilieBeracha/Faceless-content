@@ -9,21 +9,18 @@ const PushIn: React.FC<{ frames: number; children: React.ReactNode }> = ({ frame
   return <AbsoluteFill style={{ transform: `scale(${s})` }}>{children}</AbsoluteFill>;
 };
 
-/** Film grain: a fresh noise pattern every frame (deterministic, so renders repeat exactly). */
+/**
+ * Film grain: one small noise tile (rendered by the browser once and cached) tiled over the frame and
+ * shifted to a new random offset every frame. Same look as full-frame noise at a fraction of the cost.
+ */
+const GRAIN_TILE = `url("data:image/svg+xml;utf8,${encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='256' height='256' filter='url(%23n)'/></svg>",
+).replace(/%2523/g, "%23")}")`;
 const Grain: React.FC = () => {
   const f = useCurrentFrame();
-  const seed = Math.floor(random(`grain-${f}`) * 1000);
-  return (
-    <AbsoluteFill style={{ mixBlendMode: "overlay", opacity: 0.16, pointerEvents: "none" }}>
-      <svg width="100%" height="100%">
-        <filter id={`g${f}`}>
-          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={seed} stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter={`url(#g${f})`} />
-      </svg>
-    </AbsoluteFill>
-  );
+  const x = Math.floor(random(`grain-x-${f}`) * 256);
+  const y = Math.floor(random(`grain-y-${f}`) * 256);
+  return <AbsoluteFill style={{ mixBlendMode: "overlay", opacity: 0.16, pointerEvents: "none", backgroundImage: GRAIN_TILE, backgroundSize: "256px 256px", backgroundPosition: `${x}px ${y}px` }} />;
 };
 
 /**
