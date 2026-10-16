@@ -6,7 +6,7 @@
  *   audio/envelope.json   0–1 loudness per video frame (drives the character's mouth)
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, renameSync } from "node:fs";
 import { join } from "node:path";
 import { EngineError } from "../core/errors.ts";
 import { hasFilter, measureLoudness, runFfmpeg } from "../core/ffmpeg.ts";
@@ -244,4 +244,13 @@ export function normalizeLoudness(input: string, output: string, targetLufs: num
   const m = measureLoudness(input);
   const filter = `loudnorm=I=${targetLufs}:TP=${truePeak}:LRA=11:measured_I=${m.integratedLufs}:measured_TP=${m.truePeakDb}:measured_LRA=${m.lra}:measured_thresh=${m.threshold}:linear=true`;
   runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", output], "normalising loudness");
+  // loudnorm falls back to its dynamic mode when the input's loudness range is wide (speech with pauses and
+  // ambient sound) and can land a dB or two under target. Close the gap with plain gain, never past the peak cap.
+  const out = measureLoudness(output);
+  const gain = Math.min(targetLufs - out.integratedLufs, truePeak - out.truePeakDb);
+  if (gain > 0.3) {
+    const tmp = output.replace(/\.wav$/, "") + ".gain.wav";
+    runFfmpeg(["-y", "-i", output, "-af", `volume=${gain.toFixed(2)}dB`, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", tmp], "correcting loudness");
+    renameSync(tmp, output);
+  }
 }

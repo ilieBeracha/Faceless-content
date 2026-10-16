@@ -32,6 +32,10 @@ export function useQaProbe(enabled: boolean, ref: RefObject<HTMLElement | null>,
     if (r.width === 0 && r.height === 0) return;
     // Captions scale the spoken word up ~7% ("pop"), which the browser counts as scrollable overflow.
     const tol = kind === "caption" ? 16 : 2;
+    // Tall display fonts (Anton) report their ascent above the line box as vertical scroll overflow even when
+    // every glyph is visible inside the padding; allow a third of the font size before calling it clipped.
+    const fontSize = parseFloat(getComputedStyle(el).fontSize) || 0;
+    const vTol = Math.max(tol, fontSize / 3);
     const record: ProbeRecord = {
       f: frame,
       id,
@@ -42,7 +46,7 @@ export function useQaProbe(enabled: boolean, ref: RefObject<HTMLElement | null>,
       h: Math.round(r.height),
       // Captions have no fixed height: only a line wider than its box is a real overflow (tall fonts such as
       // Anton report glyph ascent above the line box as vertical "overflow", but nothing is clipped).
-      overflow: el.scrollWidth > el.clientWidth + tol || (kind !== "caption" && el.scrollHeight > el.clientHeight + tol),
+      overflow: el.scrollWidth > el.clientWidth + tol || (kind !== "caption" && el.scrollHeight > el.clientHeight + vTol),
       ...(word !== undefined ? { word } : {}),
     };
     console.log(QA_PREFIX + JSON.stringify(record));
