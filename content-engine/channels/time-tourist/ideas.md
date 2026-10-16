@@ -89,8 +89,9 @@ The engine marks an idea "used" when an episode is made from it.
 ## saturn-s-hexagon-storm-up-close
 - title: Saturn's hexagon storm, up close
 - series: rated-space
-- status: new
+- status: used
 - added: 2026-10-16
+- used_in: episodes/2026-10-16-saturn-s-hexagon-storm-up-close
 
 ## venus-by-balloon-the-one-nice-layer
 - title: Venus by balloon: the one nice layer
