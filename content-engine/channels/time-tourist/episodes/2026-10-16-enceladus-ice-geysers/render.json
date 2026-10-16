@@ -1,15 +1,15 @@
 {
   "output": "out/time-tourist/2026-10-16-enceladus-ice-geysers.mp4",
-  "rendered_at": "2026-10-16T16:38:15Z",
-  "seconds_to_render": 704,
+  "rendered_at": "2026-10-16T16:51:10Z",
+  "seconds_to_render": 649,
   "width": 1080,
   "height": 1920,
   "fps": 30,
-  "frames": 1571,
+  "frames": 1577,
   "render_skills": [
     "render-ai-video"
   ],
   "captions_skill": "captions",
   "gl": "swangle",
-  "inputs_hash": "7e4109c9438a326f9fd9aa2fdd8df914d7daf2828a2b955364d999a35c5fff36"
+  "inputs_hash": "8ec07d98346f9e6d1eca5ef5b965fec3647bb94a5e0589f7b8065484fcab2c43"
 }
