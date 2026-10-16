@@ -3,15 +3,19 @@
   "channel": "time-tourist",
   "series": "rated-space",
   "idea": "saturn-s-hexagon-storm-up-close",
-  "title": "Saturn's hexagon storm, up close",
+  "title": "Saturn's hexagon storm, reviewed",
   "created": "2026-10-16T09:00:32Z",
-  "updated": "2026-10-16T09:00:32Z",
+  "updated": "2026-10-16T09:02:20Z",
   "status": "in-progress",
   "steps": {
     "idea": {
       "status": "done",
       "at": "2026-10-16T09:00:32Z",
       "note": "Saturn's hexagon storm, up close"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-10-16T09:02:20Z"
     }
   }
 }

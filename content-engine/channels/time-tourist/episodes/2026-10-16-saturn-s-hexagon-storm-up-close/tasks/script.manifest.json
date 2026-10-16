@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-16-saturn-s-hexagon-storm-up-close",
+  "purpose": "script",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "created": "2026-10-16T09:00:32Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "2f8df1f178a8b5ecd605167ec9fc1ed07e79e07a0169b29560718730c7700202",
+      "bytes": 3796
+    },
+    {
+      "path": "channels/time-tourist/series/rated-space.md",
+      "role": "channel",
+      "sha256": "a9cccd59af2d38dd817dae275ee78065ad3ce70e7d17cccda61c8ab7368b4c9c",
+      "bytes": 3901
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly-space.md",
+      "role": "channel",
+      "sha256": "261e1950748995a699df7b803d98a194675cf038ac20e9ec541fc829ad958122",
+      "bytes": 2919
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly-space/model.json",
+      "role": "channel",
+      "sha256": "b9577e678cdf9a42f3097c2fc0c53eb7160b80046858c7dd6ebf061252d08364",
+      "bytes": 1169
+    },
+    {
+      "path": "channels/time-tourist/learnings.md",
+      "role": "channel",
+      "sha256": "a20d5dfcc759c3e233188e07b796c4d16985f6523d2a0cc18029c8a7f81a87dc",
+      "bytes": 1664
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-ai-video/SKILL.md",
+      "role": "skill",
+      "sha256": "ad6b584d5f846a9ac36ea214e03e7957c60bd4ec2f3125b8e0621aefaa20d5a9",
+      "bytes": 7071
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "4a086d2c508b2c8103694f7585ae5afe55cc2ee314342d6928ca3ef7cfaadc14",
+      "bytes": 97
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series rated-space"
+}
