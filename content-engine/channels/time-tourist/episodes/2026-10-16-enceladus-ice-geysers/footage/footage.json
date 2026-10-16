@@ -66,9 +66,9 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/03-catch-1.jpg",
-        "sha": "4c46450c5b4daf2165e8be42bf731426b5349b3d75869228ee4b6c25a6e0f3ec",
-        "key": "abce8c46ff7d30bfd65f9970069c71763f97326d8fa8630e1b5c33fc4aadc44e",
-        "at": "2026-10-16T16:06:39Z"
+        "sha": "8d40385760b6f8ff4a41e345cc52c29b7f75b2f0e46bc20498dc41a6a57ea6c2",
+        "key": "1f11be4d0d63b9457ced807c9f15c13d0d0d3fed615a389377b448004c812be5",
+        "at": "2026-10-16T16:07:14Z"
       }
     },
     "03-catch-2": {
@@ -103,7 +103,7 @@
     }
   },
   "pending": {
-    "hash": "39681bf2b2dcc98ba119402b9021c44964f8312d26dfd46f4ffd24afcca54946",
+    "hash": "02b77cd6ff9bb9fc0806707779cf03198c0ea106a6bc7cbe358a78b32e63c6ec",
     "estimate_usd": 6.22
   }
 }

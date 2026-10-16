@@ -1,6 +1,6 @@
 # Footage plan — 2026-10-16-enceladus-ice-geysers
 Video model `veo-3.1-fast-generate-preview` at 720p. 10 shots, 62s of clips ≈ **$6.22** (≤ $12.44 if every shot needs a retry).
-Spent so far: $0.39 of the $25.00 budget.
+Spent so far: $0.43 of the $25.00 budget.
 Check each first frame: same person every time, period-correct place, no text or logos, the face clear of the caption area (lower third).
 | shot | clip | line | still |
 |---|---|---|---|
