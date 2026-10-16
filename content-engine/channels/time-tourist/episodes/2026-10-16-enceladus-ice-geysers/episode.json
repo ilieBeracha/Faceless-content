@@ -5,7 +5,7 @@
   "idea": "enceladus-ice-geysers",
   "title": "Standing on Enceladus, reviewed",
   "created": "2026-10-16T16:05:41Z",
-  "updated": "2026-10-16T16:05:43Z",
+  "updated": "2026-10-16T16:05:53Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,9 @@
       "at": "2026-10-16T16:05:43Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-10-16T16:05:43Z"
+      "status": "done",
+      "at": "2026-10-16T16:05:53Z",
+      "note": "approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
     }
   }
 }

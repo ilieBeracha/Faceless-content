@@ -96,6 +96,10 @@ const NEGATIVE = "subtitles, captions, on-screen text, letters, watermark, logo,
 /** direction: "documentary" — real-world acting and real-world looks. */
 const DOC_ACTING = "Natural, calm, believable body language, like a real documentary presenter: standing or sitting steadily, small natural hand movements at most; no jumping, no floating poses, no waving, no thumbs-up, no counting on fingers, no exaggerated faces or gestures";
 const DOC_LOOK = "Strictly photorealistic, like real footage and real spacecraft photography: physically accurate light and scale, no glowing outlines, no neon, no stylised graphics, no video-game or CGI look";
+/** style: "illustrated" — a 2D animated film instead of camera footage. */
+const ILLUSTRATED_FRAME = "Vertical 9:16 frame from a 2D animated film in a flat vector illustration style";
+const ILLUSTRATED_RULE = "Flat vector illustration, like a modern animated space poster: clean shapes, smooth gradients, soft glows and highlights, gentle subtle texture, rich saturated colours; not a photograph, no text, no captions, no logos, no watermark";
+const ILLUSTRATED_NEGATIVE = "subtitles, captions, on-screen text, letters, watermark, logo, music, photorealistic, photograph, live action, 3D render, deformed face, extra fingers, morphing, flicker";
 const DOC_NEGATIVE = ", glowing outlines, neon lines, stylised graphics, video game, 3D render look, jumping, waving, thumbs up, exaggerated gestures, posing";
 
 /** Prompt text is written with {She}/{she}/{her}/{is}; swapped for the character's pronoun. */
@@ -159,9 +163,10 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
   const film = ["closeup", "establishing", "silhouette", "first-person", "on-location"].includes(shot.camera);
   const doc = world.direction === "documentary";
   const outfit = world.wardrobe ?? p.wardrobe;
-  const look = doc ? `${world.look}. ${DOC_LOOK}` : world.look;
+  const drawn = world.style === "illustrated";
+  const look = doc && !drawn ? `${world.look}. ${DOC_LOOK}` : world.look;
   const frameOf = film ? "from a film" : "from a smartphone video";
-  const footage = film ? "realistic live-action film footage" : "realistic smartphone footage";
+  const footage = drawn ? "smooth 2D animation in flat vector illustration style" : film ? "realistic live-action film footage" : "realistic smartphone footage";
   const sayRule = `{She} says only that line, then stops talking. Ambient sound: ${shot.sound ?? "the natural sounds of the place"}. No music. No subtitles, no on-screen text.`;
   if (OFF_CAMERA.includes(shot.camera)) {
     const fromBehind = shot.camera === "silhouette";
@@ -172,12 +177,12 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
     return {
       onCamera: false,
       imagePrompt: [
-        `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
+        drawn ? `${ILLUSTRATED_FRAME}. ${cam.still}.` : `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
         figure,
         `Setting: ${world.world}. ${shot.place}.`,
         `The camera: ${shot.action}.`,
         shot.others ? `Also in the frame: ${shot.others}.` : "",
-        `Style: ${look}. A real photograph: real light, real textures, no text, no captions, no logos, no watermark.`,
+        drawn ? `Style: ${look}. ${ILLUSTRATED_RULE}.` : `Style: ${look}. A real photograph: real light, real textures, no text, no captions, no logos, no watermark.`,
       ].filter(Boolean).join("\n"),
       videoPrompt: [
         `${cam.video}, ${footage}. ${look}.`,
@@ -193,13 +198,13 @@ export function shotPrompts(world: AiWorld, p: PhotorealModel["params"], shot: S
   return {
     onCamera: true,
     imagePrompt: [
-      `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
+      drawn ? `${ILLUSTRATED_FRAME}. ${cam.still}.` : `Photorealistic vertical 9:16 frame ${frameOf}. ${cam.still}.`,
       `The person: ${p.identity}. Wearing ${outfit}.${p.references.length ? " Exactly the same person as in the reference photos: same face, hair, skin and build." : ""}`,
       `Setting: ${world.world}. ${shot.place}.`,
       `{She} {is} ${shot.action}, mid-sentence, expression: ${face}.`,
       doc ? `${DOC_ACTING}.` : "",
       shot.others ? `Also in the frame: ${shot.others}.` : "",
-      `Style: ${look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
+      drawn ? `Style: ${look}. ${ILLUSTRATED_RULE}. Drawn as a stylised illustrated character who still clearly has the same face, hair and freckles as the reference photos.` : `Style: ${look}. A real photograph: natural skin texture, real light, no text, no captions, no logos, no watermark.`,
     ].filter(Boolean).join("\n"),
     videoPrompt: [
       `${cam.video}, ${footage}. ${look}.`,
@@ -259,7 +264,7 @@ export function planShots(ws: Workspace, ep: EpisodeRef, script: Script): Planne
         onCamera,
         imagePrompt: withPronoun(imagePrompt, pronoun),
         videoPrompt: withPronoun(videoPrompt, pronoun),
-        negativePrompt: world.direction === "documentary" ? NEGATIVE + DOC_NEGATIVE : NEGATIVE,
+        negativePrompt: world.style === "illustrated" ? ILLUSTRATED_NEGATIVE + (world.direction === "documentary" ? ", jumping, waving, thumbs up, exaggerated gestures, posing" : "") : world.direction === "documentary" ? NEGATIVE + DOC_NEGATIVE : NEGATIVE,
       });
     });
   });

@@ -39,6 +39,10 @@ export const worldSchema = z
       .enum(["vlog", "documentary"])
       .default("vlog")
       .describe("documentary: calm, natural acting (no jumping, posing or big gestures) and strictly photoreal, unstylised visuals"),
+    style: z
+      .enum(["photo", "illustrated"])
+      .default("photo")
+      .describe("illustrated: a 2D animated film in flat vector illustration style (the character keeps the same face, drawn)"),
     wardrobe: z.string().max(300).optional().describe("this episode's outfit instead of the character's usual one (same face), e.g. a pressure suit"),
   })
   .strict();
