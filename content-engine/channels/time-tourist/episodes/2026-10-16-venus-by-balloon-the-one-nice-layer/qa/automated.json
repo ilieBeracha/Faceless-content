@@ -1,0 +1,90 @@
+{
+  "checked_at": "2026-10-16T14:49:44Z",
+  "render_hash": "f2a1bac0034072413fbf3863da61de23e59c2b75a7ea175cdb77f559b06a2509",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": true,
+      "detail": "51.54s (series allows 38–62s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.10s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"I'm floating.\" ends at 1.15s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: on-screen text",
+      "pass": true,
+      "detail": "visible from 0.07s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "2 text elements checked on every frame (1674 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "116 words; text matches script: yes; highlight off on 0/1524 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-15.1 LUFS (target -14 ±1.5), true peak -5.3 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 6 banned topics mentioned"
+    },
+    {
+      "id": "footage-real",
+      "label": "Footage is real (not placeholders)",
+      "pass": true,
+      "detail": "10 clips from veo-3.1-fast-generate-preview"
+    },
+    {
+      "id": "footage-speech",
+      "label": "Every clip says its line",
+      "pass": true,
+      "detail": "10 clips checked by ear"
+    },
+    {
+      "id": "footage-budget",
+      "label": "Within budget",
+      "pass": true,
+      "detail": "$7.85 spent of $25.00 (33 paid calls logged in footage/ledger.json)"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude) (8 claims)"
+    }
+  ]
+}
