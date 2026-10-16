@@ -164,7 +164,7 @@
     },
     "03-catch-2": {
       "still_variant": 0,
-      "clip_variant": 0,
+      "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/03-catch-2.jpg",
         "sha": "afe91c2f71afe67a2cb0738e3dfb4a3fe4154ef0fbf048bb3f6d91e739ce7739",
