@@ -5,8 +5,8 @@
   "idea": "saturn-s-hexagon-storm-up-close",
   "title": "Saturn's hexagon storm, reviewed",
   "created": "2026-10-16T09:00:32Z",
-  "updated": "2026-10-16T09:56:10Z",
-  "status": "in-progress",
+  "updated": "2026-10-16T09:56:39Z",
+  "status": "done",
   "steps": {
     "idea": {
       "status": "done",
@@ -36,6 +36,11 @@
       "status": "done",
       "at": "2026-10-16T09:56:10Z",
       "note": "out/time-tourist/2026-10-16-saturn-s-hexagon-storm-up-close.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-16T09:56:39Z",
+      "note": "all checks passed"
     }
   }
 }

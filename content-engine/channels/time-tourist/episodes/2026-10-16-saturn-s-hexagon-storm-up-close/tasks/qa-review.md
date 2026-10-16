@@ -10,12 +10,12 @@ Review the rendered episode **2026-10-16-saturn-s-hexagon-storm-up-close** again
 1. Look at every sampled frame (open the images):
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t000.5s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t001.5s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t008.0s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t016.1s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t024.1s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t032.2s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t040.2s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t048.3s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t008.1s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t016.3s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t024.4s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t032.5s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t040.7s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t048.8s.jpg`
    The full video is `out/time-tourist/2026-10-16-saturn-s-hexagon-storm-up-close.mp4`.
    This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.
 2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
@@ -23,7 +23,7 @@ Review the rendered episode **2026-10-16-saturn-s-hexagon-storm-up-close** again
 
 ```json
 {
-  "render_hash": "d460d0eaed3277cffcb22dcd00cde9212bee71e51946cc820dde29b0778ed902",
+  "render_hash": "d54756089cb5affce5a1bce97021dd37c8286acee97ecfe70ac439f30761ce67",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -566,17 +566,17 @@ when posted).
 
 <file path="(inline) automated QA results" role="input">
 - [x] Format: 1080×1920 @ 30.00 fps, h264/aac, yuvj420p
-- [x] Length: 56.92s (series allows 38–62s)
+- [x] Length: 57.54s (series allows 38–62s)
 - [x] Hook: speech starts immediately: first word at 0.10s (limit 0.5s)
 - [x] Hook: first line lands in 2 s: "A hexagon." ends at 1.49s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.07s
-- [x] Text inside safe areas: 2 text elements checked on every frame (1849 measurements)
+- [x] Text inside safe areas: 2 text elements checked on every frame (1869 measurements)
 - [x] Nothing cut off: no element leaves the frame or overflows its box
-- [x] Captions in sync: 124 words; text matches script: yes; highlight off on 0/1687 frames; words over silent audio: 0
-- [ ] Loudness: -15.8 LUFS (target -14 ±1.5), true peak -4.4 dBTP (max -1)
+- [x] Captions in sync: 124 words; text matches script: yes; highlight off on 0/1707 frames; words over silent audio: 0
+- [x] Loudness: -15.0 LUFS (target -14 ±1.5), true peak -4.5 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
 - [x] Footage is real (not placeholders): 11 clips from veo-3.1-fast-generate-preview
 - [x] Every clip says its line: 11 clips checked by ear
-- [x] Within budget: $8.20 spent of $25.00 (49 paid calls logged in footage/ledger.json)
+- [x] Within budget: $8.80 spent of $25.00 (51 paid calls logged in footage/ledger.json)
 - [x] Fact-check approved: approved by Ilie (delegated to Claude: 'decide by yourself'; hook reworded, same claims) (8 claims)
 </file>

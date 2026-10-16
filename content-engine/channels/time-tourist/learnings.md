@@ -19,3 +19,12 @@ QA (with the agent's notes); script writing reads this file. Never copy learning
 - Describing the setting as 'the massive building' or 'the huge baths' makes the image model draw the Colosseum or modern ruins. Name the bathhouse's own features (red-brick and marble front, tall arched windows) and say 'just-built, undamaged'.
 - Veo blocked a shot of Tilly miming scraping her forearm with a curved tool. Show objects held up to the camera instead of tools against skin.
 - Veo repeated words in 2 of 11 clips ('brand brand new', a doubled 'there's a library'); the by-ear check caught both and one retry fixed them. Budget about one retry per five clips.
+
+## 2026-10-16 · 2026-10-16-saturn-s-hexagon-storm-up-close
+
+- Episode: "Saturn's hexagon storm, reviewed" (rated-space) — 57.5s, 124 words, -15.0 LUFS. QA passed.
+- pov shots work: Saturn through the window carries the episode. Prompts must not mention a phone or camera, or the image model draws a phone screen inside the shot.
+- Ask for 'exactly six long straight sides and six sharp corners' or the hexagon comes out with eight sides.
+- Veo speaks the hook slowly: a 4-word first sentence ran 2.7 s. Open with a 2-word sentence ('A hexagon.') to land under 2 s.
+- Veo occasionally burns in garbled subtitles despite the negative prompt (1 of 11 clips here). Scan the bottom third of every clip before approving the render.
+- A pressurised cabin with no helmet keeps Tilly's face visible and consistent; helmets came and went between stills.

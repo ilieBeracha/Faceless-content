@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "time-tourist",
   "series": "rated-space",
-  "created": "2026-10-16T09:40:38Z",
+  "created": "2026-10-16T09:56:15Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -45,7 +45,7 @@
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "e177ef22347d1e8ad9b29db9477a29747085e4c5b3f78f902bdee578d7afabea",
+      "sha256": "e11f6d31b3dbb86cfde2cd0424cc1d48d5265b01dd3a114c71d10fe25f4859e4",
       "bytes": 1083
     }
   ],
