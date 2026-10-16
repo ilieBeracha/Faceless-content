@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "hash": "3d702022876dfa9993cfb0632a371c98f53855b0779bee1a1a18e772dd3a6603",
+  "hash": "29780a18e67005646cf9c8c6f791acbc05970fc99ceaa51e716d1d59422ae2ff",
   "fps": 30,
-  "frames": 1527,
-  "duration": 50.9,
+  "frames": 1549,
+  "duration": 51.633,
   "speech_start": 0.1,
-  "speech_end": 49.91,
+  "speech_end": 50.64,
   "outro_padding": 0,
   "words": [
     {
@@ -663,162 +663,162 @@
       "i": 93,
       "beat": "rating",
       "text": "Okay,",
-      "start": 39.57,
-      "end": 39.58
+      "start": 39.58,
+      "end": 39.59
     },
     {
       "i": 94,
       "beat": "rating",
       "text": "review",
-      "start": 39.58,
-      "end": 39.58
+      "start": 39.59,
+      "end": 39.59
     },
     {
       "i": 95,
       "beat": "rating",
       "text": "time.",
-      "start": 39.65,
-      "end": 40.14
+      "start": 39.64,
+      "end": 40.18
     },
     {
       "i": 96,
       "beat": "rating",
       "text": "View,",
-      "start": 40.23,
-      "end": 40.58
+      "start": 40.28,
+      "end": 40.65
     },
     {
       "i": 97,
       "beat": "rating",
       "text": "five",
-      "start": 40.63,
-      "end": 41.28
+      "start": 40.73,
+      "end": 41.66
     },
     {
       "i": 98,
       "beat": "rating",
       "text": "out",
-      "start": 41.6,
-      "end": 42.08
+      "start": 42.1,
+      "end": 42.75
     },
     {
       "i": 99,
       "beat": "rating",
       "text": "of",
-      "start": 42.21,
-      "end": 42.46
+      "start": 42.97,
+      "end": 43.26
     },
     {
       "i": 100,
       "beat": "rating",
       "text": "five.",
-      "start": 42.5,
-      "end": 42.66
+      "start": 43.3,
+      "end": 43.46
     },
     {
       "i": 101,
       "beat": "rating",
       "text": "Acid",
-      "start": 42.72,
-      "end": 43.57
+      "start": 43.51,
+      "end": 44.42
     },
     {
       "i": 102,
       "beat": "rating",
       "text": "clouds,",
-      "start": 44.06,
-      "end": 44.43
+      "start": 44.7,
+      "end": 44.93
     },
     {
       "i": 103,
       "beat": "rating",
       "text": "one",
-      "start": 44.46,
-      "end": 44.88
+      "start": 45.02,
+      "end": 45.56
     },
     {
       "i": 104,
       "beat": "rating",
       "text": "out",
-      "start": 45.15,
-      "end": 45.27
+      "start": 45.83,
+      "end": 45.97
     },
     {
       "i": 105,
       "beat": "rating",
       "text": "of",
-      "start": 45.32,
-      "end": 45.48
+      "start": 46.01,
+      "end": 46.13
     },
     {
       "i": 106,
       "beat": "rating",
       "text": "five.",
-      "start": 45.49,
-      "end": 45.95
+      "start": 46.21,
+      "end": 46.68
     },
     {
       "i": 107,
       "beat": "rating",
       "text": "Strangest",
-      "start": 46.32,
-      "end": 46.33
+      "start": 47.05,
+      "end": 47.06
     },
     {
       "i": 108,
       "beat": "rating",
       "text": "weather",
-      "start": 46.34,
-      "end": 46.98
+      "start": 47.07,
+      "end": 47.71
     },
     {
       "i": 109,
       "beat": "rating",
       "text": "in",
-      "start": 47.02,
-      "end": 47.38
+      "start": 47.75,
+      "end": 48.11
     },
     {
       "i": 110,
       "beat": "rating",
       "text": "the",
-      "start": 47.46,
-      "end": 47.61
+      "start": 48.19,
+      "end": 48.34
     },
     {
       "i": 111,
       "beat": "rating",
       "text": "solar",
-      "start": 47.67,
-      "end": 48.02
+      "start": 48.4,
+      "end": 48.75
     },
     {
       "i": 112,
       "beat": "rating",
       "text": "system.",
-      "start": 48.1,
-      "end": 48.81
+      "start": 48.83,
+      "end": 49.54
     },
     {
       "i": 113,
       "beat": "rating",
       "text": "I'd",
-      "start": 49.11,
-      "end": 49.24
+      "start": 49.84,
+      "end": 49.97
     },
     {
       "i": 114,
       "beat": "rating",
       "text": "come",
-      "start": 49.26,
-      "end": 49.46
+      "start": 49.99,
+      "end": 50.19
     },
     {
       "i": 115,
       "beat": "rating",
       "text": "back.",
-      "start": 49.53,
-      "end": 49.91
+      "start": 50.26,
+      "end": 50.64
     }
   ],
   "beats": [
@@ -849,8 +849,8 @@
     {
       "id": "rating",
       "speaker": "tilly-space",
-      "start": 39.57,
-      "end": 49.91
+      "start": 39.58,
+      "end": 50.64
     }
   ],
   "voices": {
@@ -860,7 +860,7 @@
     }
   },
   "loudness": {
-    "integrated_lufs": -15.14,
+    "integrated_lufs": -15.16,
     "true_peak_db": -2.23
   },
   "clips": [
@@ -949,16 +949,16 @@
       "beat": "rating",
       "file": "clips/04-rating-1.mp4",
       "start": 39.43,
-      "duration": 6.82,
-      "trim": 0,
+      "duration": 7.55,
+      "trim": 0.14,
       "align": "dtw",
-      "align_cost": 0.5856
+      "align_cost": 0.5788
     },
     {
       "id": "04-rating-2",
       "beat": "rating",
       "file": "clips/04-rating-2.mp4",
-      "start": 46.25,
+      "start": 46.98,
       "duration": 4.66,
       "trim": 0,
       "align": "dtw",
