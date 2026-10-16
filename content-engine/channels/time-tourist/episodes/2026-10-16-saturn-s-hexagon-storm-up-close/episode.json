@@ -5,7 +5,7 @@
   "idea": "saturn-s-hexagon-storm-up-close",
   "title": "Saturn's hexagon storm, reviewed",
   "created": "2026-10-16T09:00:32Z",
-  "updated": "2026-10-16T09:02:33Z",
+  "updated": "2026-10-16T09:13:02Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -21,6 +21,16 @@
       "status": "done",
       "at": "2026-10-16T09:02:33Z",
       "note": "approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+    },
+    "footage": {
+      "status": "done",
+      "at": "2026-10-16T09:12:08Z",
+      "note": "11 clips, $7.60 spent"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-16T09:13:02Z",
+      "note": "56.00s"
     }
   }
 }
