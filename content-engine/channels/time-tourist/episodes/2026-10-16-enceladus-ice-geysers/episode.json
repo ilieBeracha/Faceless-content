@@ -5,7 +5,7 @@
   "idea": "enceladus-ice-geysers",
   "title": "Standing on Enceladus, reviewed",
   "created": "2026-10-16T16:05:41Z",
-  "updated": "2026-10-16T16:38:15Z",
+  "updated": "2026-10-16T16:40:18Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -24,13 +24,13 @@
     },
     "footage": {
       "status": "done",
-      "at": "2026-10-16T16:26:02Z",
-      "note": "10 clips, $7.85 spent"
+      "at": "2026-10-16T16:39:52Z",
+      "note": "10 clips, $8.49 spent"
     },
     "voice": {
       "status": "done",
-      "at": "2026-10-16T16:26:27Z",
-      "note": "52.37s"
+      "at": "2026-10-16T16:40:18Z",
+      "note": "52.57s"
     },
     "render": {
       "status": "done",
