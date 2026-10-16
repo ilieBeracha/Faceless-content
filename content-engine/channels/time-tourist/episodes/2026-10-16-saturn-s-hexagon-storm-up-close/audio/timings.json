@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "hash": "dfe71f319ec0a2c2a12c2fb95d9affc074386b203cdc1609864a73bfb343fc7f",
+  "hash": "cb7748d57e3abe9c47fcad777cc331a7bf0d0b157b84fc9563169440d0b20762",
   "fps": 30,
-  "frames": 1726,
-  "duration": 57.533,
+  "frames": 1728,
+  "duration": 57.6,
   "speech_start": 0.1,
   "speech_end": 56.63,
   "outro_padding": 0,
@@ -13,867 +13,867 @@
       "beat": "hook",
       "text": "A",
       "start": 0.1,
-      "end": 0.15
+      "end": 0.17
     },
     {
       "i": 1,
       "beat": "hook",
       "text": "hexagon.",
-      "start": 0.16,
-      "end": 1.49
+      "start": 0.21,
+      "end": 1.28
     },
     {
       "i": 2,
       "beat": "hook",
       "text": "On",
-      "start": 1.87,
-      "end": 2.04
+      "start": 1.79,
+      "end": 1.99
     },
     {
       "i": 3,
       "beat": "hook",
       "text": "Saturn.",
-      "start": 2.11,
-      "end": 3.28
+      "start": 2.08,
+      "end": 3.2
     },
     {
       "i": 4,
       "beat": "hook",
       "text": "And",
-      "start": 3.54,
-      "end": 3.62
+      "start": 3.47,
+      "end": 3.6
     },
     {
       "i": 5,
       "beat": "hook",
       "text": "I'm",
-      "start": 3.72,
-      "end": 3.93
+      "start": 3.63,
+      "end": 3.8
     },
     {
       "i": 6,
       "beat": "hook",
       "text": "floating",
-      "start": 3.99,
-      "end": 4.3
+      "start": 3.83,
+      "end": 4.21
     },
     {
       "i": 7,
       "beat": "hook",
       "text": "right",
-      "start": 4.38,
-      "end": 4.52
+      "start": 4.28,
+      "end": 4.46
     },
     {
       "i": 8,
       "beat": "hook",
       "text": "above",
-      "start": 4.57,
-      "end": 4.85
+      "start": 4.54,
+      "end": 4.77
     },
     {
       "i": 9,
       "beat": "hook",
       "text": "it.",
-      "start": 4.86,
-      "end": 5.23
+      "start": 4.83,
+      "end": 5.2
     },
     {
       "i": 10,
       "beat": "arrival",
       "text": "We're",
-      "start": 5.68,
-      "end": 5.88
+      "start": 5.65,
+      "end": 5.82
     },
     {
       "i": 11,
       "beat": "arrival",
       "text": "over",
-      "start": 5.93,
-      "end": 6.17
+      "start": 5.86,
+      "end": 6.21
     },
     {
       "i": 12,
       "beat": "arrival",
       "text": "a",
-      "start": 6.21,
-      "end": 6.23
+      "start": 6.33,
+      "end": 6.35
     },
     {
       "i": 13,
       "beat": "arrival",
       "text": "billion",
-      "start": 6.34,
-      "end": 6.76
+      "start": 6.37,
+      "end": 6.82
     },
     {
       "i": 14,
       "beat": "arrival",
       "text": "kilometres",
-      "start": 6.8,
-      "end": 7.33
+      "start": 6.85,
+      "end": 7.44
     },
     {
       "i": 15,
       "beat": "arrival",
       "text": "from",
-      "start": 7.4,
-      "end": 7.5
+      "start": 7.52,
+      "end": 7.65
     },
     {
       "i": 16,
       "beat": "arrival",
       "text": "home,",
-      "start": 7.5,
-      "end": 8.2
+      "start": 7.72,
+      "end": 8.41
     },
     {
       "i": 17,
       "beat": "arrival",
       "text": "above",
-      "start": 8.32,
-      "end": 8.62
+      "start": 8.64,
+      "end": 8.91
     },
     {
       "i": 18,
       "beat": "arrival",
       "text": "Saturn's",
-      "start": 8.7,
-      "end": 9.12
+      "start": 9.03,
+      "end": 9.49
     },
     {
       "i": 19,
       "beat": "arrival",
       "text": "north",
-      "start": 9.2,
-      "end": 9.45
+      "start": 9.58,
+      "end": 9.85
     },
     {
       "i": 20,
       "beat": "arrival",
       "text": "pole.",
-      "start": 9.49,
-      "end": 10.05
+      "start": 9.91,
+      "end": 10.4
     },
     {
       "i": 21,
       "beat": "arrival",
       "text": "No",
-      "start": 10.5,
-      "end": 10.87
+      "start": 10.85,
+      "end": 11.07
     },
     {
       "i": 22,
       "beat": "arrival",
       "text": "landing,",
-      "start": 10.87,
-      "end": 11.15
+      "start": 11.12,
+      "end": 11.55
     },
     {
       "i": 23,
       "beat": "arrival",
       "text": "by",
-      "start": 11.26,
-      "end": 11.37
+      "start": 11.61,
+      "end": 11.72
     },
     {
       "i": 24,
       "beat": "arrival",
       "text": "the",
-      "start": 11.4,
-      "end": 11.43
+      "start": 11.75,
+      "end": 11.8
     },
     {
       "i": 25,
       "beat": "arrival",
       "text": "way.",
-      "start": 11.51,
-      "end": 11.97
+      "start": 11.88,
+      "end": 12.64
     },
     {
       "i": 26,
       "beat": "arrival",
       "text": "Saturn",
-      "start": 12.21,
-      "end": 12.56
+      "start": 13.06,
+      "end": 13.39
     },
     {
       "i": 27,
       "beat": "arrival",
       "text": "has",
-      "start": 12.67,
-      "end": 12.85
+      "start": 13.45,
+      "end": 13.65
     },
     {
       "i": 28,
       "beat": "arrival",
       "text": "no",
-      "start": 12.96,
-      "end": 13.32
+      "start": 13.71,
+      "end": 13.94
     },
     {
       "i": 29,
       "beat": "arrival",
       "text": "solid",
-      "start": 13.34,
-      "end": 13.69
+      "start": 14.01,
+      "end": 14.33
     },
     {
       "i": 30,
       "beat": "arrival",
       "text": "surface",
-      "start": 13.7,
-      "end": 14.08
+      "start": 14.38,
+      "end": 14.77
     },
     {
       "i": 31,
       "beat": "arrival",
       "text": "to",
-      "start": 14.16,
-      "end": 14.19
+      "start": 14.81,
+      "end": 14.89
     },
     {
       "i": 32,
       "beat": "arrival",
       "text": "stand",
-      "start": 14.27,
-      "end": 14.61
+      "start": 14.92,
+      "end": 15.22
     },
     {
       "i": 33,
       "beat": "arrival",
       "text": "on.",
-      "start": 14.61,
-      "end": 14.89
+      "start": 15.26,
+      "end": 15.55
     },
     {
       "i": 34,
       "beat": "tour",
       "text": "First,",
-      "start": 15.34,
-      "end": 15.85
+      "start": 15.94,
+      "end": 16.43
     },
     {
       "i": 35,
       "beat": "tour",
       "text": "the",
-      "start": 15.95,
-      "end": 16.01
+      "start": 16.63,
+      "end": 16.7
     },
     {
       "i": 36,
       "beat": "tour",
       "text": "shape.",
-      "start": 16.13,
-      "end": 16.83
+      "start": 16.78,
+      "end": 17.54
     },
     {
       "i": 37,
       "beat": "tour",
       "text": "A",
-      "start": 17.02,
-      "end": 17.11
+      "start": 17.71,
+      "end": 17.76
     },
     {
       "i": 38,
       "beat": "tour",
       "text": "six-sided",
-      "start": 17.21,
-      "end": 17.85
+      "start": 17.88,
+      "end": 18.54
     },
     {
       "i": 39,
       "beat": "tour",
       "text": "storm,",
-      "start": 17.92,
-      "end": 18.51
+      "start": 18.6,
+      "end": 19.3
     },
     {
       "i": 40,
       "beat": "tour",
       "text": "and",
-      "start": 18.66,
-      "end": 18.77
+      "start": 19.42,
+      "end": 19.57
     },
     {
       "i": 41,
       "beat": "tour",
       "text": "each",
-      "start": 18.8,
-      "end": 19.05
+      "start": 19.6,
+      "end": 19.8
     },
     {
       "i": 42,
       "beat": "tour",
       "text": "side",
-      "start": 19.1,
-      "end": 19.53
+      "start": 19.91,
+      "end": 20.3
     },
     {
       "i": 43,
       "beat": "tour",
       "text": "is",
-      "start": 19.54,
-      "end": 19.66
+      "start": 20.32,
+      "end": 20.41
     },
     {
       "i": 44,
       "beat": "tour",
       "text": "wider",
-      "start": 19.76,
-      "end": 20.07
+      "start": 20.52,
+      "end": 20.8
     },
     {
       "i": 45,
       "beat": "tour",
       "text": "than",
-      "start": 20.1,
-      "end": 20.23
+      "start": 20.87,
+      "end": 20.98
     },
     {
       "i": 46,
       "beat": "tour",
       "text": "Earth.",
-      "start": 20.3,
-      "end": 20.9
+      "start": 20.98,
+      "end": 21.48
     },
     {
       "i": 47,
       "beat": "tour",
       "text": "The",
-      "start": 21.17,
-      "end": 21.24
+      "start": 21.93,
+      "end": 22
     },
     {
       "i": 48,
       "beat": "tour",
       "text": "wind",
-      "start": 21.33,
-      "end": 21.81
+      "start": 22.12,
+      "end": 22.56
     },
     {
       "i": 49,
       "beat": "tour",
       "text": "racing",
-      "start": 22.02,
-      "end": 22.36
+      "start": 22.67,
+      "end": 23.07
     },
     {
       "i": 50,
       "beat": "tour",
       "text": "along",
-      "start": 22.41,
-      "end": 22.62
+      "start": 23.13,
+      "end": 23.33
     },
     {
       "i": 51,
       "beat": "tour",
       "text": "its",
-      "start": 22.68,
-      "end": 22.78
+      "start": 23.39,
+      "end": 23.5
     },
     {
       "i": 52,
       "beat": "tour",
       "text": "edge?",
-      "start": 22.8,
-      "end": 23.56
+      "start": 23.55,
+      "end": 24.43
     },
     {
       "i": 53,
       "beat": "tour",
       "text": "Over",
-      "start": 23.85,
-      "end": 24.07
+      "start": 24.8,
+      "end": 25.05
     },
     {
       "i": 54,
       "beat": "tour",
       "text": "three",
-      "start": 24.2,
-      "end": 24.49
+      "start": 25.15,
+      "end": 25.38
     },
     {
       "i": 55,
       "beat": "tour",
       "text": "hundred",
-      "start": 24.57,
-      "end": 24.94
+      "start": 25.47,
+      "end": 25.75
     },
     {
       "i": 56,
       "beat": "tour",
       "text": "kilometres",
-      "start": 24.95,
-      "end": 25.57
+      "start": 25.78,
+      "end": 26.34
     },
     {
       "i": 57,
       "beat": "tour",
       "text": "an",
-      "start": 25.6,
-      "end": 25.68
+      "start": 26.36,
+      "end": 26.45
     },
     {
       "i": 58,
       "beat": "tour",
       "text": "hour.",
-      "start": 25.71,
-      "end": 26.06
+      "start": 26.47,
+      "end": 26.86
     },
     {
       "i": 59,
       "beat": "tour",
       "text": "And",
-      "start": 26.51,
-      "end": 26.52
+      "start": 27.31,
+      "end": 27.32
     },
     {
       "i": 60,
       "beat": "tour",
       "text": "it's",
-      "start": 26.59,
-      "end": 26.7
+      "start": 27.39,
+      "end": 27.49
     },
     {
       "i": 61,
       "beat": "tour",
       "text": "not",
-      "start": 26.73,
-      "end": 26.85
+      "start": 27.5,
+      "end": 27.65
     },
     {
       "i": 62,
       "beat": "tour",
       "text": "new.",
-      "start": 26.9,
-      "end": 27.1
+      "start": 27.69,
+      "end": 27.87
     },
     {
       "i": 63,
       "beat": "tour",
       "text": "Voyager",
-      "start": 27.17,
-      "end": 27.83
+      "start": 27.92,
+      "end": 28.74
     },
     {
       "i": 64,
       "beat": "tour",
       "text": "spotted",
-      "start": 28.05,
-      "end": 28.54
+      "start": 29.05,
+      "end": 29.49
     },
     {
       "i": 65,
       "beat": "tour",
       "text": "it",
-      "start": 28.58,
-      "end": 28.96
+      "start": 29.55,
+      "end": 29.95
     },
     {
       "i": 66,
       "beat": "tour",
       "text": "in",
-      "start": 28.97,
-      "end": 29.1
+      "start": 29.95,
+      "end": 30.02
     },
     {
       "i": 67,
       "beat": "tour",
       "text": "the",
-      "start": 29.19,
-      "end": 29.34
+      "start": 30.07,
+      "end": 30.25
     },
     {
       "i": 68,
       "beat": "tour",
       "text": "early",
-      "start": 29.39,
-      "end": 29.7
+      "start": 30.32,
+      "end": 30.63
     },
     {
       "i": 69,
       "beat": "tour",
       "text": "eighties.",
-      "start": 29.78,
-      "end": 30.52
+      "start": 30.63,
+      "end": 31.55
     },
     {
       "i": 70,
       "beat": "tour",
       "text": "Cassini",
-      "start": 30.78,
-      "end": 31.32
+      "start": 31.8,
+      "end": 32.3
     },
     {
       "i": 71,
       "beat": "tour",
       "text": "found",
-      "start": 31.36,
-      "end": 31.56
+      "start": 32.36,
+      "end": 32.54
     },
     {
       "i": 72,
       "beat": "tour",
       "text": "it",
-      "start": 31.62,
-      "end": 31.7
+      "start": 32.58,
+      "end": 32.66
     },
     {
       "i": 73,
       "beat": "tour",
       "text": "still",
-      "start": 31.73,
-      "end": 31.97
+      "start": 32.71,
+      "end": 32.97
     },
     {
       "i": 74,
       "beat": "tour",
       "text": "there,",
-      "start": 32.01,
-      "end": 32.52
+      "start": 33.06,
+      "end": 33.46
     },
     {
       "i": 75,
       "beat": "tour",
       "text": "decades",
-      "start": 32.65,
-      "end": 33.1
+      "start": 33.66,
+      "end": 34.07
     },
     {
       "i": 76,
       "beat": "tour",
       "text": "later.",
-      "start": 33.17,
-      "end": 33.57
+      "start": 34.12,
+      "end": 34.54
     },
     {
       "i": 77,
       "beat": "catch",
       "text": "The",
-      "start": 34.02,
-      "end": 34.13
+      "start": 34.99,
+      "end": 35.09
     },
     {
       "i": 78,
       "beat": "catch",
       "text": "catch?",
-      "start": 34.2,
-      "end": 35.13
+      "start": 35.17,
+      "end": 36.23
     },
     {
       "i": 79,
       "beat": "catch",
       "text": "Nobody's",
-      "start": 35.7,
-      "end": 36.21
+      "start": 36.77,
+      "end": 37.23
     },
     {
       "i": 80,
       "beat": "catch",
       "text": "totally",
-      "start": 36.29,
-      "end": 36.72
+      "start": 37.31,
+      "end": 37.76
     },
     {
       "i": 81,
       "beat": "catch",
       "text": "sure",
-      "start": 36.8,
-      "end": 37.05
+      "start": 37.84,
+      "end": 38.09
     },
     {
       "i": 82,
       "beat": "catch",
       "text": "why",
-      "start": 37.15,
-      "end": 37.27
+      "start": 38.21,
+      "end": 38.43
     },
     {
       "i": 83,
       "beat": "catch",
       "text": "it",
-      "start": 37.34,
-      "end": 37.45
+      "start": 38.49,
+      "end": 38.62
     },
     {
       "i": 84,
       "beat": "catch",
       "text": "has",
-      "start": 37.47,
-      "end": 37.61
+      "start": 38.62,
+      "end": 38.74
     },
     {
       "i": 85,
       "beat": "catch",
       "text": "six",
-      "start": 37.7,
-      "end": 37.89
+      "start": 38.83,
+      "end": 39.01
     },
     {
       "i": 86,
       "beat": "catch",
       "text": "sides.",
-      "start": 37.96,
-      "end": 38.58
+      "start": 39.09,
+      "end": 39.78
     },
     {
       "i": 87,
       "beat": "catch",
       "text": "Lab",
-      "start": 39.03,
-      "end": 39.27
+      "start": 40.23,
+      "end": 40.47
     },
     {
       "i": 88,
       "beat": "catch",
       "text": "tanks",
-      "start": 39.32,
-      "end": 39.65
+      "start": 40.53,
+      "end": 40.88
     },
     {
       "i": 89,
       "beat": "catch",
       "text": "of",
-      "start": 39.67,
-      "end": 39.75
+      "start": 40.94,
+      "end": 41.01
     },
     {
       "i": 90,
       "beat": "catch",
       "text": "spinning",
-      "start": 39.83,
-      "end": 40.15
+      "start": 41.11,
+      "end": 41.44
     },
     {
       "i": 91,
       "beat": "catch",
       "text": "water",
-      "start": 40.29,
-      "end": 40.78
+      "start": 41.56,
+      "end": 42.05
     },
     {
       "i": 92,
       "beat": "catch",
       "text": "make",
-      "start": 40.87,
-      "end": 41.06
+      "start": 42.14,
+      "end": 42.33
     },
     {
       "i": 93,
       "beat": "catch",
       "text": "shapes",
-      "start": 41.16,
-      "end": 41.48
+      "start": 42.43,
+      "end": 42.74
     },
     {
       "i": 94,
       "beat": "catch",
       "text": "like",
-      "start": 41.55,
-      "end": 41.76
+      "start": 42.81,
+      "end": 43.02
     },
     {
       "i": 95,
       "beat": "catch",
       "text": "it.",
-      "start": 41.77,
-      "end": 42.06
+      "start": 43.04,
+      "end": 43.29
     },
     {
       "i": 96,
       "beat": "catch",
       "text": "And",
-      "start": 42.51,
-      "end": 42.58
+      "start": 43.74,
+      "end": 43.83
     },
     {
       "i": 97,
       "beat": "catch",
       "text": "the",
-      "start": 42.6,
-      "end": 42.67
+      "start": 43.86,
+      "end": 43.94
     },
     {
       "i": 98,
       "beat": "catch",
       "text": "south",
-      "start": 42.72,
-      "end": 42.98
+      "start": 43.99,
+      "end": 44.27
     },
     {
       "i": 99,
       "beat": "catch",
       "text": "pole?",
-      "start": 43.03,
-      "end": 43.63
+      "start": 44.31,
+      "end": 44.85
     },
     {
       "i": 100,
       "beat": "catch",
       "text": "No",
-      "start": 43.9,
-      "end": 44.03
+      "start": 45.11,
+      "end": 45.28
     },
     {
       "i": 101,
       "beat": "catch",
       "text": "hexagon.",
-      "start": 44.06,
-      "end": 44.68
+      "start": 45.32,
+      "end": 46.05
     },
     {
       "i": 102,
       "beat": "catch",
       "text": "Weird.",
-      "start": 45.15,
-      "end": 45.63
+      "start": 46.39,
+      "end": 46.97
     },
     {
       "i": 103,
       "beat": "rating",
       "text": "Okay,",
-      "start": 45.99,
-      "end": 46
+      "start": 47.33,
+      "end": 47.34
     },
     {
       "i": 104,
       "beat": "rating",
       "text": "review",
-      "start": 46,
-      "end": 46
+      "start": 47.34,
+      "end": 47.34
     },
     {
       "i": 105,
       "beat": "rating",
       "text": "time.",
-      "start": 46,
-      "end": 46.47
+      "start": 47.38,
+      "end": 47.82
     },
     {
       "i": 106,
       "beat": "rating",
       "text": "View,",
-      "start": 46.56,
-      "end": 46.87
+      "start": 47.89,
+      "end": 48.23
     },
     {
       "i": 107,
       "beat": "rating",
       "text": "five",
-      "start": 46.9,
-      "end": 47.64
+      "start": 48.25,
+      "end": 48.81
     },
     {
       "i": 108,
       "beat": "rating",
       "text": "out",
-      "start": 47.85,
-      "end": 48.37
+      "start": 49.12,
+      "end": 49.69
     },
     {
       "i": 109,
       "beat": "rating",
       "text": "of",
-      "start": 48.54,
-      "end": 48.78
+      "start": 49.86,
+      "end": 50.09
     },
     {
       "i": 110,
       "beat": "rating",
       "text": "five.",
-      "start": 48.82,
-      "end": 48.97
+      "start": 50.17,
+      "end": 50.28
     },
     {
       "i": 111,
       "beat": "rating",
       "text": "Snacks,",
-      "start": 49.01,
-      "end": 49.92
+      "start": 50.35,
+      "end": 51.11
     },
     {
       "i": 112,
       "beat": "rating",
       "text": "one",
-      "start": 50.02,
-      "end": 50.6
+      "start": 51.35,
+      "end": 51.93
     },
     {
       "i": 113,
       "beat": "rating",
       "text": "out",
-      "start": 50.85,
-      "end": 51.03
+      "start": 52.25,
+      "end": 52.42
     },
     {
       "i": 114,
       "beat": "rating",
       "text": "of",
-      "start": 51.06,
-      "end": 51.2
+      "start": 52.45,
+      "end": 52.6
     },
     {
       "i": 115,
       "beat": "rating",
       "text": "five.",
-      "start": 51.25,
-      "end": 51.7
+      "start": 52.62,
+      "end": 53.16
     },
     {
       "i": 116,
       "beat": "rating",
       "text": "The",
-      "start": 52.08,
-      "end": 52.17
+      "start": 53.42,
+      "end": 53.49
     },
     {
       "i": 117,
       "beat": "rating",
       "text": "universe",
-      "start": 52.25,
-      "end": 52.76
+      "start": 53.53,
+      "end": 53.96
     },
     {
       "i": 118,
       "beat": "rating",
       "text": "makes",
-      "start": 52.87,
-      "end": 53.11
+      "start": 54.04,
+      "end": 54.23
     },
     {
       "i": 119,
       "beat": "rating",
       "text": "hexagons",
-      "start": 53.22,
-      "end": 53.89
+      "start": 54.29,
+      "end": 54.82
     },
     {
       "i": 120,
       "beat": "rating",
       "text": "for",
-      "start": 53.92,
-      "end": 54.04
+      "start": 54.85,
+      "end": 54.93
     },
     {
       "i": 121,
       "beat": "rating",
       "text": "fun.",
-      "start": 54.15,
-      "end": 54.88
+      "start": 55.03,
+      "end": 55.46
     },
     {
       "i": 122,
       "beat": "rating",
       "text": "I'm",
-      "start": 55.26,
-      "end": 55.58
+      "start": 55.63,
+      "end": 55.74
     },
     {
       "i": 123,
       "beat": "rating",
       "text": "obsessed.",
-      "start": 55.68,
+      "start": 55.8,
       "end": 56.63
     }
   ],
@@ -882,30 +882,30 @@
       "id": "hook",
       "speaker": "tilly-space",
       "start": 0.1,
-      "end": 5.23
+      "end": 5.2
     },
     {
       "id": "arrival",
       "speaker": "tilly-space",
-      "start": 5.68,
-      "end": 14.89
+      "start": 5.65,
+      "end": 15.55
     },
     {
       "id": "tour",
       "speaker": "tilly-space",
-      "start": 15.34,
-      "end": 33.57
+      "start": 15.94,
+      "end": 34.54
     },
     {
       "id": "catch",
       "speaker": "tilly-space",
-      "start": 34.02,
-      "end": 45.63
+      "start": 34.99,
+      "end": 46.97
     },
     {
       "id": "rating",
       "speaker": "tilly-space",
-      "start": 45.99,
+      "start": 47.33,
       "end": 56.63
     }
   ],
@@ -916,8 +916,8 @@
     }
   },
   "loudness": {
-    "integrated_lufs": -15,
-    "true_peak_db": -1.43
+    "integrated_lufs": -15.15,
+    "true_peak_db": -1.87
   },
   "clips": [
     {
@@ -925,110 +925,110 @@
       "beat": "hook",
       "file": "clips/00-hook-1.mp4",
       "start": 0,
-      "duration": 5.53,
-      "trim": 0.14,
+      "duration": 5.5,
+      "trim": 0.16,
       "align": "dtw",
-      "align_cost": 0.5962
+      "align_cost": 0.5565
     },
     {
       "id": "01-arrival-1",
       "beat": "arrival",
       "file": "clips/01-arrival-1.mp4",
-      "start": 5.53,
-      "duration": 4.82,
-      "trim": 0.12,
+      "start": 5.5,
+      "duration": 5.2,
+      "trim": 0.73,
       "align": "dtw",
-      "align_cost": 0.573
+      "align_cost": 0.5515
     },
     {
       "id": "01-arrival-2",
       "beat": "arrival",
       "file": "clips/01-arrival-2.mp4",
-      "start": 10.35,
-      "duration": 4.84,
-      "trim": 0.55,
+      "start": 10.7,
+      "duration": 5.15,
+      "trim": 0.56,
       "align": "dtw",
-      "align_cost": 0.554
+      "align_cost": 0.4856
     },
     {
       "id": "02-tour-1",
       "beat": "tour",
       "file": "clips/02-tour-1.mp4",
-      "start": 15.19,
-      "duration": 5.83,
-      "trim": 0.17,
+      "start": 15.85,
+      "duration": 5.93,
+      "trim": 0,
       "align": "dtw",
-      "align_cost": 0.5428
+      "align_cost": 0.5248
     },
     {
       "id": "02-tour-2",
       "beat": "tour",
       "file": "clips/02-tour-2.mp4",
-      "start": 21.02,
-      "duration": 5.34,
-      "trim": 0.03,
+      "start": 21.78,
+      "duration": 5.38,
+      "trim": 0.08,
       "align": "dtw",
-      "align_cost": 0.5481
+      "align_cost": 0.5048
     },
     {
       "id": "02-tour-3",
       "beat": "tour",
       "file": "clips/02-tour-3.mp4",
-      "start": 26.36,
-      "duration": 7.51,
-      "trim": 0.06,
+      "start": 27.16,
+      "duration": 7.68,
+      "trim": 0.08,
       "align": "dtw",
-      "align_cost": 0.4533
+      "align_cost": 0.4429
     },
     {
       "id": "03-catch-1",
       "beat": "catch",
       "file": "clips/03-catch-1.mp4",
-      "start": 33.87,
-      "duration": 5.01,
-      "trim": 0.05,
+      "start": 34.84,
+      "duration": 5.24,
+      "trim": 0.06,
       "align": "dtw",
-      "align_cost": 0.5025
+      "align_cost": 0.5329
     },
     {
       "id": "03-catch-2",
       "beat": "catch",
       "file": "clips/03-catch-2.mp4",
-      "start": 38.88,
-      "duration": 3.48,
-      "trim": 0.05,
+      "start": 40.08,
+      "duration": 3.51,
+      "trim": 0.02,
       "align": "dtw",
-      "align_cost": 0.4717
+      "align_cost": 0.5179
     },
     {
       "id": "03-catch-3",
       "beat": "catch",
       "file": "clips/03-catch-3.mp4",
-      "start": 42.36,
-      "duration": 3.57,
-      "trim": 0.2,
+      "start": 43.59,
+      "duration": 3.68,
+      "trim": 0.29,
       "align": "dtw",
-      "align_cost": 0.5301
+      "align_cost": 0.5558
     },
     {
       "id": "04-rating-1",
       "beat": "rating",
       "file": "clips/04-rating-1.mp4",
-      "start": 45.93,
+      "start": 47.27,
       "duration": 6,
       "trim": 0,
       "align": "dtw",
-      "align_cost": 0.5925
+      "align_cost": 0.5483
     },
     {
       "id": "04-rating-2",
       "beat": "rating",
       "file": "clips/04-rating-2.mp4",
-      "start": 51.93,
-      "duration": 5.63,
-      "trim": 0.37,
+      "start": 53.27,
+      "duration": 4.36,
+      "trim": 0.46,
       "align": "dtw",
-      "align_cost": 0.4817
+      "align_cost": 0.5081
     }
   ]
 }
