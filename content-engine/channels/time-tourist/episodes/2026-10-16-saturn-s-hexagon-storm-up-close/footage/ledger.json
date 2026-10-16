@@ -523,6 +523,22 @@
       "model": "gemini-2.5-flash-image",
       "usd": 0.039,
       "ok": true
+    },
+    {
+      "at": "2026-10-16T11:08:01Z",
+      "shot": "01-arrival-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T11:08:07Z",
+      "shot": "04-rating-2",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
     }
   ]
 }
