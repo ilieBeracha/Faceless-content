@@ -16,6 +16,10 @@
     "script": {
       "status": "done",
       "at": "2026-10-16T09:02:20Z"
+    },
+    "factcheck": {
+      "status": "waiting",
+      "at": "2026-10-16T09:02:20Z"
     }
   }
 }
