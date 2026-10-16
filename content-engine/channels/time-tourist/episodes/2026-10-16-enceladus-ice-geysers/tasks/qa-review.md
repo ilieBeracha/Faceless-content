@@ -12,10 +12,10 @@ Review the rendered episode **2026-10-16-enceladus-ice-geysers** against `workfl
    - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t001.5s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t007.4s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t014.8s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t022.1s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t029.5s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t036.9s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t044.3s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t022.2s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t029.6s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t037.0s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/qa/frames/t044.4s.jpg`
    The full video is `out/time-tourist/2026-10-16-enceladus-ice-geysers.mp4`.
    This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.
 2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
@@ -23,7 +23,7 @@ Review the rendered episode **2026-10-16-enceladus-ice-geysers** against `workfl
 
 ```json
 {
-  "render_hash": "7503ec399392b024dbea92dd8346c4c2c8eb3696211328e97ee1079b6c6ef4a4",
+  "render_hash": "7e4109c9438a326f9fd9aa2fdd8df914d7daf2828a2b955364d999a35c5fff36",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -565,17 +565,17 @@ when posted).
 
 <file path="(inline) automated QA results" role="input">
 - [x] Format: 1080×1920 @ 30.00 fps, h264/aac, yuvj420p
-- [x] Length: 52.24s (series allows 38–62s)
+- [x] Length: 52.37s (series allows 38–62s)
 - [x] Hook: speech starts immediately: first word at 0.10s (limit 0.5s)
 - [x] Hook: first line lands in 2 s: "Ice everywhere." ends at 1.72s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.07s
-- [x] Text inside safe areas: 2 text elements checked on every frame (1721 measurements)
+- [x] Text inside safe areas: 2 text elements checked on every frame (1725 measurements)
 - [x] Nothing cut off: no element leaves the frame or overflows its box
-- [x] Captions in sync: 112 words; text matches script: yes; highlight off on 0/1559 frames; words over silent audio: 0
-- [x] Loudness: -15.0 LUFS (target -14 ±1.5), true peak -5.3 dBTP (max -1)
+- [x] Captions in sync: 112 words; text matches script: yes; highlight off on 0/1563 frames; words over silent audio: 0
+- [x] Loudness: -14.9 LUFS (target -14 ±1.5), true peak -5.3 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
 - [x] Footage is real (not placeholders): 10 clips from veo-3.1-fast-generate-preview
 - [x] Every clip says its line: 10 clips checked by ear
-- [x] Within budget: $6.65 spent of $25.00 (31 paid calls logged in footage/ledger.json)
+- [x] Within budget: $7.85 spent of $25.00 (35 paid calls logged in footage/ledger.json)
 - [x] Fact-check approved: approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude) (8 claims)
 </file>

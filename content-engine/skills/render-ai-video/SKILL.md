@@ -102,6 +102,9 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   Mix them like a trailer: open on a striking close-up, then alternate establishing and silhouette shots, and
   return to a close-up for the verdict. Set `look` to a film look ("cinematic sci-fi film, anamorphic lens,
   dramatic rim light, volumetric haze, deep blacks"), `grade: "cinematic"` and a `score`.
+- **Voice-over shots** (`establishing`, `first-person`, `pov`): Veo sometimes invents a presenter to "say" the
+  narration. Start the shot's `place` with "no people, no faces and no presenter anywhere in the picture" and
+  end its `action` with "the narration is a voice-over and nobody is ever shown".
 - **Pacing:** 8–12 shots per 45–55 s episode. Change the place or camera every shot: a new room, a new angle,
   walking somewhere. Jump cuts between shots are normal in vlogs.
 - **Places:** concrete, visible things, period-accurate: materials, light, crowd, weather. Never ask for

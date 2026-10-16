@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-16T16:24:17Z",
-  "render_hash": "7503ec399392b024dbea92dd8346c4c2c8eb3696211328e97ee1079b6c6ef4a4",
+  "checked_at": "2026-10-16T16:38:20Z",
+  "render_hash": "7e4109c9438a326f9fd9aa2fdd8df914d7daf2828a2b955364d999a35c5fff36",
   "checks": [
     {
       "id": "format",
@@ -12,7 +12,7 @@
       "id": "length",
       "label": "Length",
       "pass": true,
-      "detail": "52.24s (series allows 38–62s)"
+      "detail": "52.37s (series allows 38–62s)"
     },
     {
       "id": "hook-speech",
@@ -36,7 +36,7 @@
       "id": "safe-areas",
       "label": "Text inside safe areas",
       "pass": true,
-      "detail": "2 text elements checked on every frame (1721 measurements)"
+      "detail": "2 text elements checked on every frame (1725 measurements)"
     },
     {
       "id": "cut-off",
@@ -48,13 +48,13 @@
       "id": "captions-sync",
       "label": "Captions in sync",
       "pass": true,
-      "detail": "112 words; text matches script: yes; highlight off on 0/1559 frames; words over silent audio: 0"
+      "detail": "112 words; text matches script: yes; highlight off on 0/1563 frames; words over silent audio: 0"
     },
     {
       "id": "loudness",
       "label": "Loudness",
       "pass": true,
-      "detail": "-15.0 LUFS (target -14 ±1.5), true peak -5.3 dBTP (max -1)"
+      "detail": "-14.9 LUFS (target -14 ±1.5), true peak -5.3 dBTP (max -1)"
     },
     {
       "id": "banned-topics",
@@ -78,7 +78,7 @@
       "id": "footage-budget",
       "label": "Within budget",
       "pass": true,
-      "detail": "$6.65 spent of $25.00 (31 paid calls logged in footage/ledger.json)"
+      "detail": "$7.85 spent of $25.00 (35 paid calls logged in footage/ledger.json)"
     },
     {
       "id": "factcheck",
