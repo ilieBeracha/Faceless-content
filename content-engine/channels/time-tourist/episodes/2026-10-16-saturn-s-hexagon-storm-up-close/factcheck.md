@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-16-saturn-s-hexagon-storm-up-close
 channel: time-tourist
-status: pending
+status: approved
 script_hash: 83f7e7f189e5c3731242c52c710acf45ebc3f59c65efc3b2de6caa5a3b521050
 generated_at: 2026-10-16T09:02:20Z
-approved_by: null
-approved_at: null
+approved_by: "Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+approved_at: 2026-10-16T09:02:32Z
 notes: null
 ---
 
