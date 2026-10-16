@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-16-saturn-s-hexagon-storm-up-close
 channel: time-tourist
-status: approved
-script_hash: 83f7e7f189e5c3731242c52c710acf45ebc3f59c65efc3b2de6caa5a3b521050
-generated_at: 2026-10-16T09:02:20Z
-approved_by: "Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
-approved_at: 2026-10-16T09:02:32Z
+status: pending
+script_hash: 6421ccc1feb5d6c2d0c37c434ad1d167830b3da2a366bbc6e25cb2783e9b86d8
+generated_at: 2026-10-16T09:26:54Z
+approved_by: null
+approved_at: null
 notes: null
 ---
 
@@ -63,7 +63,7 @@ full transcript below for anything the list missed.
 
 | Beat | Voiceover | On screen |
 |---|---|---|
-| `hook` | Saturn has a hexagon. And I'm floating right above it. | Saturn's hexagon |
+| `hook` | A hexagon. On Saturn. And I'm floating right above it. | Saturn's hexagon |
 | `arrival` | We're over a billion kilometres from home, above Saturn's north pole. No landing, by the way. Saturn has no solid surface to stand on. |  |
 | `tour` | First, the shape. A six-sided storm, and each side is wider than Earth. The wind racing along its edge? Over three hundred kilometres an hour. And it's not new. Voyager spotted it in the early eighties. Cassini found it still there, decades later. |  |
 | `catch` | The catch? Nobody's totally sure why it has six sides. Lab tanks of spinning water make shapes like it. And the south pole? No hexagon. Weird. |  |

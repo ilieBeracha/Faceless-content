@@ -9,7 +9,7 @@
     {
       "id": "hook",
       "speaker": "tilly-space",
-      "voiceover": "Saturn has a hexagon. And I'm floating right above it.",
+      "voiceover": "A hexagon. On Saturn. And I'm floating right above it.",
       "visual": {
         "skill": "render-ai-video",
         "shots": [
@@ -17,7 +17,7 @@
             "camera": "selfie",
             "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; through the big round window behind her, Saturn's north pole with its golden six-sided storm and a blue swirl at its centre",
             "action": "floating weightless, grinning, curls drifting out from under her cap",
-            "line": "Saturn has a hexagon. And I'm floating right above it.",
+            "line": "A hexagon. On Saturn. And I'm floating right above it.",
             "sound": "the soft hum of cabin fans",
             "expression": "excited"
           }
