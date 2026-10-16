@@ -5,7 +5,7 @@
   "idea": "venus-by-balloon-the-one-nice-layer",
   "title": "Floating in Venus's clouds, reviewed",
   "created": "2026-10-16T13:49:40Z",
-  "updated": "2026-10-16T13:50:13Z",
+  "updated": "2026-10-16T13:58:47Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -21,6 +21,16 @@
       "status": "done",
       "at": "2026-10-16T13:50:13Z",
       "note": "approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+    },
+    "footage": {
+      "status": "done",
+      "at": "2026-10-16T13:57:48Z",
+      "note": "10 clips, $7.85 spent"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-16T13:58:47Z",
+      "note": "51.53s"
     }
   }
 }
