@@ -9,6 +9,19 @@
         "sha": "8846a9fe3466253b309732e790b4b926ecb0d3d15a5bfd8258fe96202ed427c5",
         "key": "1e425f58ce7802051d29199af12d57708454fdc223f662114024ab0d47432d23",
         "at": "2026-10-16T13:50:26Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/00-hook-1.mp4",
+        "sha": "03e2669a6d8f8f86cfeb033d30ee4211a76684d08144f5df527863b32a8c7b5f",
+        "key": "f68b3256f7f72668bb60630d9084e74808ed7673b9e486d4e83d3cc6ab3c6ed7",
+        "at": "2026-10-16T13:53:26Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "I'm floating. On Venus. Fifty kilometres above the ground.",
+          "same_words": true,
+          "differences": "None"
+        }
       }
     },
     "01-arrival-1": {
@@ -19,6 +32,19 @@
         "sha": "e5e1a3a12d77a4cf5e0d839712b09a0ade589041588de93f404f079f54c8360c",
         "key": "fc74aac19e72d4a8cf63aa88242698f4d419e92367ddfd7f3651af0d2eff9af2",
         "at": "2026-10-16T13:50:32Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/01-arrival-1.mp4",
+        "sha": "51ca44862e8786e1c4d7208d7c2f3ac98c238ad2ab2dc01ede04c3f36733cb1a",
+        "key": "6f2575bdc48233a8559f7b59182869956de2c138f7c9882a4ce2564fd1c17d67",
+        "at": "2026-10-16T13:53:06Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Down there it's hot enough to melt lead.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "01-arrival-2": {
@@ -29,6 +55,19 @@
         "sha": "b83e24c91e1b1cf8e3e2623b9dac266525e76816758b42b4f674ccbb8a67910d",
         "key": "fae2dcc8d4e120774826ae2f27e9e79cb4cccabd4e1c41b47916c833afa4aed7",
         "at": "2026-10-16T13:50:41Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/01-arrival-2.mp4",
+        "sha": "2e2b0ebda58aa607a583176164226c439b18b4dbec88b93e3ebc4e2eb1e9acec",
+        "key": "fc30d18adddfbbc059182b0acf084ffcca2ba7d3dd21c87431807ee4b550e312",
+        "at": "2026-10-16T13:54:00Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Up here, the air pressure is about the same as back home.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-1": {
@@ -39,16 +78,42 @@
         "sha": "d1ee0d911aaa4a9baf821f5a69b3b2d0a1cf0c4ec1185f09a9f4bc9575b3c33e",
         "key": "ec3f7e2778ed8b3492db08e874ced3674feae2f6cf0aefa3c15d979ee0c6c56e",
         "at": "2026-10-16T13:50:46Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/02-tour-1.mp4",
+        "sha": "c09abb5455a70e851866ae97085db60a0e6adfe9569125adbde7e4bdd64661b4",
+        "key": "34927060b1044c448c9213c7baf19290e915b9e0be5c9dc79dfc867c5076f165",
+        "at": "2026-10-16T13:54:21Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "But these clouds aren't water. They're droplets of sulfuric acid.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "02-tour-2": {
       "still_variant": 0,
-      "clip_variant": 0,
+      "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/stills/02-tour-2.jpg",
         "sha": "45607ade2fcf4d97a6844ff25a1b6d53b6e42de3f3af2c74e2c40a1e415b4dda",
         "key": "d75152a0e0c1359216d2290f1b69a40a3bb48867f9592938a60748f406f33046",
         "at": "2026-10-16T13:50:53Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/02-tour-2.mp4",
+        "sha": "54ae9678518a3b636e363ea333e1f0082f135270a4f8486681a86d02be438fb9",
+        "key": "980126104def654b5d55b4c86bde741a9fd2a3a8862a3736c94c2a29c40e5c86",
+        "at": "2026-10-16T13:55:48Z",
+        "seconds": 8,
+        "attempts": 2,
+        "speech": {
+          "transcript": "And the wind up here carries the clouds around the whole planet in about four days.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "02-tour-3": {
@@ -59,6 +124,19 @@
         "sha": "26879d49a00bca0b17f6750db43696fea1632e5abe260ce7545ed76d91a97f02",
         "key": "879527211d6e20fa164b0e22593720e4c93788c33383af2035972fbd677d145b",
         "at": "2026-10-16T13:50:59Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/02-tour-3.mp4",
+        "sha": "249f5c2380c330e17795d6b6e309726160ac3032fc0bf15a91166dd34095640d",
+        "key": "39705cef897a8e5efb618772ee3e3da20089a2b558e659f30e1db0fc8dfc8327",
+        "at": "2026-10-16T13:55:05Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Oh, and the sun rises in the west. Venus spins backwards.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "03-catch-1": {
@@ -69,6 +147,19 @@
         "sha": "1e4d9e2c69e6bc2ff99e2d4763234568d2c7538a2e45460292c2798e620cc6b1",
         "key": "3643b74a53ab7ca6cc5f3ad4649c6f207bcca79308f084eaa78f1bf9d6044e55",
         "at": "2026-10-16T13:51:10Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/03-catch-1.mp4",
+        "sha": "62da788922e448dbe1c578dbc68ba0b8ea1f58265d363c5a8e7f6a2575b75155",
+        "key": "4ff1afb9fc9b62004e1a1a26024a5a351756f774fa3bc67f32f2e52a95d8bc82",
+        "at": "2026-10-16T13:56:19Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "The catch? Down on the ground, the air pressure is about ninety times Earth's.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "03-catch-2": {
@@ -79,6 +170,19 @@
         "sha": "142259bc3514948799377dae408f0981229bdf4526750520b544d502efe2f69b",
         "key": "f3ba59fef046e3f203e2c72f7df0399f79f4b6db4729bb908b4bd5db5bb259f2",
         "at": "2026-10-16T13:51:17Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/03-catch-2.mp4",
+        "sha": "e3d197e3613234a9a1d7b7a0d5176c82ae630b30fed8eab2811db81e62a1395d",
+        "key": "07e1e81dd1f04dd9a78be221ff80084eca1b2ae591f5d7c063015f0de1fc3e9a",
+        "at": "2026-10-16T13:56:52Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "And our balloon floats on plain breathable air. Here, that's a lifting gas.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     },
     "04-rating-1": {
@@ -89,6 +193,19 @@
         "sha": "176d931dda7acbb348f1399930dcba58c38ebb141641685d26eeb46344c2b990",
         "key": "f0d69290d0e988515cec8d8b04e9b53b33705d5819dab5361f4443f49246ac51",
         "at": "2026-10-16T13:51:26Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/04-rating-1.mp4",
+        "sha": "4f2392a3bcead3c9493f713ae70b83dcae822f15357d4081ebb7fcbf725a462a",
+        "key": "39044fecbf836fd63bb8dc12dc28690711588a1252ecf2d4f4ee849395c88e0e",
+        "at": "2026-10-16T13:57:24Z",
+        "seconds": 8,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Okay, review time. View, five out of five. Acid clouds, one out of five.",
+          "same_words": true,
+          "differences": ""
+        }
       }
     },
     "04-rating-2": {
@@ -99,6 +216,19 @@
         "sha": "a3adce2f27d83f0af9544bdf7d5a3f5a116e888ba7cf9a8f83f0294960bc9231",
         "key": "5bb2bc134c2ce35c25d0da87ded4798cc334f18352f6188b31c38050d37096e1",
         "at": "2026-10-16T13:51:57Z"
+      },
+      "clip": {
+        "file": "channels/time-tourist/episodes/2026-10-16-venus-by-balloon-the-one-nice-layer/footage/clips/04-rating-2.mp4",
+        "sha": "844c9115de614e8e19a99a7418597c04031392bdb968d5e3e4db6c28c1ce1b48",
+        "key": "7578f7dcf1b9860cebacb1d83684756fcfa9c63c30b1b77a20f8ac291d13c3f8",
+        "at": "2026-10-16T13:57:47Z",
+        "seconds": 6,
+        "attempts": 1,
+        "speech": {
+          "transcript": "Strangest weather in the solar system. I'd come back.",
+          "same_words": true,
+          "differences": "No differences."
+        }
       }
     }
   },

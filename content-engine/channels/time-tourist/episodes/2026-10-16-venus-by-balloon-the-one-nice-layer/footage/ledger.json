@@ -89,6 +89,204 @@
       "model": "gemini-2.5-flash-image",
       "usd": 0.039,
       "ok": true
+    },
+    {
+      "at": "2026-10-16T13:53:03Z",
+      "shot": "01-arrival-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:53:06Z",
+      "shot": "01-arrival-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:53:23Z",
+      "shot": "00-hook-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:53:26Z",
+      "shot": "00-hook-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:53:57Z",
+      "shot": "01-arrival-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:54:00Z",
+      "shot": "01-arrival-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:54:18Z",
+      "shot": "02-tour-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:54:21Z",
+      "shot": "02-tour-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:54:51Z",
+      "shot": "02-tour-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:54:54Z",
+      "shot": "02-tour-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "wrong words: No words were spoken in the audio clip, but the intended line is: \"And the wind up here carries the clouds around the whole planet in about four days.\""
+    },
+    {
+      "at": "2026-10-16T13:55:02Z",
+      "shot": "02-tour-3",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:55:05Z",
+      "shot": "02-tour-3",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:55:46Z",
+      "shot": "02-tour-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:55:48Z",
+      "shot": "02-tour-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:56:17Z",
+      "shot": "03-catch-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:56:19Z",
+      "shot": "03-catch-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:56:50Z",
+      "shot": "03-catch-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:56:52Z",
+      "shot": "03-catch-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:57:21Z",
+      "shot": "04-rating-1",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 8,
+      "usd": 0.8,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:57:24Z",
+      "shot": "04-rating-1",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T13:57:44Z",
+      "shot": "04-rating-2",
+      "kind": "video",
+      "model": "veo-3.1-fast-generate-preview",
+      "seconds": 6,
+      "usd": 0.6000000000000001,
+      "ok": true
+    },
+    {
+      "at": "2026-10-16T13:57:47Z",
+      "shot": "04-rating-2",
+      "kind": "check",
+      "model": "gemini-2.5-flash",
+      "usd": 0.002,
+      "ok": true,
+      "note": "line ok"
     }
   ]
 }
