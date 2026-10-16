@@ -85,3 +85,63 @@ The engine marks an idea "used" when an episode is made from it.
 - angle: The same Baths of Caracalla review, filmed live-action: gym, spa and library for one tiny coin — but no soap, and enslaved workers stoking the fires.
 - added: 2026-10-15
 - used_in: episodes/2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real
+
+## saturn-s-hexagon-storm-up-close
+- title: Saturn's hexagon storm, up close
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## venus-by-balloon-the-one-nice-layer
+- title: Venus by balloon: the one nice layer
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## standing-on-olympus-mons-mars
+- title: Standing on Olympus Mons, Mars
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## a-blue-sunset-on-mars
+- title: A blue sunset on Mars
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## titan-methane-rain-and-flying-with-wings
+- title: Titan: methane rain and flying with wings
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## enceladus-ice-geysers
+- title: Enceladus ice geysers
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## jupiter-s-great-red-spot-from-the-window
+- title: Jupiter's Great Red Spot from the window
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## waving-goodbye-to-oumuamua
+- title: Waving goodbye to 'Oumuamua
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## a-neutron-star-from-a-safe-distance
+- title: A neutron star, from a safe distance
+- series: rated-space
+- status: new
+- added: 2026-10-16
+
+## the-wow-signal-night-shift
+- title: The Wow! signal night shift
+- series: rated-space
+- status: new
+- added: 2026-10-16
