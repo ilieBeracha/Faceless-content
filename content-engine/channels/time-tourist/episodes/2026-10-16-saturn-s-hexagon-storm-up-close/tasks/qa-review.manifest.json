@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "time-tourist",
   "series": "rated-space",
-  "created": "2026-10-16T09:25:13Z",
+  "created": "2026-10-16T09:40:38Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -39,14 +39,14 @@
     {
       "path": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/script.json",
       "role": "channel",
-      "sha256": "5f69d5dee85456ee8932125321abba3b73389940973f8bb1519f85e3fd99ac6b",
+      "sha256": "154f6df44dc651000a5739254406641c6b5216d254bd15bbe2d17e34ea2111f3",
       "bytes": 13245
     },
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "1a3b4e2ff265f31b5063d7d45fdc83865aaf91f60a40c6098cc1debd16a73bb9",
-      "bytes": 1085
+      "sha256": "e177ef22347d1e8ad9b29db9477a29747085e4c5b3f78f902bdee578d7afabea",
+      "bytes": 1083
     }
   ],
   "outputs": [

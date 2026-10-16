@@ -10,12 +10,12 @@ Review the rendered episode **2026-10-16-saturn-s-hexagon-storm-up-close** again
 1. Look at every sampled frame (open the images):
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t000.5s.jpg`
    - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t001.5s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t007.9s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t015.8s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t023.7s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t031.7s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t039.6s.jpg`
-   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t047.5s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t008.0s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t016.1s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t024.1s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t032.2s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t040.2s.jpg`
+   - `channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/qa/frames/t048.3s.jpg`
    The full video is `out/time-tourist/2026-10-16-saturn-s-hexagon-storm-up-close.mp4`.
    This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.
 2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
@@ -23,7 +23,7 @@ Review the rendered episode **2026-10-16-saturn-s-hexagon-storm-up-close** again
 
 ```json
 {
-  "render_hash": "d95fa206da5253fada39bc64cd5f9828906917a946f2f6038737438f037b2e86",
+  "render_hash": "d460d0eaed3277cffcb22dcd00cde9212bee71e51946cc820dde29b0778ed902",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -325,7 +325,7 @@ when posted).
     {
       "id": "hook",
       "speaker": "tilly-space",
-      "voiceover": "Saturn has a hexagon. And I'm floating right above it.",
+      "voiceover": "A hexagon. On Saturn. And I'm floating right above it.",
       "visual": {
         "skill": "render-ai-video",
         "shots": [
@@ -333,7 +333,7 @@ when posted).
             "camera": "selfie",
             "place": "inside a small, slightly shabby budget tourist spacecraft cabin: padded off-white walls, a big round window, soft cabin light; through the big round window behind her, Saturn's north pole with its golden six-sided storm and a blue swirl at its centre",
             "action": "floating weightless, grinning, curls drifting out from under her cap",
-            "line": "Saturn has a hexagon. And I'm floating right above it.",
+            "line": "A hexagon. On Saturn. And I'm floating right above it.",
             "sound": "the soft hum of cabin fans",
             "expression": "excited"
           }
@@ -566,17 +566,17 @@ when posted).
 
 <file path="(inline) automated QA results" role="input">
 - [x] Format: 1080×1920 @ 30.00 fps, h264/aac, yuvj420p
-- [x] Length: 56.00s (series allows 38–62s)
+- [x] Length: 56.92s (series allows 38–62s)
 - [x] Hook: speech starts immediately: first word at 0.10s (limit 0.5s)
-- [ ] Hook: first line lands in 2 s: "Saturn has a hexagon." ends at 2.66s (limit 2s)
+- [x] Hook: first line lands in 2 s: "A hexagon." ends at 1.49s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.07s
-- [x] Text inside safe areas: 2 text elements checked on every frame (1795 measurements)
-- [ ] Nothing cut off: headline:hook:text-overflow (134 frames)
-- [x] Captions in sync: 124 words; text matches script: yes; highlight off on 0/1660 frames; words over silent audio: 0
-- [ ] Loudness: -15.9 LUFS (target -14 ±1.5), true peak -4.4 dBTP (max -1)
+- [x] Text inside safe areas: 2 text elements checked on every frame (1849 measurements)
+- [x] Nothing cut off: no element leaves the frame or overflows its box
+- [x] Captions in sync: 124 words; text matches script: yes; highlight off on 0/1687 frames; words over silent audio: 0
+- [ ] Loudness: -15.8 LUFS (target -14 ±1.5), true peak -4.4 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
 - [x] Footage is real (not placeholders): 11 clips from veo-3.1-fast-generate-preview
 - [x] Every clip says its line: 11 clips checked by ear
-- [x] Within budget: $7.60 spent of $25.00 (47 paid calls logged in footage/ledger.json)
-- [x] Fact-check approved: approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude) (8 claims)
+- [x] Within budget: $8.20 spent of $25.00 (49 paid calls logged in footage/ledger.json)
+- [x] Fact-check approved: approved by Ilie (delegated to Claude: 'decide by yourself'; hook reworded, same claims) (8 claims)
 </file>
