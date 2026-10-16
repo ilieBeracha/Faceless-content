@@ -1,0 +1,240 @@
+{
+  "schema": "script/v1",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "idea": "venus-by-balloon-the-one-nice-layer",
+  "title": "Floating in Venus's clouds, reviewed",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly-space",
+      "voiceover": "I'm floating. On Venus. Fifty kilometres above the ground.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "on the open metal deck of a small research balloon platform inside Venus's clouds, holding the safety rail, endless pale yellow-orange haze in every direction",
+            "action": "standing steadily at the rail, then turning her head calmly to the lens",
+            "line": "I'm floating. On Venus. Fifty kilometres above the ground.",
+            "sound": "steady wind and the soft creak of cables",
+            "expression": "excited"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      },
+      "on_screen_text": "Floating on Venus"
+    },
+    {
+      "id": "arrival",
+      "speaker": "tilly-space",
+      "voiceover": "Down there it's hot enough to melt lead. Up here, the air pressure is about the same as back home.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "establishing",
+            "place": "looking straight down from the platform through gaps in thick pale-yellow cloud decks toward a dim, hazy orange glow far below; no ground visible",
+            "action": "a slow tilt down through the layers of cloud",
+            "line": "Down there it's hot enough to melt lead.",
+            "sound": "deep steady wind"
+          },
+          {
+            "camera": "on-location",
+            "place": "on the open metal deck of the small balloon platform, the enormous silver balloon above her, pale yellow haze drifting past",
+            "action": "standing calmly at the rail, glancing up at the balloon once",
+            "line": "Up here, the air pressure is about the same as back home.",
+            "sound": "steady wind and the soft creak of cables",
+            "expression": "neutral"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "tour",
+      "speaker": "tilly-space",
+      "voiceover": "But these clouds aren't water. They're droplets of sulfuric acid. And the wind up here carries the clouds around the whole planet in about four days. Oh, and the sun rises in the west. Venus spins backwards.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "first-person",
+            "place": "thick pale-yellow haze drifting past the deck rail, tiny droplets beading on the fingers of her mustard-yellow pressure-suit gloves",
+            "action": "her gloved hand slowly reaches out past the rail into the drifting haze",
+            "line": "But these clouds aren't water. They're droplets of sulfuric acid.",
+            "sound": "steady wind and the soft creak of cables"
+          },
+          {
+            "camera": "establishing",
+            "place": "a vast sea of pale yellow and white cloud bands streaming fast toward the horizon under a bright, hazy sky, a tiny silver balloon platform for scale",
+            "action": "a slow, wide tracking shot along the streaming clouds",
+            "line": "And the wind up here carries the clouds around the whole planet in about four days.",
+            "sound": "deep rushing wind"
+          },
+          {
+            "camera": "silhouette",
+            "place": "on the deck at dawn, a small pale sun rising through the haze on the horizon ahead of her",
+            "action": "a slow, steady push-in from behind as she watches the sunrise",
+            "line": "Oh, and the sun rises in the west. Venus spins backwards.",
+            "sound": "steady wind and the soft creak of cables"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "catch",
+      "speaker": "tilly-space",
+      "voiceover": "The catch? Down on the ground, the air pressure is about ninety times Earth's. And our balloon floats on plain breathable air. Here, that's a lifting gas.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "on the open metal deck of a small research balloon platform inside Venus's clouds, holding the safety rail, endless pale yellow-orange haze in every direction",
+            "action": "standing still, speaking quietly and seriously to the lens",
+            "line": "The catch? Down on the ground, the air pressure is about ninety times Earth's.",
+            "sound": "steady wind and the soft creak of cables",
+            "expression": "gentle"
+          },
+          {
+            "camera": "establishing",
+            "place": "looking straight up from the deck at the underside of an enormous silver balloon envelope, taut cables running down to the platform, yellow haze around it",
+            "action": "a slow tilt up along the cables to the huge balloon",
+            "line": "And our balloon floats on plain breathable air. Here, that's a lifting gas.",
+            "sound": "steady wind and the soft creak of cables"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "gentle"
+      }
+    },
+    {
+      "id": "rating",
+      "speaker": "tilly-space",
+      "voiceover": "Okay, review time. View, five out of five. Acid clouds, one out of five. Strangest weather in the solar system. I'd come back.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "on the open metal deck of a small research balloon platform inside Venus's clouds, holding the safety rail, endless pale yellow-orange haze in every direction",
+            "action": "relaxed at the rail, a small smile, speaking directly to the lens",
+            "line": "Okay, review time. View, five out of five. Acid clouds, one out of five.",
+            "sound": "steady wind and the soft creak of cables",
+            "expression": "excited"
+          },
+          {
+            "camera": "silhouette",
+            "place": "standing at the rail as the small balloon platform drifts through glowing golden haze, the huge balloon above her",
+            "action": "a slow pull back that leaves her a small figure on the platform",
+            "line": "Strangest weather in the solar system. I'd come back.",
+            "sound": "steady wind and the soft creak of cables"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-ai-video": {
+      "world": "Venus, inside the cloud layer about 50 kilometres above the surface: a small open-deck research balloon platform hanging under a huge silver balloon, thick pale yellow-orange haze in every direction, bright diffuse sunlight",
+      "look": "photoreal documentary footage like an IMAX nature film, natural diffuse light through haze, realistic textures and materials, true-to-life colour",
+      "grade": "cinematic",
+      "score": "space-drone",
+      "direction": "documentary",
+      "wardrobe": "a fitted mustard-yellow pressure suit with faded-red stripes on the shoulders, a clear full-face bubble helmet that shows her whole face, freckles and dark curly hair, matching mustard gloves and a slim oxygen pack on her back"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Venus's surface is hot enough to melt lead (about 465 °C; lead melts at about 327 °C).",
+      "beat": "arrival",
+      "source": "NASA, 'Venus' lithograph, https://www.nasa.gov/sites/default/files/files/Venus_Lithograph.pdf ('hot enough to melt lead') ; Astronomy magazine, https://www.astronomy.com/science/weird-object-venus/",
+      "confidence": "high",
+      "note": "Sources give 460–470 °C."
+    },
+    {
+      "id": "c2",
+      "claim": "About 50 km above Venus's surface the atmospheric pressure is about 1 bar, roughly Earth's sea-level pressure.",
+      "beat": "arrival",
+      "source": "G. A. Landis, 'Colonization of Venus', NASA Glenn, AIP Conf. Proc. 654 (2003), https://ntrs.nasa.gov/api/citations/20030022668/downloads/20030022668.pdf ; NASA Langley HAVOC concept (Space.com, https://www.space.com/42162-nasa-humans-to-venus.html)",
+      "confidence": "high",
+      "note": "Also the hook's '50 kilometres above the ground'. Temperature there is roughly 0–75 °C depending on altitude, so the script mentions only pressure."
+    },
+    {
+      "id": "c3",
+      "claim": "Venus's clouds are made of sulfuric acid droplets, not water.",
+      "beat": "tour",
+      "source": "NASA, 'Venus' lithograph, https://www.nasa.gov/sites/default/files/files/Venus_Lithograph.pdf ; ESA, 'Chasing clouds on Venus', https://www.esa.int/Science_Exploration/Space_Science/Chasing_clouds_on_Venus",
+      "confidence": "high"
+    },
+    {
+      "id": "c4",
+      "claim": "Venus's cloud-level atmosphere circles the planet in about four Earth days (super-rotation, winds of roughly 100 m/s).",
+      "beat": "tour",
+      "source": "ESA, 'Chasing clouds on Venus' (Venus Express): 'one circuit every four Earth days', https://www.esa.int/Science_Exploration/Space_Science/Chasing_clouds_on_Venus",
+      "confidence": "high",
+      "note": "Measured at the cloud tops (~70 km); the script says 'about four days'."
+    },
+    {
+      "id": "c5",
+      "claim": "Venus rotates backwards (retrograde), so seen from Venus the Sun rises in the west.",
+      "beat": "tour",
+      "source": "NASA, 'Venus' lithograph, https://www.nasa.gov/sites/default/files/files/Venus_Lithograph.pdf ; Canadian Space Agency, Venus, https://www.asc-csa.gc.ca/eng/astronomy/solar-system/venus.asp",
+      "confidence": "high"
+    },
+    {
+      "id": "c6",
+      "claim": "The air pressure at Venus's surface is about 90 times Earth's.",
+      "beat": "catch",
+      "source": "NASA, 'Venus' lithograph, https://www.nasa.gov/sites/default/files/files/Venus_Lithograph.pdf ('about 90 times that of Earth')",
+      "confidence": "high"
+    },
+    {
+      "id": "c7",
+      "claim": "In Venus's carbon-dioxide atmosphere, ordinary breathable air (oxygen–nitrogen) is a lifting gas, so a balloon filled with it floats.",
+      "beat": "catch",
+      "source": "G. A. Landis, 'Colonization of Venus', NASA Glenn, AIP Conf. Proc. 654 (2003), https://ntrs.nasa.gov/api/citations/20030022668/downloads/20030022668.pdf ('breathable air is a lifting gas' on Venus)",
+      "confidence": "high",
+      "note": "The balloon platform itself is fictional (Budget Space Tours); the physics is from the NASA paper."
+    },
+    {
+      "id": "c8",
+      "claim": "A habitat or platform in Venus's cloud layer near 50 km is a proposed concept, not a real place people have visited.",
+      "beat": "hook",
+      "source": "G. A. Landis, 'Colonization of Venus', NASA Glenn, AIP Conf. Proc. 654 (2003), https://ntrs.nasa.gov/api/citations/20030022668/downloads/20030022668.pdf ; NASA Langley HAVOC (concept study)",
+      "confidence": "high",
+      "note": "Covered by the channel's premise (fictional budget tour); no claim that people have been there."
+    }
+  ],
+  "pronunciations": {},
+  "publish": {
+    "title": "I floated inside Venus's clouds",
+    "description": "Fifty kilometres up, the pressure feels like home, the clouds are sulfuric acid and the sun rises in the west. Tilly reviews the one nice layer of Venus.",
+    "hashtags": [
+      "#venus",
+      "#space",
+      "#astronomy",
+      "#planets",
+      "#shorts"
+    ]
+  }
+}

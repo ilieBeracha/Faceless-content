@@ -3,15 +3,19 @@
   "channel": "time-tourist",
   "series": "rated-space",
   "idea": "venus-by-balloon-the-one-nice-layer",
-  "title": "Venus by balloon: the one nice layer",
+  "title": "Floating in Venus's clouds, reviewed",
   "created": "2026-10-16T13:49:40Z",
-  "updated": "2026-10-16T13:49:40Z",
+  "updated": "2026-10-16T13:50:07Z",
   "status": "in-progress",
   "steps": {
     "idea": {
       "status": "done",
       "at": "2026-10-16T13:49:40Z",
       "note": "Venus by balloon: the one nice layer"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-10-16T13:50:07Z"
     }
   }
 }
