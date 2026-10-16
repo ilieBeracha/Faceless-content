@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "shots": {
+    "00-hook-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/00-hook-1.jpg",
+        "sha": "82c708e1b5b5e9e1561e5df72e246ae38b2edefbc3f56b2abdad9f5993c2d434",
+        "key": "b3b9b1748d062f7c088ecde825050827c45d55d577e02a31defc37f1f7a33746",
+        "at": "2026-10-16T09:02:43Z"
+      }
+    },
+    "01-arrival-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/01-arrival-1.jpg",
+        "sha": "993c6c44b8070200bc1682f59e430e0a6d4ce92ff97f9c52b313414b4ffada82",
+        "key": "d4d6c024e39146fa157c7141dd93710838bb7430d712418cdb41b34424a44edf",
+        "at": "2026-10-16T09:02:49Z"
+      }
+    },
+    "01-arrival-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/01-arrival-2.jpg",
+        "sha": "5b528697ebb1f1b649c4115d3222b2af16ed7545ae95e98304e4d8adf7b79941",
+        "key": "95123f8f4a7f7575e818e7450de0b78b262b9a7e86749f7915cca7f6ada92905",
+        "at": "2026-10-16T09:02:56Z"
+      }
+    },
+    "02-tour-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/02-tour-1.jpg",
+        "sha": "e508a5ecf0994718f5bd583fcf12a7b436299c36a62e897c7629630aeb19f6df",
+        "key": "178c23dc00588f550232cb643a2b478b4cc5bf83a9d2c77f8daf6133e460f827",
+        "at": "2026-10-16T09:03:02Z"
+      }
+    },
+    "02-tour-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/02-tour-2.jpg",
+        "sha": "7104ad9bd432751874ed4a0e00adf891623f3ee7c9ab9d218df3d7ff36f27d19",
+        "key": "2bf6bcc0725f573a1a7a3ee4a4720b69d62a7574005e03fdb80ce3ea9d79be91",
+        "at": "2026-10-16T09:03:08Z"
+      }
+    },
+    "02-tour-3": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/02-tour-3.jpg",
+        "sha": "c0f79f2149a021b03659cd435d16a63b78384cbbca4661ad9681c5800b7fffb2",
+        "key": "8ff968fabdcf286fa399ae585feb38607ba200a0ef1dc5d2867491d621b6198b",
+        "at": "2026-10-16T09:03:14Z"
+      }
+    },
+    "03-catch-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/03-catch-1.jpg",
+        "sha": "ceac1f1b31212600552ca4b38c72ae46f16e0feea058ea7bcdce42bb5dd4841b",
+        "key": "511ce7a0952c67936e3da8ad47770c12e39e68fd4c2a2668bd14064d658e56aa",
+        "at": "2026-10-16T09:03:21Z"
+      }
+    },
+    "03-catch-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/03-catch-2.jpg",
+        "sha": "715059d784067e84ca547d5261db615851adcf53f6689fd847b4d89b22f26acd",
+        "key": "5bd01f92081601c6602eee5e3d1a5e68393c9498a24ac157846a47070a2c923d",
+        "at": "2026-10-16T09:03:27Z"
+      }
+    },
+    "03-catch-3": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/03-catch-3.jpg",
+        "sha": "8972e67fa2b320c2d9bb388fde28a06aa401b0bbcdc167608a15be95fa92b70a",
+        "key": "495252ba4dc79448111c62139523eee402f92f63e73ad57e530cb9375f085501",
+        "at": "2026-10-16T09:03:35Z"
+      }
+    },
+    "04-rating-1": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/04-rating-1.jpg",
+        "sha": "c44d0a1dae7b9a54eaa11b22a428a101c3aa2efa613a1eb39c2a3d21fcdf10d7",
+        "key": "70837a6cc2cec10635a29725f12d229fdf3ea4f8843394e751de2b64ca9623f2",
+        "at": "2026-10-16T09:03:44Z"
+      }
+    },
+    "04-rating-2": {
+      "still_variant": 0,
+      "clip_variant": 0,
+      "still": {
+        "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/04-rating-2.jpg",
+        "sha": "6b2013b0a1ee6eb49bf01141859ce0bdea0f2af8c709e3c34c46ee71767952cc",
+        "key": "cc250a2fe09d571ad106dad55361a435a41b8a87f7398fa8cab80fb964a23a66",
+        "at": "2026-10-16T09:03:51Z"
+      }
+    }
+  },
+  "pending": {
+    "hash": "b41cf4417ff2921f7bc1e96ea1353eb18904b10a6cb49af1681cc418a6303b55",
+    "estimate_usd": 6.62
+  }
+}
