@@ -29,9 +29,9 @@
       "clip_variant": 1,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/stills/01-arrival-1.jpg",
-        "sha": "315b2bf89e8e01abfab5ebdddbd3d0be0e07faf3134dd4dda021951c2a4650a7",
-        "key": "c2ee96fea0803bf8b4adb11c6826c13435e6e840d5b386e02938443b45dd7c32",
-        "at": "2026-10-16T16:06:06Z"
+        "sha": "148b01da96ba934912127a4afcbeec6709979415fd891cee6286d21df1cf7399",
+        "key": "45dd94c212241f32fdf6c9ba210ccf6231657aa21626b0a31730d53da1bd191e",
+        "at": "2026-10-16T16:38:58Z"
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/footage/clips/01-arrival-1.mp4",
@@ -236,5 +236,9 @@
     "hash": "02b77cd6ff9bb9fc0806707779cf03198c0ea106a6bc7cbe358a78b32e63c6ec",
     "by": "Ilie (delegated to Claude: 'decide by yourself')",
     "at": "2026-10-16T16:07:23Z"
+  },
+  "pending": {
+    "hash": "82ea818a661250961cd1bd1434fda114d9329f5dac77712257c54d7378bfdcb3",
+    "estimate_usd": 6.22
   }
 }
