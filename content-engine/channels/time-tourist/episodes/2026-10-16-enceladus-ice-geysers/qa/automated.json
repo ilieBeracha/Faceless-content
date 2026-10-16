@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-10-16T16:38:20Z",
-  "render_hash": "7e4109c9438a326f9fd9aa2fdd8df914d7daf2828a2b955364d999a35c5fff36",
+  "checked_at": "2026-10-16T16:51:43Z",
+  "render_hash": "8ec07d98346f9e6d1eca5ef5b965fec3647bb94a5e0589f7b8065484fcab2c43",
   "checks": [
     {
       "id": "format",
@@ -12,7 +12,7 @@
       "id": "length",
       "label": "Length",
       "pass": true,
-      "detail": "52.37s (series allows 38–62s)"
+      "detail": "52.59s (series allows 38–62s)"
     },
     {
       "id": "hook-speech",
@@ -36,7 +36,7 @@
       "id": "safe-areas",
       "label": "Text inside safe areas",
       "pass": true,
-      "detail": "2 text elements checked on every frame (1725 measurements)"
+      "detail": "2 text elements checked on every frame (1731 measurements)"
     },
     {
       "id": "cut-off",
@@ -48,7 +48,7 @@
       "id": "captions-sync",
       "label": "Captions in sync",
       "pass": true,
-      "detail": "112 words; text matches script: yes; highlight off on 0/1563 frames; words over silent audio: 0"
+      "detail": "112 words; text matches script: yes; highlight off on 0/1569 frames; words over silent audio: 0"
     },
     {
       "id": "loudness",
@@ -78,7 +78,7 @@
       "id": "footage-budget",
       "label": "Within budget",
       "pass": true,
-      "detail": "$7.85 spent of $25.00 (35 paid calls logged in footage/ledger.json)"
+      "detail": "$8.49 spent of $25.00 (38 paid calls logged in footage/ledger.json)"
     },
     {
       "id": "factcheck",

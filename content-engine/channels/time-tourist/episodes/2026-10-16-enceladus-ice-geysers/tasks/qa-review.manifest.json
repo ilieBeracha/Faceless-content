@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "time-tourist",
   "series": "rated-space",
-  "created": "2026-10-16T16:38:20Z",
+  "created": "2026-10-16T16:51:15Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -39,13 +39,13 @@
     {
       "path": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/script.json",
       "role": "channel",
-      "sha256": "1472da80a8ab7cdf74212567d78b6e3da854f7b59c60104a7cf766899fe3ce14",
-      "bytes": 11586
+      "sha256": "61b5e16d5143eef231c4c4fef0bb1429fd57d5fae724e8760595ee37b2215162",
+      "bytes": 11706
     },
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "fa2be433aa4788c4d38226dc7c0875c2e140258f3d4ae272dcd48cd1e6d66b81",
+      "sha256": "b26786d07f0280856f885939a1ec0a853ae8aecebebf870f614ec054aa598e74",
       "bytes": 1087
     }
   ],

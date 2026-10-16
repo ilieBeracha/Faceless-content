@@ -36,3 +36,10 @@ QA (with the agent's notes); script writing reads this file. Never copy learning
 - direction: documentary keeps her acting calm; describe actions as small and steady and say 'not walking toward the camera'.
 - Bubble-helmet close-ups that move toward the lens get a glare band across the eyes that doubles the face; use a steady medium shot with 'soft even light, no reflections across the visor'.
 - The cinematic grade/grain makes renders slow on this machine (36–44 min); plan for it.
+
+## 2026-10-16 · 2026-10-16-enceladus-ice-geysers
+
+- Episode: "Standing on Enceladus, reviewed" (rated-space) — 52.6s, 112 words, -14.9 LUFS. QA passed.
+- style: illustrated (flat 2D vector) with the photo references keeps Tilly recognisable as a drawn character and looks like a modern animated space poster.
+- Veo invents a presenter (or hands) in voice-over shots; say 'no people, no faces and no presenter anywhere in the picture' in the place and 'the narration is a voice-over and nobody is ever shown' in the action.
+- Without the film grade, renders take ~12 minutes instead of 36-44.

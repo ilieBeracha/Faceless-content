@@ -5,8 +5,8 @@
   "idea": "enceladus-ice-geysers",
   "title": "Standing on Enceladus, reviewed",
   "created": "2026-10-16T16:05:41Z",
-  "updated": "2026-10-16T16:51:10Z",
-  "status": "in-progress",
+  "updated": "2026-10-16T16:51:43Z",
+  "status": "done",
   "steps": {
     "idea": {
       "status": "done",
@@ -36,6 +36,11 @@
       "status": "done",
       "at": "2026-10-16T16:51:10Z",
       "note": "out/time-tourist/2026-10-16-enceladus-ice-geysers.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-16T16:51:43Z",
+      "note": "all checks passed"
     }
   }
 }
