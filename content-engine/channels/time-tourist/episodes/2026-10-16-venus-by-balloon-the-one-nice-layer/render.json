@@ -1,15 +1,15 @@
 {
   "output": "out/time-tourist/2026-10-16-venus-by-balloon-the-one-nice-layer.mp4",
-  "rendered_at": "2026-10-16T14:49:38Z",
-  "seconds_to_render": 3029,
+  "rendered_at": "2026-10-16T15:51:30Z",
+  "seconds_to_render": 2020,
   "width": 1080,
   "height": 1920,
   "fps": 30,
-  "frames": 1546,
+  "frames": 1549,
   "render_skills": [
     "render-ai-video"
   ],
   "captions_skill": "captions",
   "gl": "swangle",
-  "inputs_hash": "f2a1bac0034072413fbf3863da61de23e59c2b75a7ea175cdb77f559b06a2509"
+  "inputs_hash": "c210300e665911efa407ab890f2ae6627b9207996b8b02da41c39cf52a39ec59"
 }
