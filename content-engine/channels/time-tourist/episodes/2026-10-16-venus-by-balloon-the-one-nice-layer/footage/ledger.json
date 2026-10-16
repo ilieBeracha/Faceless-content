@@ -305,6 +305,14 @@
       "usd": 0.002,
       "ok": true,
       "note": "line ok"
+    },
+    {
+      "at": "2026-10-16T15:15:57Z",
+      "shot": "04-rating-1",
+      "kind": "image",
+      "model": "gemini-2.5-flash-image",
+      "usd": 0.039,
+      "ok": true
     }
   ]
 }
