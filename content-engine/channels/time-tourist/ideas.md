@@ -96,8 +96,9 @@ The engine marks an idea "used" when an episode is made from it.
 ## venus-by-balloon-the-one-nice-layer
 - title: Venus by balloon: the one nice layer
 - series: rated-space
-- status: new
+- status: used
 - added: 2026-10-16
+- used_in: episodes/2026-10-16-venus-by-balloon-the-one-nice-layer
 
 ## standing-on-olympus-mons-mars
 - title: Standing on Olympus Mons, Mars
