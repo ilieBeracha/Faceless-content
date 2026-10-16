@@ -29,9 +29,9 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/01-arrival-1.jpg",
-        "sha": "cb61ab7f6344d1bd613f10253b14a13348e9a730315a3d6809f281f8a1ca06cf",
-        "key": "e5fa53b98f364c79fcee73f0f0738915a22337d9a328439aa46f670e13d26a67",
-        "at": "2026-10-16T11:08:01Z"
+        "sha": "cb1abe66d9f6abf3584c7d1871effcc0f41e95e1d65fd61c48107eb1d55f9b6e",
+        "key": "48392f5cd452106b1de271b931e250d892d7a64fe94dfef9d5928149825453fc",
+        "at": "2026-10-16T11:08:23Z"
       },
       "clip": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/clips/01-arrival-1.mp4",
@@ -261,7 +261,7 @@
     "at": "2026-10-16T09:06:55Z"
   },
   "pending": {
-    "hash": "79f495cca6548b15455aa06954152a854eceb7cb95d30eb2c1360404e5e4d0bb",
+    "hash": "00ca269caabd7fd33b01cd5ecc83449392950e71b4efb41159aa187e41f9f071",
     "estimate_usd": 6.62
   }
 }
