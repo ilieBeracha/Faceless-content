@@ -16,9 +16,9 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/01-arrival-1.jpg",
-        "sha": "c1406e258433ffcc78c83e666dedd0a3c2330735614a65fbe3fa95232a74b181",
-        "key": "272fb9670fbc2424eba52f63d87cd95ef64da86e28d5236f563d387a4ff273e9",
-        "at": "2026-10-16T09:05:00Z"
+        "sha": "3bf58ad2a8dbd78bf3767ea3ab343257675ac3e1cc7e5a8cac2882ed1c3defb6",
+        "key": "d70d028b67d40f732dfd1f48068253528b9c385215ee35b42502dfdc6f9ba1cd",
+        "at": "2026-10-16T09:06:26Z"
       }
     },
     "01-arrival-2": {
@@ -76,9 +76,9 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/03-catch-2.jpg",
-        "sha": "adcf9af4719070d59ed788485c8c42003182cfbc530cef802038420843d9aa83",
-        "key": "ec831218e36c852853c96be629916db6e65cf7048995dd597113529e2f8ab3c0",
-        "at": "2026-10-16T09:05:38Z"
+        "sha": "856bf85a913f7832c254b45e6f70d00410684a513bfe33c98626849ede26a9b5",
+        "key": "f5afeabffba3355f2d4e7c0e83c6b77baf6f4c25697548c268c95b82e4517639",
+        "at": "2026-10-16T09:06:32Z"
       }
     },
     "03-catch-3": {
@@ -106,14 +106,14 @@
       "clip_variant": 0,
       "still": {
         "file": "channels/time-tourist/episodes/2026-10-16-saturn-s-hexagon-storm-up-close/footage/stills/04-rating-2.jpg",
-        "sha": "b148037159b6687e66056f19463cc5465282ce84d764ab037371711ca3ec60c5",
-        "key": "9145a82f179ffe50b586ad4f6db740a76624acc18e6ad421c913e8f528fcef93",
-        "at": "2026-10-16T09:06:01Z"
+        "sha": "8162706720f99a989064ef5eb2323497677eb63b82a46de9f250e3eb24b9f769",
+        "key": "c590059902d54e9b2fd27a5ba3a86fcf60138f2ecc1ff7f122ee06a2b8f6db1f",
+        "at": "2026-10-16T09:06:40Z"
       }
     }
   },
   "pending": {
-    "hash": "a1ae1e745751aa6808e26495ea734e4e0f7f4b4a26ed81e6d31e95ad5cb1c862",
+    "hash": "5a8e9a0b65c80391dc8001ebf2a6169667ae5db67bad46bbe615ce6d3d01de97",
     "estimate_usd": 6.62
   }
 }
