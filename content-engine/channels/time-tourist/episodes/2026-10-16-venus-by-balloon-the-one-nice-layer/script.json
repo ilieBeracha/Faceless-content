@@ -130,9 +130,9 @@
         "skill": "render-ai-video",
         "shots": [
           {
-            "camera": "closeup",
-            "place": "on the open metal deck of a small research balloon platform inside Venus's clouds, holding the safety rail, endless pale yellow-orange haze in every direction",
-            "action": "relaxed at the rail, a small smile, speaking directly to the lens",
+            "camera": "on-location",
+            "place": "on the open metal deck of the small research balloon platform inside Venus's clouds, standing at the safety rail, soft even light, no glare or reflections across her helmet visor, pale yellow haze all around",
+            "action": "standing still at the rail facing the camera, speaking calmly to the lens with a small smile, not walking toward the camera",
             "line": "Okay, review time. View, five out of five. Acid clouds, one out of five.",
             "sound": "steady wind and the soft creak of cables",
             "expression": "excited"
