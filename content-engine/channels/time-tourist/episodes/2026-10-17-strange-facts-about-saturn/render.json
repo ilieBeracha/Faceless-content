@@ -1,0 +1,15 @@
+{
+  "output": "out/time-tourist/2026-10-17-strange-facts-about-saturn.mp4",
+  "rendered_at": "2026-10-17T16:48:02Z",
+  "seconds_to_render": 352,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 921,
+  "render_skills": [
+    "render-planet-explainer"
+  ],
+  "captions_skill": "captions",
+  "gl": "swangle",
+  "inputs_hash": "cee5f45d4daef07e931408b87e75c735bac8f0a4ceaa8927b479cf36a2cdd444"
+}

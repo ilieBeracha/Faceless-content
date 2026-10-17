@@ -5,7 +5,7 @@
   "idea": "strange-facts-about-saturn",
   "title": "Strange facts about Saturn",
   "created": "2026-10-17T16:38:05Z",
-  "updated": "2026-10-17T16:42:04Z",
+  "updated": "2026-10-17T16:48:02Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -26,6 +26,11 @@
       "status": "done",
       "at": "2026-10-17T16:42:04Z",
       "note": "30.70s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-10-17T16:48:02Z",
+      "note": "out/time-tourist/2026-10-17-strange-facts-about-saturn.mp4"
     }
   }
 }
