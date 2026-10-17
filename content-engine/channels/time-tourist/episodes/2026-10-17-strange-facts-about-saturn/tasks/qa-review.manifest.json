@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-10-17-strange-facts-about-saturn",
+  "purpose": "qa-review",
+  "channel": "time-tourist",
+  "series": "strange-space",
+  "created": "2026-10-17T16:48:07Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "a5b872bc9825bd6e7e45206c3a3edf4d60e90f29dceffc35fe6605fb64393240",
+      "bytes": 2291
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "2f8df1f178a8b5ecd605167ec9fc1ed07e79e07a0169b29560718730c7700202",
+      "bytes": 3796
+    },
+    {
+      "path": "channels/time-tourist/series/strange-space.md",
+      "role": "channel",
+      "sha256": "eeba87f714923ac52ca6abde0bf376466f7680dd0c85a6c139a6f0ef677ef122",
+      "bytes": 3313
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly.md",
+      "role": "channel",
+      "sha256": "5dff77892739552d507a670a54a9d3f9c8dba8e3a9b651d6aea55bf7b6382efb",
+      "bytes": 2792
+    },
+    {
+      "path": "channels/time-tourist/episodes/2026-10-17-strange-facts-about-saturn/script.json",
+      "role": "channel",
+      "sha256": "91dbc67923ee18b73248af8acab5adc37ad66be669ae016e581987f474a8bb8a",
+      "bytes": 8933
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "5a711105471f6313cddab734d249edecb85bcf344cd45a57d7860ac83d6cca96",
+      "bytes": 855
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-17-strange-facts-about-saturn/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series strange-space"
+}

@@ -1,0 +1,14 @@
+{
+  "render_hash": "cee5f45d4daef07e931408b87e75c735bac8f0a4ceaa8927b479cf36a2cdd444",
+  "tone": { "pass": true, "notes": "Short, punchy second-person facts in Tilly's voice ('Saturn is wild.'), one idea per line, ends on a curious note. Fits 13+." },
+  "banned_topics": { "pass": true, "notes": "Planetary science only; the float fact is framed as a thought experiment ('if you found a tub big enough')." },
+  "visuals": { "pass": true, "notes": "Code-drawn explainer in the reference style: one hero Saturn on a dark starfield; each fact gets its own view - Earth to scale ('≈ 9 Earths wide'), a cutaway with four labelled layers on a warm background, Saturn bobbing in a bathtub, a fast spin with a clock ('1 day ≈ 10 h 33 min'), the polar hexagon drawn on, the rings drawing themselves on with '~10 m' thickness, and a Cassini flyby ('Cassini · 2004–2017'). Every label matches a claim. Captions and labels readable; no AI footage, so no glitches. Minor: the hexagon is small at phone size; the probe is small." },
+  "character": { "pass": true, "notes": "No character on screen by design (narrator hidden); Tilly's local Kokoro voice narrates clearly." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "The planet-explainer style (one hero planet, a new view per fact, labels as visuals) makes a 30 s video for free in ~6 minutes of rendering, with exact numbers and no AI artefacts.",
+    "Keep cutaway labels short (≤ 22 characters); they sit in a column to the right of the planet.",
+    "Change the view on the word that starts each new idea (at_word); 95 words ran 30.7 s at Tilly's Kokoro speed."
+  ]
+}

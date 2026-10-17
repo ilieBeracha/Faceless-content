@@ -43,3 +43,10 @@ QA (with the agent's notes); script writing reads this file. Never copy learning
 - style: illustrated (flat 2D vector) with the photo references keeps Tilly recognisable as a drawn character and looks like a modern animated space poster.
 - Veo invents a presenter (or hands) in voice-over shots; say 'no people, no faces and no presenter anywhere in the picture' in the place and 'the narration is a voice-over and nobody is ever shown' in the action.
 - Without the film grade, renders take ~12 minutes instead of 36-44.
+
+## 2026-10-17 · 2026-10-17-strange-facts-about-saturn
+
+- Episode: "Strange facts about Saturn" (strange-space) — 30.7s, 95 words, -14.5 LUFS. QA passed.
+- The planet-explainer style (one hero planet, a new view per fact, labels as visuals) makes a 30 s video for free in ~6 minutes of rendering, with exact numbers and no AI artefacts.
+- Keep cutaway labels short (≤ 22 characters); they sit in a column to the right of the planet.
+- Change the view on the word that starts each new idea (at_word); 95 words ran 30.7 s at Tilly's Kokoro speed.
