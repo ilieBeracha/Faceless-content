@@ -8,6 +8,7 @@ import * as explainer from "./render-3d-explainer/schema.ts";
 import * as motion from "./render-motion-graphics/schema.ts";
 import * as ai from "./render-ai-video/schema.ts";
 import * as story from "./render-storybook/schema.ts";
+import * as planet from "./render-planet-explainer/schema.ts";
 import type { EngineConfig } from "../core/workspace.ts";
 
 export interface RenderSkillSpec {
@@ -75,6 +76,18 @@ export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
     // The footage has no lettering (the prompts forbid it); captions and the headline are checked elsewhere.
     text: () => [],
     expressionsUsed: (visual) => ((visual as ai.AiBeatVisual).shots ?? []).map((s) => s.expression).filter((e): e is string => Boolean(e)),
+  },
+  "render-planet-explainer": {
+    name: "render-planet-explainer",
+    layer: "scene",
+    sceneSchema: planet.sceneSchema,
+    sceneRequired: true,
+    beatVisualSchema: planet.beatVisualSchema,
+    check: (_scene, beats) => beats.flatMap((b) => planet.checkBeat(b.visual as planet.PeBeatVisual, b.id, b.voiceover ?? "")),
+    text: (scene, beats) => [
+      (scene as planet.PeScene).planet.name,
+      ...beats.flatMap((b) => ((b.visual as planet.PeBeatVisual).views ?? []).flatMap((v) => planet.viewText(v))),
+    ],
   },
   "render-talking-character": {
     name: "render-talking-character",

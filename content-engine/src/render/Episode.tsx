@@ -3,6 +3,7 @@ import { AbsoluteFill, Html5Audio, Sequence, staticFile, useCurrentFrame, useVid
 import { Captions } from "../skills/captions/Captions.tsx";
 import { AiVideoScene } from "../skills/render-ai-video/AiVideoScene.tsx";
 import { MotionGraphics } from "../skills/render-motion-graphics/MotionGraphics.tsx";
+import { PlanetExplainer } from "../skills/render-planet-explainer/PlanetExplainer.tsx";
 import { CharacterLayer } from "../skills/render-talking-character/CharacterLayer.tsx";
 import { Scene3D } from "../skills/render-3d-explainer/Scene3D.tsx";
 import { StorybookScene } from "../skills/render-storybook/Storybook.tsx";
@@ -20,6 +21,7 @@ export const SCENE_SKILLS: Record<string, SceneComponent> = {
   "render-3d-explainer": Scene3D,
   "render-ai-video": AiVideoScene,
   "render-motion-graphics": MotionGraphics,
+  "render-planet-explainer": PlanetExplainer,
   "render-storybook": StorybookScene,
 };
 
