@@ -152,5 +152,6 @@ The engine marks an idea "used" when an episode is made from it.
 ## strange-facts-about-saturn
 - title: Strange facts about Saturn
 - series: strange-space
-- status: new
+- status: used
 - added: 2026-10-17
+- used_in: episodes/2026-10-17-strange-facts-about-saturn
