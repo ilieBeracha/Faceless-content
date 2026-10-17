@@ -148,3 +148,9 @@ The engine marks an idea "used" when an episode is made from it.
 - series: rated-space
 - status: new
 - added: 2026-10-16
+
+## strange-facts-about-saturn
+- title: Strange facts about Saturn
+- series: strange-space
+- status: new
+- added: 2026-10-17
