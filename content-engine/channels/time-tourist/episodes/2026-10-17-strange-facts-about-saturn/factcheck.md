@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-17-strange-facts-about-saturn
 channel: time-tourist
-status: pending
+status: approved
 script_hash: 0cff641e5cfb40b30c0bca9f32706fcea02393b20a6d83b44b58e412e60a2dda
 generated_at: 2026-10-17T16:38:29Z
-approved_by: null
-approved_at: null
+approved_by: "Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+approved_at: 2026-10-17T16:38:37Z
 notes: null
 ---
 
