@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-17-strange-facts-about-saturn",
+  "purpose": "script",
+  "channel": "time-tourist",
+  "series": "strange-space",
+  "created": "2026-10-17T16:38:05Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "2f8df1f178a8b5ecd605167ec9fc1ed07e79e07a0169b29560718730c7700202",
+      "bytes": 3796
+    },
+    {
+      "path": "channels/time-tourist/series/strange-space.md",
+      "role": "channel",
+      "sha256": "eeba87f714923ac52ca6abde0bf376466f7680dd0c85a6c139a6f0ef677ef122",
+      "bytes": 3313
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly.md",
+      "role": "channel",
+      "sha256": "5dff77892739552d507a670a54a9d3f9c8dba8e3a9b651d6aea55bf7b6382efb",
+      "bytes": 2792
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly/model.json",
+      "role": "channel",
+      "sha256": "c9e5a538842a24881461b23a29ba0f6beaf5ce58887a25240916c8768e7bde0c",
+      "bytes": 933
+    },
+    {
+      "path": "channels/time-tourist/learnings.md",
+      "role": "channel",
+      "sha256": "f84390e30ddb6f9b572f60e73c868c36423a0490e70a0438c7e60ba1f6fa7e75",
+      "bytes": 3860
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-planet-explainer/SKILL.md",
+      "role": "skill",
+      "sha256": "2032b94c3bed224987a10b911676f0aaef7d3705c45d3e43134d7fd0ef15422d",
+      "bytes": 3711
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "0bb838c0c1468fb6aacaefa7422a7f1fabcf45abfa0ac95e51b9300690b71b48",
+      "bytes": 86
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-17-strange-facts-about-saturn/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series strange-space"
+}
