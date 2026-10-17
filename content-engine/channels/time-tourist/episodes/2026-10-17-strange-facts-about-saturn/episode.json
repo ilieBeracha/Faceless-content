@@ -5,7 +5,7 @@
   "idea": "strange-facts-about-saturn",
   "title": "Strange facts about Saturn",
   "created": "2026-10-17T16:38:05Z",
-  "updated": "2026-10-17T16:38:29Z",
+  "updated": "2026-10-17T16:42:04Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,14 @@
       "at": "2026-10-17T16:38:29Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-10-17T16:38:29Z"
+      "status": "done",
+      "at": "2026-10-17T16:42:04Z",
+      "note": "approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-17T16:42:04Z",
+      "note": "30.70s"
     }
   }
 }

@@ -1,0 +1,735 @@
+{
+  "version": 2,
+  "hash": "24abbd1cecb0410dda8c38894afe0e936ecc0e79b31d202ab0df44b5ab8ce315",
+  "fps": 30,
+  "frames": 921,
+  "duration": 30.7,
+  "speech_start": 0.215,
+  "speech_end": 29.689,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Saturn",
+      "start": 0.215,
+      "end": 0.615
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "is",
+      "start": 0.665,
+      "end": 0.765
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "wild.",
+      "start": 0.84,
+      "end": 1.49
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "Nine",
+      "start": 1.665,
+      "end": 1.915
+    },
+    {
+      "i": 4,
+      "beat": "hook",
+      "text": "Earths",
+      "start": 1.965,
+      "end": 2.215
+    },
+    {
+      "i": 5,
+      "beat": "hook",
+      "text": "could",
+      "start": 2.265,
+      "end": 2.34
+    },
+    {
+      "i": 6,
+      "beat": "hook",
+      "text": "line",
+      "start": 2.39,
+      "end": 2.565
+    },
+    {
+      "i": 7,
+      "beat": "hook",
+      "text": "up",
+      "start": 2.59,
+      "end": 2.69
+    },
+    {
+      "i": 8,
+      "beat": "hook",
+      "text": "across",
+      "start": 2.715,
+      "end": 3.015
+    },
+    {
+      "i": 9,
+      "beat": "hook",
+      "text": "it.",
+      "start": 3.09,
+      "end": 3.257
+    },
+    {
+      "i": 10,
+      "beat": "fact-1",
+      "text": "Split",
+      "start": 3.759,
+      "end": 3.984
+    },
+    {
+      "i": 11,
+      "beat": "fact-1",
+      "text": "it",
+      "start": 4.009,
+      "end": 4.059
+    },
+    {
+      "i": 12,
+      "beat": "fact-1",
+      "text": "open",
+      "start": 4.084,
+      "end": 4.484
+    },
+    {
+      "i": 13,
+      "beat": "fact-1",
+      "text": "and",
+      "start": 4.534,
+      "end": 4.609
+    },
+    {
+      "i": 14,
+      "beat": "fact-1",
+      "text": "there's",
+      "start": 4.634,
+      "end": 4.784
+    },
+    {
+      "i": 15,
+      "beat": "fact-1",
+      "text": "no",
+      "start": 4.834,
+      "end": 4.959
+    },
+    {
+      "i": 16,
+      "beat": "fact-1",
+      "text": "ground",
+      "start": 5.009,
+      "end": 5.309
+    },
+    {
+      "i": 17,
+      "beat": "fact-1",
+      "text": "at",
+      "start": 5.334,
+      "end": 5.384
+    },
+    {
+      "i": 18,
+      "beat": "fact-1",
+      "text": "all.",
+      "start": 5.434,
+      "end": 5.984
+    },
+    {
+      "i": 19,
+      "beat": "fact-1",
+      "text": "Just",
+      "start": 6.159,
+      "end": 6.434
+    },
+    {
+      "i": 20,
+      "beat": "fact-1",
+      "text": "gas",
+      "start": 6.509,
+      "end": 6.834
+    },
+    {
+      "i": 21,
+      "beat": "fact-1",
+      "text": "and",
+      "start": 6.884,
+      "end": 6.959
+    },
+    {
+      "i": 22,
+      "beat": "fact-1",
+      "text": "liquid,",
+      "start": 7.009,
+      "end": 7.484
+    },
+    {
+      "i": 23,
+      "beat": "fact-1",
+      "text": "crushed",
+      "start": 7.634,
+      "end": 7.884
+    },
+    {
+      "i": 24,
+      "beat": "fact-1",
+      "text": "around",
+      "start": 7.909,
+      "end": 8.109
+    },
+    {
+      "i": 25,
+      "beat": "fact-1",
+      "text": "a",
+      "start": 8.134,
+      "end": 8.159
+    },
+    {
+      "i": 26,
+      "beat": "fact-1",
+      "text": "dense",
+      "start": 8.209,
+      "end": 8.459
+    },
+    {
+      "i": 27,
+      "beat": "fact-1",
+      "text": "core.",
+      "start": 8.509,
+      "end": 8.853
+    },
+    {
+      "i": 28,
+      "beat": "fact-2",
+      "text": "It's",
+      "start": 9.307,
+      "end": 9.432
+    },
+    {
+      "i": 29,
+      "beat": "fact-2",
+      "text": "so",
+      "start": 9.507,
+      "end": 9.682
+    },
+    {
+      "i": 30,
+      "beat": "fact-2",
+      "text": "light",
+      "start": 9.732,
+      "end": 9.932
+    },
+    {
+      "i": 31,
+      "beat": "fact-2",
+      "text": "for",
+      "start": 9.982,
+      "end": 10.082
+    },
+    {
+      "i": 32,
+      "beat": "fact-2",
+      "text": "its",
+      "start": 10.107,
+      "end": 10.182
+    },
+    {
+      "i": 33,
+      "beat": "fact-2",
+      "text": "size,",
+      "start": 10.232,
+      "end": 10.832
+    },
+    {
+      "i": 34,
+      "beat": "fact-2",
+      "text": "it",
+      "start": 10.932,
+      "end": 10.982
+    },
+    {
+      "i": 35,
+      "beat": "fact-2",
+      "text": "would",
+      "start": 11.007,
+      "end": 11.107
+    },
+    {
+      "i": 36,
+      "beat": "fact-2",
+      "text": "float",
+      "start": 11.182,
+      "end": 11.432
+    },
+    {
+      "i": 37,
+      "beat": "fact-2",
+      "text": "in",
+      "start": 11.457,
+      "end": 11.532
+    },
+    {
+      "i": 38,
+      "beat": "fact-2",
+      "text": "water,",
+      "start": 11.582,
+      "end": 12.007
+    },
+    {
+      "i": 39,
+      "beat": "fact-2",
+      "text": "if",
+      "start": 12.107,
+      "end": 12.182
+    },
+    {
+      "i": 40,
+      "beat": "fact-2",
+      "text": "you",
+      "start": 12.207,
+      "end": 12.282
+    },
+    {
+      "i": 41,
+      "beat": "fact-2",
+      "text": "found",
+      "start": 12.332,
+      "end": 12.507
+    },
+    {
+      "i": 42,
+      "beat": "fact-2",
+      "text": "a",
+      "start": 12.532,
+      "end": 12.557
+    },
+    {
+      "i": 43,
+      "beat": "fact-2",
+      "text": "tub",
+      "start": 12.607,
+      "end": 12.807
+    },
+    {
+      "i": 44,
+      "beat": "fact-2",
+      "text": "big",
+      "start": 12.857,
+      "end": 12.982
+    },
+    {
+      "i": 45,
+      "beat": "fact-2",
+      "text": "enough.",
+      "start": 13.007,
+      "end": 13.337
+    },
+    {
+      "i": 46,
+      "beat": "fact-3",
+      "text": "A",
+      "start": 13.806,
+      "end": 13.856
+    },
+    {
+      "i": 47,
+      "beat": "fact-3",
+      "text": "day",
+      "start": 13.906,
+      "end": 14.081
+    },
+    {
+      "i": 48,
+      "beat": "fact-3",
+      "text": "there",
+      "start": 14.106,
+      "end": 14.231
+    },
+    {
+      "i": 49,
+      "beat": "fact-3",
+      "text": "lasts",
+      "start": 14.281,
+      "end": 14.681
+    },
+    {
+      "i": 50,
+      "beat": "fact-3",
+      "text": "about",
+      "start": 14.706,
+      "end": 14.881
+    },
+    {
+      "i": 51,
+      "beat": "fact-3",
+      "text": "ten",
+      "start": 14.931,
+      "end": 15.081
+    },
+    {
+      "i": 52,
+      "beat": "fact-3",
+      "text": "and",
+      "start": 15.106,
+      "end": 15.181
+    },
+    {
+      "i": 53,
+      "beat": "fact-3",
+      "text": "a",
+      "start": 15.206,
+      "end": 15.231
+    },
+    {
+      "i": 54,
+      "beat": "fact-3",
+      "text": "half",
+      "start": 15.281,
+      "end": 15.456
+    },
+    {
+      "i": 55,
+      "beat": "fact-3",
+      "text": "hours.",
+      "start": 15.506,
+      "end": 15.956
+    },
+    {
+      "i": 56,
+      "beat": "fact-4",
+      "text": "Its",
+      "start": 16.425,
+      "end": 16.575
+    },
+    {
+      "i": 57,
+      "beat": "fact-4",
+      "text": "north",
+      "start": 16.625,
+      "end": 16.85
+    },
+    {
+      "i": 58,
+      "beat": "fact-4",
+      "text": "pole",
+      "start": 16.9,
+      "end": 17.325
+    },
+    {
+      "i": 59,
+      "beat": "fact-4",
+      "text": "has",
+      "start": 17.375,
+      "end": 17.5
+    },
+    {
+      "i": 60,
+      "beat": "fact-4",
+      "text": "a",
+      "start": 17.525,
+      "end": 17.55
+    },
+    {
+      "i": 61,
+      "beat": "fact-4",
+      "text": "storm",
+      "start": 17.6,
+      "end": 17.95
+    },
+    {
+      "i": 62,
+      "beat": "fact-4",
+      "text": "shaped",
+      "start": 18.025,
+      "end": 18.275
+    },
+    {
+      "i": 63,
+      "beat": "fact-4",
+      "text": "like",
+      "start": 18.3,
+      "end": 18.425
+    },
+    {
+      "i": 64,
+      "beat": "fact-4",
+      "text": "a",
+      "start": 18.45,
+      "end": 18.475
+    },
+    {
+      "i": 65,
+      "beat": "fact-4",
+      "text": "hexagon.",
+      "start": 18.525,
+      "end": 19.151
+    },
+    {
+      "i": 66,
+      "beat": "fact-5",
+      "text": "Its",
+      "start": 19.6,
+      "end": 19.75
+    },
+    {
+      "i": 67,
+      "beat": "fact-5",
+      "text": "rings",
+      "start": 19.8,
+      "end": 20.175
+    },
+    {
+      "i": 68,
+      "beat": "fact-5",
+      "text": "reach",
+      "start": 20.225,
+      "end": 20.45
+    },
+    {
+      "i": 69,
+      "beat": "fact-5",
+      "text": "hundreds",
+      "start": 20.5,
+      "end": 20.9
+    },
+    {
+      "i": 70,
+      "beat": "fact-5",
+      "text": "of",
+      "start": 20.925,
+      "end": 21
+    },
+    {
+      "i": 71,
+      "beat": "fact-5",
+      "text": "thousands",
+      "start": 21.075,
+      "end": 21.525
+    },
+    {
+      "i": 72,
+      "beat": "fact-5",
+      "text": "of",
+      "start": 21.55,
+      "end": 21.6
+    },
+    {
+      "i": 73,
+      "beat": "fact-5",
+      "text": "kilometres",
+      "start": 21.65,
+      "end": 22.1
+    },
+    {
+      "i": 74,
+      "beat": "fact-5",
+      "text": "out,",
+      "start": 22.15,
+      "end": 22.725
+    },
+    {
+      "i": 75,
+      "beat": "fact-5",
+      "text": "but",
+      "start": 22.85,
+      "end": 22.95
+    },
+    {
+      "i": 76,
+      "beat": "fact-5",
+      "text": "the",
+      "start": 22.975,
+      "end": 23.025
+    },
+    {
+      "i": 77,
+      "beat": "fact-5",
+      "text": "main",
+      "start": 23.075,
+      "end": 23.325
+    },
+    {
+      "i": 78,
+      "beat": "fact-5",
+      "text": "ones",
+      "start": 23.375,
+      "end": 23.575
+    },
+    {
+      "i": 79,
+      "beat": "fact-5",
+      "text": "are",
+      "start": 23.6,
+      "end": 23.7
+    },
+    {
+      "i": 80,
+      "beat": "fact-5",
+      "text": "often",
+      "start": 23.775,
+      "end": 24.1
+    },
+    {
+      "i": 81,
+      "beat": "fact-5",
+      "text": "about",
+      "start": 24.15,
+      "end": 24.425
+    },
+    {
+      "i": 82,
+      "beat": "fact-5",
+      "text": "ten",
+      "start": 24.5,
+      "end": 24.725
+    },
+    {
+      "i": 83,
+      "beat": "fact-5",
+      "text": "metres",
+      "start": 24.775,
+      "end": 25.05
+    },
+    {
+      "i": 84,
+      "beat": "fact-5",
+      "text": "thick.",
+      "start": 25.1,
+      "end": 25.397
+    },
+    {
+      "i": 85,
+      "beat": "kicker",
+      "text": "Cassini",
+      "start": 25.841,
+      "end": 26.266
+    },
+    {
+      "i": 86,
+      "beat": "kicker",
+      "text": "studied",
+      "start": 26.316,
+      "end": 26.591
+    },
+    {
+      "i": 87,
+      "beat": "kicker",
+      "text": "it",
+      "start": 26.641,
+      "end": 26.716
+    },
+    {
+      "i": 88,
+      "beat": "kicker",
+      "text": "for",
+      "start": 26.766,
+      "end": 26.891
+    },
+    {
+      "i": 89,
+      "beat": "kicker",
+      "text": "thirteen",
+      "start": 26.966,
+      "end": 27.316
+    },
+    {
+      "i": 90,
+      "beat": "kicker",
+      "text": "years.",
+      "start": 27.366,
+      "end": 27.916
+    },
+    {
+      "i": 91,
+      "beat": "kicker",
+      "text": "Saturn",
+      "start": 28.091,
+      "end": 28.466
+    },
+    {
+      "i": 92,
+      "beat": "kicker",
+      "text": "still",
+      "start": 28.516,
+      "end": 28.741
+    },
+    {
+      "i": 93,
+      "beat": "kicker",
+      "text": "surprises",
+      "start": 28.791,
+      "end": 29.241
+    },
+    {
+      "i": 94,
+      "beat": "kicker",
+      "text": "us.",
+      "start": 29.266,
+      "end": 29.509
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly",
+      "start": 0.1,
+      "end": 3.427
+    },
+    {
+      "id": "fact-1",
+      "speaker": "tilly",
+      "start": 3.647,
+      "end": 9.043
+    },
+    {
+      "id": "fact-2",
+      "speaker": "tilly",
+      "start": 9.263,
+      "end": 13.517
+    },
+    {
+      "id": "fact-3",
+      "speaker": "tilly",
+      "start": 13.737,
+      "end": 16.136
+    },
+    {
+      "id": "fact-4",
+      "speaker": "tilly",
+      "start": 16.356,
+      "end": 19.311
+    },
+    {
+      "id": "fact-5",
+      "speaker": "tilly",
+      "start": 19.531,
+      "end": 25.577
+    },
+    {
+      "id": "kicker",
+      "speaker": "tilly",
+      "start": 25.797,
+      "end": 29.689
+    }
+  ],
+  "voices": {
+    "tilly": {
+      "provider": "kokoro",
+      "voice_id": "af_heart",
+      "speed": 1.1,
+      "pitch_semitones": 0,
+      "sentence_pause": 0.24,
+      "clause_pause": 0.1
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -14.54,
+    "true_peak_db": -1.72
+  }
+}
