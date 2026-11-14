@@ -1,11 +1,11 @@
 ---
 episode: 2026-11-14-strange-facts-about-jupiter
 channel: time-tourist
-status: pending
+status: approved
 script_hash: 5dc731e4186bd6c4cccb57d13edd4ead55a45ee0494e46d503b2fb41dee85921
 generated_at: 2026-11-14T15:45:37Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha
+approved_at: 2026-11-14T17:14:59Z
 notes: null
 ---
 
