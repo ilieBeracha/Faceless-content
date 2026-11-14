@@ -78,9 +78,11 @@ The engine marks an idea "used" when an episode is made from it.
 ## koala-fingerprints
 - title: Koalas have fingerprints like ours
 - series: wait-what
-- status: new
+- status: rejected
 - angle: Koala prints look so much like human ones that they are hard to tell apart; why would a koala need them?
 - added: 2026-11-14
+- rejected_on: 2026-11-14
+- rejected_reason: Owner wants technology and genuinely interesting facts, not nature or food trivia
 
 ## first-webcam-coffee-pot
 - title: The first webcam watched a coffee pot
