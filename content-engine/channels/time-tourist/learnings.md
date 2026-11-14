@@ -50,3 +50,12 @@ QA (with the agent's notes); script writing reads this file. Never copy learning
 - The planet-explainer style (one hero planet, a new view per fact, labels as visuals) makes a 30 s video for free in ~6 minutes of rendering, with exact numbers and no AI artefacts.
 - Keep cutaway labels short (≤ 22 characters); they sit in a column to the right of the planet.
 - Change the view on the word that starts each new idea (at_word); 95 words ran 30.7 s at Tilly's Kokoro speed.
+
+## 2026-11-14 · 2026-11-14-strange-facts-about-jupiter
+
+- Episode: "Strange facts about Jupiter" (strange-space) — 36.3s, 97 words, -14.6 LUFS. QA passed.
+- The tilt view was first used here: for small tilts (a few degrees) the big angle number used to collide with the axis label; the renderer now lifts the number above the label, but check the tilt frame by eye on every planet.
+- The automated checks do not catch text overlapping other text; the reviewer must look for it in every view with two or more labels.
+- A two-view hook of about 4 seconds leaves the second view's label on screen for under a second; keep that label to three words or put the comparison in its own beat.
+- The Jupiter palette (6 tan and cream bands, glow #f0d9b5) reads clearly as Jupiter on the dark starfield.
+- When NASA pages disagree on a number (moon counts), leave the fact out rather than hedge; the episode did not miss it.
