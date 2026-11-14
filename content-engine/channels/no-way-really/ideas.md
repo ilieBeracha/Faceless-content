@@ -28,9 +28,11 @@ The engine marks an idea "used" when an episode is made from it.
 ## honey-never-spoils
 - title: Honey doesn't go off
 - series: wait-what
-- status: new
+- status: rejected
 - angle: Sealed honey can stay edible for thousands of years; what about it keeps microbes out?
 - added: 2026-11-14
+- rejected_on: 2026-11-14
+- rejected_reason: Owner wants technology and genuinely interesting facts, not nature or food trivia
 
 ## oxford-older-than-aztecs
 - title: Oxford is older than the Aztec Empire
