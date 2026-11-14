@@ -69,9 +69,11 @@ The engine marks an idea "used" when an episode is made from it.
 ## the-dot-is-a-tittle
 - title: The dot on an i has a name
 - series: wait-what
-- status: new
+- status: rejected
 - angle: It's called a tittle; where does the word come from and what else has a name nobody uses?
 - added: 2026-11-14
+- rejected_on: 2026-11-14
+- rejected_reason: Owner wants technology and genuinely interesting facts, not nature or food trivia
 
 ## koala-fingerprints
 - title: Koalas have fingerprints like ours
