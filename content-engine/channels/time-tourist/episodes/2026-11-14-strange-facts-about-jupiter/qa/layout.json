@@ -134,9 +134,9 @@
       "kind": "text",
       "frames": 98,
       "minX": 435,
-      "minY": 428,
+      "minY": 320,
       "maxX": 644,
-      "maxY": 552
+      "maxY": 446
     },
     "pe:fact-5:7:axis": {
       "kind": "text",
