@@ -332,7 +332,7 @@ export const PlanetExplainer: React.FC<{ props: EpisodeProps; spans: BeatSpan[];
         </>
       )}
       {v.view === "tilt" && (
-        <Text id={`pe:${cur.beatId}:${idx}:deg`} probe={probe} x={cx} y={cy - r - 120} size={110} color={accent} opacity={fadeIn * out}>
+        <Text id={`pe:${cur.beatId}:${idx}:deg`} probe={probe} x={cx} y={Math.min(cy - r - 120, cy - Math.cos((v.degrees * Math.PI) / 180) * r * 1.45 - 134)} size={110} color={accent} opacity={fadeIn * out}>
           {`${Math.round(v.degrees * easeOut(clamp((lt - 0.3) / 1.2)) * 10) / 10}°`}
         </Text>
       )}
