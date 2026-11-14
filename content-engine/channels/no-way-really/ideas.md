@@ -44,9 +44,11 @@ The engine marks an idea "used" when an episode is made from it.
 ## sharks-older-than-trees
 - title: Sharks are older than trees
 - series: wait-what
-- status: new
+- status: rejected
 - angle: Sharks were swimming tens of millions of years before the first trees grew; how do we know?
 - added: 2026-11-14
+- rejected_on: 2026-11-14
+- rejected_reason: Owner wants technology and genuinely interesting facts, not nature or food trivia
 
 ## wombat-cube-poop
 - title: Wombats make cube-shaped droppings
