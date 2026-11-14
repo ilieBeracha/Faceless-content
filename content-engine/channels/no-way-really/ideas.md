@@ -94,9 +94,10 @@ The engine marks an idea "used" when an episode is made from it.
 ## first-computer-bug-moth
 - title: The first computer bug was a real moth
 - series: wait-what
-- status: new
+- status: used
 - angle: In 1947 engineers found a moth stuck in a relay of a Harvard computer and taped it into the logbook.
 - added: 2026-11-14
+- used_in: episodes/2026-11-14-first-computer-bug-moth
 
 ## apollo-computer-memory
 - title: The Moon computer had kilobytes of memory
