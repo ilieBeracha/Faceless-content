@@ -5,7 +5,7 @@
   "idea": "strange-facts-about-jupiter",
   "title": "Strange facts about Jupiter",
   "created": "2026-11-14T15:43:01Z",
-  "updated": "2026-11-14T17:15:14Z",
+  "updated": "2026-11-14T17:17:00Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -26,6 +26,11 @@
       "status": "done",
       "at": "2026-11-14T17:15:14Z",
       "note": "36.27s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-11-14T17:17:00Z",
+      "note": "out/time-tourist/2026-11-14-strange-facts-about-jupiter.mp4"
     }
   }
 }

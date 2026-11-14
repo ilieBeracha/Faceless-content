@@ -1,0 +1,15 @@
+{
+  "output": "out/time-tourist/2026-11-14-strange-facts-about-jupiter.mp4",
+  "rendered_at": "2026-11-14T17:17:00Z",
+  "seconds_to_render": 103,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1088,
+  "render_skills": [
+    "render-planet-explainer"
+  ],
+  "captions_skill": "captions",
+  "gl": "angle",
+  "inputs_hash": "3ed87ed640c091c33634d2bb9d1c96a8603ce99fbe90146ff9dcc46797e0848c"
+}
