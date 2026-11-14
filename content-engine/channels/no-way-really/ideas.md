@@ -19,9 +19,11 @@ The engine marks an idea "used" when an episode is made from it.
 ## octopus-three-hearts
 - title: An octopus has three hearts
 - series: wait-what
-- status: new
+- status: rejected
 - angle: Three hearts and blue blood; what does each heart do, and why does one stop when it swims?
 - added: 2026-11-14
+- rejected_on: 2026-11-14
+- rejected_reason: Owner wants technology and genuinely interesting facts, not nature or food trivia
 
 ## honey-never-spoils
 - title: Honey doesn't go off
