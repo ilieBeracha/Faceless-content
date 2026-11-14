@@ -53,9 +53,11 @@ The engine marks an idea "used" when an episode is made from it.
 ## wombat-cube-poop
 - title: Wombats make cube-shaped droppings
 - series: wait-what
-- status: new
+- status: rejected
 - angle: The only animal known to do it; how does a round gut make flat sides and corners?
 - added: 2026-11-14
+- rejected_on: 2026-11-14
+- rejected_reason: Owner wants technology and genuinely interesting facts, not nature or food trivia
 
 ## hot-water-sounds-different
 - title: You can hear if water is hot
