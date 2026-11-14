@@ -155,3 +155,9 @@ The engine marks an idea "used" when an episode is made from it.
 - status: used
 - added: 2026-10-17
 - used_in: episodes/2026-10-17-strange-facts-about-saturn
+
+## strange-facts-about-jupiter
+- title: Strange facts about Jupiter
+- series: strange-space
+- status: new
+- added: 2026-11-14
