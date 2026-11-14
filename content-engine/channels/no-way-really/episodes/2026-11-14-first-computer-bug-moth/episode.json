@@ -5,8 +5,8 @@
   "idea": "first-computer-bug-moth",
   "title": "The first computer bug was a real moth",
   "created": "2026-11-14T19:31:02Z",
-  "updated": "2026-11-14T20:43:02Z",
-  "status": "in-progress",
+  "updated": "2026-11-14T20:43:53Z",
+  "status": "done",
   "steps": {
     "idea": {
       "status": "done",
@@ -31,6 +31,11 @@
       "status": "done",
       "at": "2026-11-14T20:43:02Z",
       "note": "out/no-way-really/2026-11-14-first-computer-bug-moth.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-11-14T20:43:53Z",
+      "note": "all checks passed"
     }
   }
 }

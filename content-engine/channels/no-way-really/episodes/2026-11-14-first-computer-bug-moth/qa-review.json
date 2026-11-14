@@ -1,0 +1,28 @@
+{
+  "render_hash": "08ab6f16b195579bbe006ccb4b2bf964e950416ea2a0077b3b1df1f4c2f3a1e0",
+  "tone": {
+    "pass": true,
+    "notes": "Opens on the fact with no warm-up, asks \"Okay, but why write it down?\" and answers it, ends on the catchphrase. Surprised, playful and quick; no call to action. Honest: it says the word \"bug\" is older than the moth instead of claiming the moth invented it."
+  },
+  "banned_topics": {
+    "pass": true,
+    "notes": "A piece of computing history. No politics, war, crime, advice, gore or copyable stunts. The popular myth (that the moth is where the word comes from) is corrected on screen, not repeated. Edison and Harvard are named as historical facts, not used as characters."
+  },
+  "visuals": {
+    "pass": true,
+    "notes": "Reviewed the 8 sampled frames plus 10 more across all beats. Deep purple grid background, headline box on the hook, fact cards and a two-point timeline, as the series promises. All text is readable and inside the frame after two fixes from the first render (hook title lg -> md because it was cut off; timeline end labels moved inside the safe area in the renderer). Known blemish: in the why beat the timeline and the quote card are stacked, and the top of Blink's head touches the bottom edge of the card. Not hiding any text, so passed. The bottom third of the frame is empty by design (platform safe area)."
+  },
+  "character": {
+    "pass": true,
+    "notes": "Blink is on-model: mint-green egg blob, dark outline, round glasses, pink cheeks, sparkles. Full size and wide-eyed on the hook, lower-left corner afterwards, mouth open on spoken frames, expressions change per beat. Judged from frames only; the audio was not listened to, so how the Kokoro af_bella voice says \"Mark II\" and the years is checked only through the caption-sync and pronunciation settings."
+  },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "A title element at size lg fits about 16 characters (\"9 September 1947\"); 22 characters (\"Bug = an actual insect\") was cut off. Use md for anything longer than about 16 characters.",
+    "Two stacked elements in one beat (timeline + fact-card) fill the panel so the corner Blink touches the lower card. Use one element per beat when Blink is in the corner, or keep the second one to a single line.",
+    "When the famous version of a fact is slightly wrong (the moth did not give us the word \"bug\"), putting the older date on a timeline next to the famous one makes the correction the most interesting part of the video.",
+    "A real quote on a fact card (\"First actual case of bug being found.\") works as the proof picture; keep it under about 40 characters so it stays on two lines.",
+    "34.4 s for 91 words is at the top of the 20-35 s limit. Aim for 80 words or fewer so there is room to spare."
+  ]
+}

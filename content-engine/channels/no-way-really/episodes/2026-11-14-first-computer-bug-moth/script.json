@@ -14,7 +14,7 @@
       "visual": {
         "skill": "render-motion-graphics",
         "elements": [
-          { "type": "title", "text": "Bug = an actual insect", "size": "lg" }
+          { "type": "title", "text": "Bug = an actual insect", "size": "md" }
         ]
       },
       "character": { "placement": "full", "expression": "surprised" }
