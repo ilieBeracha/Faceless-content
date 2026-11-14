@@ -1,0 +1,20 @@
+{
+  "rig": "flat-2d",
+  "params": {
+    "body": { "shape": "egg", "color": "#5ee6b8", "shade": "#2fbf93", "outline": "#14102b", "outline_width": 7 },
+    "eyes": { "style": "round", "white": "#ffffff", "pupil": "#14102b", "spacing": 0.36, "y": -0.12, "size": 0.19 },
+    "mouth": { "color": "#3b1f2b", "tongue": "#ff7a8a", "width": 0.28, "y": 0.2 },
+    "cheeks": "#ff8fab",
+    "accessories": [
+      { "type": "glasses", "color": "#14102b", "accent": "#ffffff" },
+      { "type": "sparkles", "color": "#fff275", "accent": "#ffffff" }
+    ]
+  },
+  "expressions": {
+    "neutral": { "eye_scale": 1, "pupil_scale": 1, "bounce": 0.3, "brow": "flat", "mouth_curve": 0.3 },
+    "curious": { "eye_scale": 1.15, "pupil_scale": 1.1, "tilt_deg": 10, "look": [0.3, -0.2], "bounce": 0.3, "brow": "up", "mouth_curve": 0.1 },
+    "excited": { "eye_scale": 1.3, "pupil_scale": 1.2, "bounce": 0.8, "brow": "up", "mouth_curve": 0.9 },
+    "surprised": { "eye_scale": 1.5, "pupil_scale": 0.5, "bounce": 0.5, "brow": "up", "mouth_curve": 0 },
+    "thinking": { "eye_scale": 0.95, "lid": 0.3, "tilt_deg": -8, "look": [-0.4, -0.5], "bounce": 0.15, "brow": "flat", "mouth_curve": -0.1 }
+  }
+}

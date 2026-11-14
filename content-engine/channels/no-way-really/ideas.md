@@ -90,3 +90,52 @@ The engine marks an idea "used" when an episode is made from it.
 - status: new
 - angle: Cambridge researchers pointed a camera at their coffee pot so nobody walked over to an empty one.
 - added: 2026-11-14
+
+## first-computer-bug-moth
+- title: The first computer bug was a real moth
+- series: wait-what
+- status: new
+- angle: In 1947 engineers found a moth stuck in a relay of a Harvard computer and taped it into the logbook.
+- added: 2026-11-14
+
+## apollo-computer-memory
+- title: The Moon computer had kilobytes of memory
+- series: wait-what
+- status: new
+- angle: The Apollo guidance computer flew people to the Moon with a few kilobytes of memory; compare it with one phone photo.
+- added: 2026-11-14
+
+## wifi-stands-for-nothing
+- title: Wi-Fi doesn't stand for anything
+- series: wait-what
+- status: new
+- angle: Everyone thinks it means "wireless fidelity"; it was a made-up brand name, so where did that idea come from?
+- added: 2026-11-14
+
+## bluetooth-viking-king
+- title: Bluetooth is named after a Viking king
+- series: wait-what
+- status: new
+- angle: The name comes from a tenth-century king and the logo is his initials in runes; why him?
+- added: 2026-11-14
+
+## one-gigabyte-quarter-tonne
+- title: The first 1 GB drive weighed a quarter tonne
+- series: wait-what
+- status: new
+- angle: In 1980 a gigabyte of storage was a cabinet the size of a fridge; today it's a fraction of a fingernail-size card.
+- added: 2026-11-14
+
+## gps-needs-einstein
+- title: GPS only works because of relativity
+- series: wait-what
+- status: new
+- angle: Satellite clocks run a few dozen microseconds a day fast; without the correction your map would drift by kilometres.
+- added: 2026-11-14
+
+## internet-under-the-sea
+- title: The internet runs along the sea floor
+- series: wait-what
+- status: new
+- angle: Almost all data between continents travels through cables about as thick as a garden hose, not through satellites.
+- added: 2026-11-14
