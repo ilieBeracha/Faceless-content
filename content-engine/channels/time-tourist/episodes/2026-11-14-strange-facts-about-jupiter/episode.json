@@ -5,7 +5,7 @@
   "idea": "strange-facts-about-jupiter",
   "title": "Strange facts about Jupiter",
   "created": "2026-11-14T15:43:01Z",
-  "updated": "2026-11-14T15:45:37Z",
+  "updated": "2026-11-14T17:15:14Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,14 @@
       "at": "2026-11-14T15:45:37Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-11-14T15:45:37Z"
+      "status": "done",
+      "at": "2026-11-14T17:15:03Z",
+      "note": "approved by ilieBeracha"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-14T17:15:14Z",
+      "note": "36.27s"
     }
   }
 }
