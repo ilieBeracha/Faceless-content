@@ -1,649 +1,607 @@
 {
   "version": 2,
-  "hash": "3370866d440506bcf3316c338c3b31a6bd3abb1678d8a2370d0fa87a041205af",
+  "hash": "7c9850430a90983eb7620f4f743977cfc955df4d3c60bdf6067762476a03ab13",
   "fps": 30,
-  "frames": 1032,
-  "duration": 34.4,
-  "speech_start": 0.162,
-  "speech_end": 33.378,
+  "frames": 1005,
+  "duration": 33.5,
+  "speech_start": 0.215,
+  "speech_end": 32.479,
   "outro_padding": 0,
   "words": [
     {
       "i": 0,
       "beat": "hook",
       "text": "A",
-      "start": 0.162,
-      "end": 0.212
+      "start": 0.215,
+      "end": 0.265
     },
     {
       "i": 1,
       "beat": "hook",
       "text": "real",
-      "start": 0.262,
-      "end": 0.487
+      "start": 0.34,
+      "end": 0.59
     },
     {
       "i": 2,
       "beat": "hook",
       "text": "moth",
-      "start": 0.537,
-      "end": 0.912
+      "start": 0.64,
+      "end": 0.99
     },
     {
       "i": 3,
       "beat": "hook",
       "text": "jammed",
-      "start": 1.012,
-      "end": 1.312
+      "start": 1.065,
+      "end": 1.365
     },
     {
       "i": 4,
       "beat": "hook",
       "text": "a",
-      "start": 1.337,
-      "end": 1.362
+      "start": 1.39,
+      "end": 1.415
     },
     {
       "i": 5,
       "beat": "hook",
       "text": "computer.",
-      "start": 1.412,
-      "end": 1.999
+      "start": 1.465,
+      "end": 2.02
     },
     {
       "i": 6,
-      "beat": "assume",
-      "text": "You'd",
-      "start": 2.289,
-      "end": 2.289
+      "beat": "setup",
+      "text": "September",
+      "start": 2.525,
+      "end": 2.975
     },
     {
       "i": 7,
-      "beat": "assume",
-      "text": "think",
-      "start": 2.33,
-      "end": 2.43
+      "beat": "setup",
+      "text": "ninth,",
+      "start": 3.025,
+      "end": 3.5
     },
     {
       "i": 8,
-      "beat": "assume",
-      "text": "a",
-      "start": 2.48,
-      "end": 2.605
+      "beat": "setup",
+      "text": "1947.",
+      "start": 3.625,
+      "end": 5.05
     },
     {
       "i": 9,
-      "beat": "assume",
-      "text": "computer",
-      "start": 2.63,
-      "end": 2.655
+      "beat": "setup",
+      "text": "Harvard's",
+      "start": 5.25,
+      "end": 5.675
     },
     {
       "i": 10,
-      "beat": "assume",
-      "text": "bug",
-      "start": 2.705,
-      "end": 3.08
+      "beat": "setup",
+      "text": "Mark",
+      "start": 5.725,
+      "end": 5.95
     },
     {
       "i": 11,
-      "beat": "assume",
-      "text": "is",
-      "start": 3.13,
-      "end": 3.38
+      "beat": "setup",
+      "text": "II",
+      "start": 6.025,
+      "end": 6.2
     },
     {
       "i": 12,
-      "beat": "assume",
-      "text": "just",
-      "start": 3.43,
-      "end": 3.505
+      "beat": "setup",
+      "text": "computer",
+      "start": 6.25,
+      "end": 6.625
     },
     {
       "i": 13,
-      "beat": "assume",
-      "text": "a",
-      "start": 3.53,
-      "end": 3.705
+      "beat": "setup",
+      "text": "hits",
+      "start": 6.675,
+      "end": 6.9
     },
     {
       "i": 14,
-      "beat": "assume",
-      "text": "word.",
-      "start": 3.73,
-      "end": 3.78
+      "beat": "setup",
+      "text": "an",
+      "start": 6.925,
+      "end": 6.975
     },
     {
       "i": 15,
-      "beat": "assume",
-      "text": "A",
-      "start": 3.855,
-      "end": 4.48
+      "beat": "setup",
+      "text": "error.",
+      "start": 7.025,
+      "end": 7.381
     },
     {
       "i": 16,
-      "beat": "assume",
-      "text": "glitch,",
-      "start": 4.68,
-      "end": 4.73
+      "beat": "turn",
+      "text": "So",
+      "start": 7.936,
+      "end": 8.036
     },
     {
       "i": 17,
-      "beat": "assume",
-      "text": "somewhere",
-      "start": 4.805,
-      "end": 5.33
+      "beat": "turn",
+      "text": "the",
+      "start": 8.061,
+      "end": 8.136
     },
     {
       "i": 18,
-      "beat": "assume",
-      "text": "in",
-      "start": 5.48,
-      "end": 5.755
+      "beat": "turn",
+      "text": "operators",
+      "start": 8.186,
+      "end": 8.636
     },
     {
       "i": 19,
-      "beat": "assume",
-      "text": "the",
-      "start": 5.78,
-      "end": 5.905
+      "beat": "turn",
+      "text": "go",
+      "start": 8.686,
+      "end": 8.811
     },
     {
       "i": 20,
-      "beat": "assume",
-      "text": "code.",
-      "start": 5.955,
-      "end": 6.385
+      "beat": "turn",
+      "text": "looking.",
+      "start": 8.861,
+      "end": 9.486
     },
     {
       "i": 21,
-      "beat": "proof",
-      "text": "Nope.",
-      "start": 6.876,
-      "end": 7.451
+      "beat": "turn",
+      "text": "And",
+      "start": 9.636,
+      "end": 9.711
     },
     {
       "i": 22,
-      "beat": "proof",
-      "text": "September",
-      "start": 7.651,
-      "end": 8.076
+      "beat": "turn",
+      "text": "there",
+      "start": 9.761,
+      "end": 9.936
     },
     {
       "i": 23,
-      "beat": "proof",
-      "text": "ninth,",
-      "start": 8.126,
-      "end": 8.576
+      "beat": "turn",
+      "text": "it",
+      "start": 9.986,
+      "end": 10.036
     },
     {
       "i": 24,
-      "beat": "proof",
-      "text": "1947.",
-      "start": 8.676,
-      "end": 10.201
+      "beat": "turn",
+      "text": "is:",
+      "start": 10.086,
+      "end": 10.561
     },
     {
       "i": 25,
-      "beat": "proof",
-      "text": "Harvard's",
-      "start": 10.401,
-      "end": 10.851
+      "beat": "turn",
+      "text": "a",
+      "start": 10.711,
+      "end": 10.761
     },
     {
       "i": 26,
-      "beat": "proof",
-      "text": "Mark",
-      "start": 10.901,
-      "end": 11.126
+      "beat": "turn",
+      "text": "moth,",
+      "start": 10.836,
+      "end": 11.211
     },
     {
       "i": 27,
-      "beat": "proof",
-      "text": "II",
-      "start": 11.201,
-      "end": 11.401
+      "beat": "turn",
+      "text": "caught",
+      "start": 11.341,
+      "end": 11.541
     },
     {
       "i": 28,
-      "beat": "proof",
-      "text": "computer",
-      "start": 11.451,
-      "end": 11.826
+      "beat": "turn",
+      "text": "in",
+      "start": 11.566,
+      "end": 11.616
     },
     {
       "i": 29,
-      "beat": "proof",
-      "text": "hits",
-      "start": 11.876,
-      "end": 12.076
+      "beat": "turn",
+      "text": "a",
+      "start": 11.641,
+      "end": 11.666
     },
     {
       "i": 30,
-      "beat": "proof",
-      "text": "an",
-      "start": 12.101,
-      "end": 12.151
+      "beat": "turn",
+      "text": "relay.",
+      "start": 11.716,
+      "end": 12.181
     },
     {
       "i": 31,
-      "beat": "proof",
-      "text": "error,",
-      "start": 12.201,
-      "end": 12.676
+      "beat": "twist",
+      "text": "Here's",
+      "start": 12.725,
+      "end": 12.975
     },
     {
       "i": 32,
-      "beat": "proof",
-      "text": "and",
-      "start": 12.801,
-      "end": 12.876
+      "beat": "twist",
+      "text": "the",
+      "start": 13.025,
+      "end": 13.075
     },
     {
       "i": 33,
-      "beat": "proof",
-      "text": "the",
-      "start": 12.901,
-      "end": 12.976
+      "beat": "twist",
+      "text": "funny",
+      "start": 13.15,
+      "end": 13.4
     },
     {
       "i": 34,
-      "beat": "proof",
-      "text": "operators",
-      "start": 13.026,
-      "end": 13.576
+      "beat": "twist",
+      "text": "part.",
+      "start": 13.45,
+      "end": 14.025
     },
     {
       "i": 35,
-      "beat": "proof",
-      "text": "find",
-      "start": 13.626,
-      "end": 13.801
+      "beat": "twist",
+      "text": "Engineers",
+      "start": 14.2,
+      "end": 14.85
     },
     {
       "i": 36,
-      "beat": "proof",
-      "text": "a",
-      "start": 13.826,
-      "end": 13.851
+      "beat": "twist",
+      "text": "already",
+      "start": 14.925,
+      "end": 15.225
     },
     {
       "i": 37,
-      "beat": "proof",
-      "text": "moth",
-      "start": 13.926,
-      "end": 14.276
+      "beat": "twist",
+      "text": "called",
+      "start": 15.275,
+      "end": 15.55
     },
     {
       "i": 38,
-      "beat": "proof",
-      "text": "caught",
-      "start": 14.351,
-      "end": 14.626
+      "beat": "twist",
+      "text": "faults",
+      "start": 15.625,
+      "end": 15.9
     },
     {
       "i": 39,
-      "beat": "proof",
-      "text": "in",
-      "start": 14.651,
-      "end": 14.701
+      "beat": "twist",
+      "text": "bugs.",
+      "start": 15.95,
+      "end": 16.7
     },
     {
       "i": 40,
-      "beat": "proof",
-      "text": "a",
-      "start": 14.726,
-      "end": 14.751
+      "beat": "twist",
+      "text": "Edison",
+      "start": 16.9,
+      "end": 17.325
     },
     {
       "i": 41,
-      "beat": "proof",
-      "text": "relay.",
-      "start": 14.801,
-      "end": 15.254
+      "beat": "twist",
+      "text": "did,",
+      "start": 17.4,
+      "end": 17.75
     },
     {
       "i": 42,
-      "beat": "why",
-      "text": "Okay,",
-      "start": 15.716,
-      "end": 16.166
+      "beat": "twist",
+      "text": "back",
+      "start": 17.9,
+      "end": 18.15
     },
     {
       "i": 43,
-      "beat": "why",
-      "text": "but",
-      "start": 16.216,
-      "end": 16.316
+      "beat": "twist",
+      "text": "in",
+      "start": 18.2,
+      "end": 18.3
     },
     {
       "i": 44,
-      "beat": "why",
-      "text": "why",
-      "start": 16.366,
-      "end": 16.541
+      "beat": "twist",
+      "text": "1878.",
+      "start": 18.35,
+      "end": 19.75
     },
     {
       "i": 45,
-      "beat": "why",
-      "text": "write",
-      "start": 16.591,
-      "end": 16.741
+      "beat": "twist",
+      "text": "So",
+      "start": 19.9,
+      "end": 20
     },
     {
       "i": 46,
-      "beat": "why",
-      "text": "it",
-      "start": 16.766,
-      "end": 16.816
+      "beat": "twist",
+      "text": "they",
+      "start": 20.025,
+      "end": 20.125
     },
     {
       "i": 47,
-      "beat": "why",
-      "text": "down?",
-      "start": 16.866,
-      "end": 17.516
+      "beat": "twist",
+      "text": "taped",
+      "start": 20.175,
+      "end": 20.45
     },
     {
       "i": 48,
-      "beat": "why",
-      "text": "Because",
-      "start": 17.641,
-      "end": 17.866
+      "beat": "twist",
+      "text": "the",
+      "start": 20.475,
+      "end": 20.525
     },
     {
       "i": 49,
-      "beat": "why",
-      "text": "engineers",
-      "start": 17.916,
-      "end": 18.541
+      "beat": "twist",
+      "text": "moth",
+      "start": 20.575,
+      "end": 20.825
     },
     {
       "i": 50,
-      "beat": "why",
-      "text": "already",
-      "start": 18.591,
-      "end": 18.866
+      "beat": "twist",
+      "text": "into",
+      "start": 20.85,
+      "end": 21
     },
     {
       "i": 51,
-      "beat": "why",
-      "text": "called",
-      "start": 18.916,
-      "end": 19.191
+      "beat": "twist",
+      "text": "the",
+      "start": 21.025,
+      "end": 21.075
     },
     {
       "i": 52,
-      "beat": "why",
-      "text": "faults",
-      "start": 19.291,
-      "end": 19.566
+      "beat": "twist",
+      "text": "logbook",
+      "start": 21.125,
+      "end": 21.575
     },
     {
       "i": 53,
-      "beat": "why",
-      "text": "bugs.",
-      "start": 19.641,
-      "end": 20.416
+      "beat": "twist",
+      "text": "and",
+      "start": 21.625,
+      "end": 21.7
     },
     {
       "i": 54,
-      "beat": "why",
-      "text": "Edison",
-      "start": 20.616,
-      "end": 20.991
+      "beat": "twist",
+      "text": "wrote:",
+      "start": 21.75,
+      "end": 22.225
     },
     {
       "i": 55,
-      "beat": "why",
-      "text": "used",
-      "start": 21.066,
-      "end": 21.341
+      "beat": "twist",
+      "text": "First",
+      "start": 22.375,
+      "end": 22.65
     },
     {
       "i": 56,
-      "beat": "why",
-      "text": "the",
-      "start": 21.366,
-      "end": 21.416
+      "beat": "twist",
+      "text": "actual",
+      "start": 22.7,
+      "end": 23.025
     },
     {
       "i": 57,
-      "beat": "why",
-      "text": "word",
-      "start": 21.466,
-      "end": 21.741
+      "beat": "twist",
+      "text": "case",
+      "start": 23.075,
+      "end": 23.3
     },
     {
       "i": 58,
-      "beat": "why",
-      "text": "in",
-      "start": 21.791,
-      "end": 21.866
+      "beat": "twist",
+      "text": "of",
+      "start": 23.325,
+      "end": 23.4
     },
     {
       "i": 59,
-      "beat": "why",
-      "text": "1878.",
-      "start": 21.916,
-      "end": 23.366
+      "beat": "twist",
+      "text": "bug",
+      "start": 23.475,
+      "end": 23.725
     },
     {
       "i": 60,
-      "beat": "why",
-      "text": "So",
-      "start": 23.516,
-      "end": 23.616
+      "beat": "twist",
+      "text": "being",
+      "start": 23.775,
+      "end": 24
     },
     {
       "i": 61,
-      "beat": "why",
-      "text": "they",
-      "start": 23.641,
-      "end": 23.741
+      "beat": "twist",
+      "text": "found.",
+      "start": 24.05,
+      "end": 24.471
     },
     {
       "i": 62,
-      "beat": "why",
-      "text": "taped",
-      "start": 23.791,
-      "end": 24.066
+      "beat": "ending",
+      "text": "That",
+      "start": 24.931,
+      "end": 24.931
     },
     {
       "i": 63,
-      "beat": "why",
-      "text": "the",
-      "start": 24.091,
-      "end": 24.141
+      "beat": "ending",
+      "text": "page,",
+      "start": 24.979,
+      "end": 25.129
     },
     {
       "i": 64,
-      "beat": "why",
+      "beat": "ending",
       "text": "moth",
-      "start": 24.191,
-      "end": 24.441
+      "start": 25.179,
+      "end": 25.604
     },
     {
       "i": 65,
-      "beat": "why",
-      "text": "into",
-      "start": 24.466,
-      "end": 24.616
+      "beat": "ending",
+      "text": "and",
+      "start": 25.704,
+      "end": 26.004
     },
     {
       "i": 66,
-      "beat": "why",
-      "text": "the",
-      "start": 24.641,
-      "end": 24.716
+      "beat": "ending",
+      "text": "all,",
+      "start": 26.029,
+      "end": 26.104
     },
     {
       "i": 67,
-      "beat": "why",
-      "text": "logbook",
-      "start": 24.766,
-      "end": 25.216
+      "beat": "ending",
+      "text": "is",
+      "start": 26.154,
+      "end": 26.404
     },
     {
       "i": 68,
-      "beat": "why",
-      "text": "and",
-      "start": 25.266,
-      "end": 25.341
+      "beat": "ending",
+      "text": "kept",
+      "start": 26.569,
+      "end": 26.669
     },
     {
       "i": 69,
-      "beat": "why",
-      "text": "wrote:",
-      "start": 25.391,
-      "end": 25.891
+      "beat": "ending",
+      "text": "at",
+      "start": 26.719,
+      "end": 26.944
     },
     {
       "i": 70,
-      "beat": "why",
-      "text": "First",
-      "start": 26.041,
-      "end": 26.316
+      "beat": "ending",
+      "text": "the",
+      "start": 26.969,
+      "end": 27.019
     },
     {
       "i": 71,
-      "beat": "why",
-      "text": "actual",
-      "start": 26.366,
-      "end": 26.716
+      "beat": "ending",
+      "text": "Smithsonian.",
+      "start": 27.044,
+      "end": 27.094
     },
     {
       "i": 72,
-      "beat": "why",
-      "text": "case",
-      "start": 26.766,
-      "end": 26.991
+      "beat": "ending",
+      "text": "The",
+      "start": 27.144,
+      "end": 28.194
     },
     {
       "i": 73,
-      "beat": "why",
-      "text": "of",
-      "start": 27.016,
-      "end": 27.091
+      "beat": "ending",
+      "text": "one",
+      "start": 28.344,
+      "end": 28.419
     },
     {
       "i": 74,
-      "beat": "why",
-      "text": "bug",
-      "start": 27.166,
-      "end": 27.416
+      "beat": "ending",
+      "text": "time",
+      "start": 28.469,
+      "end": 28.644
     },
     {
       "i": 75,
-      "beat": "why",
-      "text": "being",
-      "start": 27.466,
-      "end": 27.691
+      "beat": "ending",
+      "text": "a",
+      "start": 28.694,
+      "end": 28.944
     },
     {
       "i": 76,
-      "beat": "why",
-      "text": "found.",
-      "start": 27.766,
-      "end": 28.219
+      "beat": "ending",
+      "text": "computer",
+      "start": 28.969,
+      "end": 28.994
     },
     {
       "i": 77,
-      "beat": "kicker",
-      "text": "And",
-      "start": 28.65,
-      "end": 28.725
+      "beat": "ending",
+      "text": "bug",
+      "start": 29.044,
+      "end": 29.419
     },
     {
       "i": 78,
-      "beat": "kicker",
-      "text": "the",
-      "start": 28.75,
-      "end": 28.8
+      "beat": "ending",
+      "text": "was",
+      "start": 29.469,
+      "end": 29.719
     },
     {
       "i": 79,
-      "beat": "kicker",
-      "text": "logbook,",
-      "start": 28.85,
-      "end": 29.325
+      "beat": "ending",
+      "text": "a",
+      "start": 29.769,
+      "end": 29.944
     },
     {
       "i": 80,
-      "beat": "kicker",
-      "text": "moth",
-      "start": 29.485,
-      "end": 29.76
+      "beat": "ending",
+      "text": "real",
+      "start": 30.019,
+      "end": 30.294
     },
     {
       "i": 81,
-      "beat": "kicker",
-      "text": "and",
-      "start": 29.785,
-      "end": 29.86
+      "beat": "ending",
+      "text": "bug.",
+      "start": 30.344,
+      "end": 30.869
     },
     {
       "i": 82,
-      "beat": "kicker",
-      "text": "all,",
-      "start": 29.91,
-      "end": 30.11
+      "beat": "ending",
+      "text": "No",
+      "start": 31.069,
+      "end": 31.244
     },
     {
       "i": 83,
-      "beat": "kicker",
-      "text": "is",
-      "start": 30.23,
-      "end": 30.33
+      "beat": "ending",
+      "text": "way.",
+      "start": 31.294,
+      "end": 31.644
     },
     {
       "i": 84,
-      "beat": "kicker",
-      "text": "kept",
-      "start": 30.38,
-      "end": 30.605
-    },
-    {
-      "i": 85,
-      "beat": "kicker",
-      "text": "at",
-      "start": 30.63,
-      "end": 30.68
-    },
-    {
-      "i": 86,
-      "beat": "kicker",
-      "text": "the",
-      "start": 30.705,
-      "end": 30.755
-    },
-    {
-      "i": 87,
-      "beat": "kicker",
-      "text": "Smithsonian.",
-      "start": 30.805,
-      "end": 31.78
-    },
-    {
-      "i": 88,
-      "beat": "kicker",
-      "text": "No",
-      "start": 31.98,
-      "end": 32.155
-    },
-    {
-      "i": 89,
-      "beat": "kicker",
-      "text": "way.",
-      "start": 32.205,
-      "end": 32.605
-    },
-    {
-      "i": 90,
-      "beat": "kicker",
+      "beat": "ending",
       "text": "Really.",
-      "start": 32.78,
-      "end": 33.198
+      "start": 31.864,
+      "end": 32.259
     }
   ],
   "beats": [
@@ -651,45 +609,45 @@
       "id": "hook",
       "speaker": "blink",
       "start": 0.1,
-      "end": 2.069
+      "end": 2.19
     },
     {
-      "id": "assume",
+      "id": "setup",
       "speaker": "blink",
-      "start": 2.289,
-      "end": 6.565
+      "start": 2.41,
+      "end": 7.601
     },
     {
-      "id": "proof",
+      "id": "turn",
       "speaker": "blink",
-      "start": 6.785,
-      "end": 15.434
+      "start": 7.821,
+      "end": 12.411
     },
     {
-      "id": "why",
+      "id": "twist",
       "speaker": "blink",
-      "start": 15.654,
-      "end": 28.389
+      "start": 12.631,
+      "end": 24.711
     },
     {
-      "id": "kicker",
+      "id": "ending",
       "speaker": "blink",
-      "start": 28.609,
-      "end": 33.378
+      "start": 24.931,
+      "end": 32.479
     }
   ],
   "voices": {
     "blink": {
       "provider": "kokoro",
-      "voice_id": "af_bella",
-      "speed": 1.08,
+      "voice_id": "af_heart",
+      "speed": 1.02,
       "pitch_semitones": 0,
-      "sentence_pause": 0.24,
+      "sentence_pause": 0.3,
       "clause_pause": 0.1
     }
   },
   "loudness": {
-    "integrated_lufs": -14.44,
-    "true_peak_db": -2.08
+    "integrated_lufs": -14.45,
+    "true_peak_db": -1.84
   }
 }
