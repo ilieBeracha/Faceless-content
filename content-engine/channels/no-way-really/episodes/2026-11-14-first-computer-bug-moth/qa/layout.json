@@ -18,6 +18,14 @@
       "maxX": 888,
       "maxY": 1437
     },
+    "headline:hook": {
+      "kind": "headline",
+      "frames": 50,
+      "minX": 150,
+      "minY": 273,
+      "maxX": 930,
+      "maxY": 438
+    },
     "pc:hook:0:strip-0": {
       "kind": "text",
       "frames": 43,
@@ -33,14 +41,6 @@
       "minY": 584,
       "maxX": 797,
       "maxY": 686
-    },
-    "headline:hook": {
-      "kind": "headline",
-      "frames": 32,
-      "minX": 150,
-      "minY": 273,
-      "maxX": 930,
-      "maxY": 438
     },
     "pc:assume:0:note": {
       "kind": "text",
@@ -1121,6 +1121,6 @@
     "1005": 90,
     "1006": 90
   },
-  "firstHeadlineFrame": 28,
-  "probes": 3613
+  "firstHeadlineFrame": 10,
+  "probes": 3631
 }
