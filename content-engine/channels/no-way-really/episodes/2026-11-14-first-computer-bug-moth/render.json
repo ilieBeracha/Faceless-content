@@ -1,16 +1,16 @@
 {
   "output": "out/no-way-really/2026-11-14-first-computer-bug-moth.mp4",
-  "rendered_at": "2026-11-15T13:28:14Z",
-  "seconds_to_render": 97,
+  "rendered_at": "2026-11-15T14:09:25Z",
+  "seconds_to_render": 94,
   "width": 1080,
   "height": 1920,
   "fps": 30,
-  "frames": 1032,
+  "frames": 1005,
   "render_skills": [
     "render-paper-collage",
     "render-talking-character"
   ],
   "captions_skill": "captions",
   "gl": "angle",
-  "inputs_hash": "63a5543f66a67678f0a5f042fd77f9ff84b56bdc7e88085894f02abf4d72ab66"
+  "inputs_hash": "35035b83e0ed575aa4833c3fe67d432d64d0c53f6f9a375da094d49c9c7347dc"
 }
