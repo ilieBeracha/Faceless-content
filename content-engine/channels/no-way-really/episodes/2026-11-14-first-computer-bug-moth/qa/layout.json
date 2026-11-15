@@ -10,14 +10,6 @@
     "h": 1230
   },
   "elements": {
-    "headline:hook": {
-      "kind": "headline",
-      "frames": 57,
-      "minX": 150,
-      "minY": 278,
-      "maxX": 930,
-      "maxY": 432
-    },
     "captions": {
       "kind": "caption",
       "frames": 1002,
@@ -26,85 +18,101 @@
       "maxX": 888,
       "maxY": 1437
     },
-    "mg:hook:0:title": {
+    "pc:hook:0:strip-0": {
       "kind": "text",
-      "frames": 47,
-      "minX": 94,
-      "minY": 541,
-      "maxX": 896,
-      "maxY": 621
+      "frames": 43,
+      "minX": 366,
+      "minY": 474,
+      "maxX": 633,
+      "maxY": 595
     },
-    "mg:assume:0:fact": {
+    "pc:hook:0:strip-1": {
       "kind": "text",
-      "frames": 117,
-      "minX": 157,
-      "minY": 701,
-      "maxX": 833,
-      "maxY": 816
-    },
-    "mg:proof:0:title": {
-      "kind": "text",
-      "frames": 248,
-      "minX": 71,
-      "minY": 512,
-      "maxX": 919,
-      "maxY": 617
-    },
-    "mg:proof:1:fact": {
-      "kind": "text",
-      "frames": 235,
-      "minX": 157,
-      "minY": 796,
-      "maxX": 833,
-      "maxY": 911
-    },
-    "mg:why:0:tl-v-0": {
-      "kind": "text",
-      "frames": 370,
-      "minX": 180,
-      "minY": 462,
-      "maxX": 281,
-      "maxY": 552
-    },
-    "mg:why:0:tl-l-0": {
-      "kind": "text",
-      "frames": 370,
-      "minX": 126,
-      "minY": 606,
-      "maxX": 336,
+      "frames": 38,
+      "minX": 159,
+      "minY": 584,
+      "maxX": 797,
       "maxY": 686
     },
-    "mg:why:0:tl-v-1": {
-      "kind": "text",
-      "frames": 370,
-      "minX": 708,
-      "minY": 462,
-      "maxX": 810,
-      "maxY": 552
+    "headline:hook": {
+      "kind": "headline",
+      "frames": 32,
+      "minX": 150,
+      "minY": 273,
+      "maxX": 930,
+      "maxY": 438
     },
-    "mg:why:0:tl-l-1": {
+    "pc:assume:0:note": {
       "kind": "text",
-      "frames": 370,
-      "minX": 654,
-      "minY": 606,
-      "maxX": 864,
-      "maxY": 686
+      "frames": 112,
+      "minX": 151,
+      "minY": 563,
+      "maxX": 841,
+      "maxY": 699
     },
-    "mg:why:1:fact": {
+    "pc:proof:0:strip-0": {
       "kind": "text",
-      "frames": 357,
-      "minX": 157,
-      "minY": 846,
-      "maxX": 833,
-      "maxY": 961
+      "frames": 244,
+      "minX": 160,
+      "minY": 397,
+      "maxX": 785,
+      "maxY": 513
     },
-    "mg:kicker:0:fact": {
+    "pc:proof:1:note": {
       "kind": "text",
-      "frames": 159,
-      "minX": 157,
-      "minY": 701,
-      "maxX": 833,
-      "maxY": 816
+      "frames": 231,
+      "minX": 151,
+      "minY": 639,
+      "maxX": 841,
+      "maxY": 775
+    },
+    "pc:why:1:note": {
+      "kind": "text",
+      "frames": 353,
+      "minX": 151,
+      "minY": 720,
+      "maxX": 841,
+      "maxY": 856
+    },
+    "pc:why:0:tag-v-0": {
+      "kind": "text",
+      "frames": 351,
+      "minX": 144,
+      "minY": 328,
+      "maxX": 330,
+      "maxY": 424
+    },
+    "pc:why:0:tag-l-0": {
+      "kind": "text",
+      "frames": 351,
+      "minX": 112,
+      "minY": 454,
+      "maxX": 352,
+      "maxY": 546
+    },
+    "pc:why:0:tag-v-1": {
+      "kind": "text",
+      "frames": 351,
+      "minX": 665,
+      "minY": 326,
+      "maxX": 851,
+      "maxY": 424
+    },
+    "pc:why:0:tag-l-1": {
+      "kind": "text",
+      "frames": 351,
+      "minX": 632,
+      "minY": 453,
+      "maxX": 873,
+      "maxY": 546
+    },
+    "pc:kicker:0:note": {
+      "kind": "text",
+      "frames": 154,
+      "minX": 151,
+      "minY": 536,
+      "maxX": 841,
+      "maxY": 671
     }
   },
   "violations": [],
@@ -1113,6 +1121,6 @@
     "1005": 90,
     "1006": 90
   },
-  "firstHeadlineFrame": 5,
-  "probes": 3702
+  "firstHeadlineFrame": 28,
+  "probes": 3613
 }
