@@ -1,11 +1,11 @@
 ---
 episode: 2026-11-14-first-computer-bug-moth
 channel: no-way-really
-status: pending
+status: approved
 script_hash: 1cb690c1b02586c5a0fec6cc1e70f0a0735e36fdea41a8df2b7be65a92eeb867
 generated_at: 2026-11-15T14:03:12Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha
+approved_at: 2026-11-15T14:07:39Z
 notes: null
 ---
 
