@@ -22,7 +22,7 @@ Review the rendered episode **2026-11-14-first-computer-bug-moth** against `work
 
 ```json
 {
-  "render_hash": "db2f7cea12c30bf328e101d7f87647ef8a0b2918b95c4153a3552d2684d7f9fb",
+  "render_hash": "63a5543f66a67678f0a5f042fd77f9ff84b56bdc7e88085894f02abf4d72ab66",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
