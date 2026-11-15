@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "no-way-really",
   "series": "wait-what",
-  "created": "2026-11-14T20:43:03Z",
+  "created": "2026-11-15T13:05:20Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -27,8 +27,8 @@
     {
       "path": "channels/no-way-really/series/wait-what.md",
       "role": "channel",
-      "sha256": "34ec3707cf7bfbdf93496c2cda3e73fea2dcfee606c1bf8eb2c71ab4e2be3e9f",
-      "bytes": 3365
+      "sha256": "f05b558745593db6d23f312af926581ccc4242e8486b00650d3d4a9d81004153",
+      "bytes": 3407
     },
     {
       "path": "channels/no-way-really/characters/blink.md",
@@ -39,13 +39,13 @@
     {
       "path": "channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/script.json",
       "role": "channel",
-      "sha256": "e5bf08f08d0110342e5c67d4f560b41dba4707f1ec4bff431a6c4eee13f4b851",
-      "bytes": 6840
+      "sha256": "0da69b8b93edcdf3e58fdfef134c6b62ef9d146c48f04e1a9382910041cf5471",
+      "bytes": 7728
     },
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "1ddd85008c3037b424575e2d4aa9fb9e602146382f8cec16882ffafafa548b82",
+      "sha256": "d9b53bb07d4f4f90efc7f1316eeea3745bc6ab2dafbe70cbeac8078459d08e84",
       "bytes": 807
     }
   ],

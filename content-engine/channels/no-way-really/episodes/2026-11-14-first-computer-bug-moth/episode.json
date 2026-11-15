@@ -5,7 +5,7 @@
   "idea": "first-computer-bug-moth",
   "title": "The first computer bug was a real moth",
   "created": "2026-11-14T19:31:02Z",
-  "updated": "2026-11-15T13:05:18Z",
+  "updated": "2026-11-15T13:05:39Z",
   "status": "done",
   "steps": {
     "idea": {
@@ -34,7 +34,7 @@
     },
     "qa": {
       "status": "done",
-      "at": "2026-11-14T20:43:53Z",
+      "at": "2026-11-15T13:05:39Z",
       "note": "all checks passed"
     }
   }
