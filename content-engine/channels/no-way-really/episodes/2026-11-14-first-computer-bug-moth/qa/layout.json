@@ -66,14 +66,6 @@
       "maxX": 841,
       "maxY": 775
     },
-    "pc:why:1:note": {
-      "kind": "text",
-      "frames": 353,
-      "minX": 151,
-      "minY": 720,
-      "maxX": 841,
-      "maxY": 856
-    },
     "pc:why:0:tag-v-0": {
       "kind": "text",
       "frames": 351,
@@ -81,6 +73,14 @@
       "minY": 328,
       "maxX": 330,
       "maxY": 424
+    },
+    "pc:why:1:note": {
+      "kind": "text",
+      "frames": 353,
+      "minX": 151,
+      "minY": 720,
+      "maxX": 841,
+      "maxY": 856
     },
     "pc:why:0:tag-l-0": {
       "kind": "text",

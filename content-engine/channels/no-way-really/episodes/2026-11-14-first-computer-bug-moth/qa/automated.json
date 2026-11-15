@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-15T13:00:18Z",
-  "render_hash": "c5394dca97139b8db7b45102e63561a28483bac262b92edae0ef4d0952a71da4",
+  "checked_at": "2026-11-15T13:02:24Z",
+  "render_hash": "502978ed58739a68eb2de3f7f0db410517d6c3b871cecfc59e85a73ec2651016",
   "checks": [
     {
       "id": "format",
@@ -29,14 +29,14 @@
     {
       "id": "hook-text",
       "label": "Hook: on-screen text",
-      "pass": false,
-      "detail": "visible from 0.93s"
+      "pass": true,
+      "detail": "visible from 0.33s"
     },
     {
       "id": "safe-areas",
       "label": "Text inside safe areas",
       "pass": true,
-      "detail": "13 text elements checked on every frame (3613 measurements)"
+      "detail": "13 text elements checked on every frame (3631 measurements)"
     },
     {
       "id": "cut-off",
