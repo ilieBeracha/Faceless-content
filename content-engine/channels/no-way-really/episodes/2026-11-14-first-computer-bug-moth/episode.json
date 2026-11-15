@@ -5,7 +5,7 @@
   "idea": "first-computer-bug-moth",
   "title": "The first computer bug was a real moth",
   "created": "2026-11-14T19:31:02Z",
-  "updated": "2026-11-15T14:09:25Z",
+  "updated": "2026-11-15T14:09:48Z",
   "status": "done",
   "steps": {
     "idea": {
@@ -24,8 +24,8 @@
     },
     "voice": {
       "status": "done",
-      "at": "2026-11-15T14:07:48Z",
-      "note": "33.50s"
+      "at": "2026-11-15T14:09:48Z",
+      "note": "32.70s"
     },
     "render": {
       "status": "done",
