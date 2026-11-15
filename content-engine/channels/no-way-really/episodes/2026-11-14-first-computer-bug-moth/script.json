@@ -33,16 +33,22 @@
       }
     },
     {
-      "id": "assume",
+      "id": "setup",
       "speaker": "blink",
-      "voiceover": "You'd think a computer bug is just a word. A glitch, somewhere in the code.",
+      "voiceover": "September ninth, 1947. Harvard's Mark II computer hits an error.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
           {
+            "type": "strips",
+            "lines": [
+              "9 September 1947"
+            ]
+          },
+          {
             "type": "note",
-            "kicker": "What you'd think",
-            "text": "Bug = just a word for a glitch?"
+            "kicker": "Harvard",
+            "text": "The Mark II computer hits an error"
           },
           {
             "type": "cutout",
@@ -56,22 +62,16 @@
       }
     },
     {
-      "id": "proof",
+      "id": "turn",
       "speaker": "blink",
-      "voiceover": "Nope. September ninth, 1947. Harvard's Mark II computer hits an error, and the operators find a moth caught in a relay.",
+      "voiceover": "So the operators go looking. And there it is: a moth, caught in a relay.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
           {
-            "type": "strips",
-            "lines": [
-              "9 September 1947"
-            ]
-          },
-          {
             "type": "note",
             "kicker": "What they found",
-            "text": "Harvard Mark II: a moth caught in a relay"
+            "text": "A moth, caught in a relay"
           },
           {
             "type": "cutout",
@@ -85,9 +85,9 @@
       }
     },
     {
-      "id": "why",
+      "id": "twist",
       "speaker": "blink",
-      "voiceover": "Okay, but why write it down? Because engineers already called faults bugs. Edison used the word in 1878. So they taped the moth into the logbook and wrote: First actual case of bug being found.",
+      "voiceover": "Here's the funny part. Engineers already called faults bugs. Edison did, back in 1878. So they taped the moth into the logbook and wrote: First actual case of bug being found.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
@@ -121,9 +121,9 @@
       }
     },
     {
-      "id": "kicker",
+      "id": "ending",
       "speaker": "blink",
-      "voiceover": "And the logbook, moth and all, is kept at the Smithsonian. No way. Really.",
+      "voiceover": "That page, moth and all, is kept at the Smithsonian. The one time a computer bug was a real bug. No way. Really.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
@@ -131,6 +131,12 @@
             "type": "note",
             "kicker": "Still around",
             "text": "The logbook, moth and all, is kept at the Smithsonian"
+          },
+          {
+            "type": "strips",
+            "lines": [
+              "A real bug"
+            ]
           },
           {
             "type": "cutout",
@@ -148,16 +154,16 @@
   "claims": [
     {
       "id": "c1",
-      "claim": "A real moth got caught in a relay of a computer and caused an error (hook: \"A real moth jammed a computer\"; on screen: \"Bug = an actual insect\").",
+      "claim": "A real moth got caught in a relay of a computer and caused an error; the operators found it when they looked for the cause (hook: \"A real moth jammed a computer\"; turn: \"the operators go looking ... a moth, caught in a relay\"; ending: \"the one time a computer bug was a real bug\"; on screen: \"Bug = an actual insect\", \"A moth, caught in a relay\", \"A real bug\").",
       "beat": "hook",
       "source": "Computer History Museum, This Day in History, September 9: the moth was \"caught between the relay contacts of the Harvard Mark II computer\" https://www.computerhistory.org/tdih/september/9/ ; Wikipedia, Software bug: \"operators traced an error in the Mark II to a moth trapped in a relay.\" https://en.wikipedia.org/wiki/Software_bug",
       "confidence": "high",
-      "note": "\"Jammed\" is Blink's word for a moth caught between relay contacts causing an error; the sources say \"caught\" and \"trapped\"."
+      "note": "\"Jammed\" and \"go looking\" are Blink's words for a moth caught between relay contacts and operators who \"traced an error\" to it; the sources say \"caught\", \"trapped\" and \"traced\". \"The one time\" is a turn of phrase for this being the first actual insect, as the logbook note itself says."
     },
     {
       "id": "c2",
-      "claim": "It happened on September 9, 1947, on the Harvard Mark II computer (on screen: \"9 September 1947\", \"Harvard Mark II: a moth caught in a relay\").",
-      "beat": "proof",
+      "claim": "It happened on September 9, 1947, on the Harvard Mark II computer, which hit an error (on screen: \"9 September 1947\", \"The Mark II computer hits an error\").",
+      "beat": "setup",
       "source": "Computer History Museum, This Day in History, September 9 (1947): \"Harvard Mark II computer in Cambridge, Massachusetts\" https://www.computerhistory.org/tdih/september/9/",
       "confidence": "high",
       "note": "Wikipedia's Software bug article says only \"in about 1947\"; the exact day is from the Computer History Museum."
@@ -165,7 +171,7 @@
     {
       "id": "c3",
       "claim": "Engineers already used the word \"bugs\" for faults before 1947; Thomas Edison used it in a letter in 1878 (on screen: \"Edison writes 'bugs'\" 1878, \"Moth in the Mark II\" 1947).",
-      "beat": "why",
+      "beat": "twist",
       "source": "Wikipedia, Software bug: Edison \"wrote the following words in a letter to an associate in 1878\": \"'Bugs'—as such little faults and difficulties are called—show themselves\" (letter to Puskas, 13 November 1878) https://en.wikipedia.org/wiki/Software_bug ; Computer History Museum: the term originated \"with Thomas Edison in the 1800s\" https://www.computerhistory.org/tdih/september/9/",
       "confidence": "high",
       "note": "The episode title says \"first computer bug\"; the script makes clear the word is older and this was the first actual insect."
@@ -173,14 +179,14 @@
     {
       "id": "c4",
       "claim": "The operators taped the moth into the computer's logbook and wrote \"First actual case of bug being found.\"",
-      "beat": "why",
+      "beat": "twist",
       "source": "Computer History Museum, This Day in History, September 9: \"They taped the dead moth into the logbook for the computer.\" One team member wrote \"First actual case of bug being found\" https://www.computerhistory.org/tdih/september/9/ ; Wikipedia, Software bug (same annotation) https://en.wikipedia.org/wiki/Software_bug",
       "confidence": "high"
     },
     {
       "id": "c5",
-      "claim": "The logbook with the moth is kept at the Smithsonian (National Museum of American History).",
-      "beat": "kicker",
+      "claim": "The logbook page with the moth is kept at the Smithsonian (National Museum of American History).",
+      "beat": "ending",
       "source": "Wikipedia, Software bug, reference for the logbook: \"National Museum of American History, Smithsonian Institution\" https://en.wikipedia.org/wiki/Software_bug ; Smithsonian object record \"Log Book With Computer Bug\" https://americanhistory.si.edu/collections/object/nmah_334663 (the page refused automated access, so it was not read directly)",
       "confidence": "medium",
       "note": "Confirmed only through Wikipedia's citation; the Smithsonian page itself could not be opened by the fetch tool. The script does not say the logbook is on display."
