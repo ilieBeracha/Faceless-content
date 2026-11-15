@@ -46,15 +46,15 @@
       "kind": "text",
       "frames": 112,
       "minX": 151,
-      "minY": 563,
-      "maxX": 841,
-      "maxY": 699
+      "minY": 557,
+      "maxX": 842,
+      "maxY": 705
     },
     "pc:proof:0:strip-0": {
       "kind": "text",
       "frames": 244,
       "minX": 160,
-      "minY": 397,
+      "minY": 387,
       "maxX": 785,
       "maxY": 513
     },
@@ -62,57 +62,57 @@
       "kind": "text",
       "frames": 231,
       "minX": 151,
-      "minY": 639,
-      "maxX": 841,
-      "maxY": 775
-    },
-    "pc:why:0:tag-v-0": {
-      "kind": "text",
-      "frames": 351,
-      "minX": 144,
-      "minY": 328,
-      "maxX": 330,
-      "maxY": 424
+      "minY": 633,
+      "maxX": 842,
+      "maxY": 781
     },
     "pc:why:1:note": {
       "kind": "text",
       "frames": 353,
       "minX": 151,
-      "minY": 720,
-      "maxX": 841,
-      "maxY": 856
+      "minY": 714,
+      "maxX": 842,
+      "maxY": 862
+    },
+    "pc:why:0:tag-v-0": {
+      "kind": "text",
+      "frames": 351,
+      "minX": 142,
+      "minY": 324,
+      "maxX": 335,
+      "maxY": 428
     },
     "pc:why:0:tag-l-0": {
       "kind": "text",
       "frames": 351,
-      "minX": 112,
-      "minY": 454,
-      "maxX": 352,
-      "maxY": 546
+      "minX": 109,
+      "minY": 449,
+      "maxX": 354,
+      "maxY": 550
     },
     "pc:why:0:tag-v-1": {
       "kind": "text",
       "frames": 351,
-      "minX": 665,
-      "minY": 326,
-      "maxX": 851,
-      "maxY": 424
+      "minX": 663,
+      "minY": 324,
+      "maxX": 856,
+      "maxY": 428
     },
     "pc:why:0:tag-l-1": {
       "kind": "text",
       "frames": 351,
-      "minX": 632,
-      "minY": 453,
-      "maxX": 873,
-      "maxY": 546
+      "minX": 629,
+      "minY": 449,
+      "maxX": 874,
+      "maxY": 550
     },
     "pc:kicker:0:note": {
       "kind": "text",
       "frames": 154,
       "minX": 151,
-      "minY": 536,
-      "maxX": 841,
-      "maxY": 671
+      "minY": 529,
+      "maxX": 842,
+      "maxY": 677
     }
   },
   "violations": [],
