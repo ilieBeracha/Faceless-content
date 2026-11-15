@@ -10,19 +10,19 @@ Review the rendered episode **2026-11-14-first-computer-bug-moth** against `work
 1. Look at every sampled frame (open the images):
    - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t000.5s.jpg`
    - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t001.5s.jpg`
-   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t004.8s.jpg`
-   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t009.7s.jpg`
-   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t014.5s.jpg`
-   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t019.3s.jpg`
-   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t024.2s.jpg`
-   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t029.0s.jpg`
+   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t004.6s.jpg`
+   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t009.2s.jpg`
+   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t013.8s.jpg`
+   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t018.3s.jpg`
+   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t022.9s.jpg`
+   - `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa/frames/t027.5s.jpg`
    The full video is `out/no-way-really/2026-11-14-first-computer-bug-moth.mp4`.
 2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
 3. Write `channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/qa-review.json` as JSON:
 
 ```json
 {
-  "render_hash": "63a5543f66a67678f0a5f042fd77f9ff84b56bdc7e88085894f02abf4d72ab66",
+  "render_hash": "41d03191a09afbe0851037e86e0d8df29d30f59b0247361e19116a10f7498f32",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -225,7 +225,7 @@ on screen so you can trust it.
 slug: wait-what                 # required slug — file name series/<slug>.md
 name: "Wait, What?"             # required string — shown in titles
 status: active                  # required enum(draft|active|paused|retired)
-format: "One surprising true fact: say it, show what everyone assumes instead, prove it with a number or a comparison, explain why, and leave one more odd detail."  # required string — one line: what happens in every episode
+format: "One surprising true fact told as a small story: say it, set the scene, show the moment it happened, give the twist that explains it, and end on one plain sentence that says why it matters."  # required string — one line: what happens in every episode
 characters: [blink]             # required list(ref(character)) min=1 — characters from THIS channel; the first one narrates
 length:                         # required object — overrides the engine default (20–60 s)
   min_seconds: 20               # required number min=5 max=180 — shortest acceptable video
@@ -235,18 +235,18 @@ beats:                          # required list(object) min=2 max=8 — the stru
   - id: hook
     seconds: 3
     purpose: "The fact itself, as a short flat statement."
-  - id: assume
+  - id: setup
     seconds: 5
-    purpose: "What most people believe instead, so the fact has something to knock over."
-  - id: proof
-    seconds: 7
-    purpose: "The evidence: one real number, date or side-by-side comparison on screen."
-  - id: why
-    seconds: 8
-    purpose: "The reason it is true, in one picture the viewer can hold in their head."
-  - id: kicker
-    seconds: 4
-    purpose: "One more odd detail about the same thing, or what nobody knows yet. No call to action."
+    purpose: "The start of the story: when and where, and the problem someone has. One sentence."
+  - id: turn
+    seconds: 6
+    purpose: "The middle: what they do about it and the moment they find the surprising thing."
+  - id: twist
+    seconds: 10
+    purpose: "Why it is more than a coincidence: the detail that explains it, led in with a spoken turn such as \"Here's the funny part\"."
+  - id: ending
+    seconds: 6
+    purpose: "The end: where the thing is now, then one plain sentence that says the point of the story, then the catchphrase. No call to action."
 visual_style: "Paper collage on off-white paper: torn coloured sheets that change place on every beat, the hook pasted word by word in mixed cut-out lettering, taped notes, dated tags on a line and cut-out stickers. Blink sits in the lower-left corner and reacts; full-size on the hook. Word-by-word captions with the spoken word highlighted."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON
@@ -263,6 +263,9 @@ created: 2026-11-14             # required date
 
 - Free to make: code-drawn paper collage and the local Kokoro voice.
 - One fact per video. If the fact needs two caveats to be true, pick another fact.
+- It is a story, not a list: each beat follows from the one before ("so", "and there it is", "here's the funny
+  part"), and the last beat says the point in plain words. Talk like a person telling a friend; no poetry, no
+  clipped fact-after-fact reading.
 - Every number, date and label on screen is a claim with a checked source; popular "facts" that turn out to be
   myths are dropped, not hedged.
 - A great episode makes the viewer repeat the first sentence to someone else.
@@ -283,10 +286,10 @@ good_at: [finding the one detail nobody mentions, explaining with something you 
 bad_at: [keeping a secret, staying calm about small things]  # required list(string) min=1 — flaws make characters likeable
 voice:                          # required object — text-to-speech settings
   provider: kokoro              # required ref(voice-provider) — kokoro = free and local
-  voice_id: af_bella            # required string — see `./engine list voices`
-  speed: 1.08                   # required number min=0.7 max=1.4 — speaking rate
+  voice_id: af_heart            # required string — see `./engine list voices`
+  speed: 1.06                   # required number min=0.7 max=1.4 — speaking rate
   pitch_semitones: 0            # optional number min=-6 max=6 — pitch shift after synthesis
-  sentence_pause: 0.24          # optional number min=0 max=1 — seconds of pause after . ! ?
+  sentence_pause: 0.3           # optional number min=0 max=1 — seconds of pause after . ! ?
   clause_pause: 0.1             # optional number min=0 max=1 — seconds of pause after , ; :
 pronunciations: {}              # optional map — how the voice says tricky words, e.g. {"GIF": "jif"}
 original: true                  # required boolean — confirms this is an original character, not someone else's IP
@@ -346,16 +349,22 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       }
     },
     {
-      "id": "assume",
+      "id": "setup",
       "speaker": "blink",
-      "voiceover": "You'd think a computer bug is just a word. A glitch, somewhere in the code.",
+      "voiceover": "September ninth, 1947. Harvard's Mark II computer hits an error.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
           {
+            "type": "strips",
+            "lines": [
+              "9 September 1947"
+            ]
+          },
+          {
             "type": "note",
-            "kicker": "What you'd think",
-            "text": "Bug = just a word for a glitch?"
+            "kicker": "Harvard",
+            "text": "The Mark II computer hits an error"
           },
           {
             "type": "cutout",
@@ -369,22 +378,16 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       }
     },
     {
-      "id": "proof",
+      "id": "turn",
       "speaker": "blink",
-      "voiceover": "Nope. September ninth, 1947. Harvard's Mark II computer hits an error, and the operators find a moth caught in a relay.",
+      "voiceover": "So the operators go looking. And there it is: a moth, caught in a relay.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
           {
-            "type": "strips",
-            "lines": [
-              "9 September 1947"
-            ]
-          },
-          {
             "type": "note",
             "kicker": "What they found",
-            "text": "Harvard Mark II: a moth caught in a relay"
+            "text": "A moth, caught in a relay"
           },
           {
             "type": "cutout",
@@ -398,9 +401,9 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       }
     },
     {
-      "id": "why",
+      "id": "twist",
       "speaker": "blink",
-      "voiceover": "Okay, but why write it down? Because engineers already called faults bugs. Edison used the word in 1878. So they taped the moth into the logbook and wrote: First actual case of bug being found.",
+      "voiceover": "Here's the funny part. Engineers already called faults bugs. Edison did, back in 1878. So they taped the moth into the logbook and wrote: First actual case of bug being found.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
@@ -434,9 +437,9 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       }
     },
     {
-      "id": "kicker",
+      "id": "ending",
       "speaker": "blink",
-      "voiceover": "And the logbook, moth and all, is kept at the Smithsonian. No way. Really.",
+      "voiceover": "That page, moth and all, is kept at the Smithsonian. The one time a computer bug was a real bug. No way. Really.",
       "visual": {
         "skill": "render-paper-collage",
         "elements": [
@@ -444,6 +447,12 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
             "type": "note",
             "kicker": "Still around",
             "text": "The logbook, moth and all, is kept at the Smithsonian"
+          },
+          {
+            "type": "strips",
+            "lines": [
+              "A real bug"
+            ]
           },
           {
             "type": "cutout",
@@ -461,16 +470,16 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
   "claims": [
     {
       "id": "c1",
-      "claim": "A real moth got caught in a relay of a computer and caused an error (hook: \"A real moth jammed a computer\"; on screen: \"Bug = an actual insect\").",
+      "claim": "A real moth got caught in a relay of a computer and caused an error; the operators found it when they looked for the cause (hook: \"A real moth jammed a computer\"; turn: \"the operators go looking ... a moth, caught in a relay\"; ending: \"the one time a computer bug was a real bug\"; on screen: \"Bug = an actual insect\", \"A moth, caught in a relay\", \"A real bug\").",
       "beat": "hook",
       "source": "Computer History Museum, This Day in History, September 9: the moth was \"caught between the relay contacts of the Harvard Mark II computer\" https://www.computerhistory.org/tdih/september/9/ ; Wikipedia, Software bug: \"operators traced an error in the Mark II to a moth trapped in a relay.\" https://en.wikipedia.org/wiki/Software_bug",
       "confidence": "high",
-      "note": "\"Jammed\" is Blink's word for a moth caught between relay contacts causing an error; the sources say \"caught\" and \"trapped\"."
+      "note": "\"Jammed\" and \"go looking\" are Blink's words for a moth caught between relay contacts and operators who \"traced an error\" to it; the sources say \"caught\", \"trapped\" and \"traced\". \"The one time\" is a turn of phrase for this being the first actual insect, as the logbook note itself says."
     },
     {
       "id": "c2",
-      "claim": "It happened on September 9, 1947, on the Harvard Mark II computer (on screen: \"9 September 1947\", \"Harvard Mark II: a moth caught in a relay\").",
-      "beat": "proof",
+      "claim": "It happened on September 9, 1947, on the Harvard Mark II computer, which hit an error (on screen: \"9 September 1947\", \"The Mark II computer hits an error\").",
+      "beat": "setup",
       "source": "Computer History Museum, This Day in History, September 9 (1947): \"Harvard Mark II computer in Cambridge, Massachusetts\" https://www.computerhistory.org/tdih/september/9/",
       "confidence": "high",
       "note": "Wikipedia's Software bug article says only \"in about 1947\"; the exact day is from the Computer History Museum."
@@ -478,7 +487,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
     {
       "id": "c3",
       "claim": "Engineers already used the word \"bugs\" for faults before 1947; Thomas Edison used it in a letter in 1878 (on screen: \"Edison writes 'bugs'\" 1878, \"Moth in the Mark II\" 1947).",
-      "beat": "why",
+      "beat": "twist",
       "source": "Wikipedia, Software bug: Edison \"wrote the following words in a letter to an associate in 1878\": \"'Bugs'—as such little faults and difficulties are called—show themselves\" (letter to Puskas, 13 November 1878) https://en.wikipedia.org/wiki/Software_bug ; Computer History Museum: the term originated \"with Thomas Edison in the 1800s\" https://www.computerhistory.org/tdih/september/9/",
       "confidence": "high",
       "note": "The episode title says \"first computer bug\"; the script makes clear the word is older and this was the first actual insect."
@@ -486,14 +495,14 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
     {
       "id": "c4",
       "claim": "The operators taped the moth into the computer's logbook and wrote \"First actual case of bug being found.\"",
-      "beat": "why",
+      "beat": "twist",
       "source": "Computer History Museum, This Day in History, September 9: \"They taped the dead moth into the logbook for the computer.\" One team member wrote \"First actual case of bug being found\" https://www.computerhistory.org/tdih/september/9/ ; Wikipedia, Software bug (same annotation) https://en.wikipedia.org/wiki/Software_bug",
       "confidence": "high"
     },
     {
       "id": "c5",
-      "claim": "The logbook with the moth is kept at the Smithsonian (National Museum of American History).",
-      "beat": "kicker",
+      "claim": "The logbook page with the moth is kept at the Smithsonian (National Museum of American History).",
+      "beat": "ending",
       "source": "Wikipedia, Software bug, reference for the logbook: \"National Museum of American History, Smithsonian Institution\" https://en.wikipedia.org/wiki/Software_bug ; Smithsonian object record \"Log Book With Computer Bug\" https://americanhistory.si.edu/collections/object/nmah_334663 (the page refused automated access, so it was not read directly)",
       "confidence": "medium",
       "note": "Confirmed only through Wikipedia's citation; the Smithsonian page itself could not be opened by the fetch tool. The script does not say the logbook is on display."
@@ -520,14 +529,14 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
 
 <file path="(inline) automated QA results" role="input">
 - [x] Format: 1080×1920 @ 30.00 fps, h264/aac, yuvj420p
-- [x] Length: 34.41s (series allows 20–35s)
-- [x] Hook: speech starts immediately: first word at 0.16s (limit 0.5s)
-- [x] Hook: first line lands in 2 s: "A real moth jammed a computer." ends at 2.00s (limit 2s)
+- [x] Length: 32.70s (series allows 20–35s)
+- [x] Hook: speech starts immediately: first word at 0.17s (limit 0.5s)
+- [x] Hook: first line lands in 2 s: "A real moth jammed a computer." ends at 1.91s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.33s
-- [x] Text inside safe areas: 13 text elements checked on every frame (3631 measurements)
+- [x] Text inside safe areas: 14 text elements checked on every frame (3524 measurements)
 - [x] Nothing cut off: no element leaves the frame or overflows its box
-- [x] Captions in sync: 91 words; text matches script: yes; highlight off on 0/1002 frames; words over silent audio: 0
-- [x] Loudness: -14.4 LUFS (target -14 ±1.5), true peak -5.1 dBTP (max -1)
+- [x] Captions in sync: 85 words; text matches script: yes; highlight off on 0/949 frames; words over silent audio: 0
+- [x] Loudness: -14.5 LUFS (target -14 ±1.5), true peak -4.7 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
 - [x] Fact-check approved: approved by ilieBeracha (5 claims)
 </file>

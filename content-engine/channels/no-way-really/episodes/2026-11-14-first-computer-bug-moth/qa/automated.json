@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-15T14:09:27Z",
-  "render_hash": "35035b83e0ed575aa4833c3fe67d432d64d0c53f6f9a375da094d49c9c7347dc",
+  "checked_at": "2026-11-15T14:11:46Z",
+  "render_hash": "41d03191a09afbe0851037e86e0d8df29d30f59b0247361e19116a10f7498f32",
   "checks": [
     {
       "id": "format",
@@ -12,19 +12,19 @@
       "id": "length",
       "label": "Length",
       "pass": true,
-      "detail": "33.52s (series allows 20–35s)"
+      "detail": "32.70s (series allows 20–35s)"
     },
     {
       "id": "hook-speech",
       "label": "Hook: speech starts immediately",
       "pass": true,
-      "detail": "first word at 0.21s (limit 0.5s)"
+      "detail": "first word at 0.17s (limit 0.5s)"
     },
     {
       "id": "hook-line",
       "label": "Hook: first line lands in 2 s",
-      "pass": false,
-      "detail": "\"A real moth jammed a computer.\" ends at 2.02s (limit 2s)"
+      "pass": true,
+      "detail": "\"A real moth jammed a computer.\" ends at 1.91s (limit 2s)"
     },
     {
       "id": "hook-text",
@@ -36,7 +36,7 @@
       "id": "safe-areas",
       "label": "Text inside safe areas",
       "pass": true,
-      "detail": "14 text elements checked on every frame (3631 measurements)"
+      "detail": "14 text elements checked on every frame (3524 measurements)"
     },
     {
       "id": "cut-off",
@@ -48,13 +48,13 @@
       "id": "captions-sync",
       "label": "Captions in sync",
       "pass": true,
-      "detail": "85 words; text matches script: yes; highlight off on 0/972 frames; words over silent audio: 0"
+      "detail": "85 words; text matches script: yes; highlight off on 0/949 frames; words over silent audio: 0"
     },
     {
       "id": "loudness",
       "label": "Loudness",
       "pass": true,
-      "detail": "-14.5 LUFS (target -14 ±1.5), true peak -4.9 dBTP (max -1)"
+      "detail": "-14.5 LUFS (target -14 ±1.5), true peak -4.7 dBTP (max -1)"
     },
     {
       "id": "banned-topics",
