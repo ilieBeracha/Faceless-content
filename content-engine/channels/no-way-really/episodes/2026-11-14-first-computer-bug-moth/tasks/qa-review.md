@@ -22,7 +22,7 @@ Review the rendered episode **2026-11-14-first-computer-bug-moth** against `work
 
 ```json
 {
-  "render_hash": "41d03191a09afbe0851037e86e0d8df29d30f59b0247361e19116a10f7498f32",
+  "render_hash": "3f909f0c20e1bfd9c0929b2fa7302eba03111c01c5a022fff9ced6bdf91b4e88",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -250,7 +250,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
 visual_style: "Paper collage on off-white paper: torn coloured sheets that change place on every beat, the hook pasted word by word in mixed cut-out lettering, taped notes, dated tags on a line and cut-out stickers. Blink sits in the lower-left corner and reacts; full-size on the hook. Word-by-word captions with the spoken word highlighted."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON
-  render: [render-paper-collage, render-talking-character]  # required list(ref(skill:render)) min=1 — visual styles; mix and match
+  render: [render-themed, render-talking-character]  # required list(ref(skill:render)) min=1 — visual styles; mix and match
   captions: captions            # required ref(skill:captions) — word-by-word captions
 caption_style: pages            # optional enum(pages|single-word) — a block of words with the spoken one highlighted, or one word at a time
 cta: ""                         # optional string — closing line or call to action
@@ -328,18 +328,18 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       "voiceover": "A real moth jammed a computer.",
       "on_screen_text": "A real moth jammed a computer",
       "visual": {
-        "skill": "render-paper-collage",
+        "skill": "render-themed",
         "elements": [
           {
-            "type": "strips",
+            "type": "heading",
             "lines": [
               "Bug =",
               "an actual insect"
             ]
           },
           {
-            "type": "cutout",
-            "shape": "moth"
+            "type": "art",
+            "id": "moth"
           }
         ]
       },
@@ -353,10 +353,10 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       "speaker": "blink",
       "voiceover": "September ninth, 1947. Harvard's Mark II computer hits an error.",
       "visual": {
-        "skill": "render-paper-collage",
+        "skill": "render-themed",
         "elements": [
           {
-            "type": "strips",
+            "type": "heading",
             "lines": [
               "9 September 1947"
             ]
@@ -367,8 +367,8 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
             "text": "The Mark II computer hits an error"
           },
           {
-            "type": "cutout",
-            "shape": "computer"
+            "type": "art",
+            "id": "computer"
           }
         ]
       },
@@ -382,7 +382,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       "speaker": "blink",
       "voiceover": "So the operators go looking. And there it is: a moth, caught in a relay.",
       "visual": {
-        "skill": "render-paper-collage",
+        "skill": "render-themed",
         "elements": [
           {
             "type": "note",
@@ -390,8 +390,8 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
             "text": "A moth, caught in a relay"
           },
           {
-            "type": "cutout",
-            "shape": "moth"
+            "type": "art",
+            "id": "moth"
           }
         ]
       },
@@ -405,10 +405,10 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       "speaker": "blink",
       "voiceover": "Here's the funny part. Engineers already called faults bugs. Edison did, back in 1878. So they taped the moth into the logbook and wrote: First actual case of bug being found.",
       "visual": {
-        "skill": "render-paper-collage",
+        "skill": "render-themed",
         "elements": [
           {
-            "type": "tags",
+            "type": "marks",
             "items": [
               {
                 "value": "1878",
@@ -426,8 +426,8 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
             "text": "\"First actual case of bug being found.\""
           },
           {
-            "type": "cutout",
-            "shape": "book"
+            "type": "art",
+            "id": "logbook"
           }
         ]
       },
@@ -441,7 +441,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       "speaker": "blink",
       "voiceover": "That page, moth and all, is kept at the Smithsonian. The one time a computer bug was a real bug. No way. Really.",
       "visual": {
-        "skill": "render-paper-collage",
+        "skill": "render-themed",
         "elements": [
           {
             "type": "note",
@@ -449,14 +449,14 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
             "text": "The logbook, moth and all, is kept at the Smithsonian"
           },
           {
-            "type": "strips",
+            "type": "heading",
             "lines": [
               "A real bug"
             ]
           },
           {
-            "type": "cutout",
-            "shape": "book"
+            "type": "art",
+            "id": "museum"
           }
         ]
       },
@@ -466,7 +466,286 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       }
     }
   ],
-  "visuals": {},
+  "visuals": {
+    "render-themed": {
+      "art": {
+        "moth": {
+          "shapes": [
+            {
+              "d": "M50 40C30 15 5 15 6 38c1 16 24 18 44 12z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M50 40C70 15 95 15 94 38c-1 16-24 18-44 12z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M50 50c-16 4-32 12-26 26 6 10 22-4 26-16z",
+              "fill": "a",
+              "anim": "flap"
+            },
+            {
+              "d": "M50 50c16 4 32 12 26 26-6 10-22-4-26-16z",
+              "fill": "a",
+              "anim": "flap"
+            },
+            {
+              "d": "M18 34a6 6 0 1 0 12 0a6 6 0 1 0 -12 0z",
+              "fill": "paper",
+              "anim": "flap"
+            },
+            {
+              "d": "M70 34a6 6 0 1 0 12 0a6 6 0 1 0 -12 0z",
+              "fill": "paper",
+              "anim": "flap"
+            },
+            {
+              "d": "M21.6 34a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M73.6 34a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M44.5 52a5.5 20 0 1 0 11 0a5.5 20 0 1 0 -11 0z",
+              "fill": "ink"
+            },
+            {
+              "d": "M48 34C44 24 38 19 32 18M52 34c4-10 10-15 16-16",
+              "stroke": "ink",
+              "width": 2.4
+            }
+          ]
+        },
+        "computer": {
+          "shapes": [
+            {
+              "d": "M10 8L91 6L90 93L11 94Z",
+              "fill": "b"
+            },
+            {
+              "d": "M17 15L84 14L83 44L18 45Z",
+              "fill": "ink"
+            },
+            {
+              "d": "M25 30a10 10 0 1 0 20 0a10 10 0 1 0 -20 0z",
+              "fill": "paper"
+            },
+            {
+              "d": "M56 29a10 10 0 1 0 20 0a10 10 0 1 0 -20 0z",
+              "fill": "paper"
+            },
+            {
+              "d": "M32 30a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z",
+              "fill": "ink"
+            },
+            {
+              "d": "M63 29a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z",
+              "fill": "ink"
+            },
+            {
+              "d": "M35 22L35 38",
+              "stroke": "ink",
+              "width": 2,
+              "anim": "spin",
+              "at": [
+                35,
+                30
+              ]
+            },
+            {
+              "d": "M66 21L66 37",
+              "stroke": "ink",
+              "width": 2,
+              "anim": "spin",
+              "at": [
+                66,
+                29
+              ]
+            },
+            {
+              "d": "M17.4 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "a",
+              "anim": "blink"
+            },
+            {
+              "d": "M29 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "c"
+            },
+            {
+              "d": "M40.6 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "paper",
+              "anim": "blink"
+            },
+            {
+              "d": "M52.2 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "a"
+            },
+            {
+              "d": "M63.8 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "c",
+              "anim": "blink"
+            },
+            {
+              "d": "M75.4 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "paper"
+            },
+            {
+              "d": "M19 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M22 70h5v6h-5z",
+              "fill": "ink"
+            },
+            {
+              "d": "M36 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M39 76h5v6h-5z",
+              "fill": "ink"
+            },
+            {
+              "d": "M53 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M56 70h5v6h-5z",
+              "fill": "ink"
+            },
+            {
+              "d": "M70 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M73 76h5v6h-5z",
+              "fill": "ink"
+            }
+          ]
+        },
+        "logbook": {
+          "shapes": [
+            {
+              "d": "M4 22L96 20L97 86L3 88Z",
+              "fill": "a"
+            },
+            {
+              "d": "M9 18L49 22L49 82L8 80Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M51 22L92 17L93 79L51 82Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M48.6 20h2.8v64h-2.8z",
+              "fill": "ink"
+            },
+            {
+              "d": "M15 32L43 34",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 42L43 44",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 52L43 54",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 62L43 64",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 72L43 74",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M57 34L86 31",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M57 44L86 41",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M58 52L88 49L89 68L59 71Z",
+              "fill": "c",
+              "anim": "blink"
+            }
+          ]
+        },
+        "museum": {
+          "shapes": [
+            {
+              "d": "M6 86H94V94H6Z",
+              "fill": "ink"
+            },
+            {
+              "d": "M12 80H88V86H12Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M10 36L50 12L90 36Z",
+              "fill": "a"
+            },
+            {
+              "d": "M12 36H88V44H12Z",
+              "fill": "ink"
+            },
+            {
+              "d": "M17 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M31.5 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M46 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M60.5 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M75 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M50 12V3",
+              "stroke": "ink",
+              "width": 2
+            },
+            {
+              "d": "M50 3h11l-3 3l3 3h-11z",
+              "fill": "c",
+              "anim": "blink"
+            },
+            {
+              "d": "M44 62h12v18h-12z",
+              "fill": "ink"
+            }
+          ]
+        }
+      }
+    }
+  },
   "claims": [
     {
       "id": "c1",
@@ -533,7 +812,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
 - [x] Hook: speech starts immediately: first word at 0.17s (limit 0.5s)
 - [x] Hook: first line lands in 2 s: "A real moth jammed a computer." ends at 1.91s (limit 2s)
 - [x] Hook: on-screen text: visible from 0.33s
-- [x] Text inside safe areas: 14 text elements checked on every frame (3524 measurements)
+- [x] Text inside safe areas: 14 text elements checked on every frame (3465 measurements)
 - [x] Nothing cut off: no element leaves the frame or overflows its box
 - [x] Captions in sync: 85 words; text matches script: yes; highlight off on 0/949 frames; words over silent audio: 0
 - [x] Loudness: -14.5 LUFS (target -14 ±1.5), true peak -4.7 dBTP (max -1)

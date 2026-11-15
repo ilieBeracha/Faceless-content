@@ -1,16 +1,16 @@
 {
-  "render_hash": "41d03191a09afbe0851037e86e0d8df29d30f59b0247361e19116a10f7498f32",
+  "render_hash": "3f909f0c20e1bfd9c0929b2fa7302eba03111c01c5a022fff9ced6bdf91b4e88",
   "tone": {
     "pass": true,
     "notes": "Rewritten after the person said the first version was a robotic reading with no start, middle, end or point. It is now a small story: the fact, the scene (September 1947, the Mark II hits an error), the find (\"So the operators go looking. And there it is\"), the twist (\"Here's the funny part\": the word was already old, so they taped it in and wrote the note) and an ending that says the point in plain words (\"The one time a computer bug was a real bug\") before the catchphrase. Beats are joined by spoken connectives instead of standing as separate facts. Plain talk, no poetry, no call to action. Judged from the text; the audio was not listened to."
   },
   "banned_topics": {
     "pass": true,
-    "notes": "A piece of computing history. No politics, war, crime, advice, gore or copyable stunts. The popular myth (that the moth is where the word comes from) is corrected inside the story, not repeated. Edison and Harvard are named as historical facts, not used as characters. The cut-out pictures are generic drawings."
+    "notes": "A piece of computing history. No politics, war, crime, advice, gore or copyable stunts. The popular myth is corrected inside the story, not repeated. Edison and Harvard are named as historical facts, not used as characters. The artwork is generic: a moth, a cabinet computer, an open book, and a plain columned building standing for a museum, not a likeness of the real Smithsonian building."
   },
   "visuals": {
     "pass": true,
-    "notes": "Paper collage with continuous motion, re-rendered for the new five-beat story. Reviewed the 8 sampled frames plus a sheet of 2 frames per second across the whole video. Every beat has its lettering above Blink and one moving cutout beside it; the ending adds a pasted strip \"A real bug\" under the Smithsonian note. All text readable and inside the safe area (11/11 automated checks). Known blemish, not hiding any text: for about a third of a second at each beat change the page is bare while the new sheets slide in. Motion was judged from sampled frames, not watched at speed."
+    "notes": "Re-rendered with render-themed, the general renderer that replaced the single-look collage skill. The look now comes from the channel's theme.json (paper collage) and the pictures are drawn in the script as vector artwork: moth, computer, logbook, and a new museum for the ending. Reviewed the 8 sampled frames plus a sheet of 3 frames per second across the whole video: same collage look as before (torn sheets, pasted plates, taped notes, stickers on a starburst), every note present in every sampled frame, all text readable and inside the safe area (11/11 automated checks). Known blemish, not hiding any text: for about a third of a second at each beat change the page is bare while the new sheets slide in. Motion was judged from sampled frames, not watched at speed."
   },
   "character": {
     "pass": true,
@@ -19,8 +19,7 @@
   "overall": "pass",
   "fixes": [],
   "learnings": [
-    "The person rejected fact-after-fact scripts as robotic. Write each episode as a story: scene, what someone did, what they found, the twist, then one plain sentence that says the point. Join beats with spoken connectives (\"So\", \"And there it is\", \"Here's the funny part\").",
-    "The ending must land a point in plain words before the catchphrase (\"The one time a computer bug was a real bug\"); ending on a spare detail felt like the video just stopped. Plain talk, not poetry.",
-    "With af_heart, speed 1.02 makes a six-word hook end after 2 s; 1.06 keeps it at 1.91 s. 85 words came to 32.7 s."
+    "Episodes now draw their own pictures (render-themed artwork). One picture per beat that shows the thing being talked about works: moth for the find, a columned museum for where it is kept.",
+    "Keep artwork to a few big flat shapes; details smaller than about 3 units on the 100 board disappear beside Blink in the corner beats."
   ]
 }
