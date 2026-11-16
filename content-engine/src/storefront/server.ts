@@ -3,7 +3,10 @@
  * workspace (reached only through its secret link). The admin one lists orders and must be bound
  * to this computer only.
  */
+import { randomBytes, timingSafeEqual } from "node:crypto";
 import { createReadStream, existsSync, statSync } from "node:fs";
+import { HOLD_SECONDS, SESSION_SECONDS, type AccountStore, type HoldKind, type User } from "./accounts.ts";
+import type { SignIn } from "./google.ts";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { join } from "node:path";
 import { listChannelSlugs } from "../core/channels.ts";
@@ -12,7 +15,7 @@ import { brandKit, framesDir, videoPath } from "./brand-kit.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
 import { hostSvg } from "./host-svg.tsx";
-import { adminPage, createPage, demoPage, landingPage, messagePage, workspacePage } from "./pages.ts";
+import { accountPage, adminPage, createPage, demoPage, landingPage, messagePage, workspacePage, type Account } from "./pages.ts";
 import { ORDER_STATUSES, SECTIONS, validateIntake, type Order, type OrderStatus, type OrderStore, type SectionId } from "./store.ts";
 
 export interface StorefrontOptions {
@@ -25,8 +28,10 @@ export interface StorefrontOptions {
   demoChannel: string;
   /** The folder that holds themes/ and avatars/: the looks and hosts a customer can pick. */
   libraryDir: string;
-  /** Where customers reach the public server, for the links shown in admin. */
+  /** Where customers reach the public server: used for the links shown in admin and for the sign-in return address. */
   publicBase: string;
+  /** Sign-in and accounts. Null = switched off: orders are reached by their private link only. */
+  accounts: { store: AccountStore; signIn: SignIn } | null;
 }
 
 const MAX_BODY = 20_000;
@@ -62,7 +67,7 @@ class HttpError extends Error {
   }
 }
 
-function send(res: ServerResponse, status: number, html: string, extra: Record<string, string> = {}): void {
+function send(res: ServerResponse, status: number, html: string, extra: Record<string, string | string[]> = {}): void {
   res.writeHead(status, {
     "content-type": "text/html; charset=utf-8",
     "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; form-action 'self' https:; base-uri 'none'; frame-ancestors 'none'",
@@ -76,9 +81,27 @@ function send(res: ServerResponse, status: number, html: string, extra: Record<s
   res.end(html);
 }
 
-function redirect(res: ServerResponse, location: string): void {
-  res.writeHead(303, { location, "cache-control": "no-store", "referrer-policy": "no-referrer" });
+function redirect(res: ServerResponse, location: string, cookies: string[] = []): void {
+  res.writeHead(303, { location, "cache-control": "no-store", "referrer-policy": "no-referrer", ...(cookies.length ? { "set-cookie": cookies } : {}) });
   res.end();
+}
+
+/** Cookie names: the session, a form held during sign-in, and the sign-in round trip's state. */
+const SESSION = "sid";
+const HOLD = "hold";
+const STATE = "signin";
+
+function readCookies(req: IncomingMessage): Record<string, string> {
+  return Object.fromEntries((req.headers.cookie ?? "").split(";").map((c) => c.trim().split("=") as [string, string]).filter(([k, v]) => k && v));
+}
+
+/** A cookie scripts cannot read, sent only to this site. `seconds` 0 removes it. */
+function cookie(o: StorefrontOptions, name: string, value: string, seconds: number): string {
+  return `${name}=${value}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${seconds}${o.publicBase.startsWith("https://") ? "; Secure" : ""}`;
+}
+
+function sameSecret(a: string, b: string): boolean {
+  return a.length === b.length && timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
 
 async function readForm(req: IncomingMessage): Promise<Record<string, string>> {
@@ -140,9 +163,64 @@ export function createPublicServer(o: StorefrontOptions): Server {
   return createServer(
     handler(o.product, "public", async (req, res, url) => {
       const parts = url.pathname.split("/").filter(Boolean);
-      if (req.method === "GET" && parts.length === 0) return send(res, 200, landingPage(o.product, loadCatalog(o.libraryDir)));
       if (parts[0] === "assets") return sendAsset(req, res, parts, o.libraryDir);
-      if (req.method === "GET" && url.pathname === "/demo") return send(res, 200, demoPage(o.product, brandKit(o.ws, o.demoChannel)));
+      const acc = o.accounts;
+      const jar = readCookies(req);
+      const user: User | null = (acc && jar[SESSION] && acc.store.userBySession(jar[SESSION])) || null;
+      const account: Account = acc ? (user ? "in" : "out") : null;
+
+      /** Send the order or save the design for a signed-in person, then show them where it went. */
+      const finish = (who: User, kind: HoldKind, form: Record<string, string>, cookies: string[]) => {
+        if (!acc) throw new Error("finish() needs accounts switched on.");
+        if (kind === "draft") {
+          acc.store.saveDraft(who.id, form);
+          return redirect(res, "/account", cookies);
+        }
+        const catalog = loadCatalog(o.libraryDir);
+        const result = validateIntake(form, catalog);
+        if (result.errors) return send(res, 422, createPage(o.product, catalog, form, result.errors, "in"), cookies.length ? { "set-cookie": cookies } : {});
+        const order = o.store.create(result.intake, result.design, o.paymentUrl !== null, who.id);
+        acc.store.clearDraft(who.id);
+        return redirect(res, `/w/${order.token}`, cookies);
+      };
+      /** Keep the form and send the visitor to sign in; the sign-in's return picks it up again. */
+      const signInFirst = (kind: HoldKind, form: Record<string, string>) => {
+        if (!acc) throw new Error("signInFirst() needs accounts switched on.");
+        return redirect(res, "/signin", [cookie(o, HOLD, acc.store.hold(kind, form), HOLD_SECONDS)]);
+      };
+
+      if (req.method === "GET" && parts.length === 0) return send(res, 200, landingPage(o.product, loadCatalog(o.libraryDir), account));
+      if (req.method === "GET" && url.pathname === "/demo") return send(res, 200, demoPage(o.product, brandKit(o.ws, o.demoChannel), account));
+      if (acc) {
+        const returnTo = `${o.publicBase}/auth/google/callback`;
+        if (req.method === "GET" && url.pathname === "/signin") {
+          const state = randomBytes(24).toString("base64url");
+          return redirect(res, acc.signIn.startUrl(returnTo, state), [cookie(o, STATE, state, HOLD_SECONDS)]);
+        }
+        if (req.method === "GET" && url.pathname === "/auth/google/callback") {
+          const state = url.searchParams.get("state") ?? "";
+          const code = url.searchParams.get("code") ?? "";
+          if (!state || !jar[STATE] || !sameSecret(state, jar[STATE])) throw new HttpError(400, "That sign-in did not start here, or it took too long. Please try again.");
+          if (!code) throw new HttpError(400, "The sign-in was not finished. Please try again.");
+          const who = acc.store.signIn(await acc.signIn.identity(code, returnTo));
+          const cookies = [cookie(o, SESSION, acc.store.openSession(who.id), SESSION_SECONDS), cookie(o, STATE, "", 0), cookie(o, HOLD, "", 0)];
+          const held = jar[HOLD] ? acc.store.take(jar[HOLD]) : undefined;
+          return held ? finish(who, held.kind, held.form, cookies) : redirect(res, "/account", cookies);
+        }
+        if (req.method === "POST" && url.pathname === "/signout") {
+          if (jar[SESSION]) acc.store.closeSession(jar[SESSION]);
+          return redirect(res, "/", [cookie(o, SESSION, "", 0)]);
+        }
+        if (req.method === "GET" && url.pathname === "/account") {
+          if (!user) return redirect(res, "/signin");
+          const orders = o.store.listFor(user.id);
+          return send(res, 200, accountPage(o.product, user, orders, new Set(orders.filter((ord) => linkedChannel(ord)).map((ord) => ord.id)), acc.store.draft(user.id)));
+        }
+        if (req.method === "POST" && url.pathname === "/draft") {
+          const form = await readForm(req);
+          return user ? finish(user, "draft", form, []) : signInFirst("draft", form);
+        }
+      }
       if (req.method === "GET" && url.pathname === "/preview/host.svg") {
         // The designer's live picture: the host these settings describe, drawn by the video's own components.
         const built = buildHost(Object.fromEntries(url.searchParams));
@@ -151,13 +229,18 @@ export function createPublicServer(o: StorefrontOptions): Server {
         res.end(hostSvg(built.model));
         return;
       }
-      if (req.method === "GET" && url.pathname === "/create") return send(res, 200, createPage(o.product, loadCatalog(o.libraryDir)));
+      if (req.method === "GET" && url.pathname === "/create") {
+        // A signed-in person picks up the design they saved, unless they asked for a fresh start.
+        const saved = acc && user && !url.searchParams.has("new") ? acc.store.draft(user.id) : undefined;
+        return send(res, 200, createPage(o.product, loadCatalog(o.libraryDir), saved?.form ?? {}, {}, account));
+      }
       if (req.method === "POST" && url.pathname === "/intake") {
         const form = await readForm(req);
         const catalog = loadCatalog(o.libraryDir);
         const result = validateIntake(form, catalog);
-        if (result.errors) return send(res, 422, createPage(o.product, catalog, form, result.errors));
-        return redirect(res, `/w/${o.store.create(result.intake, result.design, o.paymentUrl !== null).token}`);
+        if (result.errors) return send(res, 422, createPage(o.product, catalog, form, result.errors, account));
+        if (!acc) return redirect(res, `/w/${o.store.create(result.intake, result.design, o.paymentUrl !== null, null).token}`);
+        return user ? finish(user, "order", form, []) : signInFirst("order", form);
       }
       if (parts[0] === "w" && parts[1]) {
         const order = o.store.byToken(parts[1]);

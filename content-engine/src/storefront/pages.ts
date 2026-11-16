@@ -1,4 +1,5 @@
 /** Server-rendered pages. Every value that came from a person or a file goes through esc(). */
+import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
 import type { Theme } from "../skills/render-themed/schema.ts";
 import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
@@ -41,7 +42,7 @@ main.app{gap:44px;padding-top:44px}
 .brand i::before,.brand i::after{content:"";position:absolute;top:9px;width:5px;height:7px;border-radius:50%;background:var(--on-pop)}.brand i::before{left:7px}.brand i::after{right:7px}
 .top nav{display:flex;gap:24px;margin-left:auto;font-size:15.5px;font-weight:500}.top nav a{text-decoration:none;color:var(--muted)}.top nav a:hover,.top nav a[aria-current]{color:var(--ink)}
 .brand,.btn{white-space:nowrap}.short{display:none}
-@media(max-width:600px){.top nav a.hide{display:none}.top .wrap{gap:14px}.long{display:none}.short{display:inline}}
+@media(max-width:600px){.top nav a.hide{display:none}.top .wrap{gap:10px}.top nav a{white-space:nowrap}.brand{font-size:19px;gap:8px}.long{display:none}.short{display:inline}}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 16px/1 var(--body);padding:15px 24px;border-radius:99px;border:0;background:var(--ink);color:var(--bg);text-decoration:none;cursor:pointer;transition:transform .12s}
 .btn:hover{transform:translateY(-2px)}.btn:active{transform:none}
@@ -188,13 +189,16 @@ code.link,pre.json{font:500 12.5px/1.5 ui-monospace,Menlo,monospace;word-break:b
 `;
 
 type Page = "home" | "demo" | "create" | "app";
+/** Whether the visitor is signed in. Null = sign-in is switched off, so pages show no account links. */
+export type Account = "in" | "out" | null;
 
 /** Changes on every server start, so browsers never keep running an older copy of the script. */
 const ASSET_VERSION = Date.now().toString(36);
 
-function layout(product: string, title: string, page: Page, body: string, script = false): string {
+function layout(product: string, title: string, page: Page, body: string, script = false, account: Account = null): string {
+  const mine = account === "in" ? `<a href="/account"><span class="long">My channels</span><span class="short">Account</span></a>` : account === "out" ? `<a href="/signin">Sign in</a>` : "";
   const link = (href: string, label: string, key: Page, cls = "") => `<a href="${href}"${cls ? ` class="${cls}"` : ""}${page === key ? ' aria-current="page"' : ""}>${label}</a>`;
-  const nav = page === "app" ? "" : `<nav>${link("/#how", "How it works", "home", "hide")}${link("/demo", "Demo", "demo")}</nav><a class="btn sm" href="/create" aria-label="Design your channel"><span class="long">Design your channel</span><span class="short">Design</span></a>`;
+  const nav = page === "app" ? "" : `<nav>${link("/#how", "How it works", "home", "hide")}${link("/demo", "Demo", "demo", account ? "hide" : "")}${mine}</nav><a class="btn sm" href="/create" aria-label="Design your channel"><span class="long">Design your channel</span><span class="short">Design</span></a>`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${CSS}</style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="/"><i></i>${esc(product)}</a>${nav}</div></header>
 <div class="wrap"><main${page === "app" ? ' class="app"' : ""}>${body}</main></div>
@@ -208,7 +212,7 @@ const ICONS = {
   video: `<svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 9.5v5l4-2.5z"/></svg>`,
 };
 
-export function landingPage(product: string, catalog: Catalog): string {
+export function landingPage(product: string, catalog: Catalog, account: Account = null): string {
   const cast = catalog.hosts.slice(0, 7).map((h) => `<img src="/assets/host/${h.id}.jpg" alt="" loading="lazy">`).join("");
   const shelf = [...catalog.looks.slice(0, 6).map((l) => lookSwatch(l.theme)), ...catalog.hosts.slice(0, 6).map((h) => `<img class="vis" src="/assets/host/${h.id}.jpg" alt="" loading="lazy">`)].join("");
   return layout(
@@ -241,6 +245,8 @@ export function landingPage(product: string, catalog: Catalog): string {
 </ol></section>
 
 <section class="band"><h2>See a real channel before you start.</h2><div class="actions"><a class="btn" href="/demo">Open the demo</a></div></section>`,
+    false,
+    account,
   );
 }
 
@@ -253,7 +259,7 @@ const identityFacts = (kit: BrandKit) =>
   `<dl class="kv"><div><dt>About</dt><dd>${esc(kit.niche)}</dd></div><div><dt>Who watches</dt><dd>${esc(kit.audience.who)} (${esc(kit.audience.age_range)})</dd></div><div><dt>Rhythm</dt><dd>${esc(kit.cadence)}</dd></div><div><dt>Made for</dt><dd>${esc(kit.platforms.join(", "))}</dd></div></dl>`;
 
 /** The demonstration: a real channel's kit, explored with tabs. No account, nothing to fill in. */
-export function demoPage(product: string, kit: BrandKit): string {
+export function demoPage(product: string, kit: BrandKit, account: Account = null): string {
   const tab = (id: string, label: string, checked = false) => `<label><input type="radio" name="tab" id="t-${id}"${checked ? " checked" : ""}>${label}</label>`;
   const shots = (name: string) => `<div class="frames">${[1, 2, 3].map((n) => `<img src="/assets/${name}-${n}.jpg" alt="${name} look, frame ${n}">`).join("")}</div>`;
   return layout(
@@ -276,6 +282,8 @@ export function demoPage(product: string, kit: BrandKit): string {
 <p class="muted">Both are drawn in motion. You pick one when you create your channel and can switch after you see yours.</p></div>
 </div></section>
 <section class="band"><h2>Now make it yours.</h2><div class="actions"><a class="btn" href="/create">Design your channel</a></div></section>`,
+    false,
+    account,
   );
 }
 
@@ -339,7 +347,7 @@ function knob(name: string, label: string, options: readonly string[], value: st
 const ink = (name: string, label: string, value: string, slot = "") => `<label class="ink"><input type="color" name="${name}" value="${HEX.test(value) ? esc(value) : "#888888"}"><span${slot ? ` data-colour="${slot}"` : ""}>${esc(label)}</span></label>`;
 
 /** The real creation: four short steps. The phone on the right is the customer's own host standing in their own look. */
-export function createPage(product: string, catalog: Catalog, values: Fields = {}, errors: Partial<Record<keyof Intake, string>> = {}): string {
+export function createPage(product: string, catalog: Catalog, values: Fields = {}, errors: Partial<Record<keyof Intake, string>> = {}, account: Account = null): string {
   const look = values.look === OWN_LOOK || catalog.looks.some((l) => l.name === values.look) ? values.look : (catalog.looks[0]?.name ?? OWN_LOOK);
   const host = values.avatar === OWN_HOST || catalog.hosts.some((h) => h.name === values.avatar) ? values.avatar : (catalog.hosts[0]?.name ?? OWN_HOST);
   const startLook = catalog.looks.find((l) => l.name === look);
@@ -396,7 +404,8 @@ ${field("avoid", values, errors, "area", "Optional. Subjects the channel must ne
 <fieldset class="step"><legend>Where do we reach you?</legend>
 ${field("contact_name", values, errors, "text", "So we know who to talk to.", "Your name")}
 ${field("email", values, errors, "email", "Used only to contact you about this channel.", "you@example.com")}</fieldset>
-<div class="nav"><button type="button" class="btn ghost" data-back hidden>Back</button><span class="sp"></span><button type="button" class="btn" data-next hidden>Continue</button><button type="submit" class="btn accent" data-submit>Create my workspace</button></div>
+<div class="nav"><button type="button" class="btn ghost" data-back hidden>Back</button><span class="sp"></span>${account ? `<button type="submit" class="btn ghost" formaction="/draft" formnovalidate>Save for later</button>` : ""}<button type="button" class="btn" data-next hidden>Continue</button><button type="submit" class="btn accent" data-submit>Create my workspace</button></div>
+${account === "out" ? `<p class="muted" style="font-size:14.5px">You sign in with Google when you save or send, so your channel is there when you come back.</p>` : ""}
 </form>
 <aside class="preview" aria-label="Your channel so far"><div class="phone"><div class="frame" data-frame data-casing="${esc(lf.l_casing)}" data-surface="${esc(lf.l_surface)}" data-backdrop="${esc(lf.l_backdrop)}" data-art="${esc(lf.l_art)}" data-host="${esc(lf.l_host)}" data-host_size="${esc(lf.l_host_size)}" data-lettering="${esc(lf.l_lettering)}" data-pictures="${esc(lf.l_pictures)}" style="${frameStyle(lf)}">
 <div class="bd"></div><div class="plate">Your headline</div><div class="note"><b>The hook</b><span data-out="idea" data-empty="What your channel is about shows up here.">What your channel is about shows up here.</span></div>
@@ -404,6 +413,7 @@ ${field("email", values, errors, "email", "Used only to contact you about this c
 <p class="muted">A sketch of your look and host. Nothing is sent until the last step.</p></aside>
 </section>`,
     true,
+    account,
   );
 }
 
@@ -482,8 +492,32 @@ export function workspacePage(product: string, order: Order, kit: BrandKit | nul
     `<section><div class="row"><p class="eyebrow">Order ${esc(order.id)}</p><span class="pill">${esc(STATUS_TEXT[order.status])}</span></div>
 <h1>Hello, ${esc(order.intake.contact_name)}</h1>
 ${track(order, kit !== null)}
-<p class="muted" style="font-size:14.5px;max-width:70ch">This page is private to you. Anyone with its link can open it, so keep the link like a password and bookmark it now — there is no login to get it back.</p></section>
+<p class="muted" style="font-size:14.5px;max-width:70ch">${order.user ? `This page is private to you. Anyone with its link can open it, so keep the link like a password. You can always find it again under <a href="/account">My channels</a>.` : `This page is private to you. Anyone with its link can open it, so keep the link like a password and bookmark it now — there is no login to get it back.`}</p></section>
 ${body}${brief}`,
+  );
+}
+
+/** Everything one account has: the design saved for later, and each channel with where it stands. */
+export function accountPage(product: string, user: User, orders: Order[], kitReady: ReadonlySet<string>, draft: Draft | undefined): string {
+  const saved = draft
+    ? `<section class="notice"><h2>Your saved design</h2><p class="muted">${draft.form.idea ? esc(draft.form.idea) : "Not described yet."} Saved ${esc(draft.saved.slice(0, 10))}.</p><a class="btn" href="/create">Continue designing</a></section>`
+    : "";
+  const cards = orders
+    .slice()
+    .reverse()
+    .map(
+      (o) =>
+        `<article class="notice"><div class="row"><h3>${esc(o.intake.idea)}</h3><span class="pill">${esc(STATUS_TEXT[o.status])}</span></div><p class="muted" style="font-size:14.5px">Order ${esc(o.id)} · sent ${esc(o.created.slice(0, 10))}</p>${track(o, kitReady.has(o.id))}<a class="btn sm" href="/w/${esc(o.token)}">Open workspace</a></article>`,
+    )
+    .join("");
+  return layout(
+    product,
+    `My channels — ${product}`,
+    "app",
+    `<section><div class="row"><p class="eyebrow">Signed in as ${esc(user.email)}</p><form method="post" action="/signout"><button type="submit" class="btn sm ghost">Sign out</button></form></div>
+<h1>My channels</h1></section>
+${saved}
+<section>${cards || (draft ? "" : `<p class="muted">Nothing here yet. Design your first channel and it shows up on this page.</p>`)}<div><a class="btn accent" href="/create?new">Design a new channel</a></div></section>`,
   );
 }
 

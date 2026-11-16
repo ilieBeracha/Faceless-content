@@ -37,4 +37,12 @@ jobs:
           if [ "$(flyctl volumes list --app "$APP" --json | jq 'length')" = "0" ]; then
             flyctl volumes create orders --app "$APP" --region fra --size 1 --yes
           fi
+      - name: Pass the sign-in settings to the server, when they are set
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: |
+          if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ]; then
+            flyctl secrets set --app "$APP" --stage GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET"
+          fi
       - run: flyctl deploy --app "$APP" --remote-only --ha=false

@@ -1,7 +1,7 @@
 /**
- * Orders for the storefront. There are no accounts: each order has one long random token, and the
- * link that carries it is the customer's whole workspace. Stored as one JSON file (gitignored — it
- * holds customers' names and email addresses).
+ * Orders for the storefront. Each order has one long random token, and the link that carries it
+ * opens the customer's workspace. When sign-in is switched on an order also belongs to an account
+ * (accounts.ts). Stored as one JSON file (gitignored — it holds customers' names and email addresses).
  */
 import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
@@ -62,6 +62,8 @@ export interface Order {
   status: OrderStatus;
   /** True when the order was taken while payment was switched off: it never waited for payment. */
   no_payment?: true;
+  /** The account that made it (a user id from accounts.ts). Absent when sign-in was switched off. */
+  user?: string;
   intake: Intake;
   /** Absent on orders made before the designer existed. */
   design?: Design;
@@ -162,7 +164,7 @@ export class OrderStore {
   }
 
   /** `takePayment` false = payment is switched off, so work starts without waiting for it. */
-  create(intake: Intake, design: Design, takePayment: boolean): Order {
+  create(intake: Intake, design: Design, takePayment: boolean, user: string | null): Order {
     const orders = this.read();
     const order: Order = {
       token: randomBytes(32).toString("base64url"),
@@ -170,6 +172,7 @@ export class OrderStore {
       created: nowIso(),
       status: takePayment ? "awaiting-payment" : "in-production",
       ...(takePayment ? {} : { no_payment: true as const }),
+      ...(user ? { user } : {}),
       intake,
       design,
       channel: null,
@@ -177,6 +180,11 @@ export class OrderStore {
     };
     this.write([...orders, order]);
     return order;
+  }
+
+  /** One account's orders, oldest first. */
+  listFor(user: string): Order[] {
+    return this.read().filter((o) => o.user === user);
   }
 
   byToken(token: string): Order | undefined {

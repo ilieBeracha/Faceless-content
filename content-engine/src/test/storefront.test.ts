@@ -1,15 +1,17 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { cpSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
+import { AccountStore } from "../storefront/accounts.ts";
 import { brandKit, videoPath } from "../storefront/brand-kit.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import { OWN_HOST, OWN_LOOK, loadCatalog, readHosts, readLooks } from "../storefront/catalog.ts";
 import { HOST_RIGS, buildHost, buildLook, hostFields, lookFields } from "../storefront/designer.ts";
+import type { SignIn } from "../storefront/google.ts";
 import { hostSvg } from "../storefront/host-svg.tsx";
 import { createAdminServer, createPublicServer } from "../storefront/server.ts";
 import { OrderStore, validateIntake } from "../storefront/store.ts";
@@ -77,8 +79,8 @@ describe("storefront: intake and orders", () => {
 
   it("stores orders on disk under an unguessable token", () => {
     const file = join(mkdtempSync(join(tmpdir(), "storefront-")), "orders.json");
-    const a = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null }, true);
-    const b = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null }, true);
+    const a = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null }, true, null);
+    const b = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null }, true, null);
     assert.notEqual(a.token, b.token);
     assert.ok(a.token.length >= 43);
     const reopened = new OrderStore(file);
@@ -107,7 +109,7 @@ describe("storefront: servers", () => {
   const ws = tempWorkspace();
   makeChannel(ws, "kit-demo");
   const store = new OrderStore(ws.path("storefront", "orders.json"));
-  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test" };
+  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null };
   let pub: Server;
   let admin: Server;
   let base = "";
@@ -230,6 +232,12 @@ describe("storefront: servers", () => {
     assert.equal((await fetch(`${base}/orders`)).status, 404);
   });
 
+  it("has no sign-in or account pages while sign-in is switched off", async () => {
+    for (const path of ["/signin", "/account", "/auth/google/callback?code=ok-sam&state=x"]) assert.equal((await fetch(base + path, { redirect: "manual" })).status, 404, path);
+    assert.equal((await fetch(`${base}/draft`, form(GOOD))).status, 404);
+    assert.doesNotMatch(await (await fetch(`${base}/create`)).text(), /Sign in|Save for later/);
+  });
+
   it("shows the brand kit, video and decisions only after linking", async () => {
     const order = store.list()[0];
     const video = videoPath(ws, "kit-demo", "2026-01-01-demo");
@@ -288,5 +296,130 @@ describe("storefront: the library of looks and hosts", () => {
     assert.throws(() => readHosts(dir), /the name "Byte" is already used/);
     writeFileSync(join(dir, "themes", "broken.json"), JSON.stringify({ name: "Broken" }));
     assert.throws(() => readLooks(dir), /themes\/broken\.json is not a valid theme/);
+  });
+});
+
+describe("storefront: sign-in and accounts", () => {
+  const ws = tempWorkspace();
+  makeChannel(ws, "kit-demo");
+  const store = new OrderStore(ws.path("storefront", "orders.json"));
+  const accountsFile = ws.path("storefront", "accounts.json");
+  // Stands in for Google: the code "ok-<name>" signs in as <name>; anything else is refused.
+  const signIn: SignIn = {
+    startUrl: (redirectUri, state) => `https://signin.example.test/?${new URLSearchParams({ redirect_uri: redirectUri, state })}`,
+    identity: async (code) => {
+      if (!code.startsWith("ok-")) throw new Error("refused");
+      return { sub: `g-${code.slice(3)}`, email: `${code.slice(3)}@example.com`, name: code.slice(3) };
+    },
+  };
+  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: { store: new AccountStore(accountsFile), signIn } };
+  let pub: Server;
+  let base = "";
+  before(async () => {
+    pub = createPublicServer(options);
+    await new Promise<void>((r) => pub.listen(0, "127.0.0.1", r));
+    base = `http://127.0.0.1:${(pub.address() as AddressInfo).port}`;
+  });
+  after(() => pub.close());
+
+  /** A browser that keeps its cookies between requests and never follows redirects by itself. */
+  function browser() {
+    const jar = new Map<string, string>();
+    const flags: string[] = [];
+    return {
+      jar,
+      flags,
+      async go(path: string, init: { method?: string; headers?: Record<string, string>; body?: string } = {}) {
+        const res = await fetch(base + path, { ...init, redirect: "manual", headers: { ...init.headers, cookie: [...jar].map(([k, v]) => `${k}=${v}`).join("; ") } });
+        for (const c of res.headers.getSetCookie()) {
+          const [name, value] = c.split(";")[0].split("=");
+          flags.push(c);
+          if (/Max-Age=0\b/.test(c)) jar.delete(name);
+          else jar.set(name, value);
+        }
+        return res;
+      },
+      /** Go through the whole sign-in as `name`; returns where the site sends them afterwards. */
+      async signIn(name: string) {
+        const start = await this.go("/signin");
+        assert.equal(start.status, 303);
+        const at = new URL(start.headers.get("location")!);
+        assert.equal(at.origin, "https://signin.example.test");
+        assert.equal(at.searchParams.get("redirect_uri"), "http://example.test/auth/google/callback");
+        return this.go(`/auth/google/callback?code=ok-${name}&state=${at.searchParams.get("state")}`);
+      },
+    };
+  }
+
+  it("signs a person in, shows them their page, and signs them out again", async () => {
+    const b = browser();
+    assert.match(await (await b.go("/")).text(), /href="\/signin">Sign in</);
+    const away = await b.go("/account");
+    assert.equal(away.status, 303);
+    assert.equal(away.headers.get("location"), "/signin");
+    const back = await b.signIn("sam");
+    assert.equal(back.status, 303);
+    assert.equal(back.headers.get("location"), "/account");
+    assert.ok(b.flags.every((c) => /; HttpOnly; SameSite=Lax;/.test(c)), "every cookie is hidden from scripts and kept to this site");
+    const mine = await (await b.go("/account")).text();
+    assert.match(mine, /Signed in as sam@example\.com/);
+    assert.match(mine, /Nothing here yet/);
+    assert.match(await (await b.go("/")).text(), /href="\/account"><span class="long">My channels</);
+    const session = b.jar.get("sid")!;
+    assert.ok(!readFileSync(accountsFile, "utf8").includes(session), "the session secret is stored only as a hash");
+    assert.equal((await b.go("/signout", { method: "POST" })).status, 303);
+    assert.equal(b.jar.has("sid"), false);
+    b.jar.set("sid", session);
+    assert.equal((await b.go("/account")).headers.get("location"), "/signin", "a signed-out session cannot be reused");
+  });
+
+  it("refuses a sign-in return that did not start in this browser", async () => {
+    const b = browser();
+    assert.equal((await b.go("/auth/google/callback?code=ok-eve&state=made-up")).status, 400);
+    await b.go("/signin");
+    assert.equal((await b.go("/auth/google/callback?code=ok-eve&state=made-up")).status, 400);
+    assert.equal(b.jar.has("sid"), false);
+  });
+
+  it("holds an order through sign-in, then keeps it on that person's page only", async () => {
+    const b = browser();
+    const bad = await b.go("/intake", form({ ...GOOD, email: "nope" }));
+    assert.equal(bad.status, 422);
+    assert.equal(b.jar.has("hold"), false);
+    const sent = await b.go("/intake", form({ ...GOOD, idea: "How lighthouses work" }));
+    assert.equal(sent.headers.get("location"), "/signin");
+    assert.equal(store.list().length, 0, "nothing is ordered before sign-in");
+    const back = await b.signIn("ana");
+    assert.match(back.headers.get("location")!, /^\/w\/[\w-]{43,}$/);
+    assert.equal(b.jar.has("hold"), false);
+    const [order] = store.list();
+    assert.equal(order.intake.idea, "How lighthouses work");
+    assert.equal(order.user, options.accounts.store.userBySession(b.jar.get("sid")!)?.id);
+    assert.match(await (await b.go(back.headers.get("location")!)).text(), /href="\/account">My channels</);
+    const mine = await (await b.go("/account")).text();
+    assert.match(mine, /How lighthouses work/);
+    assert.match(mine, /In production/);
+    assert.ok(mine.includes(`href="/w/${order.token}"`));
+    // Signed in already: the next one goes straight through.
+    assert.match((await b.go("/intake", form({ ...GOOD, idea: "How tides work" }))).headers.get("location")!, /^\/w\//);
+    assert.equal(store.listFor(order.user!).length, 2);
+    const other = browser();
+    await other.signIn("ben");
+    assert.doesNotMatch(await (await other.go("/account")).text(), /lighthouses|tides/);
+  });
+
+  it("saves a design for later, brings it back on the create page, and clears it once sent", async () => {
+    const b = browser();
+    const saved = await b.go("/draft", form({ idea: "Why bread rises", look: "Blueprint", contact_name: "" }));
+    assert.equal(saved.headers.get("location"), "/signin");
+    assert.equal((await b.signIn("cy")).headers.get("location"), "/account");
+    assert.match(await (await b.go("/account")).text(), /Your saved design[\s\S]*Why bread rises/);
+    assert.match(await (await b.go("/create")).text(), /Why bread rises/);
+    assert.doesNotMatch(await (await b.go("/create?new")).text(), /Why bread rises/);
+    assert.equal((await b.go("/draft", form({ idea: "Why bread rises twice" }))).headers.get("location"), "/account");
+    assert.match(await (await b.go("/create")).text(), /Why bread rises twice/);
+    assert.match((await b.go("/intake", form({ ...GOOD, idea: "Why bread rises twice" }))).headers.get("location")!, /^\/w\//);
+    assert.doesNotMatch(await (await b.go("/account")).text(), /Your saved design/);
+    assert.match(await (await b.go("/create")).text(), /Save for later/);
   });
 });
