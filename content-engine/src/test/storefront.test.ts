@@ -77,8 +77,8 @@ describe("storefront: intake and orders", () => {
 
   it("stores orders on disk under an unguessable token", () => {
     const file = join(mkdtempSync(join(tmpdir(), "storefront-")), "orders.json");
-    const a = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null });
-    const b = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null });
+    const a = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null }, true);
+    const b = new OrderStore(file).create(validateIntake(GOOD, OFFER).intake!, { theme: null, model: null }, true);
     assert.notEqual(a.token, b.token);
     assert.ok(a.token.length >= 43);
     const reopened = new OrderStore(file);
@@ -142,8 +142,36 @@ describe("storefront: servers", () => {
     assert.equal(page.headers.get("cache-control"), "no-store");
     const html = await page.text();
     assert.ok(!html.includes("<script>alert(1)</script>"), "customer text must be escaped");
-    assert.match(html, /Waiting for payment/);
+    assert.match(html, /Your brand kit is being made/);
+    assert.match(html, /Not needed for now/);
+    assert.doesNotMatch(html, /Waiting for payment|Pay securely|Received/);
     assert.doesNotMatch(html, /Test kit-demo/);
+    assert.equal(store.list()[0].status, "in-production");
+  });
+
+  it("waits for payment when a payment link is set, and shows nothing of the channel until it arrives", async () => {
+    const paidStore = new OrderStore(ws.path("storefront", "paid-orders.json"));
+    const paid = { ...options, store: paidStore, paymentUrl: "https://pay.example.test/link" };
+    const site = createPublicServer(paid);
+    const back = createAdminServer(paid);
+    await Promise.all([new Promise<void>((r) => site.listen(0, "127.0.0.1", r)), new Promise<void>((r) => back.listen(0, "127.0.0.1", r))]);
+    try {
+      const at = `http://127.0.0.1:${(site.address() as AddressInfo).port}`;
+      const backAt = `http://127.0.0.1:${(back.address() as AddressInfo).port}`;
+      const res = await fetch(`${at}/intake`, form(GOOD));
+      assert.equal(res.status, 303);
+      const order = paidStore.list()[0];
+      assert.equal(order.status, "awaiting-payment");
+      assert.equal(order.no_payment, undefined);
+      assert.equal((await fetch(`${backAt}/orders/${order.id}/channel`, form({ channel: "kit-demo" }))).status, 303);
+      const html = await (await fetch(at + res.headers.get("location")!)).text();
+      assert.match(html, /Waiting for payment/);
+      assert.match(html, /href="https:\/\/pay\.example\.test\/link"/);
+      assert.doesNotMatch(html, /Test kit-demo/);
+    } finally {
+      site.close();
+      back.close();
+    }
   });
 
   it("serves its fonts and sample media, and nothing else, from /assets", async () => {
@@ -202,7 +230,7 @@ describe("storefront: servers", () => {
     assert.equal((await fetch(`${base}/orders`)).status, 404);
   });
 
-  it("shows the brand kit, video and decisions only after payment and linking", async () => {
+  it("shows the brand kit, video and decisions only after linking", async () => {
     const order = store.list()[0];
     const video = videoPath(ws, "kit-demo", "2026-01-01-demo");
     mkdirSync(dirname(video), { recursive: true });

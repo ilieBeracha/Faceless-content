@@ -19,7 +19,7 @@ export interface StorefrontOptions {
   ws: Workspace;
   store: OrderStore;
   product: string;
-  /** Hosted payment page (for example a Stripe payment link). Null = not switched on. */
+  /** Hosted payment page (for example a Stripe payment link). Null = not switched on: new orders start without payment. */
   paymentUrl: string | null;
   /** The channel shown on the demo page. */
   demoChannel: string;
@@ -157,7 +157,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
         const catalog = loadCatalog(o.libraryDir);
         const result = validateIntake(form, catalog);
         if (result.errors) return send(res, 422, createPage(o.product, catalog, form, result.errors));
-        return redirect(res, `/w/${o.store.create(result.intake, result.design).token}`);
+        return redirect(res, `/w/${o.store.create(result.intake, result.design, o.paymentUrl !== null).token}`);
       }
       if (parts[0] === "w" && parts[1]) {
         const order = o.store.byToken(parts[1]);

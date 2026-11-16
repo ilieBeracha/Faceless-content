@@ -99,7 +99,7 @@ button.chip{font:inherit;font-size:15px;color:inherit;cursor:pointer}button.chip
 
 /* create */
 .create{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:56px;align-items:start}
-@media(max-width:900px){.create{grid-template-columns:1fr;gap:32px}.preview{position:static;order:-1;max-width:240px;margin:0 auto}}
+@media(max-width:900px){.create{grid-template-columns:1fr;gap:32px}.create .preview{position:static;order:-1;max-width:240px;margin:0 auto}}
 form.wizard{background:var(--surface);border-radius:28px;padding:clamp(22px,4vw,40px);display:flex;flex-direction:column;gap:28px}
 .progress{display:none;flex-direction:column;gap:10px}form.js .progress{display:flex}
 .bar{height:8px;border-radius:99px;background:var(--soft);overflow:hidden}.bar i{display:block;height:100%;width:25%;background:var(--accent);border-radius:99px;transition:width .25s}
@@ -419,7 +419,7 @@ function track(order: Order, hasKit: boolean): string {
   const at = order.status === "awaiting-payment" ? 1 : order.status === "delivered" ? 4 : 2;
   const steps = [
     ["Brief", "Sent"],
-    ["Payment", order.status === "awaiting-payment" ? "Waiting" : "Received"],
+    ["Payment", order.status === "awaiting-payment" ? "Waiting" : order.no_payment ? "Not needed for now" : "Received"],
     ["Brand kit", hasKit ? "Ready to review" : "Being made"],
     ["Videos", order.status === "delivered" ? "Delivered" : "After your approval"],
   ];

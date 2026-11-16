@@ -4,7 +4,7 @@
  *   STOREFRONT_PORT          public site port (default 4300)
  *   STOREFRONT_HOST          public site address (default 127.0.0.1; use 0.0.0.0 to accept visitors)
  *   STOREFRONT_ADMIN_PORT    orders page port, always bound to 127.0.0.1 (default 4301)
- *   STOREFRONT_PAYMENT_URL   hosted payment page, e.g. a Stripe payment link (optional)
+ *   STOREFRONT_PAYMENT_URL   hosted payment page, e.g. a Stripe payment link (optional; without it new orders start without payment)
  *   STOREFRONT_PUBLIC_URL    the address customers use, for the links shown in admin
  *   STOREFRONT_DEMO_CHANNEL  the channel shown on the demo page (default "no-way-really")
  */
@@ -37,4 +37,4 @@ const options = {
 createPublicServer(options).listen(port, host, () => console.log(`Public site:  http://${host}:${port}`));
 createAdminServer(options).listen(adminPort, "127.0.0.1", () => console.log(`Orders (this computer only):  http://127.0.0.1:${adminPort}`));
 console.log(`On offer: ${catalog.looks.length} looks (themes/), ${catalog.hosts.length} hosts (avatars/).`);
-if (!paymentUrl) console.log("Payment link not set (STOREFRONT_PAYMENT_URL): customers are told you will contact them.");
+if (!paymentUrl) console.log("Payment link not set (STOREFRONT_PAYMENT_URL): new orders start without payment.");

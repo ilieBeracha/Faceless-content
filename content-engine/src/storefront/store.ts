@@ -60,6 +60,8 @@ export interface Order {
   id: string;
   created: string;
   status: OrderStatus;
+  /** True when the order was taken while payment was switched off: it never waited for payment. */
+  no_payment?: true;
   intake: Intake;
   /** Absent on orders made before the designer existed. */
   design?: Design;
@@ -159,13 +161,15 @@ export class OrderStore {
     return this.read();
   }
 
-  create(intake: Intake, design: Design): Order {
+  /** `takePayment` false = payment is switched off, so work starts without waiting for it. */
+  create(intake: Intake, design: Design, takePayment: boolean): Order {
     const orders = this.read();
     const order: Order = {
       token: randomBytes(32).toString("base64url"),
       id: `ord-${randomBytes(4).toString("hex")}`,
       created: nowIso(),
-      status: "awaiting-payment",
+      status: takePayment ? "awaiting-payment" : "in-production",
+      ...(takePayment ? {} : { no_payment: true as const }),
       intake,
       design,
       channel: null,
