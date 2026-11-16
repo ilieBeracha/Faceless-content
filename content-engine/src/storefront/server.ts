@@ -9,9 +9,10 @@ import { HOLD_SECONDS, SESSION_SECONDS, type AccountStore, type HoldKind, type U
 import type { SignIn } from "./google.ts";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { join } from "node:path";
-import { listChannelSlugs } from "../core/channels.ts";
+import { channelExists, listChannelSlugs } from "../core/channels.ts";
 import { ENGINE_DIR, type Workspace } from "../core/workspace.ts";
 import { brandKit, framesDir, videoPath } from "./brand-kit.ts";
+import type { Builder } from "./builder.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
 import { hostSvg } from "./host-svg.tsx";
@@ -32,6 +33,8 @@ export interface StorefrontOptions {
   publicBase: string;
   /** Sign-in and accounts. Null = switched off: orders are reached by their private link only. */
   accounts: { store: AccountStore; signIn: SignIn } | null;
+  /** Automatic builds. Null = switched off: a channel is made by hand and linked on the orders page. */
+  builder: Builder | null;
 }
 
 const MAX_BODY = 20_000;
@@ -144,6 +147,11 @@ function linkedChannel(order: Order): string | null {
   return order.status !== "awaiting-payment" && order.channel ? order.channel : null;
 }
 
+/** The workspace a linked channel lives in: the one automatic builds write to, or the engine's own. */
+function channelHome(o: StorefrontOptions, slug: string): Workspace {
+  return o.builder && channelExists(o.builder.ws, slug) ? o.builder.ws : o.ws;
+}
+
 function handler(product: string, name: string, route: (req: IncomingMessage, res: ServerResponse, url: URL) => Promise<void>) {
   return (req: IncomingMessage, res: ServerResponse) => {
     const url = new URL(req.url ?? "/", "http://localhost");
@@ -180,6 +188,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
         const result = validateIntake(form, catalog);
         if (result.errors) return send(res, 422, createPage(o.product, catalog, form, result.errors, "in"), cookies.length ? { "set-cookie": cookies } : {});
         const order = o.store.create(result.intake, result.design, o.paymentUrl !== null, who.id);
+        o.builder?.consider(order.id);
         acc.store.clearDraft(who.id);
         return redirect(res, `/w/${order.token}`, cookies);
       };
@@ -239,7 +248,11 @@ export function createPublicServer(o: StorefrontOptions): Server {
         const catalog = loadCatalog(o.libraryDir);
         const result = validateIntake(form, catalog);
         if (result.errors) return send(res, 422, createPage(o.product, catalog, form, result.errors, account));
-        if (!acc) return redirect(res, `/w/${o.store.create(result.intake, result.design, o.paymentUrl !== null, null).token}`);
+        if (!acc) {
+          const order = o.store.create(result.intake, result.design, o.paymentUrl !== null, null);
+          o.builder?.consider(order.id);
+          return redirect(res, `/w/${order.token}`);
+        }
         return user ? finish(user, "order", form, []) : signInFirst("order", form);
       }
       if (parts[0] === "w" && parts[1]) {
@@ -247,7 +260,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
         if (!order) throw new HttpError(404, "This workspace link is not valid. Check that you copied all of it.");
         if (req.method === "GET" && parts.length === 2) {
           const slug = linkedChannel(order);
-          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(o.ws, slug) : null, o.paymentUrl));
+          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");
@@ -266,13 +279,13 @@ export function createPublicServer(o: StorefrontOptions): Server {
         }
         if (req.method === "GET" && parts.length === 4 && parts[2] === "video" && SLUG.test(parts[3])) {
           const slug = linkedChannel(order);
-          const path = slug ? videoPath(o.ws, slug, parts[3]) : null;
+          const path = slug ? videoPath(channelHome(o, slug), slug, parts[3]) : null;
           if (!path || !existsSync(path)) throw new HttpError(404, "That video is not available.");
           return sendFile(req, res, path, "video/mp4", url.searchParams.has("download") ? `${parts[3]}.mp4` : null);
         }
         if (req.method === "GET" && parts.length === 5 && parts[2] === "frame" && SLUG.test(parts[3]) && FRAME.test(parts[4])) {
           const slug = linkedChannel(order);
-          const path = slug ? join(framesDir(o.ws, slug, parts[3]), parts[4]) : null;
+          const path = slug ? join(framesDir(channelHome(o, slug), slug, parts[3]), parts[4]) : null;
           if (!path || !existsSync(path)) throw new HttpError(404, "That picture is not available.");
           return sendFile(req, res, path, "image/jpeg", null);
         }
@@ -286,8 +299,8 @@ export function createAdminServer(o: StorefrontOptions): Server {
   return createServer(
     handler(o.product, "admin", async (req, res, url) => {
       const parts = url.pathname.split("/").filter(Boolean);
-      const channels = listChannelSlugs(o.ws);
-      if (req.method === "GET" && parts.length === 0) return send(res, 200, adminPage(o.product, o.store.list(), channels, o.publicBase));
+      const channels = [...listChannelSlugs(o.ws), ...(o.builder ? listChannelSlugs(o.builder.ws) : [])];
+      if (req.method === "GET" && parts.length === 0) return send(res, 200, adminPage(o.product, o.store.list(), channels, o.publicBase, o.builder !== null));
       if (parts[0] === "assets") return sendAsset(req, res, parts, o.libraryDir);
       if (req.method === "POST" && parts.length === 3 && parts[0] === "orders") {
         if (!o.store.byId(parts[1])) throw new HttpError(404, "No such order.");
@@ -297,6 +310,11 @@ export function createAdminServer(o: StorefrontOptions): Server {
           o.store.update(parts[1], (ord) => {
             ord.status = form.status as OrderStatus;
           });
+          o.builder?.consider(parts[1]);
+          return redirect(res, "/");
+        }
+        if (parts[2] === "build" && o.builder) {
+          o.builder.consider(parts[1], true);
           return redirect(res, "/");
         }
         if (parts[2] === "channel") {

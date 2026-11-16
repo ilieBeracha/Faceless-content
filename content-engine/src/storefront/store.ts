@@ -53,6 +53,19 @@ export interface Decision {
   at: string;
 }
 
+/** Where an order's automatic build stands (builder.ts). Absent when none was ever queued. */
+export interface Build {
+  state: "queued" | "building" | "done" | "failed";
+  /** How many times it was started. */
+  attempts: number;
+  /** When it reached this state. */
+  at: string;
+  /** When the latest attempt started. */
+  started?: string;
+  /** Why it failed. */
+  error?: string;
+}
+
 export interface Order {
   /** Secret: whoever has it can open the workspace. Never log it. */
   token: string;
@@ -69,6 +82,7 @@ export interface Order {
   design?: Design;
   /** The engine channel this order is being made as, once you link one. */
   channel: string | null;
+  build?: Build;
   decisions: Partial<Record<SectionId, Decision>>;
 }
 

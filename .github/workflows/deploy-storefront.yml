@@ -45,4 +45,11 @@ jobs:
           if [ -n "$GOOGLE_CLIENT_ID" ] && [ -n "$GOOGLE_CLIENT_SECRET" ]; then
             flyctl secrets set --app "$APP" --stage GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET"
           fi
+      - name: Switch on automatic builds, when the Claude API key is set
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$ANTHROPIC_API_KEY" ]; then
+            flyctl secrets set --app "$APP" --stage ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" STOREFRONT_AUTOBUILD=1
+          fi
       - run: flyctl deploy --app "$APP" --remote-only --ha=false

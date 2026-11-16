@@ -8,6 +8,9 @@ import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
 import { AccountStore } from "../storefront/accounts.ts";
 import { brandKit, videoPath } from "../storefront/brand-kit.ts";
+import { Builder, buildWorkspace, orderSeed, type Drafter } from "../storefront/builder.ts";
+import { channelExists, loadChannel } from "../core/channels.ts";
+import { readJson } from "../core/util.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import { OWN_HOST, OWN_LOOK, loadCatalog, readHosts, readLooks } from "../storefront/catalog.ts";
 import { HOST_RIGS, buildHost, buildLook, hostFields, lookFields } from "../storefront/designer.ts";
@@ -109,7 +112,7 @@ describe("storefront: servers", () => {
   const ws = tempWorkspace();
   makeChannel(ws, "kit-demo");
   const store = new OrderStore(ws.path("storefront", "orders.json"));
-  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null };
+  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null, builder: null };
   let pub: Server;
   let admin: Server;
   let base = "";
@@ -312,7 +315,7 @@ describe("storefront: sign-in and accounts", () => {
       return { sub: `g-${code.slice(3)}`, email: `${code.slice(3)}@example.com`, name: code.slice(3) };
     },
   };
-  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: { store: new AccountStore(accountsFile), signIn } };
+  const options = { ws, store, product: "Test Studio", paymentUrl: null, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: { store: new AccountStore(accountsFile), signIn }, builder: null };
   let pub: Server;
   let base = "";
   before(async () => {
@@ -421,5 +424,154 @@ describe("storefront: sign-in and accounts", () => {
     assert.match((await b.go("/intake", form({ ...GOOD, idea: "Why bread rises twice" }))).headers.get("location")!, /^\/w\//);
     assert.doesNotMatch(await (await b.go("/account")).text(), /Your saved design/);
     assert.match(await (await b.go("/create")).text(), /Save for later/);
+  });
+});
+
+describe("storefront: automatic builds", () => {
+  const ws = tempWorkspace();
+  makeChannel(ws, "kit-demo");
+  const built = buildWorkspace(ENGINE_DIR, ws.path("storefront", "workspace"));
+  const seen: { slug: string; seed: string; skills: string[] }[] = [];
+  let broken = false;
+  let hold: Promise<void> = Promise.resolve();
+  // Stands in for the Claude API: writes a small valid channel over the skeleton (once `hold` lets it), or fails when told to.
+  const draft: Drafter = async (to, slug, seed, skills) => {
+    seen.push({ slug, seed, skills });
+    await hold;
+    if (broken) throw new Error("the writer is down");
+    const from = tempWorkspace();
+    makeChannel(from, slug);
+    cpSync(from.channelDir(slug), to.channelDir(slug), { recursive: true, force: true });
+  };
+  const setup = (name: string, perDay: number, paymentUrl: string | null) => {
+    const store = new OrderStore(ws.path("storefront", `${name}.json`));
+    const builder = new Builder(store, built, draft, perDay);
+    return { store, builder, options: { ws, store, product: "Test Studio", paymentUrl, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null, builder } };
+  };
+  const serve = async (server: Server) => {
+    await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
+    return `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+  };
+
+  it("builds the channel when an order arrives, with the customer's look and host on it, and shows the kit", async () => {
+    const { store, builder, options } = setup("auto", 20, null);
+    const site = createPublicServer(options);
+    try {
+      const base = await serve(site);
+      let release = () => {};
+      hold = new Promise<void>((r) => (release = r));
+      const res = await fetch(`${base}/intake`, form({ ...GOOD, avoid: "politics" }));
+      const link = res.headers.get("location")!;
+      assert.match(await (await fetch(base + link)).text(), /This takes several minutes/);
+      release();
+      await builder.idle();
+      const order = store.list()[0];
+      assert.equal(order.channel, order.id);
+      assert.equal(order.build?.state, "done");
+      assert.equal(channelExists(ws, order.id), false, "built channels stay out of the engine's own channels/");
+      const channel = loadChannel(built, order.id);
+      assert.equal(channel.doc.data.status, "draft", "a built channel is never approved by the server");
+      assert.deepEqual(readJson(join(channel.dir, "theme.json")), order.design?.theme);
+      assert.deepEqual(readJson(channel.characters.get("bot")!.modelPath), order.design?.model);
+      const { seed, skills } = seen[seen.length - 1];
+      assert.match(seed, /How bridges stay up/);
+      assert.match(seed, /Topics to avoid \(add them to banned_topics\): politics/);
+      assert.match(seed, /"name": "Blueprint"/);
+      assert.deepEqual(skills, ["render-themed"]);
+      const html = await (await fetch(base + link)).text();
+      assert.match(html, new RegExp(`Test ${order.id}`));
+      assert.match(html, /Ready to review/);
+    } finally {
+      site.close();
+    }
+  });
+
+  it("describes a look and host given in words only, and asks for no theme", () => {
+    const r = validateIntake({ ...GOOD, look: OWN_LOOK, look_note: "Like a 1970s textbook", avatar: OWN_HOST, host: "A sleepy owl" }, OFFER);
+    assert.ok(r.intake);
+    const seed = orderSeed(new OrderStore(ws.path("storefront", "words.json")).create(r.intake, r.design, false, null));
+    assert.match(seed, /The look, in their words: Like a 1970s textbook/);
+    assert.match(seed, /Notes on the host: A sleepy owl/);
+    assert.doesNotMatch(seed, /theme\.json|model\.json/);
+  });
+
+  it("records a failed build on the order, tells the customer, and builds again into a new folder only when asked", async () => {
+    const { store, builder, options } = setup("fail", 20, null);
+    const site = createPublicServer(options);
+    const back = createAdminServer(options);
+    try {
+      const [base, adminBase] = [await serve(site), await serve(back)];
+      broken = true;
+      const link = (await fetch(`${base}/intake`, form(GOOD))).headers.get("location")!;
+      await builder.idle();
+      const id = store.list()[0].id;
+      assert.deepEqual([store.byId(id)?.build?.state, store.byId(id)?.build?.error, store.byId(id)?.channel], ["failed", "the writer is down", null]);
+      assert.match(await (await fetch(base + link)).text(), /Your brand kit did not finish/);
+      assert.match(await (await fetch(adminBase)).text(), /the writer is down[\s\S]*Build again/);
+      const calls = seen.length;
+      builder.resume();
+      await builder.idle();
+      assert.equal(seen.length, calls, "a failed build is not retried by itself");
+      broken = false;
+      assert.equal((await fetch(`${adminBase}/orders/${id}/build`, form({}))).status, 303);
+      await builder.idle();
+      assert.deepEqual([store.byId(id)?.channel, store.byId(id)?.build?.state, store.byId(id)?.build?.attempts], [`${id}-2`, "done", 2]);
+      assert.equal(channelExists(built, id), true, "the failed attempt's folder is kept");
+    } finally {
+      broken = false;
+      site.close();
+      back.close();
+    }
+  });
+
+  it("does not build an order that is waiting for payment until it is marked paid", async () => {
+    const { store, builder, options } = setup("paid", 20, "https://pay.example.test/link");
+    const site = createPublicServer(options);
+    const back = createAdminServer(options);
+    try {
+      const [base, adminBase] = [await serve(site), await serve(back)];
+      await fetch(`${base}/intake`, form(GOOD));
+      await builder.idle();
+      const id = store.list()[0].id;
+      assert.deepEqual([store.byId(id)?.build, store.byId(id)?.channel], [undefined, null]);
+      await fetch(`${adminBase}/orders/${id}/status`, form({ status: "paid" }));
+      await builder.idle();
+      assert.equal(store.byId(id)?.channel, id);
+    } finally {
+      site.close();
+      back.close();
+    }
+  });
+
+  it("at start, builds orders that were waiting or cut off, and gives up on one cut off twice", async () => {
+    const { store, builder } = setup("resume", 20, null);
+    const r = validateIntake(GOOD, OFFER);
+    assert.ok(r.intake);
+    const waiting = store.create(r.intake, r.design, false, null);
+    const cutOff = store.create(r.intake, r.design, false, null);
+    const cutOffTwice = store.create(r.intake, r.design, false, null);
+    const unpaid = store.create(r.intake, r.design, true, null);
+    store.update(cutOff.id, (o) => (o.build = { state: "building", attempts: 1, at: "2026-01-01T00:00:00.000Z", started: "2026-01-01T00:00:00.000Z" }));
+    store.update(cutOffTwice.id, (o) => (o.build = { state: "building", attempts: 2, at: "2026-01-01T00:00:00.000Z", started: "2026-01-01T00:00:00.000Z" }));
+    builder.resume();
+    await builder.idle();
+    assert.equal(store.byId(waiting.id)?.channel, waiting.id);
+    assert.equal(store.byId(cutOff.id)?.channel, `${cutOff.id}-2`);
+    assert.deepEqual([store.byId(cutOffTwice.id)?.build?.state, store.byId(cutOffTwice.id)?.channel], ["failed", null]);
+    assert.match(store.byId(cutOffTwice.id)?.build?.error ?? "", /cut off 2 times/);
+    assert.equal(store.byId(unpaid.id)?.build, undefined);
+  });
+
+  it("stops at the daily limit and says so on the order", async () => {
+    const { store, builder } = setup("limit", 1, null);
+    const r = validateIntake(GOOD, OFFER);
+    assert.ok(r.intake);
+    const first = store.create(r.intake, r.design, false, null);
+    const second = store.create(r.intake, r.design, false, null);
+    builder.resume();
+    await builder.idle();
+    assert.equal(store.byId(first.id)?.channel, first.id);
+    assert.deepEqual([store.byId(second.id)?.build?.state, store.byId(second.id)?.channel], ["failed", null]);
+    assert.match(store.byId(second.id)?.build?.error ?? "", /limit of 1 automatic builds a day/);
   });
 });

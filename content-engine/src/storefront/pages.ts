@@ -430,7 +430,7 @@ function track(order: Order, hasKit: boolean): string {
   const steps = [
     ["Brief", "Sent"],
     ["Payment", order.status === "awaiting-payment" ? "Waiting" : order.no_payment ? "Not needed for now" : "Received"],
-    ["Brand kit", hasKit ? "Ready to review" : "Being made"],
+    ["Brand kit", hasKit ? "Ready to review" : order.build?.state === "failed" ? "Did not finish" : "Being made"],
     ["Videos", order.status === "delivered" ? "Delivered" : "After your approval"],
   ];
   return `<ol class="track">${steps.map(([name, note], i) => `<li class="${i < at ? "done" : i === at ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
@@ -481,7 +481,12 @@ export function workspacePage(product: string, order: Order, kit: BrandKit | nul
       ? `<section class="notice"><h2>One step left</h2><p class="muted">Work starts when payment arrives. Quote reference <b>${esc(order.id)}</b> if asked.</p><a class="btn accent" href="${esc(paymentUrl)}" rel="noopener">Pay securely</a></section>`
       : `<section class="notice"><h2>One step left</h2><p class="muted">Work starts when payment arrives. Online payment is not switched on yet, so we will contact you at the email you gave. Your reference is <b>${esc(order.id)}</b>.</p></section>`;
   } else if (!kit) {
-    body = `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">It appears on this page, section by section, for you to approve. Nothing else is needed from you right now.</p></section>`;
+    body =
+      order.build?.state === "failed"
+        ? `<section class="notice"><h2>Your brand kit did not finish</h2><p class="muted">Something went wrong while it was being made, and it has to be started again on our side. Nothing is lost. Quote <b>${esc(order.id)}</b> if you contact us.</p></section>`
+        : order.build
+          ? `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">This takes several minutes. Reload this page to see it: it appears here, section by section, for you to approve.</p></section>`
+          : `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">It appears on this page, section by section, for you to approve. Nothing else is needed from you right now.</p></section>`;
   } else {
     body = kitHtml(order, kit);
   }
@@ -521,7 +526,7 @@ ${saved}
   );
 }
 
-export function adminPage(product: string, orders: Order[], channels: string[], publicBase: string): string {
+export function adminPage(product: string, orders: Order[], channels: string[], publicBase: string, autoBuild: boolean): string {
   const cards = orders
     .slice()
     .reverse()
@@ -535,6 +540,7 @@ export function adminPage(product: string, orders: Order[], channels: string[], 
 ${decisions ? `<ul style="display:flex;flex-direction:column;gap:6px">${decisions}</ul>` : `<p class="muted">No decisions yet</p>`}</div>
 <div><form method="post" action="/orders/${esc(o.id)}/status" class="row"><select name="status" aria-label="Status of ${esc(o.id)}">${ORDER_STATUSES.map((s) => `<option${s === o.status ? " selected" : ""}>${s}</option>`).join("")}</select><button type="submit" class="btn sm">Set</button></form>
 <form method="post" action="/orders/${esc(o.id)}/channel" class="row"><select name="channel" aria-label="Channel for ${esc(o.id)}"><option value="">(no channel)</option>${channels.map((c) => `<option${c === o.channel ? " selected" : ""}>${esc(c)}</option>`).join("")}</select><button type="submit" class="btn sm">Link</button></form>
+${o.build ? `<p class="muted" style="font-size:14.5px">Automatic build: ${esc(o.build.state)}, attempt ${o.build.attempts}, ${esc(o.build.at.slice(0, 16).replace("T", " "))}${o.build.error ? ` — ${esc(o.build.error)}` : ""}</p>` : ""}${autoBuild && o.build?.state === "failed" ? `<form method="post" action="/orders/${esc(o.id)}/build"><button type="submit" class="btn sm">Build again</button></form>` : ""}
 ${o.design && (o.design.theme || o.design.model) ? `<details><summary class="label">Design files</summary>${o.design.theme ? `<p class="label">theme.json</p><pre class="json">${esc(JSON.stringify(o.design.theme, null, 2))}</pre>` : ""}${o.design.model ? `<p class="label">model.json</p><pre class="json">${esc(JSON.stringify(o.design.model, null, 2))}</pre>` : ""}</details>` : ""}
 <p class="label">Workspace link</p><code class="link">${esc(publicBase)}/w/${esc(o.token)}</code></div></article>`;
     })
