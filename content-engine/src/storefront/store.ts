@@ -55,6 +55,8 @@ export interface Decision {
 
 /** Where an order's automatic build stands (builder.ts). Absent when none was ever queued. */
 export interface Build {
+  /** "revise" = making the customer's change requests; absent = the first build. */
+  kind?: "revise";
   state: "queued" | "building" | "done" | "failed";
   /** How many times it was started. */
   attempts: number;
@@ -83,6 +85,10 @@ export interface Order {
   /** The engine channel this order is being made as, once you link one. */
   channel: string | null;
   build?: Build;
+  /** How many times the kit was revised from the customer's change requests (each start counts). */
+  rounds?: number;
+  /** When the customer approved the whole brand kit. From then on it is locked. */
+  kit_approved?: string;
   decisions: Partial<Record<SectionId, Decision>>;
 }
 
@@ -155,6 +161,22 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
 
   if (Object.keys(errors).length) return { intake: null, design: null, errors };
   return { intake: values, design, errors: null };
+}
+
+/** The most times one order's kit is revised automatically; after that, changes are made by hand. */
+export const MAX_ROUNDS = 3;
+
+/** The change requests waiting on an order, in the kit's order. */
+export function changeRequests(order: Order): { id: SectionId; label: string; note: string }[] {
+  return SECTIONS.flatMap((s) => {
+    const d = order.decisions[s.id];
+    return d?.decision === "change" ? [{ id: s.id, label: s.label, note: d.note }] : [];
+  });
+}
+
+/** True while the order's channel is being built or revised: nothing can be decided meanwhile. */
+export function isBuilding(order: Order): boolean {
+  return order.build?.state === "queued" || order.build?.state === "building";
 }
 
 export class OrderStore {

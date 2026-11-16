@@ -17,7 +17,7 @@ import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
 import { hostSvg } from "./host-svg.tsx";
 import { accountPage, adminPage, createPage, demoPage, landingPage, messagePage, workspacePage, type Account } from "./pages.ts";
-import { ORDER_STATUSES, SECTIONS, validateIntake, type Order, type OrderStatus, type OrderStore, type SectionId } from "./store.ts";
+import { MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, isBuilding, validateIntake, type Order, type OrderStatus, type OrderStore, type SectionId } from "./store.ts";
 
 export interface StorefrontOptions {
   ws: Workspace;
@@ -73,7 +73,7 @@ class HttpError extends Error {
 function send(res: ServerResponse, status: number, html: string, extra: Record<string, string | string[]> = {}): void {
   res.writeHead(status, {
     "content-type": "text/html; charset=utf-8",
-    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; script-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; form-action 'self' https:; base-uri 'none'; frame-ancestors 'none'",
+    "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; form-action 'self' https:; base-uri 'none'; frame-ancestors 'none'",
     "x-content-type-options": "nosniff",
     // The workspace link is a secret: never send it on to another site, never cache or index it.
     "referrer-policy": "no-referrer",
@@ -260,22 +260,46 @@ export function createPublicServer(o: StorefrontOptions): Server {
         if (!order) throw new HttpError(404, "This workspace link is not valid. Check that you copied all of it.");
         if (req.method === "GET" && parts.length === 2) {
           const slug = linkedChannel(order);
-          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl));
+          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");
+          if (order.kit_approved) throw new HttpError(409, "This brand kit is approved and locked.");
+          if (isBuilding(order)) throw new HttpError(409, "Your changes are being made. Decide again when the revised kit is here.");
           const form = await readForm(req);
           const section = SECTIONS.find((s) => s.id === form.section)?.id as SectionId | undefined;
           const decision = form.decision;
           const note = (form.note ?? "").trim();
           if (!section) throw new HttpError(400, "That is not a part of the brand kit.");
-          if (decision !== "approve" && decision !== "change") throw new HttpError(400, "Choose Approve or Ask for a change.");
+          if (decision !== "approve" && decision !== "change" && decision !== "clear") throw new HttpError(400, "Choose Approve or Ask for a change.");
           if (note.length > 600) throw new HttpError(400, "Keep the note to 600 characters or fewer.");
           if (decision === "change" && !note) throw new HttpError(400, "Say what you would like changed, so we know what to do.");
           o.store.update(order.id, (ord) => {
-            ord.decisions[section] = { decision, note, at: new Date().toISOString() };
+            if (decision === "clear") delete ord.decisions[section];
+            else ord.decisions[section] = { decision, note: decision === "change" ? note : "", at: new Date().toISOString() };
           });
           return redirect(res, `/w/${order.token}#${section}`);
+        }
+        if (req.method === "POST" && parts.length === 3 && parts[2] === "revise" && o.builder) {
+          const slug = linkedChannel(order);
+          if (!slug) throw new HttpError(409, "There is nothing to change yet.");
+          if (order.kit_approved) throw new HttpError(409, "This brand kit is approved and locked.");
+          if (isBuilding(order)) throw new HttpError(409, "Your changes are already being made.");
+          if (SECTIONS.some((s) => !order.decisions[s.id])) throw new HttpError(409, "Decide on every part first, so all your changes are made in one go.");
+          if (!changeRequests(order).length) throw new HttpError(409, "You have not asked for any changes.");
+          if ((order.rounds ?? 0) >= MAX_ROUNDS) throw new HttpError(409, `This kit has been revised ${MAX_ROUNDS} times. Further changes are made by hand.`);
+          o.builder.revise(order.id, channelHome(o, slug));
+          return redirect(res, `/w/${order.token}`);
+        }
+        if (req.method === "POST" && parts.length === 3 && parts[2] === "approve") {
+          if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to approve yet.");
+          if (isBuilding(order)) throw new HttpError(409, "Your changes are being made. Approve when the revised kit is here.");
+          if (SECTIONS.some((s) => order.decisions[s.id]?.decision !== "approve")) throw new HttpError(409, "Approve every part of the brand kit first.");
+          if (!order.kit_approved)
+            o.store.update(order.id, (ord) => {
+              ord.kit_approved = new Date().toISOString();
+            });
+          return redirect(res, `/w/${order.token}`);
         }
         if (req.method === "GET" && parts.length === 4 && parts[2] === "video" && SLUG.test(parts[3])) {
           const slug = linkedChannel(order);

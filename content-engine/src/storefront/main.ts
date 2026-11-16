@@ -16,7 +16,7 @@
 import { channelExists } from "../core/channels.ts";
 import { ENGINE_DIR, Workspace } from "../core/workspace.ts";
 import { AccountStore } from "./accounts.ts";
-import { Builder, buildWorkspace, claudeDrafter } from "./builder.ts";
+import { Builder, buildWorkspace, claudeWriter } from "./builder.ts";
 import { loadCatalog } from "./catalog.ts";
 import { googleSignIn } from "./google.ts";
 import { createAdminServer, createPublicServer } from "./server.ts";
@@ -40,7 +40,7 @@ const autoBuild = process.env.STOREFRONT_AUTOBUILD === "1";
 if (autoBuild && !process.env.ANTHROPIC_API_KEY) throw new Error("STOREFRONT_AUTOBUILD=1 needs ANTHROPIC_API_KEY: automatic builds are written by the Claude API.");
 const perDay = Number(process.env.STOREFRONT_BUILDS_PER_DAY ?? 20);
 if (!Number.isInteger(perDay) || perDay < 1) throw new Error("STOREFRONT_BUILDS_PER_DAY must be a whole number of 1 or more.");
-const builder = autoBuild ? new Builder(store, buildWorkspace(ENGINE_DIR, ws.path("storefront", "workspace")), claudeDrafter, perDay) : null;
+const builder = autoBuild ? new Builder(store, buildWorkspace(ENGINE_DIR, ws.path("storefront", "workspace")), claudeWriter, perDay) : null;
 const options = {
   ws,
   libraryDir: ENGINE_DIR,

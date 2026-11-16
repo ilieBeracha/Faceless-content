@@ -4,7 +4,7 @@ import type { BrandKit } from "./brand-kit.ts";
 import type { Theme } from "../skills/render-themed/schema.ts";
 import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
-import { INTAKE_FIELDS, ORDER_STATUSES, SECTIONS, intakeLabel, intakeMax, intakeRequired, type Intake, type Order, type SectionId } from "./store.ts";
+import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, type Intake, type Order, type SectionId } from "./store.ts";
 
 export function esc(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -166,7 +166,7 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .side{position:sticky;top:92px;display:flex;flex-direction:column;gap:4px;font-size:15.5px}
 .side a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:99px;text-decoration:none;color:var(--muted)}.side a:hover{background:var(--soft);color:var(--ink)}
 .dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--line);flex:none}.dot.ok{background:var(--ok);border-color:var(--ok)}.dot.warn{background:var(--warn);border-color:var(--warn)}
-@media(max-width:860px){.ws{grid-template-columns:1fr;gap:24px}.side{position:static;flex-direction:row;overflow-x:auto;padding-bottom:6px}.side a{white-space:nowrap;background:var(--surface)}}
+@media(max-width:860px){.ws{grid-template-columns:1fr;gap:24px}.side{display:none}}
 .ws .content{display:flex;flex-direction:column;gap:64px;min-width:0}
 .track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .track li{border-top:6px solid var(--line);border-radius:3px 3px 0 0;padding-top:12px;font-weight:600;font-size:15.5px;color:var(--muted);min-width:0}
@@ -175,7 +175,25 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .pill.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}.pill.warn{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
 .sample{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:36px;align-items:center}.sample>div:last-child{display:flex;flex-direction:column;gap:14px;min-width:0;align-items:flex-start}
 @media(max-width:600px){.sample{grid-template-columns:1fr}}
-form.decide{background:var(--surface);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px}
+.decide{background:var(--surface);border-radius:24px;padding:18px 20px;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+.decide.ok{background:color-mix(in srgb,var(--ok) 11%,var(--surface))}.decide.warn{background:color-mix(in srgb,var(--warn) 9%,var(--surface))}
+.decide form{display:contents}.decide .verdict{display:flex;align-items:center;gap:8px;font-weight:600;margin-right:auto}
+.decide.ok .verdict{color:var(--ok)}.decide.warn .verdict{color:var(--warn)}
+.decide .verdict svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.decide .asked{flex-basis:100%;font:400 17px/1.5 var(--body);color:var(--ink);padding-left:14px;border-left:3px solid var(--warn)}
+.decide.warn .verdict{flex-basis:100%}.decide.warn .text{padding-left:0;padding-right:14px}
+.decide:has(details[open]) .btn.yes,.decide.warn:has(details[open]) .text{display:none}.decide.warn details[open] .text{display:inline}
+.decide .btn.yes{background:var(--ok);color:var(--surface)}
+.decide .text{font:600 15px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.decide .text:hover{color:var(--ink)}
+.decide details>summary{list-style:none;cursor:pointer}.decide details>summary::-webkit-details-marker{display:none}
+.decide details[open]{flex-basis:100%;order:2;display:flex;flex-direction:column;gap:12px}.decide details[open]>summary{display:none}
+.decide details .inner{display:flex;flex-direction:column;gap:12px}
+.decide [role=alert]{flex-basis:100%;order:3}.decide[aria-busy=true]{opacity:.6;pointer-events:none}
+.finish{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom));z-index:10;background:var(--ink);color:var(--bg);border-radius:24px;padding:14px 14px 14px 22px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;box-shadow:var(--lift)}
+.finish .count{display:flex;flex-direction:column;gap:7px;font-weight:600;font-size:15.5px;min-width:0}
+.finish .pips{display:flex;gap:4px}.finish .pips i{width:16px;height:5px;border-radius:3px;background:color-mix(in srgb,var(--bg) 26%,transparent)}.finish .pips i.ok{background:var(--bg)}.finish .pips i.warn{background:var(--pop)}
+.finish .btn{background:var(--pop);color:var(--on-pop)}.finish small{flex-basis:100%;font-size:14px;opacity:.78}
+.finish form{display:contents}
 .row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
 .notice{background:var(--surface);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .yours{display:flex;flex-wrap:wrap;gap:20px;align-items:center}.yours .vis{width:96px}.yours img.vis{aspect-ratio:1;object-fit:contain;background:var(--bg)}
@@ -195,15 +213,15 @@ export type Account = "in" | "out" | null;
 /** Changes on every server start, so browsers never keep running an older copy of the script. */
 const ASSET_VERSION = Date.now().toString(36);
 
-function layout(product: string, title: string, page: Page, body: string, script = false, account: Account = null): string {
+function layout(product: string, title: string, page: Page, body: string, script: false | "app" | "workspace" = false, account: Account = null, head = ""): string {
   const mine = account === "in" ? `<a href="/account"><span class="long">My channels</span><span class="short">Account</span></a>` : account === "out" ? `<a href="/signin">Sign in</a>` : "";
   const link = (href: string, label: string, key: Page, cls = "") => `<a href="${href}"${cls ? ` class="${cls}"` : ""}${page === key ? ' aria-current="page"' : ""}>${label}</a>`;
   const nav = page === "app" ? "" : `<nav>${link("/#how", "How it works", "home", "hide")}${link("/demo", "Demo", "demo", account ? "hide" : "")}${mine}</nav><a class="btn sm" href="/create" aria-label="Design your channel"><span class="long">Design your channel</span><span class="short">Design</span></a>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${CSS}</style></head><body>
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title>${head}<style>${CSS}</style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="/"><i></i>${esc(product)}</a>${nav}</div></header>
 <div class="wrap"><main${page === "app" ? ' class="app"' : ""}>${body}</main></div>
 ${page === "app" ? "" : `<footer><div class="wrap">${esc(product)}. Videos, voices and pictures are AI-generated and labelled where platforms require it.</div></footer>`}
-${script ? `<script src="/assets/app.js?v=${ASSET_VERSION}" defer></script>` : ""}</body></html>`;
+${script ? `<script src="/assets/${script}.js?v=${ASSET_VERSION}" defer></script>` : ""}</body></html>`;
 }
 
 const ICONS = {
@@ -412,7 +430,7 @@ ${account === "out" ? `<p class="muted" style="font-size:14.5px">You sign in wit
 <div class="art"></div><img class="host" data-host-img alt="Your host"${hostSrc ? ` src="${esc(hostSrc)}"` : " hidden"}><div class="cap">every word <mark>lights up</mark></div></div></div>
 <p class="muted">A sketch of your look and host. Nothing is sent until the last step.</p></aside>
 </section>`,
-    true,
+    "app",
     account,
   );
 }
@@ -426,69 +444,125 @@ const STATUS_TEXT: Record<Order["status"], string> = {
 
 function track(order: Order, hasKit: boolean): string {
   // The step the customer is on now: payment, then the brand kit (being made or under review), then done.
-  const at = order.status === "awaiting-payment" ? 1 : order.status === "delivered" ? 4 : 2;
+  const at = order.status === "awaiting-payment" ? 1 : order.status === "delivered" ? 4 : order.kit_approved ? 3 : 2;
   const steps = [
     ["Brief", "Sent"],
     ["Payment", order.status === "awaiting-payment" ? "Waiting" : order.no_payment ? "Not needed for now" : "Received"],
-    ["Brand kit", hasKit ? "Ready to review" : order.build?.state === "failed" ? "Did not finish" : "Being made"],
-    ["Videos", order.status === "delivered" ? "Delivered" : "After your approval"],
+    ["Brand kit", order.kit_approved ? "Approved" : order.build?.kind === "revise" && isBuilding(order) ? "Changes being made" : hasKit ? "Ready to review" : order.build?.state === "failed" ? "Did not finish" : "Being made"],
+    ["Videos", order.status === "delivered" ? "Delivered" : order.kit_approved ? "First one being made" : "After your approval"],
   ];
   return `<ol class="track">${steps.map(([name, note], i) => `<li class="${i < at ? "done" : i === at ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
 }
 
-function decisionForm(order: Order, id: SectionId): string {
+const CHECK = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`;
+
+/** One part's decision: approve in one tap, or say what to change. Saved in place by workspace.js; plain forms without it. */
+function decisionCard(order: Order, id: SectionId): string {
   const d = order.decisions[id];
-  const state = d ? `<span class="pill ${d.decision === "approve" ? "ok" : "warn"}">${d.decision === "approve" ? "Approved" : "Change requested"}</span>` : `<span class="pill">Not decided yet</span>`;
-  return `<form method="post" action="/w/${esc(order.token)}/decision" class="decide"><input type="hidden" name="section" value="${id}"><div class="row"><h3>Your decision</h3>${state}</div>
-<div class="seg"><label><input type="radio" name="decision" value="approve"${d?.decision === "approve" ? " checked" : ""} required>Approve</label><label><input type="radio" name="decision" value="change"${d?.decision === "change" ? " checked" : ""}>Ask for a change</label></div>
-<label class="f" for="note-${id}">Note<small>Optional when approving. Say what to change if you are asking for one.</small><textarea id="note-${id}" name="note" maxlength="600">${esc(d?.note ?? "")}</textarea></label><div><button type="submit" class="btn sm">Save decision</button></div></form>`;
+  const label = SECTIONS.find((s) => s.id === id)!.label;
+  const post = (decision: string, inner: string) => `<form method="post" action="/w/${esc(order.token)}/decision" data-live-form><input type="hidden" name="section" value="${id}"><input type="hidden" name="decision" value="${decision}">${inner}</form>`;
+  const ask = (summary: string, cls: string) =>
+    `<details><summary class="${cls}">${summary}</summary>${post("change", `<div class="inner"><label class="f" for="note-${id}">What should be different?<textarea id="note-${id}" name="note" maxlength="600" required>${esc(d?.decision === "change" ? d.note : "")}</textarea></label><div class="row"><button type="submit" class="btn sm">Save request</button><button type="button" class="text" data-close>Cancel</button></div></div>`)}</details>`;
+  let cls = "";
+  let inner: string;
+  if (order.kit_approved) {
+    cls = " ok";
+    inner = `<p class="verdict">${CHECK}Approved</p>`;
+  } else if (d?.decision === "approve") {
+    cls = " ok";
+    inner = `<p class="verdict">${CHECK}Approved</p>${post("clear", `<button type="submit" class="text">Undo</button>`)}`;
+  } else if (d?.decision === "change") {
+    cls = " warn";
+    inner = `<p class="verdict">Change requested</p><p class="asked">${esc(d.note)}</p>${ask("Edit", "text")}${post("clear", `<button type="submit" class="text">Remove</button>`)}${post("approve", `<button type="submit" class="text">Approve instead</button>`)}`;
+  } else {
+    inner = `${post("approve", `<button type="submit" class="btn yes">${CHECK.replace("<svg", `<svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"`)}Approve</button>`)}${ask("Ask for a change", "btn ghost")}`;
+  }
+  return `<div class="decide${cls}" id="decide-${id}" data-live role="group" aria-label="Your decision on: ${esc(label)}">${inner}</div>`;
 }
 
 function kitSection(order: Order, id: SectionId, content: string): string {
   const label = SECTIONS.find((s) => s.id === id)!.label;
-  return `<section id="${id}" style="scroll-margin-top:88px"><h2>${esc(label)}</h2>${content}${decisionForm(order, id)}</section>`;
+  return `<section id="${id}" style="scroll-margin-top:88px"><h2>${esc(label)}</h2>${content}${decisionCard(order, id)}</section>`;
 }
 
-function kitHtml(order: Order, kit: BrandKit): string {
+const NEXT_NAMES: Record<SectionId, string> = { name: "the name", host: "the host", colours: "the colours", look: "the look", format: "the format", tone: "the tone" };
+
+/** The bar that follows the customer down the kit: how far they are, and the one thing to do next. */
+function finishBar(order: Order, canRevise: boolean): string {
+  if (order.kit_approved) return "";
+  const pips = SECTIONS.map((s) => `<i class="${order.decisions[s.id]?.decision === "approve" ? "ok" : order.decisions[s.id] ? "warn" : ""}"></i>`).join("");
+  const open = SECTIONS.filter((s) => !order.decisions[s.id]);
+  const changes = changeRequests(order).length;
+  const approved = SECTIONS.length - open.length - changes;
+  const roundsLeft = MAX_ROUNDS - (order.rounds ?? 0);
+  let count: string;
+  let action: string;
+  if (open.length) {
+    count = `${SECTIONS.length - open.length} of ${SECTIONS.length} decided`;
+    action = `<a class="btn sm" href="#${open[0].id}">Next: ${NEXT_NAMES[open[0].id]}</a>`;
+  } else if (changes && canRevise && roundsLeft > 0) {
+    count = `${approved} approved, ${changes} to change`;
+    action = `<form method="post" action="/w/${esc(order.token)}/revise"><button type="submit" class="btn sm">Send ${changes} change${changes === 1 ? "" : "s"}</button></form><small>Your kit is revised and comes back here for you to approve. Revision ${MAX_ROUNDS - roundsLeft + 1} of ${MAX_ROUNDS}.</small>`;
+  } else if (changes) {
+    count = `${approved} approved, ${changes} to change`;
+    action = `<small>Your change notes are saved. We make these by hand, and this page updates when they are done.</small>`;
+  } else {
+    count = "Everything approved";
+    action = `<form method="post" action="/w/${esc(order.token)}/approve"><button type="submit" class="btn sm">Approve brand kit</button></form><small>This locks the kit and starts your first video.</small>`;
+  }
+  return `<div class="finish" id="finish" data-live><div class="count"><span aria-live="polite">${count}</span><span class="pips" aria-hidden="true">${pips}</span></div>${action}</div>`;
+}
+
+function kitHtml(order: Order, kit: BrandKit, canRevise: boolean): string {
   const base = `/w/${esc(order.token)}`;
   const latest = kit.episodes[kit.episodes.length - 1];
   const video = latest
     ? `<section><h2>Your first video</h2><div class="sample"><div class="phone"><video controls playsinline preload="metadata" src="${base}/video/${esc(latest.id)}"></video></div><div><h3>${esc(latest.title)}</h3><p class="muted">The finished video, exactly as it would be posted. Everything below is what it is made of.</p><a class="btn sm" href="${base}/video/${esc(latest.id)}?download=1">Download the video</a></div></div></section>`
-    : `<section><h2>Your first video</h2><p class="muted">No finished video yet. It appears here as soon as the first one passes its checks.</p></section>`;
+    : order.kit_approved
+      ? `<section class="notice" id="next"><h2>Brand kit approved</h2><p class="muted">Your first video is being made from this kit. It appears here when it has passed its checks. Nothing else is needed from you right now.</p></section>`
+      : `<section class="notice"><h2>Review your brand kit</h2><p class="muted">Approve each part, or say what to change. When every part is approved, one last button locks the kit and starts your first video.</p></section>`;
+  const failed = order.build?.kind === "revise" && order.build.state === "failed" ? `<section class="notice" role="alert"><h2>Your changes did not finish</h2><p class="muted">Something went wrong while they were being made. Your kit and your notes are as you left them: send the changes again from the bar below.</p></section>` : "";
   const frames = latest && latest.frames.length ? `<div class="frames">${latest.frames.map((f) => `<img src="${base}/frame/${esc(latest.id)}/${esc(f)}" alt="A frame from the video">`).join("")}</div>` : "";
-  const side = `<nav class="side" aria-label="Brand kit sections">${SECTIONS.map((s) => {
+  const side = `<nav class="side" id="side" data-live aria-label="Brand kit sections">${SECTIONS.map((s) => {
     const d = order.decisions[s.id];
-    return `<a href="#${s.id}"><span class="dot ${d ? (d.decision === "approve" ? "ok" : "warn") : ""}"></span>${esc(s.label)}</a>`;
+    return `<a href="#${s.id}"><span class="dot ${order.kit_approved || d?.decision === "approve" ? "ok" : d ? "warn" : ""}"></span>${esc(s.label)}</a>`;
   }).join("")}</nav>`;
   return `<div class="ws">${side}<div class="content">
-${video}
+${failed}${video}
 ${kitSection(order, "name", `<p class="display" style="font-size:clamp(30px,5vw,46px)">${esc(kit.name)}</p><p class="lede">${esc(kit.promise)}</p>${identityFacts(kit)}`)}
 ${kitSection(order, "host", `<p class="lede"><b style="color:var(--ink)">${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${hostFacts(kit)}`)}
 ${kitSection(order, "colours", `${swatches(kit)}<p class="muted">Lettering: ${esc(kit.font)}</p>`)}
 ${kitSection(order, "look", `<p>${esc(kit.series.visual_style)}</p>${frames}`)}
 ${kitSection(order, "format", `<p class="lede">${esc(kit.series.format)}</p>${beats(kit)}`)}
 ${kitSection(order, "tone", `<div class="kv"><div><p class="label">Feels</p>${items(kit.tone, "chips")}</div><div><p class="label">Always</p>${items(kit.styleNotes, "list")}</div><div><p class="label">Never</p>${items(kit.never, "list no")}</div></div>`)}
+${finishBar(order, canRevise)}
 </div></div>`;
 }
 
-export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null): string {
+/** `canRevise`: change requests are made automatically (automatic builds are on). */
+export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean): string {
   const d = order.design;
   const yours = d && (d.theme || d.model) ? `<div class="yours">${d.theme ? lookSwatch(d.theme) : ""}${d.model && HOST_RIGS[d.model.rig] ? `<img class="vis" src="${esc(hostPreviewUrl(hostFields(d.model)))}" alt="Your host">` : ""}<p class="muted" style="max-width:36ch">The look and host you designed. Your brand kit is built from these.</p></div>` : "";
   const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f])}</dd></div>`).join("")}</dl></section>`;
+  // While something is being made the page reloads itself, so the result shows up without a tap.
+  const waiting = order.status !== "awaiting-payment" && isBuilding(order);
+  const revising = waiting && order.build?.kind === "revise";
   let body: string;
   if (order.status === "awaiting-payment") {
     body = paymentUrl
       ? `<section class="notice"><h2>One step left</h2><p class="muted">Work starts when payment arrives. Quote reference <b>${esc(order.id)}</b> if asked.</p><a class="btn accent" href="${esc(paymentUrl)}" rel="noopener">Pay securely</a></section>`
       : `<section class="notice"><h2>One step left</h2><p class="muted">Work starts when payment arrives. Online payment is not switched on yet, so we will contact you at the email you gave. Your reference is <b>${esc(order.id)}</b>.</p></section>`;
+  } else if (revising) {
+    body = `<section class="notice"><h2>Your changes are being made</h2><p class="muted">This takes several minutes. The revised kit appears here by itself, with the changed parts ready for you to look at again.</p></section>`;
   } else if (!kit) {
     body =
       order.build?.state === "failed"
         ? `<section class="notice"><h2>Your brand kit did not finish</h2><p class="muted">Something went wrong while it was being made, and it has to be started again on our side. Nothing is lost. Quote <b>${esc(order.id)}</b> if you contact us.</p></section>`
         : order.build
-          ? `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">This takes several minutes. Reload this page to see it: it appears here, section by section, for you to approve.</p></section>`
+          ? `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">This takes several minutes. It appears here by itself, part by part, for you to approve.</p></section>`
           : `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">It appears on this page, section by section, for you to approve. Nothing else is needed from you right now.</p></section>`;
   } else {
-    body = kitHtml(order, kit);
+    body = kitHtml(order, kit, canRevise);
   }
   return layout(
     product,
@@ -499,6 +573,9 @@ export function workspacePage(product: string, order: Order, kit: BrandKit | nul
 ${track(order, kit !== null)}
 <p class="muted" style="font-size:14.5px;max-width:70ch">${order.user ? `This page is private to you. Anyone with its link can open it, so keep the link like a password. You can always find it again under <a href="/account">My channels</a>.` : `This page is private to you. Anyone with its link can open it, so keep the link like a password and bookmark it now — there is no login to get it back.`}</p></section>
 ${body}${brief}`,
+    kit && !revising ? "workspace" : false,
+    null,
+    waiting ? `<meta http-equiv="refresh" content="20">` : "",
   );
 }
 
@@ -540,7 +617,7 @@ export function adminPage(product: string, orders: Order[], channels: string[], 
 ${decisions ? `<ul style="display:flex;flex-direction:column;gap:6px">${decisions}</ul>` : `<p class="muted">No decisions yet</p>`}</div>
 <div><form method="post" action="/orders/${esc(o.id)}/status" class="row"><select name="status" aria-label="Status of ${esc(o.id)}">${ORDER_STATUSES.map((s) => `<option${s === o.status ? " selected" : ""}>${s}</option>`).join("")}</select><button type="submit" class="btn sm">Set</button></form>
 <form method="post" action="/orders/${esc(o.id)}/channel" class="row"><select name="channel" aria-label="Channel for ${esc(o.id)}"><option value="">(no channel)</option>${channels.map((c) => `<option${c === o.channel ? " selected" : ""}>${esc(c)}</option>`).join("")}</select><button type="submit" class="btn sm">Link</button></form>
-${o.build ? `<p class="muted" style="font-size:14.5px">Automatic build: ${esc(o.build.state)}, attempt ${o.build.attempts}, ${esc(o.build.at.slice(0, 16).replace("T", " "))}${o.build.error ? ` — ${esc(o.build.error)}` : ""}</p>` : ""}${autoBuild && o.build?.state === "failed" ? `<form method="post" action="/orders/${esc(o.id)}/build"><button type="submit" class="btn sm">Build again</button></form>` : ""}
+${o.kit_approved ? `<p><span class="pill ok">Kit approved ${esc(o.kit_approved.slice(0, 10))}</span> The first video is yours to make.</p>` : ""}${o.rounds ? `<p class="muted" style="font-size:14.5px">Revised ${o.rounds} of ${MAX_ROUNDS} times</p>` : ""}${o.build ? `<p class="muted" style="font-size:14.5px">Automatic ${o.build.kind === "revise" ? "revision" : "build"}: ${esc(o.build.state)}, attempt ${o.build.attempts}, ${esc(o.build.at.slice(0, 16).replace("T", " "))}${o.build.error ? ` — ${esc(o.build.error)}` : ""}</p>` : ""}${autoBuild && o.build?.state === "failed" && !o.build.kind ? `<form method="post" action="/orders/${esc(o.id)}/build"><button type="submit" class="btn sm">Build again</button></form>` : ""}
 ${o.design && (o.design.theme || o.design.model) ? `<details><summary class="label">Design files</summary>${o.design.theme ? `<p class="label">theme.json</p><pre class="json">${esc(JSON.stringify(o.design.theme, null, 2))}</pre>` : ""}${o.design.model ? `<p class="label">model.json</p><pre class="json">${esc(JSON.stringify(o.design.model, null, 2))}</pre>` : ""}</details>` : ""}
 <p class="label">Workspace link</p><code class="link">${esc(publicBase)}/w/${esc(o.token)}</code></div></article>`;
     })

@@ -8,20 +8,34 @@
  * One build runs at a time. A build that fails is recorded on its order and is not retried by itself.
  */
 import { cpSync, mkdirSync } from "node:fs";
+import { basename } from "node:path";
 import { join } from "node:path";
 import { loadChannel, validateChannel } from "../core/channels.ts";
+import { updateFrontmatter } from "../core/markdown.ts";
 import { createChannelSkeleton } from "../core/scaffold.ts";
 import { runTask } from "../core/tasks.ts";
-import { nowIso, writeJson } from "../core/util.ts";
+import { nowIso, readText, writeJson, writeText } from "../core/util.ts";
 import { Workspace } from "../core/workspace.ts";
 import { draftChannelTask } from "../pipeline/draft-channel.ts";
-import type { Order, OrderStore } from "./store.ts";
+import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
+import { MAX_ROUNDS, changeRequests, isBuilding, type Order, type OrderStore } from "./store.ts";
 
 /** Writes a full channel draft into `channels/<slug>/` of `ws`, whose skeleton already exists. */
 export type Drafter = (ws: Workspace, slug: string, seed: string, skills: string[]) => Promise<void>;
 
-/** The paid one: the Claude API runs the same task an agent would be given. */
-export const claudeDrafter: Drafter = (ws, slug, seed, skills) => runTask(ws, draftChannelTask(ws, slug, seed, skills), "anthropic");
+/** Changes the complete draft in `channels/<slug>/` to meet the requests. `keep` (workspace-relative) may not be replaced. */
+export type Reviser = (ws: Workspace, slug: string, requests: ChangeRequest[], skills: string[], keep: string[]) => Promise<void>;
+
+export interface Writer {
+  draft: Drafter;
+  revise: Reviser;
+}
+
+/** The paid one: the Claude API runs the same tasks an agent would be given. */
+export const claudeWriter: Writer = {
+  draft: (ws, slug, seed, skills) => runTask(ws, draftChannelTask(ws, slug, seed, skills), "anthropic"),
+  revise: (ws, slug, requests, skills, keep) => runTask(ws, reviseChannelTask(ws, slug, requests, skills, keep), "anthropic"),
+};
 
 /** How many times a build that was cut off (the server stopped mid-way) is started again by itself. */
 const MAX_INTERRUPTED = 2;
@@ -77,24 +91,46 @@ export function orderSeed(order: Order): string {
   return lines.join("\n");
 }
 
-/** Draft the channel for one order and put the customer's design on it. Throws if the result is not a valid channel. */
-export async function buildChannel(ws: Workspace, order: Order, slug: string, draft: Drafter): Promise<void> {
+/** Where the host's model.json is: the first character of the channel's series. */
+function hostModelPath(ws: Workspace, slug: string): string {
+  const channel = loadChannel(ws, slug);
+  const series = [...channel.series.values()].find((s) => s.data.status === "active") ?? [...channel.series.values()][0];
+  const hostName = series && Array.isArray(series.data.characters) ? String(series.data.characters[0]) : "";
+  const host = channel.characters.get(hostName);
+  if (!host) throw new Error(`The channel "${slug}" has no host character to put the customer's design on.`);
+  return host.modelPath;
+}
+
+/** Put the customer's look and host on the channel, then check it. Throws if it is not a valid channel. */
+function finishChannel(ws: Workspace, order: Order, slug: string): void {
   const theme = order.design?.theme ?? null;
   const model = order.design?.model ?? null;
-  createChannelSkeleton(ws, slug, "");
-  await draft(ws, slug, orderSeed(order), theme ? ["render-themed"] : []);
-  const dir = ws.channelDir(slug);
-  if (theme) writeJson(join(dir, "theme.json"), theme);
-  if (model) {
-    const channel = loadChannel(ws, slug);
-    const series = [...channel.series.values()].find((s) => s.data.status === "active") ?? [...channel.series.values()][0];
-    const hostName = series && Array.isArray(series.data.characters) ? String(series.data.characters[0]) : "";
-    const host = channel.characters.get(hostName);
-    if (!host) throw new Error(`The drafted channel "${slug}" has no host character to put the customer's design on.`);
-    writeJson(host.modelPath, model);
-  }
+  if (theme) writeJson(join(ws.channelDir(slug), "theme.json"), theme);
+  if (model) writeJson(hostModelPath(ws, slug), model);
   const errors = validateChannel(ws, loadChannel(ws, slug)).filter((x) => x.level === "error");
-  if (errors.length) throw new Error(`The drafted channel "${slug}" is not valid: ${errors.map((e) => `${e.file}: ${e.message}`).join("; ")}`);
+  if (errors.length) throw new Error(`The channel "${slug}" is not valid: ${errors.map((e) => `${e.file}: ${e.message}`).join("; ")}`);
+}
+
+/** Draft the channel for one order and put the customer's design on it. Throws if the result is not a valid channel. */
+export async function buildChannel(ws: Workspace, order: Order, slug: string, draft: Drafter): Promise<void> {
+  createChannelSkeleton(ws, slug, "");
+  await draft(ws, slug, orderSeed(order), order.design?.theme ? ["render-themed"] : []);
+  finishChannel(ws, order, slug);
+}
+
+/**
+ * Make the order's change requests on a copy of its channel: `from` stays as it was (nothing is
+ * overwritten), the revised channel is `slug`. Throws if the result is not a valid channel.
+ */
+export async function reviseChannel(ws: Workspace, order: Order, from: Workspace, fromSlug: string, slug: string, revise: Reviser): Promise<void> {
+  const dir = ws.channelDir(slug);
+  // The task files describe how the earlier version was made; the revision writes its own.
+  cpSync(from.channelDir(fromSlug), dir, { recursive: true, errorOnExist: true, force: false, filter: (src) => basename(src) !== "tasks" });
+  const doc = join(dir, "channel.md");
+  writeText(doc, updateFrontmatter(readText(doc), { slug }));
+  const keep = [...(order.design?.theme ? [join(dir, "theme.json")] : []), ...(order.design?.model ? [hostModelPath(ws, slug)] : [])].map((p) => ws.rel(p));
+  await revise(ws, slug, changeRequests(order).map((c) => ({ about: c.label, note: c.note })), order.design?.theme ? ["render-themed"] : [], keep);
+  finishChannel(ws, order, slug);
 }
 
 export class Builder {
@@ -105,7 +141,7 @@ export class Builder {
     private readonly store: OrderStore,
     /** Where built channels are written (see buildWorkspace). */
     readonly ws: Workspace,
-    private readonly draft: Drafter,
+    private readonly writer: Writer,
     /** The most builds started in one day (UTC); each one is a paid API call. */
     private readonly perDay: number,
   ) {}
@@ -132,9 +168,30 @@ export class Builder {
     this.tail = this.tail.then(() => this.run(id));
   }
 
-  /** Queue every order that is due a build: call once at start. */
+  /**
+   * Queue a revision of the order's kit from its change requests. Throws when there is nothing to
+   * revise or the order has used its rounds. `home` is the workspace the linked channel is in.
+   */
+  revise(id: string, home: Workspace): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    if (!order.channel || order.kit_approved || isBuilding(order) || this.waiting.has(id)) throw new Error(`Order ${id} cannot be revised now.`);
+    if (!changeRequests(order).length) throw new Error(`Order ${id} has no change requests.`);
+    if ((order.rounds ?? 0) >= MAX_ROUNDS) throw new Error(`Order ${id} has used its ${MAX_ROUNDS} automatic revisions.`);
+    this.store.update(id, (o) => {
+      o.build = { kind: "revise", state: "queued", attempts: 0, at: nowIso() };
+    });
+    this.waiting.add(id);
+    this.tail = this.tail.then(() => this.runRevise(id, home));
+  }
+
+  /** Queue every order that is due a build: call once at start. A revision that was cut off is marked failed, for the customer to send again. */
   resume(): void {
-    for (const order of this.store.list()) this.consider(order.id);
+    for (const order of this.store.list()) {
+      if (order.build?.kind === "revise") {
+        if (isBuilding(order) && !this.waiting.has(order.id)) this.fail(order.id, "The server stopped while the changes were being made.");
+      } else this.consider(order.id);
+    }
   }
 
   /** Resolves when nothing is building or queued. */
@@ -145,22 +202,50 @@ export class Builder {
   private fail(id: string, error: string): void {
     console.error(`Order ${id}: the automatic build failed. ${error}`);
     this.store.update(id, (o) => {
-      o.build = { state: "failed", attempts: o.build?.attempts ?? 0, at: nowIso(), error };
+      o.build = { ...(o.build?.kind ? { kind: o.build.kind } : {}), state: "failed", attempts: o.build?.attempts ?? 0, at: nowIso(), error };
     });
+  }
+
+  /** Throws when today's builds are used up. */
+  private checkLimit(): void {
+    const day = nowIso().slice(0, 10);
+    const startedToday = this.store.list().filter((o) => o.build?.started?.slice(0, 10) === day).length;
+    if (startedToday >= this.perDay) throw new Error(`The limit of ${this.perDay} automatic builds a day (STOREFRONT_BUILDS_PER_DAY) is reached.`);
+  }
+
+  private async runRevise(id: string, home: Workspace): Promise<void> {
+    try {
+      this.checkLimit();
+      const order = this.store.update(id, (o) => {
+        o.rounds = (o.rounds ?? 0) + 1;
+        o.build = { kind: "revise", state: "building", attempts: 1, at: nowIso(), started: nowIso() };
+      });
+      const slug = `${order.id}-r${order.rounds}`;
+      await reviseChannel(this.ws, order, home, order.channel!, slug, this.writer.revise);
+      this.store.update(id, (o) => {
+        o.channel = slug;
+        // The requests are made: those parts are open again for the customer to look at.
+        for (const c of changeRequests(o)) delete o.decisions[c.id];
+        o.build = { ...o.build!, state: "done", at: nowIso() };
+      });
+      console.log(`Order ${id}: revised into channel ${slug}.`);
+    } catch (err) {
+      this.fail(id, err instanceof Error ? err.message : String(err));
+    } finally {
+      this.waiting.delete(id);
+    }
   }
 
   private async run(id: string): Promise<void> {
     try {
-      const day = nowIso().slice(0, 10);
-      const startedToday = this.store.list().filter((o) => o.build?.started?.slice(0, 10) === day).length;
-      if (startedToday >= this.perDay) throw new Error(`The limit of ${this.perDay} automatic builds a day (STOREFRONT_BUILDS_PER_DAY) is reached.`);
+      this.checkLimit();
       const order = this.store.update(id, (o) => {
         o.build = { state: "building", attempts: (o.build?.attempts ?? 0) + 1, at: nowIso(), started: nowIso() };
       });
       // A new folder for every attempt: a channel is never overwritten.
       const attempt = order.build!.attempts;
       const slug = attempt === 1 ? order.id : `${order.id}-${attempt}`;
-      await buildChannel(this.ws, order, slug, this.draft);
+      await buildChannel(this.ws, order, slug, this.writer.draft);
       this.store.update(id, (o) => {
         o.channel = slug;
         o.build = { ...o.build!, state: "done", at: nowIso() };

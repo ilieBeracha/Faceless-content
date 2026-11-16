@@ -8,9 +8,10 @@ import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
 import { AccountStore } from "../storefront/accounts.ts";
 import { brandKit, videoPath } from "../storefront/brand-kit.ts";
-import { Builder, buildWorkspace, orderSeed, type Drafter } from "../storefront/builder.ts";
+import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser } from "../storefront/builder.ts";
 import { channelExists, loadChannel } from "../core/channels.ts";
-import { readJson } from "../core/util.ts";
+import { readJson, readText, writeText } from "../core/util.ts";
+import { SECTIONS } from "../storefront/store.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import { OWN_HOST, OWN_LOOK, loadCatalog, readHosts, readLooks } from "../storefront/catalog.ts";
 import { HOST_RIGS, buildHost, buildLook, hostFields, lookFields } from "../storefront/designer.ts";
@@ -268,6 +269,34 @@ describe("storefront: servers", () => {
     assert.equal(store.byId(order.id)?.decisions.look?.note, "Try the blueprint look");
     assert.match(await (await fetch(adminBase)).text(), /Try the blueprint look/);
   });
+
+  it("walks the decisions to one final approval that locks the kit and moves the order on to its videos", async () => {
+    const order = store.list().find((o) => o.channel === "kit-demo")!;
+    const page = async () => (await fetch(`${base}/w/${order.token}`)).text();
+    const decide = (values: Record<string, string>) => fetch(`${base}/w/${order.token}/decision`, form(values));
+    assert.match(await page(), /1 of 6 decided[\s\S]*Next: the name/);
+    assert.equal((await decide({ section: "name", decision: "approve" })).status, 303);
+    assert.match(await page(), /2 of 6 decided[\s\S]*Next: the host/);
+    assert.equal((await decide({ section: "name", decision: "clear" })).status, 303);
+    assert.equal(store.byId(order.id)?.decisions.name, undefined);
+    assert.equal((await fetch(`${base}/w/${order.token}/approve`, form({}))).status, 409);
+    for (const s of SECTIONS) if (s.id !== "look") assert.equal((await decide({ section: s.id, decision: "approve" })).status, 303);
+    // One part still asks for a change, and automatic builds are off here: the notes wait for a person.
+    assert.match(await page(), /5 approved, 1 to change[\s\S]*We make these by hand/);
+    assert.equal((await fetch(`${base}/w/${order.token}/revise`, form({}))).status, 404);
+    assert.equal((await fetch(`${base}/w/${order.token}/approve`, form({}))).status, 409);
+    assert.equal((await decide({ section: "look", decision: "approve" })).status, 303);
+    assert.equal(store.byId(order.id)?.decisions.look?.note, "");
+    assert.match(await page(), /Everything approved[\s\S]*Approve brand kit/);
+    assert.equal((await fetch(`${base}/w/${order.token}/approve`, form({}))).status, 303);
+    assert.ok(store.byId(order.id)?.kit_approved);
+    const done = await page();
+    assert.match(done, /Brand kit approved/);
+    assert.match(done, /First one being made/);
+    assert.doesNotMatch(done, /id="finish"|Undo/);
+    assert.equal((await decide({ section: "name", decision: "change", note: "Too late" })).status, 409);
+    assert.match(await (await fetch(adminBase)).text(), /Kit approved/);
+  });
 });
 
 describe("storefront: the library of looks and hosts", () => {
@@ -443,9 +472,18 @@ describe("storefront: automatic builds", () => {
     makeChannel(from, slug);
     cpSync(from.channelDir(slug), to.channelDir(slug), { recursive: true, force: true });
   };
+  const revised: { slug: string; requests: { about: string; note: string }[]; keep: string[] }[] = [];
+  // Stands in for the Claude API's revision: renames the channel, or fails when told to.
+  const revise: Reviser = async (to, slug, requests, _skills, keep) => {
+    revised.push({ slug, requests, keep });
+    await hold;
+    if (broken) throw new Error("the writer is down");
+    const doc = join(to.channelDir(slug), "channel.md");
+    writeText(doc, readText(doc).replace(/name: "?Test [\w-]+"?/, 'name: "Revised name"'));
+  };
   const setup = (name: string, perDay: number, paymentUrl: string | null) => {
     const store = new OrderStore(ws.path("storefront", `${name}.json`));
-    const builder = new Builder(store, built, draft, perDay);
+    const builder = new Builder(store, built, { draft, revise }, perDay);
     return { store, builder, options: { ws, store, product: "Test Studio", paymentUrl, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null, builder } };
   };
   const serve = async (server: Server) => {
@@ -573,5 +611,71 @@ describe("storefront: automatic builds", () => {
     assert.equal(store.byId(first.id)?.channel, first.id);
     assert.deepEqual([store.byId(second.id)?.build?.state, store.byId(second.id)?.channel], ["failed", null]);
     assert.match(store.byId(second.id)?.build?.error ?? "", /limit of 1 automatic builds a day/);
+  });
+
+  it("revises the kit from the customer's change requests into a new folder, and opens the changed parts again", async () => {
+    const { store, builder, options } = setup("revise", 20, null);
+    const site = createPublicServer(options);
+    try {
+      const base = await serve(site);
+      const link = (await fetch(`${base}/intake`, form(GOOD))).headers.get("location")!;
+      await builder.idle();
+      const id = store.list()[0].id;
+      const decide = (values: Record<string, string>) => fetch(`${base}${link}/decision`, form(values));
+      await decide({ section: "name", decision: "change", note: "A shorter name" });
+      assert.equal((await fetch(`${base}${link}/revise`, form({}))).status, 409, "every part is decided before changes are sent");
+      for (const s of SECTIONS) if (s.id !== "name") await decide({ section: s.id, decision: "approve" });
+      assert.match(await (await fetch(base + link)).text(), /5 approved, 1 to change[\s\S]*Send 1 change<[\s\S]*Revision 1 of 3/);
+
+      let release = () => {};
+      hold = new Promise<void>((r) => (release = r));
+      assert.equal((await fetch(`${base}${link}/revise`, form({}))).status, 303);
+      const waiting = await (await fetch(base + link)).text();
+      assert.match(waiting, /Your changes are being made/);
+      assert.match(waiting, /http-equiv="refresh"/);
+      assert.equal((await decide({ section: "host", decision: "clear" })).status, 409);
+      release();
+      await builder.idle();
+
+      const order = store.byId(id)!;
+      assert.deepEqual([order.channel, order.rounds, order.build?.state], [`${id}-r1`, 1, "done"]);
+      assert.equal(order.decisions.name, undefined, "the changed part is open again");
+      assert.equal(order.decisions.host?.decision, "approve", "the approved parts stay approved");
+      assert.equal(channelExists(built, id), true, "the earlier version is kept");
+      assert.equal(loadChannel(built, id).doc.data.name, `Test ${id}`);
+      const call = revised[revised.length - 1];
+      assert.deepEqual(call.requests, [{ about: "The name and the promise", note: "A shorter name" }]);
+      assert.deepEqual(call.keep, [`channels/${id}-r1/theme.json`, `channels/${id}-r1/characters/bot/model.json`]);
+      assert.deepEqual(readJson(join(built.channelDir(`${id}-r1`), "theme.json")), order.design?.theme);
+      assert.match(await (await fetch(base + link)).text(), /Revised name[\s\S]*5 of 6 decided/);
+
+      broken = true;
+      await decide({ section: "name", decision: "change", note: "Shorter still" });
+      await fetch(`${base}${link}/revise`, form({}));
+      await builder.idle();
+      const failed = store.byId(id)!;
+      assert.deepEqual([failed.channel, failed.rounds, failed.build?.state, failed.build?.kind, failed.decisions.name?.note], [`${id}-r1`, 2, "failed", "revise", "Shorter still"]);
+      assert.match(await (await fetch(base + link)).text(), /Your changes did not finish[\s\S]*Send 1 change</);
+      broken = false;
+      store.update(id, (o) => (o.rounds = 3));
+      assert.match(await (await fetch(base + link)).text(), /We make these by hand/);
+      assert.equal((await fetch(`${base}${link}/revise`, form({}))).status, 409);
+    } finally {
+      broken = false;
+      site.close();
+    }
+  });
+
+  it("at start, marks a revision that was cut off as failed instead of running it again", () => {
+    const { store, builder } = setup("cut-revise", 20, null);
+    const r = validateIntake(GOOD, OFFER);
+    assert.ok(r.intake);
+    const order = store.create(r.intake, r.design, false, null);
+    store.update(order.id, (o) => {
+      o.channel = "kit-demo";
+      o.build = { kind: "revise", state: "building", attempts: 1, at: "2026-01-01T00:00:00.000Z" };
+    });
+    builder.resume();
+    assert.deepEqual([store.byId(order.id)?.build?.state, store.byId(order.id)?.channel], ["failed", "kit-demo"]);
   });
 });
