@@ -1,0 +1,23 @@
+{
+  "name": "Ink mono",
+  "paper": "#f7f7f5",
+  "card": "#ffffff",
+  "ink": "#111111",
+  "text": "#111111",
+  "colors": [
+    "#111111",
+    "#8c8c8c",
+    "#d9d9d9"
+  ],
+  "accent": "#e63946",
+  "display": [
+    "anton"
+  ],
+  "body": "space-grotesk",
+  "casing": "upper",
+  "surface": "plain",
+  "backdrop": "none",
+  "texture": "none",
+  "motion": "draw-on",
+  "art": "line"
+}

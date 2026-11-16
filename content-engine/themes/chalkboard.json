@@ -1,0 +1,23 @@
+{
+  "name": "Chalkboard",
+  "paper": "#1f3b33",
+  "card": "#2a4a40",
+  "ink": "#f3f1e7",
+  "text": "#f3f1e7",
+  "colors": [
+    "#f6d55c",
+    "#ed8a63",
+    "#8fd3c8"
+  ],
+  "accent": "#f6d55c",
+  "display": [
+    "fredoka"
+  ],
+  "body": "fredoka",
+  "casing": "normal",
+  "surface": "ruled",
+  "backdrop": "none",
+  "texture": "grain",
+  "motion": "draw-on",
+  "art": "line"
+}

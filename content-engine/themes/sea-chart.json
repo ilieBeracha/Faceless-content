@@ -1,0 +1,23 @@
+{
+  "name": "Sea chart",
+  "paper": "#0b3954",
+  "card": "#0f4c6e",
+  "ink": "#fdf6e3",
+  "text": "#fdf6e3",
+  "colors": [
+    "#bfd7ea",
+    "#ff6663",
+    "#e0ff4f"
+  ],
+  "accent": "#e0ff4f",
+  "display": [
+    "montserrat"
+  ],
+  "body": "montserrat",
+  "casing": "upper",
+  "surface": "ruled",
+  "backdrop": "grid",
+  "texture": "none",
+  "motion": "draw-on",
+  "art": "line"
+}

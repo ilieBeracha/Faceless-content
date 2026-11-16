@@ -1,0 +1,24 @@
+{
+  "name": "Newsprint",
+  "paper": "#efe9dc",
+  "card": "#fffdf6",
+  "ink": "#15130f",
+  "text": "#15130f",
+  "colors": [
+    "#c4281c",
+    "#1f4e79",
+    "#8a8170"
+  ],
+  "accent": "#c4281c",
+  "display": [
+    "anton",
+    "montserrat"
+  ],
+  "body": "montserrat",
+  "casing": "upper",
+  "surface": "torn",
+  "backdrop": "sheets",
+  "texture": "grain",
+  "motion": "stop-motion",
+  "art": "cutout"
+}

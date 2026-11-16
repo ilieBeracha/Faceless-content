@@ -9,6 +9,7 @@ import * as motion from "./render-motion-graphics/schema.ts";
 import * as ai from "./render-ai-video/schema.ts";
 import * as story from "./render-storybook/schema.ts";
 import * as planet from "./render-planet-explainer/schema.ts";
+import * as themed from "./render-themed/schema.ts";
 import type { EngineConfig } from "../core/workspace.ts";
 
 export interface RenderSkillSpec {
@@ -88,6 +89,15 @@ export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
       (scene as planet.PeScene).planet.name,
       ...beats.flatMap((b) => ((b.visual as planet.PeBeatVisual).views ?? []).flatMap((v) => planet.viewText(v))),
     ],
+  },
+  "render-themed": {
+    name: "render-themed",
+    layer: "scene",
+    sceneSchema: themed.sceneSchema,
+    sceneRequired: false,
+    beatVisualSchema: themed.beatVisualSchema,
+    check: (scene, beats) => beats.flatMap((b) => themed.checkBeat(b.visual as themed.ThBeatVisual, scene as themed.ThScene | undefined, b.id)),
+    text: (_scene, beats) => beats.flatMap((b) => ((b.visual as themed.ThBeatVisual).elements ?? []).flatMap((el) => (el && typeof el === "object" ? themed.elementText(el) : []))).filter(Boolean),
   },
   "render-talking-character": {
     name: "render-talking-character",

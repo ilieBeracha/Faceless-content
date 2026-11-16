@@ -1,0 +1,24 @@
+{
+  "name": "Candy",
+  "paper": "#ffe5ef",
+  "card": "#ffffff",
+  "ink": "#4a2545",
+  "text": "#4a2545",
+  "colors": [
+    "#ff8fab",
+    "#a0e7e5",
+    "#fbe7a1"
+  ],
+  "accent": "#ff5c8a",
+  "display": [
+    "baloo-2",
+    "fredoka"
+  ],
+  "body": "fredoka",
+  "casing": "normal",
+  "surface": "plain",
+  "backdrop": "blobs",
+  "texture": "none",
+  "motion": "snappy",
+  "art": "flat"
+}

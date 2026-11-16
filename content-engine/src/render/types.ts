@@ -1,4 +1,5 @@
 import type { CharacterModel } from "../skills/render-talking-character/rigs.ts";
+import type { Theme } from "../skills/render-themed/schema.ts";
 import type { Beat, Script } from "../skills/write-script/schema.ts";
 
 export interface SafeArea {
@@ -61,6 +62,8 @@ export interface EpisodeProps {
   audioFile: string | null;
   /** render-ai-video: footage clips on the timeline (files are staged next to voice.wav). */
   clips?: { id: string; beat: string; file: string; start: number; duration: number; trim: number }[];
+  /** render-themed: the channel's look (its theme.json). */
+  theme?: Theme;
   showSafeAreas: boolean;
   qaProbe: boolean;
 }

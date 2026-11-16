@@ -1,0 +1,40 @@
+# Deploys the storefront (content-engine/) to Fly.io.
+# Runs only when a tag named storefront-deploy-* is pushed, never on ordinary pushes.
+name: Deploy storefront
+on:
+  push:
+    tags: ["storefront-deploy-*"]
+permissions:
+  contents: read
+concurrency: deploy-storefront
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  APP: channel-studio-storefront
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: content-engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: content-engine/package-lock.json
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Create the app on the first deploy
+        run: |
+          if ! flyctl apps list --json | jq -e --arg app "$APP" 'any(.[]; .Name == $app)' > /dev/null; then
+            flyctl apps create "$APP" --org "$(flyctl orgs list --json | jq -r 'keys[0]')"
+          fi
+      - name: Create the orders disk on the first deploy
+        run: |
+          if [ "$(flyctl volumes list --app "$APP" --json | jq 'length')" = "0" ]; then
+            flyctl volumes create orders --app "$APP" --region fra --size 1 --yes
+          fi
+      - run: flyctl deploy --app "$APP" --remote-only --ha=false

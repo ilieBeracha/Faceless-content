@@ -1,0 +1,17 @@
+{
+  "name": "Neon night",
+  "paper": "#0d0b1e",
+  "card": "#17143a",
+  "ink": "#f4f1ff",
+  "text": "#f4f1ff",
+  "colors": ["#ff3d9a", "#27e0ff", "#b6ff3c"],
+  "accent": "#27e0ff",
+  "display": ["anton"],
+  "body": "space-grotesk",
+  "casing": "upper",
+  "surface": "glow",
+  "backdrop": "blobs",
+  "texture": "none",
+  "motion": "snappy",
+  "art": "flat"
+}

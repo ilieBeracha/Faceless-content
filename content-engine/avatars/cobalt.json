@@ -1,0 +1,63 @@
+{
+  "name": "Cobalt",
+  "summary": "Blue 8-bit sprite in a yellow cap",
+  "model": {
+    "rig": "pixel-sprite",
+    "params": {
+      "body": "#3f6bff",
+      "shade": "#2a47b8",
+      "outline": "#0d1230",
+      "eye": "#ffffff",
+      "pupil": "#0d1230",
+      "accent": "#ffcf3d",
+      "feature": "cap"
+    },
+    "expressions": {
+      "neutral": {
+        "eye_scale": 1,
+        "pupil_scale": 1,
+        "bounce": 0.3,
+        "brow": "flat",
+        "mouth_curve": 0.2
+      },
+      "curious": {
+        "eye_scale": 1.15,
+        "pupil_scale": 1.1,
+        "tilt_deg": 10,
+        "look": [
+          0.3,
+          -0.2
+        ],
+        "bounce": 0.3,
+        "brow": "up",
+        "mouth_curve": 0.1
+      },
+      "excited": {
+        "eye_scale": 1.3,
+        "pupil_scale": 1.2,
+        "bounce": 0.8,
+        "brow": "up",
+        "mouth_curve": 0.9
+      },
+      "surprised": {
+        "eye_scale": 1.5,
+        "pupil_scale": 0.5,
+        "bounce": 0.5,
+        "brow": "up",
+        "mouth_curve": 0
+      },
+      "thinking": {
+        "eye_scale": 0.95,
+        "lid": 0.3,
+        "tilt_deg": -8,
+        "look": [
+          -0.4,
+          -0.5
+        ],
+        "bounce": 0.15,
+        "brow": "down",
+        "mouth_curve": -0.1
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Retro poster",
+  "paper": "#f2e2c4",
+  "card": "#fff6e0",
+  "ink": "#2d1e2f",
+  "text": "#2d1e2f",
+  "colors": [
+    "#e4572e",
+    "#17bebb",
+    "#ffc914"
+  ],
+  "accent": "#e4572e",
+  "display": [
+    "anton",
+    "baloo-2"
+  ],
+  "body": "montserrat",
+  "casing": "upper",
+  "surface": "torn",
+  "backdrop": "sheets",
+  "texture": "grain",
+  "motion": "stop-motion",
+  "art": "cutout"
+}

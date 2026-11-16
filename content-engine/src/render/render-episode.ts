@@ -10,6 +10,8 @@ import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
 import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
+import { parseTheme, type Theme } from "../skills/render-themed/schema.ts";
+import { EngineError } from "../core/errors.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 import { QA_PREFIX, type ProbeRecord } from "./qa-probe.ts";
@@ -33,6 +35,13 @@ export function brandOf(channelData: Record<string, unknown>): Brand {
     caption_case: (b.caption_case as Brand["caption_case"]) ?? "normal",
     ...(b.caption_color ? { caption_color: b.caption_color } : {}),
   };
+}
+
+/** A channel's look for render-themed: channels/<slug>/theme.json. */
+export function loadChannelTheme(channelDir: string, slug: string): Theme {
+  const path = join(channelDir, "theme.json");
+  if (!existsSync(path)) throw new EngineError(`Channel "${slug}" uses render-themed but has no theme.json.`, "Copy one from the engine's themes/ folder into the channel folder, or write a new one (see skills/render-themed/SKILL.md).");
+  return parseTheme(readJson(path), `channels/${slug}/theme.json`);
 }
 
 export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): EpisodeProps {
@@ -62,6 +71,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     captionsSkill: series.skills.captions ?? null,
     captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
     audioFile: "voice.wav",
+    ...(series.skills.render.includes("render-themed") ? { theme: loadChannelTheme(ep.channel.dir, ep.channel.slug) } : {}),
     ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,
     qaProbe: true,

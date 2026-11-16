@@ -12,10 +12,10 @@ good_at: [finding the one detail nobody mentions, explaining with something you 
 bad_at: [keeping a secret, staying calm about small things]  # required list(string) min=1 — flaws make characters likeable
 voice:                          # required object — text-to-speech settings
   provider: kokoro              # required ref(voice-provider) — kokoro = free and local
-  voice_id: af_bella            # required string — see `./engine list voices`
-  speed: 1.08                   # required number min=0.7 max=1.4 — speaking rate
+  voice_id: af_heart            # required string — see `./engine list voices`
+  speed: 1.06                   # required number min=0.7 max=1.4 — speaking rate
   pitch_semitones: 0            # optional number min=-6 max=6 — pitch shift after synthesis
-  sentence_pause: 0.24          # optional number min=0 max=1 — seconds of pause after . ! ?
+  sentence_pause: 0.3           # optional number min=0 max=1 — seconds of pause after . ! ?
   clause_pause: 0.1             # optional number min=0 max=1 — seconds of pause after , ; :
 pronunciations: {}              # optional map — how the voice says tricky words, e.g. {"GIF": "jif"}
 original: true                  # required boolean — confirms this is an original character, not someone else's IP

@@ -1,0 +1,23 @@
+{
+  "name": "Field notes",
+  "paper": "#e8e2cf",
+  "card": "#f7f3e6",
+  "ink": "#2e3b2b",
+  "text": "#2e3b2b",
+  "colors": [
+    "#5a7d4d",
+    "#b5651d",
+    "#d9a441"
+  ],
+  "accent": "#b5651d",
+  "display": [
+    "fredoka"
+  ],
+  "body": "montserrat",
+  "casing": "normal",
+  "surface": "torn",
+  "backdrop": "sheets",
+  "texture": "grain",
+  "motion": "stop-motion",
+  "art": "line"
+}

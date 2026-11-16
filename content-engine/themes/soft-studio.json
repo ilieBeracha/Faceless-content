@@ -1,0 +1,17 @@
+{
+  "name": "Soft studio",
+  "paper": "#f3efe9",
+  "card": "#ffffff",
+  "ink": "#1d1b22",
+  "text": "#1d1b22",
+  "colors": ["#ff7a59", "#6c5ce7", "#ffd166"],
+  "accent": "#6c5ce7",
+  "display": ["fredoka"],
+  "body": "fredoka",
+  "casing": "normal",
+  "surface": "plain",
+  "backdrop": "blobs",
+  "texture": "none",
+  "motion": "snappy",
+  "art": "flat"
+}

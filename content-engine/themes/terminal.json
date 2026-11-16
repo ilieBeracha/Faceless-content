@@ -1,0 +1,23 @@
+{
+  "name": "Terminal",
+  "paper": "#0a0f0a",
+  "card": "#101a10",
+  "ink": "#b9ffb0",
+  "text": "#b9ffb0",
+  "colors": [
+    "#39ff14",
+    "#00b140",
+    "#ffd400"
+  ],
+  "accent": "#ffd400",
+  "display": [
+    "space-grotesk"
+  ],
+  "body": "space-grotesk",
+  "casing": "normal",
+  "surface": "glow",
+  "backdrop": "grid",
+  "texture": "none",
+  "motion": "snappy",
+  "art": "line"
+}

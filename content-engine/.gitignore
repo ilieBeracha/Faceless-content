@@ -19,6 +19,9 @@ channels/*/episodes/*/audio/chunks/
 channels/*/episodes/*/qa/frames/
 channels/*/episodes/*/qa/*.jpg
 
+# storefront orders hold customers' names and email addresses — never commit
+/storefront/
+
 # OS / editor noise
 .DS_Store
 *.log

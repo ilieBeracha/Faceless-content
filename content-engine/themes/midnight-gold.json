@@ -1,0 +1,23 @@
+{
+  "name": "Midnight gold",
+  "paper": "#101626",
+  "card": "#1a2238",
+  "ink": "#f5e9c8",
+  "text": "#f5e9c8",
+  "colors": [
+    "#d4af37",
+    "#6c7a99",
+    "#b23a48"
+  ],
+  "accent": "#d4af37",
+  "display": [
+    "montserrat"
+  ],
+  "body": "montserrat",
+  "casing": "upper",
+  "surface": "plain",
+  "backdrop": "none",
+  "texture": "grain",
+  "motion": "snappy",
+  "art": "flat"
+}

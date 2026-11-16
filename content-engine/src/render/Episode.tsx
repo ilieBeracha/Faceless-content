@@ -7,6 +7,7 @@ import { PlanetExplainer } from "../skills/render-planet-explainer/PlanetExplain
 import { CharacterLayer } from "../skills/render-talking-character/CharacterLayer.tsx";
 import { Scene3D } from "../skills/render-3d-explainer/Scene3D.tsx";
 import { StorybookScene } from "../skills/render-storybook/Storybook.tsx";
+import { Themed } from "../skills/render-themed/Themed.tsx";
 import { fontFor, loadEngineFonts } from "./fonts.ts";
 import { useQaProbe } from "./qa-probe.ts";
 import { beatSpans, clamp, easeOut, regions, safeRect } from "./timeline.ts";
@@ -23,10 +24,11 @@ export const SCENE_SKILLS: Record<string, SceneComponent> = {
   "render-motion-graphics": MotionGraphics,
   "render-planet-explainer": PlanetExplainer,
   "render-storybook": StorybookScene,
+  "render-themed": Themed,
 };
 
 /** Scene skills that draw their own title, so the engine's per-beat headline stays off. */
-const OWN_TITLE = new Set(["render-storybook"]);
+const OWN_TITLE = new Set(["render-storybook", "render-themed"]);
 
 interface Run {
   skill: string;

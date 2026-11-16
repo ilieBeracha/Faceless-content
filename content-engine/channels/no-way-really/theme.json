@@ -1,0 +1,17 @@
+{
+  "name": "Paper collage",
+  "paper": "#e7dfcd",
+  "card": "#fbf7ec",
+  "ink": "#151515",
+  "text": "#151515",
+  "colors": ["#e2543e", "#2f6f73", "#f0b429"],
+  "accent": "#f0b429",
+  "display": ["anton", "montserrat", "space-grotesk", "fredoka"],
+  "body": "space-grotesk",
+  "casing": "upper",
+  "surface": "torn",
+  "backdrop": "sheets",
+  "texture": "grain",
+  "motion": "stop-motion",
+  "art": "cutout"
+}
