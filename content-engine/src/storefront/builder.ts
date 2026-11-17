@@ -4,21 +4,31 @@
  * brand kit shows on their page.
  *
  * Built channels live in their own engine workspace under storefront/ (next to the orders, out of
- * git): they are customers' work. They stay `draft`; approving a channel is still a person's step.
- * One build runs at a time. A build that fails is recorded on its order and is not retried by itself.
+ * git): they are customers' work. A channel stays `draft` until its customer approves the whole
+ * brand kit: that approval is the person's step that makes it `active`.
+ *
+ * After that approval the first video is made the same way a person would make it with the engine:
+ * the script is written, the customer approves every fact in it on their page (nothing is voiced or
+ * drawn before that), then it is voiced, rendered and checked.
+ *
+ * One job runs at a time. A job that fails is recorded on its order and is not retried by itself.
  */
-import { cpSync, mkdirSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, symlinkSync } from "node:fs";
 import { basename } from "node:path";
 import { join } from "node:path";
-import { loadChannel, validateChannel } from "../core/channels.ts";
+import { channelExists, channelStatus, loadChannel, validateChannel } from "../core/channels.ts";
+import { PipelinePause } from "../core/errors.ts";
 import { updateFrontmatter } from "../core/markdown.ts";
 import { createChannelSkeleton } from "../core/scaffold.ts";
 import { runTask } from "../core/tasks.ts";
-import { nowIso, readText, writeJson, writeText } from "../core/util.ts";
+import { nowIso, readJson, readText, today, writeJson, writeText } from "../core/util.ts";
 import { Workspace } from "../core/workspace.ts";
 import { draftChannelTask } from "../pipeline/draft-channel.ts";
+import { episodesDir, listEpisodes, makeEpisode } from "../pipeline/episode.ts";
+import { approveFactcheck, readFactcheck, rejectFactcheck } from "../pipeline/factcheck.ts";
 import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
-import { MAX_ROUNDS, changeRequests, isBuilding, type Order, type OrderStore } from "./store.ts";
+import type { Script } from "../skills/write-script/schema.ts";
+import { MAX_ROUNDS, changeRequests, isBuilding, isMakingVideo, type Order, type OrderStore } from "./store.ts";
 
 /** Writes a full channel draft into `channels/<slug>/` of `ws`, whose skeleton already exists. */
 export type Drafter = (ws: Workspace, slug: string, seed: string, skills: string[]) => Promise<void>;
@@ -26,15 +36,39 @@ export type Drafter = (ws: Workspace, slug: string, seed: string, skills: string
 /** Changes the complete draft in `channels/<slug>/` to meet the requests. `keep` (workspace-relative) may not be replaced. */
 export type Reviser = (ws: Workspace, slug: string, requests: ChangeRequest[], skills: string[], keep: string[]) => Promise<void>;
 
+/**
+ * Takes the channel's first video as far as it can go: writes the script (again, if its fact-check
+ * asked for changes) and stops at "facts" until the fact-check is approved; after that voices,
+ * renders and checks it, and returns "done". Throws when a step fails.
+ */
+export type VideoMaker = (ws: Workspace, slug: string, series: string) => Promise<{ episode: string; state: "facts" | "done" }>;
+
 export interface Writer {
   draft: Drafter;
   revise: Reviser;
+  video: VideoMaker;
 }
+
+/** The engine's own episode pipeline, with the Claude API (paid) writing the script and reviewing the frames. */
+const claudeVideo: VideoMaker = async (ws, slug, series) => {
+  const open = () => listEpisodes(loadChannel(ws, slug)).filter((e) => e.series === series && e.status !== "done").at(-1);
+  const current = open();
+  const rewrite = current !== undefined && readFactcheck(join(episodesDir(loadChannel(ws, slug)), current.id))?.status === "changes-requested";
+  try {
+    const ep = await makeEpisode(ws, { channel: slug, series, llm: "anthropic", redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
+    return { episode: ep.state.id, state: "done" };
+  } catch (err) {
+    if (!(err instanceof PipelinePause)) throw err;
+    if (err.kind === "awaiting-approval") return { episode: open()!.id, state: "facts" };
+    throw new Error(err.lines.join(" "));
+  }
+};
 
 /** The paid one: the Claude API runs the same tasks an agent would be given. */
 export const claudeWriter: Writer = {
   draft: (ws, slug, seed, skills) => runTask(ws, draftChannelTask(ws, slug, seed, skills), "anthropic"),
   revise: (ws, slug, requests, skills, keep) => runTask(ws, reviseChannelTask(ws, slug, requests, skills, keep), "anthropic"),
+  video: claudeVideo,
 };
 
 /** How many times a build that was cut off (the server stopped mid-way) is started again by itself. */
@@ -43,11 +77,13 @@ const MAX_INTERRUPTED = 2;
 /**
  * The engine workspace built channels are written to: `dir`, holding copies of the house rules,
  * templates, skills and workflows from `engineDir` (refreshed on every start) and its own channels/.
+ * The local voice (.venv, .models) is used from `engineDir` when it is set up there.
  */
 export function buildWorkspace(engineDir: string, dir: string): Workspace {
   mkdirSync(join(dir, "channels"), { recursive: true });
   for (const p of ["templates", "skills", "workflows"]) cpSync(join(engineDir, p), join(dir, p), { recursive: true });
   for (const f of ["AGENTS.md", "engine.config.json"]) cpSync(join(engineDir, f), join(dir, f));
+  for (const d of [".venv", ".models"]) if (existsSync(join(engineDir, d)) && !existsSync(join(dir, d))) symlinkSync(join(engineDir, d), join(dir, d), "dir");
   return new Workspace(dir);
 }
 
@@ -185,12 +221,109 @@ export class Builder {
     this.tail = this.tail.then(() => this.runRevise(id, home));
   }
 
-  /** Queue every order that is due a build: call once at start. A revision that was cut off is marked failed, for the customer to send again. */
+  /**
+   * Queue every order that is due a build or its video: call once at start. A revision that was cut
+   * off is marked failed, for the customer to send again. A video that was cut off continues.
+   */
   resume(): void {
     for (const order of this.store.list()) {
       if (order.build?.kind === "revise") {
         if (isBuilding(order) && !this.waiting.has(order.id)) this.fail(order.id, "The server stopped while the changes were being made.");
       } else this.consider(order.id);
+      if (this.waiting.has(order.id)) continue;
+      if (!order.video) this.startVideo(order.id);
+      else if (isMakingVideo(order)) {
+        if (order.video.attempts >= MAX_INTERRUPTED) this.failVideo(order.id, `The video was cut off ${order.video.attempts} times and was not started again.`);
+        else this.queueVideo(order.id);
+      }
+    }
+  }
+
+  /**
+   * Start the order's first video if it is due one: the customer approved the kit, the channel was
+   * built here, and no video was started before. `again` also continues one that failed, from the
+   * step it failed at. The customer's approval of the kit is what makes the channel active.
+   */
+  startVideo(id: string, again = false): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    if (this.waiting.has(id) || !order.kit_approved || !order.channel || !channelExists(this.ws, order.channel)) return;
+    const v = order.video;
+    if (v && !(again && v.state === "failed")) return;
+    const channel = loadChannel(this.ws, order.channel);
+    if (channelStatus(channel) === "draft") {
+      writeText(channel.doc.abs, updateFrontmatter(channel.doc.text, { status: "active", approved: today(), approved_by: order.intake.contact_name }));
+    }
+    this.store.update(id, (o) => {
+      o.video = { state: v?.failed_at ?? "writing", ...(v?.episode ? { episode: v.episode } : {}), attempts: 0, rounds: v?.rounds ?? 0, at: nowIso() };
+    });
+    this.queueVideo(id);
+  }
+
+  /** The script whose facts the customer is checking. Throws when the order is not at that step. */
+  facts(order: Order): Script {
+    if (order.video?.state !== "facts" || !order.video.episode || !order.channel) throw new Error(`Order ${order.id} has no facts to check now.`);
+    return readJson<Script>(join(this.episodeDir(order.channel, order.video.episode), "script.json"));
+  }
+
+  /** The customer approved every fact of the script as it is now: record it under their name and make the video. */
+  approveFacts(id: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    approveFactcheck(this.episodeDir(order.channel!, order.video!.episode!), this.facts(order), order.intake.contact_name);
+    this.store.update(id, (o) => {
+      o.video = { ...o.video!, state: "making", attempts: 0, at: nowIso() };
+    });
+    this.queueVideo(id);
+  }
+
+  /** The customer asked for a change to the facts: record their note and write the script again. Throws when the rounds are used up. */
+  changeFacts(id: string, note: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    this.facts(order);
+    if (order.video!.rounds >= MAX_ROUNDS) throw new Error(`Order ${id} has used its ${MAX_ROUNDS} automatic script rewrites.`);
+    rejectFactcheck(this.episodeDir(order.channel!, order.video!.episode!), note);
+    this.store.update(id, (o) => {
+      o.video = { ...o.video!, state: "writing", attempts: 0, rounds: o.video!.rounds + 1, at: nowIso() };
+    });
+    this.queueVideo(id);
+  }
+
+  private episodeDir(slug: string, episode: string): string {
+    return join(episodesDir(loadChannel(this.ws, slug)), episode);
+  }
+
+  private queueVideo(id: string): void {
+    this.waiting.add(id);
+    this.tail = this.tail.then(() => this.runVideo(id));
+  }
+
+  private failVideo(id: string, error: string): void {
+    console.error(`Order ${id}: its video failed. ${error}`);
+    this.store.update(id, (o) => {
+      const v = o.video!;
+      o.video = { ...v, state: "failed", failed_at: v.state === "making" ? "making" : "writing", at: nowIso(), error };
+    });
+  }
+
+  private async runVideo(id: string): Promise<void> {
+    try {
+      const order = this.store.update(id, (o) => {
+        o.video = { ...o.video!, attempts: o.video!.attempts + 1, at: nowIso() };
+      });
+      const channel = loadChannel(this.ws, order.channel!);
+      const series = [...channel.series.values()].find((s) => s.data.status === "active");
+      if (!series) throw new Error(`The channel "${order.channel}" has no active series to make a video in.`);
+      const result = await this.writer.video(this.ws, order.channel!, String(series.data.slug));
+      this.store.update(id, (o) => {
+        o.video = { state: result.state, episode: result.episode, attempts: o.video!.attempts, rounds: o.video!.rounds, at: nowIso() };
+      });
+      console.log(`Order ${id}: video ${result.episode} is ${result.state === "done" ? "made" : "waiting for its facts to be approved"}.`);
+    } catch (err) {
+      this.failVideo(id, err instanceof Error ? err.message : String(err));
+    } finally {
+      this.waiting.delete(id);
     }
   }
 

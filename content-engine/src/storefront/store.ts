@@ -68,6 +68,27 @@ export interface Build {
   error?: string;
 }
 
+/** Where an order's first video stands (builder.ts). Absent until the kit is approved and its channel was built here. */
+export interface Video {
+  /**
+   * writing = the script is being written; facts = the customer is checking its facts;
+   * making = being voiced, drawn and checked; done = on the order's page; failed = stopped, see `error`.
+   */
+  state: "writing" | "facts" | "making" | "done" | "failed";
+  /** The step that was running when it failed. */
+  failed_at?: "writing" | "making";
+  /** The episode folder in the channel, once there is one. */
+  episode?: string;
+  /** How many times the current step was started. */
+  attempts: number;
+  /** How many times the script was rewritten because the customer asked for a change to its facts. */
+  rounds: number;
+  /** When it reached this state. */
+  at: string;
+  /** Why it failed. */
+  error?: string;
+}
+
 export interface Order {
   /** Secret: whoever has it can open the workspace. Never log it. */
   token: string;
@@ -89,6 +110,7 @@ export interface Order {
   rounds?: number;
   /** When the customer approved the whole brand kit. From then on it is locked. */
   kit_approved?: string;
+  video?: Video;
   decisions: Partial<Record<SectionId, Decision>>;
 }
 
@@ -177,6 +199,11 @@ export function changeRequests(order: Order): { id: SectionId; label: string; no
 /** True while the order's channel is being built or revised: nothing can be decided meanwhile. */
 export function isBuilding(order: Order): boolean {
   return order.build?.state === "queued" || order.build?.state === "building";
+}
+
+/** True while the order's video is being worked on by the server (not while it waits for the customer). */
+export function isMakingVideo(order: Order): boolean {
+  return order.video?.state === "writing" || order.video?.state === "making";
 }
 
 export class OrderStore {

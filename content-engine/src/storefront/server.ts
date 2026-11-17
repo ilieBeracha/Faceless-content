@@ -260,7 +260,8 @@ export function createPublicServer(o: StorefrontOptions): Server {
         if (!order) throw new HttpError(404, "This workspace link is not valid. Check that you copied all of it.");
         if (req.method === "GET" && parts.length === 2) {
           const slug = linkedChannel(order);
-          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null));
+          const facts = o.builder && order.video?.state === "facts" ? o.builder.facts(order) : null;
+          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null, facts));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");
@@ -299,6 +300,20 @@ export function createPublicServer(o: StorefrontOptions): Server {
             o.store.update(order.id, (ord) => {
               ord.kit_approved = new Date().toISOString();
             });
+          o.builder?.startVideo(order.id);
+          return redirect(res, `/w/${order.token}`);
+        }
+        if (req.method === "POST" && parts.length === 3 && parts[2] === "facts" && o.builder) {
+          if (order.video?.state !== "facts") throw new HttpError(409, "There are no facts to check right now.");
+          const form = await readForm(req);
+          if (form.decision === "approve") o.builder.approveFacts(order.id);
+          else if (form.decision === "change") {
+            const note = (form.note ?? "").trim();
+            if (!note) throw new HttpError(400, "Say which fact is wrong and what should change.");
+            if (note.length > 600) throw new HttpError(400, "Keep the note to 600 characters or fewer.");
+            if (order.video.rounds >= MAX_ROUNDS) throw new HttpError(409, `This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand.`);
+            o.builder.changeFacts(order.id, note);
+          } else throw new HttpError(400, "Choose Approve the facts or Ask for a change.");
           return redirect(res, `/w/${order.token}`);
         }
         if (req.method === "GET" && parts.length === 4 && parts[2] === "video" && SLUG.test(parts[3])) {
@@ -339,6 +354,10 @@ export function createAdminServer(o: StorefrontOptions): Server {
         }
         if (parts[2] === "build" && o.builder) {
           o.builder.consider(parts[1], true);
+          return redirect(res, "/");
+        }
+        if (parts[2] === "video" && o.builder) {
+          o.builder.startVideo(parts[1], true);
           return redirect(res, "/");
         }
         if (parts[2] === "channel") {

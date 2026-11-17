@@ -7,7 +7,11 @@
  *   STOREFRONT_PAYMENT_URL   hosted payment page, e.g. a Stripe payment link (optional; without it new orders start without payment)
  *   STOREFRONT_PUBLIC_URL    the address customers use, for the links shown in admin
  *   STOREFRONT_DEMO_CHANNEL  the channel shown on the demo page (default "no-way-really")
- *   STOREFRONT_AUTOBUILD     "1" = build each order's channel by itself with the Claude API (paid; needs ANTHROPIC_API_KEY)
+ *   STOREFRONT_AUTOBUILD     "1" = build each order's channel by itself with the Claude API (paid; needs ANTHROPIC_API_KEY),
+ *                            and after the customer approves the kit, make its first video: the script and the visual
+ *                            check use the Claude API too (the script with web search, paid per search); the customer
+ *                            approves the script's facts on their page before it is voiced and rendered on this machine
+ *                            (needs the engine's setup: ./engine setup)
  *   STOREFRONT_BUILDS_PER_DAY  the most automatic builds started in one day, UTC (default 20)
  *   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
  *                            switch on "Sign in with Google" and accounts (set both, or neither). In Google's
@@ -57,6 +61,6 @@ createPublicServer(options).listen(port, host, () => console.log(`Public site:  
 createAdminServer(options).listen(adminPort, "127.0.0.1", () => console.log(`Orders (this computer only):  http://127.0.0.1:${adminPort}`));
 console.log(`On offer: ${catalog.looks.length} looks (themes/), ${catalog.hosts.length} hosts (avatars/).`);
 console.log(options.accounts ? `Sign in with Google is on. Its return address is ${options.publicBase}/auth/google/callback` : "Sign-in not set (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET): accounts are off, orders are reached by their private link.");
-console.log(builder ? `Automatic builds are on (Claude API, paid): at most ${perDay} a day.` : "Automatic builds are off (STOREFRONT_AUTOBUILD): channels are made by hand and linked on the orders page.");
+console.log(builder ? `Automatic builds are on (Claude API, paid): at most ${perDay} channel builds a day, and a first video for each approved kit.` : "Automatic builds are off (STOREFRONT_AUTOBUILD): channels are made by hand and linked on the orders page.");
 builder?.resume();
 if (!paymentUrl) console.log("Payment link not set (STOREFRONT_PAYMENT_URL): new orders start without payment.");

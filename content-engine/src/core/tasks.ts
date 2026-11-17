@@ -9,7 +9,7 @@
  *              writes the result itself. Needs ANTHROPIC_API_KEY and an explicit `--llm anthropic`.
  */
 import Anthropic from "@anthropic-ai/sdk";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, relative, resolve, sep } from "node:path";
 import type { ContextBundle } from "./context.ts";
 import { EngineError, PipelinePause } from "./errors.ts";
@@ -37,6 +37,13 @@ export interface Task {
   check?: () => string[];
   /** Existing files (absolute paths) this task is allowed to replace, e.g. placeholders it fills in. */
   replaceable?: string[];
+  /**
+   * The task states facts that must be checked against real sources. An agent uses its own web
+   * access; the Claude API gets web search (paid per search), at most this many searches.
+   */
+  research?: { maxSearches: number };
+  /** Pictures (absolute paths, .jpg) the task says to look at. The Claude API gets them attached. */
+  images?: string[];
 }
 
 export type LlmProviderName = "agent" | "anthropic";
@@ -119,23 +126,35 @@ async function runWithClaudeApi(ws: Workspace, task: Task): Promise<void> {
     : `Respond with ONLY a JSON object {"files": {"<workspace-relative path>": "<complete file content>"}} containing every file you create. Allowed locations: ${task.outputs.map((o) => ws.rel(o.path) + (o.format === "files" ? "/…" : "")).join(", ")}.`;
 
   const client = new Anthropic();
-  const messages: Anthropic.Beta.BetaMessageParam[] = [{ role: "user", content: `${prompt}\n\n---\n${format}` }];
+  const pictures: Anthropic.Beta.BetaImageBlockParam[] = (task.images ?? []).map((path) => ({ type: "image", source: { type: "base64", media_type: "image/jpeg", data: readFileSync(path).toString("base64") } }));
+  const tools: Anthropic.Beta.BetaToolUnion[] = task.research ? [{ type: "web_search_20260209", name: "web_search", max_uses: task.research.maxSearches }] : [];
+  if (task.research) console.log(`  ↳ with web search (paid per search): at most ${task.research.maxSearches} searches`);
+  const messages: Anthropic.Beta.BetaMessageParam[] = [{ role: "user", content: [...pictures, { type: "text", text: `${prompt}\n\n---\n${format}` }] }];
   for (let attempt = 1; attempt <= 3; attempt++) {
-    const stream = client.beta.messages.stream({
-      model,
-      max_tokens,
-      thinking: { type: "adaptive" },
-      output_config: { effort: effort as "low" | "medium" | "high" | "xhigh" | "max" },
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-      system: "You are the drafting agent of a content engine for faceless short-video channels. Follow AGENTS.md and the task exactly, and output only what the task asks for.",
-      messages,
-    });
-    const message = await stream.finalMessage();
+    let message: Anthropic.Beta.BetaMessage;
+    // A turn with web searches can be paused by the API; it continues when sent back as it is.
+    for (;;) {
+      const stream = client.beta.messages.stream({
+        model,
+        max_tokens,
+        thinking: { type: "adaptive" },
+        output_config: { effort: effort as "low" | "medium" | "high" | "xhigh" | "max" },
+        betas: ["server-side-fallback-2026-07-01"],
+        fallbacks: "default",
+        system: "You are the drafting agent of a content engine for faceless short-video channels. Follow AGENTS.md and the task exactly, and output only what the task asks for.",
+        ...(tools.length ? { tools } : {}),
+        messages,
+      });
+      message = await stream.finalMessage();
+      console.log(`  ↳ used ${message.usage.input_tokens.toLocaleString()} in / ${message.usage.output_tokens.toLocaleString()} out tokens`);
+      if (message.stop_reason !== "pause_turn") break;
+      messages.push({ role: "assistant", content: message.content });
+    }
     if (message.stop_reason === "refusal") throw new EngineError(`Claude declined the "${task.title}" task (${message.stop_details?.category ?? "no category"}).`);
     if (message.stop_reason === "max_tokens") throw new EngineError(`The response for "${task.title}" hit max_tokens (${max_tokens}).`, "Raise llm.anthropic.max_tokens in engine.config.json.");
-    const text = message.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("").trim();
-    console.log(`  ↳ used ${message.usage.input_tokens.toLocaleString()} in / ${message.usage.output_tokens.toLocaleString()} out tokens`);
+    // The output is the text after the last search: what was said between searches is not part of it.
+    const lastTool = message.content.findLastIndex((b) => b.type !== "text" && b.type !== "thinking" && b.type !== "redacted_thinking");
+    const text = message.content.slice(lastTool + 1).flatMap((b) => (b.type === "text" ? [b.text] : [])).join("").trim();
 
     if (single) writeText(single.path, single.format === "json" ? stripFences(text) : text);
     else writeFiles(ws, task, text);
@@ -143,7 +162,7 @@ async function runWithClaudeApi(ws: Workspace, task: Task): Promise<void> {
     const problems = task.check?.() ?? [];
     if (!problems.length) return;
     if (attempt === 3) throw new EngineError(`The output for "${task.title}" still has problems after 3 attempts:\n  - ${problems.join("\n  - ")}`);
-    messages.push({ role: "assistant", content: message.content.filter((b) => b.type === "text") });
+    messages.push({ role: "assistant", content: message.content });
     messages.push({ role: "user", content: `The engine found these problems — fix them and resend the complete output in the same format:\n- ${problems.join("\n- ")}` });
   }
 }

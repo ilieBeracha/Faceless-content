@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
@@ -8,9 +8,11 @@ import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
 import { AccountStore } from "../storefront/accounts.ts";
 import { brandKit, videoPath } from "../storefront/brand-kit.ts";
-import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser } from "../storefront/builder.ts";
+import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser, type VideoMaker } from "../storefront/builder.ts";
+import { episodesDir } from "../pipeline/episode.ts";
+import { readFactcheck, writeFactcheck } from "../pipeline/factcheck.ts";
 import { channelExists, loadChannel } from "../core/channels.ts";
-import { readJson, readText, writeText } from "../core/util.ts";
+import { readJson, readText, writeJson, writeText } from "../core/util.ts";
 import { SECTIONS } from "../storefront/store.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import { OWN_HOST, OWN_LOOK, loadCatalog, readHosts, readLooks } from "../storefront/catalog.ts";
@@ -19,7 +21,7 @@ import type { SignIn } from "../storefront/google.ts";
 import { hostSvg } from "../storefront/host-svg.tsx";
 import { createAdminServer, createPublicServer } from "../storefront/server.ts";
 import { OrderStore, validateIntake } from "../storefront/store.ts";
-import { makeChannel, tempWorkspace } from "./helpers.ts";
+import { makeChannel, sampleScript, tempWorkspace } from "./helpers.ts";
 
 const GOOD = { contact_name: "Sam Example", email: "sam@example.com", idea: "How bridges stay up", audience: "Curious adults", tone: "calm, clear", look: "Blueprint", look_note: "", avatar: "Byte", host: "", avoid: "" };
 const OFFER = loadCatalog(ENGINE_DIR);
@@ -481,9 +483,34 @@ describe("storefront: automatic builds", () => {
     const doc = join(to.channelDir(slug), "channel.md");
     writeText(doc, readText(doc).replace(/name: "?Test [\w-]+"?/, 'name: "Revised name"'));
   };
+  const made: { slug: string; series: string; rewrite: boolean }[] = [];
+  const EPISODE = "2026-01-01-first";
+  // Stands in for the episode pipeline: writes a script and its fact-check list and stops there; once the list is approved, writes the video.
+  const video: VideoMaker = async (to, slug, series) => {
+    await hold;
+    if (broken) throw new Error("the writer is down");
+    const dir = join(episodesDir(loadChannel(to, slug)), EPISODE);
+    const state = (status: "in-progress" | "done") => writeJson(join(dir, "episode.json"), { id: EPISODE, channel: slug, series, idea: "a-ballpoint-pen", title: "Inside a pen", created: "2026-01-01T00:00:00.000Z", updated: "2026-01-01T00:00:00.000Z", status, steps: {} });
+    const check = readFactcheck(dir);
+    const rewrite = check?.status === "changes-requested";
+    made.push({ slug, series, rewrite });
+    if (!check || rewrite) {
+      const script = { ...sampleScript(slug), title: rewrite ? "Inside a pen, corrected" : "Inside a pen" };
+      writeJson(join(dir, "script.json"), script);
+      state("in-progress");
+      writeFactcheck(dir, script, { channel: slug, episode: EPISODE });
+      return { episode: EPISODE, state: "facts" };
+    }
+    if (check.status !== "approved") return { episode: EPISODE, state: "facts" };
+    const file = videoPath(to, slug, EPISODE);
+    mkdirSync(dirname(file), { recursive: true });
+    writeFileSync(file, Buffer.from("0123456789"));
+    state("done");
+    return { episode: EPISODE, state: "done" };
+  };
   const setup = (name: string, perDay: number, paymentUrl: string | null) => {
     const store = new OrderStore(ws.path("storefront", `${name}.json`));
-    const builder = new Builder(store, built, { draft, revise }, perDay);
+    const builder = new Builder(store, built, { draft, revise, video }, perDay);
     return { store, builder, options: { ws, store, product: "Test Studio", paymentUrl, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null, builder } };
   };
   const serve = async (server: Server) => {
@@ -677,5 +704,138 @@ describe("storefront: automatic builds", () => {
     });
     builder.resume();
     assert.deepEqual([store.byId(order.id)?.build?.state, store.byId(order.id)?.channel], ["failed", "kit-demo"]);
+  });
+
+  it("after the kit is approved, writes the script, has the customer check its facts, and only then makes the video", async () => {
+    const { store, builder, options } = setup("video", 20, null);
+    const site = createPublicServer(options);
+    try {
+      const base = await serve(site);
+      const link = (await fetch(`${base}/intake`, form(GOOD))).headers.get("location")!;
+      await builder.idle();
+      const id = store.list()[0].id;
+      const page = async () => (await fetch(base + link)).text();
+      const facts = (values: Record<string, string>) => fetch(`${base}${link}/facts`, form(values));
+      for (const s of SECTIONS) await fetch(`${base}${link}/decision`, form({ section: s.id, decision: "approve" }));
+      assert.equal(loadChannel(built, id).doc.data.status, "draft");
+      assert.equal((await facts({ decision: "approve" })).status, 409, "no facts before there is a script");
+
+      let release = () => {};
+      hold = new Promise<void>((r) => (release = r));
+      assert.equal((await fetch(`${base}${link}/approve`, form({}))).status, 303);
+      const writing = await page();
+      assert.match(writing, /Your first video is being written/);
+      assert.match(writing, /Script being written/);
+      assert.match(writing, /http-equiv="refresh"/);
+      const channel = loadChannel(built, id).doc.data;
+      assert.deepEqual([channel.status, channel.approved_by], ["active", "Sam Example"], "the customer's approval of the kit makes the channel active");
+      release();
+      await builder.idle();
+
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.episode], ["facts", EPISODE]);
+      const checking = await page();
+      assert.match(checking, /Check the facts[\s\S]*A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*On screen: Why no leaks\?[\s\S]*A tiny ball sits in the tip[\s\S]*Approve the facts[\s\S]*Rewrite 1 of 3/);
+      assert.match(checking, /Facts ready to check/);
+      assert.doesNotMatch(checking, /http-equiv="refresh"|<video/);
+      assert.equal(existsSync(videoPath(built, id, EPISODE)), false, "nothing is made before the facts are approved");
+
+      assert.equal((await facts({ decision: "maybe" })).status, 400);
+      assert.equal((await facts({ decision: "change", note: " " })).status, 400);
+      assert.equal((await facts({ decision: "change", note: "The ball is tungsten carbide, say so" })).status, 303);
+      await builder.idle();
+      const dir = join(episodesDir(loadChannel(built, id)), EPISODE);
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.rounds, made[made.length - 1].rewrite], ["facts", 1, true]);
+      assert.match(await page(), /Inside a pen, corrected[\s\S]*Rewrite 2 of 3/);
+
+      assert.equal((await facts({ decision: "approve" })).status, 303);
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "done");
+      const check = readFactcheck(dir);
+      assert.deepEqual([check?.status, check?.approvedBy], ["approved", "Sam Example"]);
+      const done = await page();
+      assert.match(done, new RegExp(`Your first video[\\s\\S]*<video[^>]*/video/${EPISODE}`));
+      assert.match(done, /First one ready/);
+      assert.doesNotMatch(done, /Check the facts|http-equiv="refresh"/);
+      assert.equal(await (await fetch(`${base}${link}/video/${EPISODE}`)).text(), "0123456789");
+      assert.equal((await facts({ decision: "approve" })).status, 409);
+    } finally {
+      site.close();
+    }
+  });
+
+  it("records a failed video on the order, tells the customer, and continues it only when asked", async () => {
+    const { store, builder, options } = setup("video-fail", 20, null);
+    const site = createPublicServer(options);
+    const admin = createAdminServer(options);
+    try {
+      const base = await serve(site);
+      const adminBase = await serve(admin);
+      const link = (await fetch(`${base}/intake`, form(GOOD))).headers.get("location")!;
+      await builder.idle();
+      const id = store.list()[0].id;
+      for (const s of SECTIONS) await fetch(`${base}${link}/decision`, form({ section: s.id, decision: "approve" }));
+      broken = true;
+      await fetch(`${base}${link}/approve`, form({}));
+      await builder.idle();
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.failed_at, store.byId(id)?.video?.error], ["failed", "writing", "the writer is down"]);
+      assert.match(await (await fetch(base + link)).text(), /Your first video did not finish[\s\S]*being written/);
+      assert.match(await (await fetch(adminBase)).text(), /First video: failed[\s\S]*the writer is down[\s\S]*Make the video again/);
+      builder.resume();
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "failed", "a failed video is not started again by itself");
+
+      broken = false;
+      assert.equal((await fetch(`${adminBase}/orders/${id}/video`, form({}))).status, 303);
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "facts");
+      store.update(id, (o) => (o.video!.rounds = 3));
+      assert.match(await (await fetch(base + link)).text(), /rewritten 3 times/);
+      assert.equal((await fetch(`${base}${link}/facts`, form({ decision: "change", note: "Again" }))).status, 409);
+
+      broken = true;
+      await fetch(`${base}${link}/facts`, form({ decision: "approve" }));
+      await builder.idle();
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.failed_at], ["failed", "making"]);
+      broken = false;
+      await fetch(`${adminBase}/orders/${id}/video`, form({}));
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "done", "it continues from the step that failed");
+    } finally {
+      broken = false;
+      site.close();
+      admin.close();
+    }
+  });
+
+  it("at start, makes the video of an approved kit, continues one that was cut off, and gives up on one cut off twice", async () => {
+    const { store, builder } = setup("video-resume", 20, null);
+    const r = validateIntake(GOOD, OFFER);
+    assert.ok(r.intake);
+    const order = (channel: string) => {
+      const o = store.create(r.intake, r.design, false, null);
+      return store.update(o.id, (x) => {
+        x.channel = channel;
+        x.kit_approved = "2026-01-01T00:00:00.000Z";
+      }).id;
+    };
+    for (const slug of ["resume-new", "resume-cut", "resume-twice"]) {
+      const from = tempWorkspace();
+      makeChannel(from, slug, { status: "active" });
+      cpSync(from.channelDir(slug), built.channelDir(slug), { recursive: true });
+    }
+    const fresh = order("resume-new");
+    const cut = order("resume-cut");
+    const twice = order("resume-twice");
+    // Linked by hand to a channel that was not built here: its video is the owner's to make.
+    const byHand = order("kit-demo");
+    store.update(cut, (o) => (o.video = { state: "writing", attempts: 1, rounds: 0, at: "2026-01-01T00:00:00.000Z" }));
+    store.update(twice, (o) => (o.video = { state: "making", episode: EPISODE, attempts: 2, rounds: 0, at: "2026-01-01T00:00:00.000Z" }));
+    builder.resume();
+    await builder.idle();
+    assert.equal(store.byId(fresh)?.video?.state, "facts");
+    assert.deepEqual([store.byId(cut)?.video?.state, store.byId(cut)?.video?.attempts], ["facts", 2]);
+    assert.deepEqual([store.byId(twice)?.video?.state, store.byId(twice)?.video?.failed_at], ["failed", "making"]);
+    assert.match(store.byId(twice)?.video?.error ?? "", /cut off 2 times/);
+    assert.equal(store.byId(byHand)?.video, undefined);
   });
 });

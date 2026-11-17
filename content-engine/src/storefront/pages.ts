@@ -2,9 +2,10 @@
 import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
 import type { Theme } from "../skills/render-themed/schema.ts";
+import type { Script } from "../skills/write-script/schema.ts";
 import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
-import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, type Intake, type Order, type SectionId } from "./store.ts";
+import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, type Intake, type Order, type SectionId } from "./store.ts";
 
 export function esc(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -195,6 +196,7 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .finish .btn{background:var(--pop);color:var(--on-pop)}.finish small{flex-basis:100%;font-size:14px;opacity:.78}
 .finish form{display:contents}
 .row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.claims{display:flex;flex-direction:column;gap:16px;padding-left:22px;max-width:70ch}.claims li{font:400 17px/1.5 var(--body);color:var(--ink)}.claims small{display:block;font-size:14.5px;color:var(--muted);overflow-wrap:anywhere}.said{display:flex;flex-direction:column;gap:10px;max-width:70ch}.said small{display:block;font-size:14.5px;color:var(--muted)}#facts .decide{align-self:stretch}
 .notice{background:var(--surface);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
 .yours{display:flex;flex-wrap:wrap;gap:20px;align-items:center}.yours .vis{width:96px}.yours img.vis{aspect-ratio:1;object-fit:contain;background:var(--bg)}
 
@@ -442,6 +444,9 @@ const STATUS_TEXT: Record<Order["status"], string> = {
   delivered: "Delivered",
 };
 
+/** The first video's step, in the customer's words. An order whose video is made by hand has no state: it reads as being made. */
+const VIDEO_TEXT = { writing: "Script being written", facts: "Facts ready to check", making: "First one being made", done: "First one ready", failed: "Did not finish" } as const;
+
 function track(order: Order, hasKit: boolean): string {
   // The step the customer is on now: payment, then the brand kit (being made or under review), then done.
   const at = order.status === "awaiting-payment" ? 1 : order.status === "delivered" ? 4 : order.kit_approved ? 3 : 2;
@@ -449,7 +454,7 @@ function track(order: Order, hasKit: boolean): string {
     ["Brief", "Sent"],
     ["Payment", order.status === "awaiting-payment" ? "Waiting" : order.no_payment ? "Not needed for now" : "Received"],
     ["Brand kit", order.kit_approved ? "Approved" : order.build?.kind === "revise" && isBuilding(order) ? "Changes being made" : hasKit ? "Ready to review" : order.build?.state === "failed" ? "Did not finish" : "Being made"],
-    ["Videos", order.status === "delivered" ? "Delivered" : order.kit_approved ? "First one being made" : "After your approval"],
+    ["Videos", order.status === "delivered" ? "Delivered" : order.kit_approved ? VIDEO_TEXT[order.video?.state ?? "making"] : "After your approval"],
   ];
   return `<ol class="track">${steps.map(([name, note], i) => `<li class="${i < at ? "done" : i === at ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
 }
@@ -513,13 +518,44 @@ function finishBar(order: Order, canRevise: boolean): string {
   return `<div class="finish" id="finish" data-live><div class="count"><span aria-live="polite">${count}</span><span class="pips" aria-hidden="true">${pips}</span></div>${action}</div>`;
 }
 
-function kitHtml(order: Order, kit: BrandKit, canRevise: boolean): string {
+/** The fact-check, for the customer: every claim with its source, everything said and shown, and the decision. */
+function factsHtml(order: Order, script: Script): string {
+  const base = `/w/${esc(order.token)}`;
+  const source = (text: string) => (/^https:\/\/\S+$/.test(text) ? `<a href="${esc(text)}" rel="noopener noreferrer nofollow" target="_blank">${esc(text)}</a>` : esc(text));
+  const claims = script.claims.length
+    ? `<ol class="claims">${script.claims.map((c) => `<li>${esc(c.claim)}<small>Source: ${source(c.source)}</small>${c.note ? `<small>${esc(c.note)}</small>` : ""}</li>`).join("")}</ol>`
+    : `<p>This script lists no facts. If it states one, ask for a change.</p>`;
+  const said = `<div class="said">${script.beats.map((b) => `<p>${esc(b.voiceover)}${b.on_screen_text ? `<small>On screen: ${esc(b.on_screen_text)}</small>` : ""}</p>`).join("")}</div>`;
+  const left = MAX_ROUNDS - (order.video?.rounds ?? 0);
+  const change =
+    left > 0
+      ? `<details><summary class="btn ghost">Ask for a change</summary><form method="post" action="${base}/facts"><input type="hidden" name="decision" value="change"><div class="inner"><label class="f" for="facts-note">Which fact is wrong, and what should change?<textarea id="facts-note" name="note" maxlength="600" required></textarea></label><div class="row"><button type="submit" class="btn sm">Send request</button><button type="button" class="text" data-close>Cancel</button></div><small class="muted">The script is written again and comes back here. Rewrite ${MAX_ROUNDS - left + 1} of ${MAX_ROUNDS}.</small></div></form></details>`
+      : `<p class="muted">This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand: quote <b>${esc(order.id)}</b> if you contact us.</p>`;
+  return `<section class="notice" id="facts"><h2>Check the facts</h2><p class="muted">The script for your first video, “${esc(script.title)}”, is written. Nothing is voiced or drawn until you approve every fact in it. Check each one against its source.</p>
+${claims}
+<h3>Everything that is said and shown</h3><p class="muted">Read it for any fact the list above missed.</p>${said}
+<div class="decide" role="group" aria-label="Your decision on the facts"><form method="post" action="${base}/facts"><input type="hidden" name="decision" value="approve"><button type="submit" class="btn yes">Approve the facts</button></form>${change}</div><small class="muted">Approving starts the video. It is made exactly from these words.</small></section>`;
+}
+
+/** What stands where the first video will be, until it is there. */
+function videoNotice(order: Order, facts: Script | null): string {
+  const v = order.video;
+  if (v?.state === "facts" && facts) return factsHtml(order, facts);
+  if (v?.state === "writing")
+    return `<section class="notice" id="next"><h2>Your first video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "Your brand kit is approved and the script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p></section>`;
+  if (v?.state === "making") return `<section class="notice" id="next"><h2>Your first video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and the video appears here by itself.</p></section>`;
+  if (v?.state === "failed")
+    return `<section class="notice" id="next" role="alert"><h2>Your first video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}, and it has to be started again on our side. Nothing is lost. Quote <b>${esc(order.id)}</b> if you contact us.</p></section>`;
+  return `<section class="notice" id="next"><h2>Brand kit approved</h2><p class="muted">Your first video is being made from this kit. It appears here when it has passed its checks. Nothing else is needed from you right now.</p></section>`;
+}
+
+function kitHtml(order: Order, kit: BrandKit, canRevise: boolean, facts: Script | null): string {
   const base = `/w/${esc(order.token)}`;
   const latest = kit.episodes[kit.episodes.length - 1];
   const video = latest
     ? `<section><h2>Your first video</h2><div class="sample"><div class="phone"><video controls playsinline preload="metadata" src="${base}/video/${esc(latest.id)}"></video></div><div><h3>${esc(latest.title)}</h3><p class="muted">The finished video, exactly as it would be posted. Everything below is what it is made of.</p><a class="btn sm" href="${base}/video/${esc(latest.id)}?download=1">Download the video</a></div></div></section>`
     : order.kit_approved
-      ? `<section class="notice" id="next"><h2>Brand kit approved</h2><p class="muted">Your first video is being made from this kit. It appears here when it has passed its checks. Nothing else is needed from you right now.</p></section>`
+      ? videoNotice(order, facts)
       : `<section class="notice"><h2>Review your brand kit</h2><p class="muted">Approve each part, or say what to change. When every part is approved, one last button locks the kit and starts your first video.</p></section>`;
   const failed = order.build?.kind === "revise" && order.build.state === "failed" ? `<section class="notice" role="alert"><h2>Your changes did not finish</h2><p class="muted">Something went wrong while they were being made. Your kit and your notes are as you left them: send the changes again from the bar below.</p></section>` : "";
   const frames = latest && latest.frames.length ? `<div class="frames">${latest.frames.map((f) => `<img src="${base}/frame/${esc(latest.id)}/${esc(f)}" alt="A frame from the video">`).join("")}</div>` : "";
@@ -539,14 +575,14 @@ ${finishBar(order, canRevise)}
 </div></div>`;
 }
 
-/** `canRevise`: change requests are made automatically (automatic builds are on). */
-export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean): string {
+/** `canRevise`: change requests are made automatically (automatic builds are on). `facts`: the script whose facts the customer is checking, if any. */
+export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null): string {
   const d = order.design;
   const yours = d && (d.theme || d.model) ? `<div class="yours">${d.theme ? lookSwatch(d.theme) : ""}${d.model && HOST_RIGS[d.model.rig] ? `<img class="vis" src="${esc(hostPreviewUrl(hostFields(d.model)))}" alt="Your host">` : ""}<p class="muted" style="max-width:36ch">The look and host you designed. Your brand kit is built from these.</p></div>` : "";
   const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f])}</dd></div>`).join("")}</dl></section>`;
   // While something is being made the page reloads itself, so the result shows up without a tap.
-  const waiting = order.status !== "awaiting-payment" && isBuilding(order);
-  const revising = waiting && order.build?.kind === "revise";
+  const waiting = order.status !== "awaiting-payment" && (isBuilding(order) || isMakingVideo(order));
+  const revising = waiting && isBuilding(order) && order.build?.kind === "revise";
   let body: string;
   if (order.status === "awaiting-payment") {
     body = paymentUrl
@@ -562,7 +598,7 @@ export function workspacePage(product: string, order: Order, kit: BrandKit | nul
           ? `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">This takes several minutes. It appears here by itself, part by part, for you to approve.</p></section>`
           : `<section class="notice"><h2>Your brand kit is being made</h2><p class="muted">It appears on this page, section by section, for you to approve. Nothing else is needed from you right now.</p></section>`;
   } else {
-    body = kitHtml(order, kit, canRevise);
+    body = kitHtml(order, kit, canRevise, facts);
   }
   return layout(
     product,
@@ -617,7 +653,7 @@ export function adminPage(product: string, orders: Order[], channels: string[], 
 ${decisions ? `<ul style="display:flex;flex-direction:column;gap:6px">${decisions}</ul>` : `<p class="muted">No decisions yet</p>`}</div>
 <div><form method="post" action="/orders/${esc(o.id)}/status" class="row"><select name="status" aria-label="Status of ${esc(o.id)}">${ORDER_STATUSES.map((s) => `<option${s === o.status ? " selected" : ""}>${s}</option>`).join("")}</select><button type="submit" class="btn sm">Set</button></form>
 <form method="post" action="/orders/${esc(o.id)}/channel" class="row"><select name="channel" aria-label="Channel for ${esc(o.id)}"><option value="">(no channel)</option>${channels.map((c) => `<option${c === o.channel ? " selected" : ""}>${esc(c)}</option>`).join("")}</select><button type="submit" class="btn sm">Link</button></form>
-${o.kit_approved ? `<p><span class="pill ok">Kit approved ${esc(o.kit_approved.slice(0, 10))}</span> The first video is yours to make.</p>` : ""}${o.rounds ? `<p class="muted" style="font-size:14.5px">Revised ${o.rounds} of ${MAX_ROUNDS} times</p>` : ""}${o.build ? `<p class="muted" style="font-size:14.5px">Automatic ${o.build.kind === "revise" ? "revision" : "build"}: ${esc(o.build.state)}, attempt ${o.build.attempts}, ${esc(o.build.at.slice(0, 16).replace("T", " "))}${o.build.error ? ` — ${esc(o.build.error)}` : ""}</p>` : ""}${autoBuild && o.build?.state === "failed" && !o.build.kind ? `<form method="post" action="/orders/${esc(o.id)}/build"><button type="submit" class="btn sm">Build again</button></form>` : ""}
+${o.kit_approved ? `<p><span class="pill ok">Kit approved ${esc(o.kit_approved.slice(0, 10))}</span>${o.video ? "" : " The first video is yours to make."}</p>` : ""}${o.video ? `<p class="muted" style="font-size:14.5px">First video: ${esc(o.video.state)}${o.video.episode ? ` (${esc(o.video.episode)})` : ""}, attempt ${o.video.attempts}, script rewritten ${o.video.rounds} of ${MAX_ROUNDS} times, ${esc(o.video.at.slice(0, 16).replace("T", " "))}${o.video.error ? ` — ${esc(o.video.error)}` : ""}</p>` : ""}${autoBuild && o.video?.state === "failed" ? `<form method="post" action="/orders/${esc(o.id)}/video"><button type="submit" class="btn sm">Make the video again</button></form>` : ""}${o.rounds ? `<p class="muted" style="font-size:14.5px">Revised ${o.rounds} of ${MAX_ROUNDS} times</p>` : ""}${o.build ? `<p class="muted" style="font-size:14.5px">Automatic ${o.build.kind === "revise" ? "revision" : "build"}: ${esc(o.build.state)}, attempt ${o.build.attempts}, ${esc(o.build.at.slice(0, 16).replace("T", " "))}${o.build.error ? ` — ${esc(o.build.error)}` : ""}</p>` : ""}${autoBuild && o.build?.state === "failed" && !o.build.kind ? `<form method="post" action="/orders/${esc(o.id)}/build"><button type="submit" class="btn sm">Build again</button></form>` : ""}
 ${o.design && (o.design.theme || o.design.model) ? `<details><summary class="label">Design files</summary>${o.design.theme ? `<p class="label">theme.json</p><pre class="json">${esc(JSON.stringify(o.design.theme, null, 2))}</pre>` : ""}${o.design.model ? `<p class="label">model.json</p><pre class="json">${esc(JSON.stringify(o.design.model, null, 2))}</pre>` : ""}</details>` : ""}
 <p class="label">Workspace link</p><code class="link">${esc(publicBase)}/w/${esc(o.token)}</code></div></article>`;
     })

@@ -217,6 +217,7 @@ Be strict: a fail sends the episode back for fixes. Learnings are appended to th
     context: ctx,
     instructions,
     outputs: [{ path: reviewPath, format: "json", description: "the QA review" }],
+    images: frames,
     next: `./engine make episode --channel ${ep.channel.slug} --series ${ep.series}`,
   };
 }
