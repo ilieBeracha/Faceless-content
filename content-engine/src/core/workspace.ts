@@ -32,6 +32,7 @@ export interface EngineConfig {
   git: { auto_commit: boolean };
   fonts: string[];
   platforms: Record<string, { max_seconds: number; ai_disclosure: string }>;
+  paint: { budget_per_episode_usd: number };
   ai_video: {
     provider: "gemini";
     image_model: string;

@@ -64,6 +64,8 @@ export interface EpisodeProps {
   clips?: { id: string; beat: string; file: string; start: number; duration: number; trim: number }[];
   /** render-themed: the channel's look (its theme.json). */
   theme?: Theme;
+  /** render-themed with a world: shot id (`<beat>-<n>`) → its painted picture (staged next to voice.wav). */
+  shots?: Record<string, string>;
   showSafeAreas: boolean;
   qaProbe: boolean;
 }

@@ -23,9 +23,9 @@ import { formatIssues, hasErrors } from "../core/validate.ts";
 import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
-import { checkScript, factualHash, speechRate, type SeriesData } from "./script-check.ts";
+import { checkScript, factualHash, hookLimit, speechRate, type SeriesData } from "./script-check.ts";
 
-export const STEPS = ["idea", "script", "factcheck", "footage", "voice", "render", "qa"] as const;
+export const STEPS = ["idea", "script", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
 export type StepName = (typeof STEPS)[number];
 
 export interface EpisodeState {
@@ -175,6 +175,19 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
     log(`• footage: ${footage.plan.length} clips, $${footage.spentUsd.toFixed(2)} spent${footage.fake ? " — placeholders, not real footage" : ""}`);
   }
 
+  // 3c. Painted shots (render-themed with a world): the pictures that act out each line
+  if (series.skills.render.includes("render-themed")) {
+    const { loadChannelTheme } = await import("../render/render-episode.ts");
+    const theme = loadChannelTheme(channel.dir, channel.slug);
+    if (theme.world) {
+      const { runPaint } = await import("../skills/render-themed/paint.ts");
+      const paint = await runPaint(ws, ep, script, theme, { log }).finally(() => commitPaths(ws, [join(ep.dir, "shots"), join(channel.dir, "world")], `${channel.slug}: painted shots for ${ep.state.id}`));
+      const count = Object.keys(paint.files).length;
+      if (!done("paint") || paint.regenerated) mark(ep, "paint", "done", `${count} shots, $${paint.spentUsd.toFixed(2)} spent${paint.fake ? " (PLACEHOLDERS)" : ""}`);
+      log(`• paint: ${count} shots, $${paint.spentUsd.toFixed(2)} spent${paint.fake ? " — placeholders, not real pictures" : paint.regenerated ? "" : " (cached)"}`);
+    }
+  }
+
   // 4. Voice
   const { synthesizeEpisode } = await import("../voice/synthesize.ts");
   const voice = await synthesizeEpisode(ws, ep, script, { force: redo.has("voice") || footageChanged, log });
@@ -274,6 +287,8 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
     ctx.addFile(ws.rel(c.modelPath), "channel");
   }
   ctx.addFile(ws.rel(ch.learningsPath), "channel", { optional: true });
+  // The look's frames are named per beat, so the writer sees the look.
+  if (series.skills.render.includes("render-themed")) ctx.addFile(`channels/${ch.slug}/theme.json`, "channel");
   for (const skill of skills) if (known.has(skill)) ctx.addFile(`skills/${skill}/SKILL.md`, "skill");
   const idea = ch.ideas.find((i) => i.id === ep.state.idea)!;
   ctx.addInline("the idea for this episode", ["```", `id: ${idea.id}`, `title: ${idea.title}`, `angle: ${idea.angle ?? "(none)"}`, "```"].join("\n"));
@@ -295,7 +310,7 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   const overhead = series.beats.length * ws.config.audio.beat_gap_seconds + ws.config.audio.lead_in_seconds + ws.config.audio.outro_hold_seconds;
   const lo = Math.round((min - overhead) * wps);
   const hi = Math.round((max - overhead) * wps * 0.95);
-  const hookWords = Math.floor((ws.config.hook.hook_line_ends_by_seconds - ws.config.audio.lead_in_seconds) * wps);
+  const hook = hookLimit(ws, speaker.data);
   const banned = ((ch.doc.data.banned_topics as string[]) ?? []).join("; ");
 
   const instructions = `
@@ -305,7 +320,7 @@ Follow \`skills/${series.skills.script}/SKILL.md\` exactly. In particular:
 
 1. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
 2. **Length.** The series runs ${min}–${max}s. At ${speaker.name}'s voice speed that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s).
-3. **Hook.** The first sentence must be **${hookWords} words or fewer** so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.
+3. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.
 4. **Voice.** Write the way the character in this channel talks (personality, vocabulary, catchphrases from its file — a catchphrase at most once, where it fits). Audience: ${JSON.stringify((ch.doc.data.audience as { who?: string })?.who ?? "")}.
 5. **Facts.** Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it. A person approves this list before anything renders.
 6. **Visuals.** Use only these render skills: ${series.skills.render.map((s) => `\`${s}\``).join(", ")}. Follow each skill's SKILL.md for the \`visuals\` payload and each beat's \`visual\` block.

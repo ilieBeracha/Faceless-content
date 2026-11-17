@@ -8,6 +8,7 @@ import { Flat2D } from "./Flat2D.tsx";
 import { NeonLine } from "./NeonLine.tsx";
 import { PixelSprite } from "./PixelSprite.tsx";
 import { OrbBot3D } from "./OrbBot3D.tsx";
+import { beatFrame, frameHostRect } from "../render-themed/frames.ts";
 
 const MOVE = 0.4; // seconds to glide between placements
 const BASE = 640; // characters render at a fixed size and are scaled, so canvases never resize
@@ -17,7 +18,17 @@ export function placementAt(spans: BeatSpan[], t: number, name: string, width: n
   const rectFor = (span: BeatSpan) => {
     const placement = span.beat.speaker === name || Object.keys(props.characters).length === 1 ? span.beat.character.placement : "hidden";
     // The layout of a look applies on the beats that look draws; other scene skills keep the standard spot they plan around.
-    const layout = span.beat.visual.skill === "render-themed" ? props.theme?.layout : undefined;
+    const themed = span.beat.visual.skill === "render-themed";
+    const layout = themed ? props.theme?.layout : undefined;
+    // A look with a world draws the host inside its painted shots, so the rig steps off on those beats.
+    if (themed && props.theme?.world) return { rect: characterRect("corner", width, height, props.safeArea, layout), visible: 0 };
+    // A look with frames stands the host in the beat's frame; a frame without a host sends it off for that beat.
+    const frame = themed ? beatFrame(props, span) : null;
+    if (frame) {
+      const rect = frameHostRect(frame, placement === "full" ? "full" : "corner", width, height, props.safeArea);
+      if (rect && placement !== "hidden") return { rect, visible: 1 };
+      return { rect: rect ?? characterRect("corner", width, height, props.safeArea, layout), visible: 0 };
+    }
     return { rect: characterRect(placement === "hidden" ? "corner" : placement, width, height, props.safeArea, layout), visible: placement === "hidden" ? 0 : 1 };
   };
   let current = rectFor(spans[0]);

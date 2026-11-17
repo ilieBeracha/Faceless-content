@@ -35,6 +35,8 @@ export interface Intake {
   /** The name of a look in themes/, or OWN_LOOK. */
   look: string;
   look_note: string;
+  /** The world the videos happen in, in the customer's words (painted for every video). Orders from before worlds have none. */
+  world?: string;
   /** The name of a ready-made host in avatars/, or OWN_HOST. */
   avatar: string;
   host: string;
@@ -122,6 +124,7 @@ const LIMITS: Record<keyof Intake, { label: string; max: number; required: boole
   tone: { label: "How it should feel", max: 200, required: true },
   look: { label: "The look", max: 40, required: true },
   look_note: { label: "The look, in your words", max: 300, required: false },
+  world: { label: "Your world", max: 1200, required: false },
   avatar: { label: "The host", max: 40, required: true },
   host: { label: "Host notes", max: 300, required: false },
   avoid: { label: "Topics to avoid", max: 300, required: false },
@@ -139,6 +142,12 @@ export function intakeRequired(field: keyof Intake): boolean {
 
 export function intakeMax(field: keyof Intake): number {
   return LIMITS[field].max;
+}
+
+/** The world to paint: the customer's own words, or, left blank, a brief made from what the channel is about and how it should feel. */
+export function worldBrief(i: Pick<Intake, "idea" | "audience" | "tone" | "look_note" | "world">): string {
+  if (i.world) return i.world;
+  return `A vivid, specific world for a channel about ${i.idea}, made for ${i.audience}, that feels ${i.tone}.${i.look_note ? ` ${i.look_note}` : ""} Invent a setting that suits it, drawn as a very simple cartoon: flat shapes, clean outlines, few colours.`;
 }
 
 /**
@@ -167,6 +176,8 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
     else design.theme = built.theme;
   } else if (!errors.look && readyLook) design.theme = readyLook.theme;
   if (!errors.look && !errors.look_note && !design.theme && !values.look_note) errors.look_note = "Describe the look you want.";
+  // Every designed look happens in a painted world: the customer's words for it, or one made from what the channel is.
+  if (design.theme) design.theme = { ...design.theme, world: { description: worldBrief(values) } };
 
   const readyHost = catalog.hosts.find((h) => h.name === values.avatar);
   if (!errors.avatar && values.avatar !== OWN_HOST && !readyHost) errors.avatar = "Pick a host to start from.";

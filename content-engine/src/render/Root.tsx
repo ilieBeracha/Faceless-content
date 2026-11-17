@@ -1,5 +1,7 @@
 import React from "react";
 import { Composition } from "remotion";
+import { HOST_STILL_SIZE, HostStill } from "../skills/render-talking-character/HostStill.tsx";
+import type { CharacterModel } from "../skills/render-talking-character/rigs.ts";
 import { Episode } from "./Episode.tsx";
 import { demoProps } from "./demo-props.ts";
 import type { EpisodeProps } from "./types.ts";
@@ -9,6 +11,7 @@ import type { EpisodeProps } from "./types.ts";
  * timings, characters, brand) when rendering; the defaults are a neutral demo for Remotion Studio.
  */
 export const Root: React.FC = () => (
+  <>
   <Composition
     id="Episode"
     component={Episode}
@@ -24,4 +27,7 @@ export const Root: React.FC = () => (
       fps: props.fps,
     })}
   />
+  {/* The host on white, for painted worlds (see render-themed/paint.ts). */}
+  <Composition id="HostStill" component={HostStill} width={HOST_STILL_SIZE} height={HOST_STILL_SIZE} fps={30} durationInFrames={1} defaultProps={{ model: demoProps.characters[Object.keys(demoProps.characters)[0]].model as CharacterModel }} />
+  </>
 );

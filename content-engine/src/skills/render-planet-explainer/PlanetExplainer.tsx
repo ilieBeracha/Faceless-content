@@ -130,6 +130,19 @@ const Text: React.FC<{ id: string; probe: boolean; x: number; y: number; size: n
   );
 };
 
+/**
+ * The largest font size, up to `size`, at which one line of `text` fits in `maxWidth`, measured with the label
+ * font itself (synchronously, so every frame of the render gets the same answer).
+ */
+function fitSize(text: string, size: number, weight: number, maxWidth: number): number {
+  const ctx = document.createElement("canvas").getContext("2d");
+  if (!ctx) throw new Error("Canvas 2D is not available to measure labels.");
+  ctx.font = `${weight} ${size}px "${LABEL_FONT.family}"`;
+  // letter-spacing -0.5px per character, as the Text component draws it.
+  const width = ctx.measureText(text).width - 0.5 * text.length;
+  return width <= maxWidth ? size : Math.floor((size * maxWidth) / width);
+}
+
 const Stars: React.FC<{ t: number; width: number; height: number }> = ({ t, width, height }) => (
   <svg width={width} height={height} style={{ position: "absolute", inset: 0 }}>
     {Array.from({ length: 110 }, (_, i) => {
@@ -321,7 +334,7 @@ export const PlanetExplainer: React.FC<{ props: EpisodeProps; spans: BeatSpan[];
       )}
       {v.view === "stat" && (
         <>
-          <Text id={`pe:${cur.beatId}:${idx}:value`} probe={probe} x={width / 2} y={stage.y + stage.h * 0.18} size={150} opacity={fadeIn * out}>
+          <Text id={`pe:${cur.beatId}:${idx}:value`} probe={probe} x={width / 2} y={stage.y + stage.h * 0.18} size={fitSize(v.value, 150, LABEL_FONT.heavy, stage.w - 24)} opacity={fadeIn * out}>
             <span style={{ display: "inline-block", transform: `scale(${0.85 + 0.15 * fadeIn})` }}>{v.value}</span>
           </Text>
           {v.subtitle && (

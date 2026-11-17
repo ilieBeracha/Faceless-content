@@ -103,6 +103,10 @@
       "ai_disclosure": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio."
     }
   },
+  "paint": {
+    "$comment": "render-themed worlds: every place an episode needs is painted with ai_video.image_model (Google, paid; needs GEMINI_API_KEY) at ai_video.rates_usd.image each. Spending stops before an episode would pass its budget.",
+    "budget_per_episode_usd": 2
+  },
   "ai_video": {
     "$comment": "render-ai-video: realistic footage from Google's Gemini API (paid; needs GEMINI_API_KEY and your OK). Model ids change: `./engine ai-video models` lists the ones your key can use.",
     "provider": "gemini",

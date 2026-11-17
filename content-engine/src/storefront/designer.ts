@@ -13,7 +13,8 @@ type Fields = Record<string, string>;
 const COLOURS = { l_paper: "paper", l_card: "card", l_ink: "ink", l_text: "text", l_accent: "accent" } as const;
 const CHOICES = { l_body: "body", l_casing: "casing", l_surface: "surface", l_backdrop: "backdrop", l_texture: "texture", l_motion: "motion", l_art: "art" } as const;
 const LAYOUT = { l_host: "host", l_host_size: "host_size", l_lettering: "lettering", l_pictures: "pictures" } as const;
-export const LOOK_FIELDS = [...Object.keys(COLOURS), "l_a", "l_b", "l_c", "l_display", ...Object.keys(CHOICES), ...Object.keys(LAYOUT)];
+/** `l_frames`: the look's frames as JSON (preset names or frames of its own), or empty for the classic arrangement. */
+export const LOOK_FIELDS = [...Object.keys(COLOURS), "l_a", "l_b", "l_c", "l_display", ...Object.keys(CHOICES), ...Object.keys(LAYOUT), "l_frames"];
 
 /** What each choice offers, read from the theme schema so the form can never offer something the renderer rejects. */
 export const LOOK_CHOICES: Record<keyof typeof CHOICES | keyof typeof LAYOUT | "l_display", readonly string[]> = {
@@ -41,6 +42,7 @@ export function lookFields(theme: Theme): Fields {
   for (const [field, key] of Object.entries(COLOURS)) out[field] = theme[key];
   for (const [field, key] of Object.entries(CHOICES)) out[field] = theme[key];
   for (const [field, key] of Object.entries(LAYOUT)) out[field] = theme.layout[key];
+  out.l_frames = theme.layout.frames ? JSON.stringify(theme.layout.frames) : "";
   return out;
 }
 
@@ -49,6 +51,14 @@ export function buildLook(form: Fields, name: string): { theme: Theme; problems:
   for (const [field, key] of Object.entries(COLOURS)) raw[key] = form[field];
   for (const [field, key] of Object.entries(CHOICES)) raw[key] = form[field];
   raw.layout = Object.fromEntries(Object.entries(LAYOUT).map(([field, key]) => [key, form[field]]));
+  const frames = form.l_frames ?? "";
+  if (frames) {
+    try {
+      (raw.layout as Record<string, unknown>).frames = JSON.parse(frames);
+    } catch {
+      return { theme: null, problems: ["layout.frames: the scene layouts could not be read"] };
+    }
+  }
   const r = themeSchema.safeParse(raw);
   if (r.success) return { theme: r.data, problems: null };
   return { theme: null, problems: r.error.issues.map((i) => `${i.path.join(".") || "look"}: ${i.message}`) };

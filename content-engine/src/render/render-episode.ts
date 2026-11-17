@@ -10,7 +10,7 @@ import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
 import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
-import { parseTheme, type Theme } from "../skills/render-themed/schema.ts";
+import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schema.ts";
 import { EngineError } from "../core/errors.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
@@ -44,6 +44,13 @@ export function loadChannelTheme(channelDir: string, slug: string): Theme {
   return parseTheme(readJson(path), `channels/${slug}/theme.json`);
 }
 
+/** render-themed: the channel's look and, when it has a world, the painted shots (staged as shots/<id>.jpg). */
+function themedProps(ep: EpisodeRef, script: Script): Pick<EpisodeProps, "theme" | "shots"> {
+  const theme = loadChannelTheme(ep.channel.dir, ep.channel.slug);
+  if (!theme.world) return { theme };
+  return { theme, shots: Object.fromEntries(shotsUsed(script.beats).map(({ id }) => [id, `shots/${id}.jpg`])) };
+}
+
 export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): EpisodeProps {
   const series = ep.channel.series.get(ep.series)!.data as unknown as SeriesData;
   const paths = voicePaths(ep.dir);
@@ -71,7 +78,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     captionsSkill: series.skills.captions ?? null,
     captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
     audioFile: "voice.wav",
-    ...(series.skills.render.includes("render-themed") ? { theme: loadChannelTheme(ep.channel.dir, ep.channel.slug) } : {}),
+    ...(series.skills.render.includes("render-themed") ? themedProps(ep, script) : {}),
     ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,
     qaProbe: true,
@@ -141,13 +148,13 @@ export class LayoutCollector {
   }
 }
 
-async function bundleFor(publicDir: string | null, log: (l: string) => void): Promise<string> {
+export async function bundleFor(publicDir: string | null, log: (l: string) => void): Promise<string> {
   const { bundle } = await import("@remotion/bundler");
   log("  ↳ bundling the Remotion project…");
   return bundle({ entryPoint: join(ENGINE_DIR, "src", "render", "index.ts"), ...(publicDir ? { publicDir } : {}), onProgress: () => undefined });
 }
 
-function browserOptions(ws: Workspace) {
+export function browserOptions(ws: Workspace) {
   const exe = ws.config.render.browser_executable ?? null;
   return { browserExecutable: exe, chromiumOptions: { gl: ws.config.render.gl as "angle" | "swangle" | "egl" | "swiftshader" | "vulkan" | "angle-egl", enableMultiProcessOnLinux: true } };
 }
@@ -156,7 +163,11 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
   const log = opts.log ?? (() => {});
   const props = buildProps(ws, ep, script);
   const wav = voicePaths(ep.dir).wav;
-  const clipFiles = (props.clips ?? []).map((c) => ({ src: join(ep.dir, "footage", c.file), dest: c.file }));
+  const clipFiles = [
+    ...(props.clips ?? []).map((c) => ({ src: join(ep.dir, "footage", c.file), dest: c.file })),
+    ...Object.values(props.shots ?? {}).map((file) => ({ src: join(ep.dir, file), dest: file })),
+  ];
+  for (const c of clipFiles) if (!existsSync(c.src)) throw new EngineError(`${ws.rel(c.src)} is missing, so the episode can't be rendered.`, "Run the episode again: its footage or paint step makes it.");
   const inputsHash = sha256(canonicalJson({ v: RENDER_VERSION, props: { ...props, envelope: sha256(JSON.stringify(props.envelope)) }, wav: sha256(readFileSync(wav)), clips: clipFiles.map((c) => sha256(readFileSync(c.src))), code: codeHash() }));
   const output = outputPath(ws, ep.channel.slug, ep.state.id);
   const manifestPath = join(ep.dir, "render.json");

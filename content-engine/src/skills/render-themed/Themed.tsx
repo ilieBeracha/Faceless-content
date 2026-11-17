@@ -1,19 +1,12 @@
 import React, { useRef } from "react";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFor } from "../../render/fonts.ts";
 import { useQaProbe } from "../../render/qa-probe.ts";
 import { characterRect, clamp, easeInOut, easeOut, hash01, regions } from "../../render/timeline.ts";
 import type { BeatSpan, EpisodeProps, Rect } from "../../render/types.ts";
-import type { Drawing, Role, Theme, ThBeatVisual, ThElement, ThScene } from "./schema.ts";
-
-/** Per face: size relative to Anton, and average glyph width in em (capitals), used to fit a line to its space. */
-const FACE: Record<string, { scale: number; wide: number }> = {
-  anton: { scale: 1, wide: 0.5 },
-  montserrat: { scale: 0.8, wide: 0.74 },
-  "space-grotesk": { scale: 0.84, wide: 0.72 },
-  fredoka: { scale: 0.88, wide: 0.66 },
-  "baloo-2": { scale: 0.88, wide: 0.64 },
-};
+import { shotTimeline, type ShotSpan } from "./shots.ts";
+import { beatFrame, FACE, HEADING_SIZE, frameHostRect, frameTextRect, GAP, noteHeight, onStage, stackLayout } from "./frames.ts";
+import { type CameraMove, type Drawing, type Role, type Theme, type ThBeatVisual, type ThElement, type ThScene } from "./schema.ts";
 
 interface Ctx {
   /** Seconds since the element started appearing. */
@@ -197,7 +190,7 @@ function Heading({ el, ctx, w }: { el: Extract<ThElement, { type: "heading" }>; 
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
       {el.lines.map((line, i) => (
         <div key={i} style={{ transform: ctx.th.surface === "torn" ? `translateX(${(hash01(i * 7.7 + line.length) - 0.5) * w * 0.08}px)` : undefined }}>
-          <Plate ctx={ctx} text={line} seed={i + 2 + el.lines.length} size={92} maxWidth={w * 0.82} delay={i * 0.18} probeSuffix={`heading-${i}`} />
+          <Plate ctx={ctx} text={line} seed={i + 2 + el.lines.length} size={HEADING_SIZE} maxWidth={w * 0.82} delay={i * 0.18} probeSuffix={`heading-${i}`} />
         </div>
       ))}
       {ctx.th.surface === "ruled" && <Dimension ctx={ctx} width={w * 0.86} />}
@@ -386,24 +379,6 @@ function Art({ el, drawing, ctx, box }: { el: Extract<ThElement, { type: "art" }
   );
 }
 
-function noteHeight(el: Extract<ThElement, { type: "note" }>, w: number): number {
-  const perLine = Math.floor((w * 0.88 - 80) / (48 * 0.56));
-  return 64 + (el.kicker ? 52 : 0) + Math.ceil(el.text.length / perLine) * 56 + 8;
-}
-
-function elementHeight(el: ThElement, th: Theme, w: number): number {
-  switch (el.type) {
-    case "heading":
-      return el.lines.length * 118 + (th.surface === "ruled" ? 42 : 0);
-    case "art":
-      return 400;
-    case "note":
-      return noteHeight(el, w);
-    case "marks":
-      return 290;
-  }
-}
-
 /** Two torn sheets per beat; each beat lays them out differently. */
 const SHEETS = [
   [
@@ -483,6 +458,59 @@ const Backdrop: React.FC<{ th: Theme; now: number; clock: number; beatT: number;
   return null;
 };
 
+/** Seconds a shot dissolves into the next. */
+const FADE = 0.3;
+/** Where the camera is over a shot, `p` of the way through it (0 → 1): a scale and an offset in fractions of the frame. */
+function cameraAt(move: CameraMove, p: number, clock: number): { scale: number; x: number; y: number } {
+  const k = easeInOut(p);
+  switch (move) {
+    case "push-in":
+      return { scale: 1.06 + 0.14 * k, x: 0, y: 0 };
+    case "pull-out":
+      return { scale: 1.2 - 0.14 * k, x: 0, y: 0 };
+    case "pan-left":
+      return { scale: 1.16, x: 0.05 - 0.1 * k, y: 0 };
+    case "pan-right":
+      return { scale: 1.16, x: -0.05 + 0.1 * k, y: 0 };
+    case "rise":
+      return { scale: 1.16, x: 0, y: 0.05 - 0.1 * k };
+    case "sink":
+      return { scale: 1.16, x: 0, y: -0.05 + 0.1 * k };
+    case "drift":
+      return { scale: 1.12 + 0.03 * Math.sin(clock * 0.3), x: 0.02 * Math.sin(clock * 0.21), y: 0.02 * Math.cos(clock * 0.17) };
+  }
+}
+
+/** The painted story: the shot on screen, filmed with its camera move; the shot before dissolves out under it. */
+const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number; width: number; height: number; headline: boolean }> = ({ shots, th, now, clock, width, height, headline }) => {
+  const at = shots.reduce((cur, s, i) => (now >= s.start ? i : cur), 0);
+  const draw = (s: ShotSpan, opacity: number) => {
+    const p = clamp((now - s.start) / Math.max(0.1, s.end - s.start));
+    const cam = cameraAt(s.move, p, clock);
+    return (
+      <Img
+        key={s.id}
+        src={staticFile(s.file)}
+        style={{ position: "absolute", left: 0, top: 0, width, height, objectFit: "cover", opacity, transform: `translate(${cam.x * width}px, ${cam.y * height}px) scale(${cam.scale})`, transformOrigin: "50% 50%" }}
+      />
+    );
+  };
+  const cur = shots[at];
+  const before = at > 0 ? shots[at - 1] : null;
+  const fadeIn = before ? clamp((now - cur.start) / FADE) : 1;
+  // A light wash in the look's paper colour, only under the lettering: behind the captions, and behind the headline when there is one.
+  const paper = th.paper.length === 4 ? `#${th.paper[1]}${th.paper[1]}${th.paper[2]}${th.paper[2]}${th.paper[3]}${th.paper[3]}` : th.paper;
+  const wash = (a: number) => `${paper}${Math.round(a * 255).toString(16).padStart(2, "0")}`;
+  const top = headline ? `${wash(0.4)} 0%, ${wash(0)} 18%` : `${wash(0)} 0%`;
+  return (
+    <>
+      {before && fadeIn < 1 && draw(before, 1)}
+      {draw(cur, fadeIn)}
+      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${top}, ${wash(0)} 64%, ${wash(0.42)} 100%)` }} />
+    </>
+  );
+};
+
 const Grain: React.FC<{ width: number; height: number }> = ({ width, height }) => (
   <svg width={width} height={height} style={{ position: "absolute", inset: 0, mixBlendMode: "multiply", pointerEvents: "none" }}>
     <filter id="th-grain" x="0" y="0" width="100%" height="100%">
@@ -505,42 +533,61 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
   const r = regions(width, height, props.safeArea);
   const span = spans.reduce((cur, s) => (now >= s.start ? s : cur), spans[0]);
   const visual = span.beat.visual as ThBeatVisual;
-  const elements = visual.skill === "render-themed" ? visual.elements : [];
+  // A look with a world tells the story in painted shots: no lettering over them, and the host is drawn inside them.
+  const story = Boolean(th.world);
+  const elements = visual.skill === "render-themed" && !story ? (visual.elements ?? []) : [];
   const headline = span.beat.on_screen_text;
-  const ch = props.renderSkills.includes("render-talking-character") && span.beat.character.placement !== "hidden" ? characterRect(span.beat.character.placement, width, height, props.safeArea, th.layout) : null;
-  // Lettering stacks above the character; the artwork takes the spot beside it, unless the look stacks it with the lettering.
-  const top = headline ? r.stage.y : r.headline.y;
-  const area: Rect = { x: r.stage.x, y: top, w: r.stage.w, h: (ch ? ch.y - 16 : r.stage.y + r.stage.h) - top };
-  const beside: Rect | null = !ch ? null : th.layout.host === "left" ? { x: ch.x + ch.w + 20, y: ch.y, w: r.stage.x + r.stage.w - (ch.x + ch.w + 20), h: ch.h } : { x: r.stage.x, y: ch.y, w: ch.x - 20 - r.stage.x, h: ch.h };
-  // A big host leaves too little room above it to stack a picture with the lettering, so there the picture stays beside it.
-  const side = th.layout.pictures === "beside" || span.beat.character.placement === "full" ? beside : null;
-  const lane: [number, number] = !ch ? [0, width] : th.layout.host === "left" ? [ch.x + ch.w + 60, width] : [0, ch.x - 60];
+  const hostShown = !story && props.renderSkills.includes("render-talking-character") && span.beat.character.placement !== "hidden";
+  const fr = story ? null : beatFrame(props, span);
+  let area: Rect;
+  let side: Rect | null;
+  let lane: [number, number];
+  let align: "top" | "middle" | "bottom";
+  if (fr) {
+    // The look's frames say where everything goes (see frames.ts for how a beat gets its frame).
+    area = frameTextRect(fr, width, height, props.safeArea, Boolean(headline));
+    side = fr.picture ? onStage(fr.picture, r.stage) : null;
+    const host = hostShown ? frameHostRect(fr, span.beat.character.placement === "full" ? "full" : "corner", width, height, props.safeArea) : null;
+    lane = !host ? [0, width] : host.x > width - (host.x + host.w) ? [0, host.x - 60] : [host.x + host.w + 60, width];
+    align = fr.text.align;
+  } else {
+    const ch = hostShown ? characterRect(span.beat.character.placement as "full" | "corner", width, height, props.safeArea, th.layout) : null;
+    // Lettering stacks above the character; the artwork takes the spot beside it, unless the look stacks it with the lettering.
+    const top = headline ? r.stage.y : r.headline.y;
+    area = { x: r.stage.x, y: top, w: r.stage.w, h: (ch ? ch.y - 16 : r.stage.y + r.stage.h) - top };
+    const beside: Rect | null = !ch ? null : th.layout.host === "left" ? { x: ch.x + ch.w + 20, y: ch.y, w: r.stage.x + r.stage.w - (ch.x + ch.w + 20), h: ch.h } : { x: r.stage.x, y: ch.y, w: ch.x - 20 - r.stage.x, h: ch.h };
+    // A big host leaves too little room above it to stack a picture with the lettering, so there the picture stays beside it.
+    side = th.layout.pictures === "beside" || span.beat.character.placement === "full" ? beside : null;
+    lane = !ch ? [0, width] : th.layout.host === "left" ? [ch.x + ch.w + 60, width] : [0, ch.x - 60];
+    align = th.layout.lettering === "top" ? "top" : th.layout.lettering === "low" ? "bottom" : "middle";
+  }
   const flow = elements.map((el, i) => ({ el, i })).filter(({ el }) => !(side && el.type === "art"));
-  const heights = flow.map(({ el }) => elementHeight(el, th, area.w));
-  const gap = 34;
-  const total = heights.reduce((a, b) => a + b, 0) + gap * Math.max(0, flow.length - 1);
-  const scale = Math.min(1, area.h / total);
+  // Each element is drawn at its own width (an element too wide for the box is drawn wider and scaled down), then the stack is scaled to fit.
+  const { items, scale } = stackLayout(flow.map(({ el }) => el), th, area, Boolean(fr));
+  const total = items.reduce((a, b) => a + b.h, 0) + GAP * Math.max(0, items.length - 1);
   const probe = props.qaProbe && span.end - now > 0.2;
   const startOf = (i: number) => (i === 0 ? span.start + 0.05 : span.voiceStart) + i * 0.35;
   const ctxFor = (i: number): Ctx => ({ t: now - startOf(i), now, clock, th, probe, id: `th:${span.id}:${i}` });
   const spare = area.h - total * scale;
-  let y = area.y + (th.layout.lettering === "top" ? 0 : th.layout.lettering === "low" ? spare : spare / 2);
+  let y = area.y + (align === "top" ? 0 : align === "bottom" ? spare : spare / 2);
 
   return (
     <AbsoluteFill style={{ background: th.paper, overflow: "hidden" }}>
-      <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />
+      {story ? <World shots={shotTimeline(props, spans)} th={th} now={now} clock={clock} width={width} height={height} headline={Boolean(headline)} /> : <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />}
       {headline && <Headline ctx={{ t: now - span.start, now, clock, th, probe, id: `th:${span.id}:headline` }} text={headline} region={r.headline} spanId={span.id} />}
       {flow.map(({ el, i }, n) => {
         const topPx = y;
-        y += (heights[n] + gap) * scale;
+        y += (items[n].h + GAP) * scale;
+        const it = items[n];
+        const natural = it.h / it.k;
         const ctx = ctxFor(i);
         if (ctx.t < 0) return null;
         return (
-          <div key={`${span.id}-${i}`} style={{ position: "absolute", left: area.x, top: topPx, width: area.w, height: heights[n], transform: `scale(${scale})`, transformOrigin: "50% 0" }}>
-            {el.type === "heading" && <Heading el={el} ctx={ctx} w={area.w} />}
-            {el.type === "note" && <Note el={el} ctx={ctx} w={area.w} />}
-            {el.type === "marks" && <Marks el={el} ctx={ctx} w={area.w} />}
-            {el.type === "art" && scene.art?.[el.id] && <Art el={el} drawing={scene.art[el.id]} ctx={ctx} box={{ x: 0, y: 0, w: area.w, h: heights[n] }} />}
+          <div key={`${span.id}-${i}`} style={{ position: "absolute", left: area.x + (area.w - it.w) / 2, top: topPx, width: it.w, height: natural, transform: `scale(${scale * it.k})`, transformOrigin: "50% 0" }}>
+            {el.type === "heading" && <Heading el={el} ctx={ctx} w={it.w} />}
+            {el.type === "note" && <Note el={el} ctx={ctx} w={it.w} />}
+            {el.type === "marks" && <Marks el={el} ctx={ctx} w={it.w} />}
+            {el.type === "art" && scene.art?.[el.id] && <Art el={el} drawing={scene.art[el.id]} ctx={ctx} box={{ x: 0, y: 0, w: it.w, h: natural }} />}
           </div>
         );
       })}

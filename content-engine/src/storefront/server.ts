@@ -4,7 +4,8 @@
  * to this computer only.
  */
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { createReadStream, existsSync, statSync } from "node:fs";
+import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
+import { brotliCompressSync, constants as zlib, gzipSync } from "node:zlib";
 import { HOLD_SECONDS, SESSION_SECONDS, type AccountStore, type HoldKind, type User } from "./accounts.ts";
 import type { SignIn } from "./google.ts";
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
@@ -58,6 +59,7 @@ function sendAsset(req: IncomingMessage, res: ServerResponse, parts: string[], l
   const type = parts.length === 2 && /^[a-z0-9-]+\.(jpg|mp4|js)$/.test(parts[1]) ? MEDIA[parts[1].slice(parts[1].lastIndexOf("."))] : undefined;
   const path = type ? join(ENGINE_DIR, "src", "storefront", "assets", parts[1]) : null;
   if (!path || !type || !existsSync(path)) throw new HttpError(404, "There is no page at this address.");
+  if (type === MEDIA[".js"]) return sendText(res, 200, readFileSync(path, "utf8"), { "content-type": type, "cache-control": "public, max-age=3600", "x-content-type-options": "nosniff" });
   sendFile(req, res, path, type, null, true);
 }
 
@@ -71,7 +73,7 @@ class HttpError extends Error {
 }
 
 function send(res: ServerResponse, status: number, html: string, extra: Record<string, string | string[]> = {}): void {
-  res.writeHead(status, {
+  sendText(res, status, html, {
     "content-type": "text/html; charset=utf-8",
     "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; script-src 'self'; connect-src 'self'; font-src 'self'; img-src 'self'; media-src 'self'; form-action 'self' https:; base-uri 'none'; frame-ancestors 'none'",
     "x-content-type-options": "nosniff",
@@ -81,7 +83,16 @@ function send(res: ServerResponse, status: number, html: string, extra: Record<s
     "x-robots-tag": "noindex, nofollow",
     ...extra,
   });
-  res.end(html);
+}
+
+/** Send text, compressed when the browser accepts it: pages are several times smaller on a slow connection. */
+function sendText(res: ServerResponse, status: number, text: string, headers: Record<string, string | string[]>): void {
+  const accepts = String(res.req.headers["accept-encoding"] ?? "");
+  const encoding = /\bbr\b/.test(accepts) ? "br" : /\bgzip\b/.test(accepts) ? "gzip" : null;
+  const plain = Buffer.from(text, "utf8");
+  const body = encoding === "br" ? brotliCompressSync(plain, { params: { [zlib.BROTLI_PARAM_QUALITY]: 5, [zlib.BROTLI_PARAM_SIZE_HINT]: plain.length } }) : encoding === "gzip" ? gzipSync(plain) : plain;
+  res.writeHead(status, { ...headers, vary: "accept-encoding", "content-length": String(body.length), ...(encoding ? { "content-encoding": encoding } : {}) });
+  res.end(body);
 }
 
 function redirect(res: ServerResponse, location: string, cookies: string[] = []): void {
@@ -234,8 +245,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
         // The designer's live picture: the host these settings describe, drawn by the video's own components.
         const built = buildHost(Object.fromEntries(url.searchParams));
         if (built.problems) throw new HttpError(400, `These host settings are not valid: ${built.problems.join("; ")}.`);
-        res.writeHead(200, { "content-type": "image/svg+xml; charset=utf-8", "cache-control": "public, max-age=3600", "x-content-type-options": "nosniff", "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'" });
-        res.end(hostSvg(built.model));
+        sendText(res, 200, hostSvg(built.model), { "content-type": "image/svg+xml; charset=utf-8", "cache-control": "public, max-age=3600", "x-content-type-options": "nosniff", "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'" });
         return;
       }
       if (req.method === "GET" && url.pathname === "/create") {

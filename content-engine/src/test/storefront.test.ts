@@ -62,6 +62,26 @@ describe("storefront: intake and orders", () => {
     assert.deepEqual(hostFields(model), host);
   });
 
+  it("paints every designed look in a world: the customer's words, or one made from what the channel is", () => {
+    const own = validateIntake({ ...GOOD, world: "A tiny world on a kitchen table, claymation" }, OFFER);
+    assert.equal(own.design?.theme?.world?.description, "A tiny world on a kitchen table, claymation");
+    const made = validateIntake({ ...GOOD, world: "" }, OFFER);
+    assert.match(made.design?.theme?.world?.description ?? "", new RegExp(`a channel about ${GOOD.idea}`));
+    assert.equal(validateIntake({ ...GOOD, world: "x".repeat(1201) }, OFFER).errors?.world, "Your world must be 1200 characters or fewer.");
+  });
+
+  it("keeps the scene layouts picked in the designer, frames of the look's own included, and reports ones it cannot read", () => {
+    const blueprint = OFFER.looks.find((l) => l.name === "Blueprint")!.theme;
+    const own = { name: "host-peeks", host: { x: 0, y: 70, w: 30, h: 30 }, text: { x: 0, y: 0, w: 100, h: 34, align: "top" }, picture: { x: 32, y: 36, w: 68, h: 64 } };
+    const frames = ["split", "title-card", own];
+    const r = validateIntake({ ...GOOD, ...lookFields(blueprint), l_frames: JSON.stringify(frames) }, OFFER);
+    assert.deepEqual(r.design?.theme?.layout.frames, frames);
+    assert.equal(lookFields(r.design!.theme!).l_frames, JSON.stringify(frames));
+    assert.equal(lookFields(blueprint).l_frames, "", "a look without frames keeps the classic arrangement");
+    assert.match(validateIntake({ ...GOOD, ...lookFields(blueprint), l_frames: "[split" }, OFFER).errors?.look ?? "", /scene layouts could not be read/);
+    assert.match(validateIntake({ ...GOOD, ...lookFields(blueprint), l_frames: JSON.stringify(["nope"]) }, OFFER).errors?.look ?? "", /layout\.frames/);
+  });
+
   it("refuses designer settings the renderer would refuse, and a 3D robot that is not one of the ready ones", () => {
     assert.match(validateIntake({ ...GOOD, ...lookFields(OFFER.looks[0].theme), l_paper: "red" }, OFFER).errors?.look ?? "", /not valid/);
     assert.match(validateIntake({ ...GOOD, h_rig: "flat-2d", h_shape: "cube", h_extra: "none", h_eyes: "round", h_main: "#000000", h_second: "#000000", h_accent: "#000000", h_mood: "calm" }, OFFER).errors?.avatar ?? "", /shape: "cube" is not offered/);
@@ -179,6 +199,21 @@ describe("storefront: servers", () => {
     } finally {
       site.close();
       back.close();
+    }
+  });
+
+  it("compresses pages and scripts for browsers that accept it, with the same content", async () => {
+    for (const path of ["/create", "/assets/app.js"]) {
+      const plain = await fetch(base + path, { headers: { "accept-encoding": "identity" } });
+      assert.equal(plain.headers.get("content-encoding"), null, path);
+      const text = await plain.text();
+      for (const encoding of ["br", "gzip"]) {
+        const res = await fetch(base + path, { headers: { "accept-encoding": encoding } });
+        assert.equal(res.headers.get("content-encoding"), encoding, path);
+        assert.equal(res.headers.get("vary"), "accept-encoding", path);
+        assert.ok(Number(res.headers.get("content-length")) < text.length / 2, `${path} as ${encoding} is under half the size`);
+        assert.equal(await res.text(), text, `${path} as ${encoding}`);
+      }
     }
   });
 

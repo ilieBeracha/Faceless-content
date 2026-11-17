@@ -1,7 +1,7 @@
 /** Server-rendered pages. Every value that came from a person or a file goes through esc(). */
 import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
-import type { Theme } from "../skills/render-themed/schema.ts";
+import { FRAME_PRESET_NAMES, FRAME_PRESETS, type Frame, type Theme } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
@@ -118,6 +118,11 @@ textarea{min-height:92px;resize:vertical}.error{color:var(--warn);font-weight:60
 .designer{display:flex;flex-direction:column;gap:18px;background:var(--bg);border-radius:20px;padding:20px}
 .designer:disabled{display:none}
 .designer h3{font-size:19px}
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.frame-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;border:2px solid transparent;border-radius:14px;background:var(--soft);font:inherit;font-size:13px;line-height:1.2;color:inherit;cursor:pointer;text-align:center}
+.frame-tile svg{width:100%;aspect-ratio:1}.frame-tile[aria-pressed=true]{border-color:var(--accent);background:var(--bg)}
+.fs-stage{fill:var(--bg)}.fs-pic{fill:var(--accent);opacity:.35}.fs-text{fill:currentColor;opacity:.55}.fs-host{fill:var(--accent)}
+.frames:has([aria-pressed=true])~.knobs[data-classic]{opacity:.45}
 .knobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
 .knob{display:flex;flex-direction:column;gap:6px;font:600 14px/1.3 var(--body);color:var(--muted);min-width:0}
 .knob select{background:var(--surface);padding:10px 12px;font-size:15.5px}
@@ -215,15 +220,18 @@ export type Account = "in" | "out" | null;
 /** Changes on every server start, so browsers never keep running an older copy of the script. */
 const ASSET_VERSION = Date.now().toString(36);
 
+const tag = (script: string, more = "") => `<script src="/assets/${script}.js?v=${ASSET_VERSION}" defer${more}></script>`;
+
 function layout(product: string, title: string, page: Page, body: string, script: false | "app" | "workspace" = false, account: Account = null, head = ""): string {
+  // The wizard's script holds back the first paint until it has run, so the form never jumps from all steps to one.
   const mine = account === "in" ? `<a href="/account"><span class="long">My channels</span><span class="short">Account</span></a>` : account === "out" ? `<a href="/signin">Sign in</a>` : "";
   const link = (href: string, label: string, key: Page, cls = "") => `<a href="${href}"${cls ? ` class="${cls}"` : ""}${page === key ? ' aria-current="page"' : ""}>${label}</a>`;
   const nav = page === "app" ? "" : `<nav>${link("/#how", "How it works", "home", "hide")}${link("/demo", "Demo", "demo", account ? "hide" : "")}${mine}</nav><a class="btn sm" href="/create" aria-label="Design your channel"><span class="long">Design your channel</span><span class="short">Design</span></a>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title>${head}<style>${CSS}</style></head><body>
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title>${head}${script === "app" ? tag("app", ' blocking="render"') : ""}<style>${CSS}</style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="/"><i></i>${esc(product)}</a>${nav}</div></header>
 <div class="wrap"><main${page === "app" ? ' class="app"' : ""}>${body}</main></div>
 ${page === "app" ? "" : `<footer><div class="wrap">${esc(product)}. Videos, voices and pictures are AI-generated and labelled where platforms require it.</div></footer>`}
-${script ? `<script src="/assets/${script}.js?v=${ASSET_VERSION}" defer></script>` : ""}</body></html>`;
+${script === "workspace" ? tag("workspace") : ""}</body></html>`;
 }
 
 const ICONS = {
@@ -281,7 +289,7 @@ const identityFacts = (kit: BrandKit) =>
 /** The demonstration: a real channel's kit, explored with tabs. No account, nothing to fill in. */
 export function demoPage(product: string, kit: BrandKit, account: Account = null): string {
   const tab = (id: string, label: string, checked = false) => `<label><input type="radio" name="tab" id="t-${id}"${checked ? " checked" : ""}>${label}</label>`;
-  const shots = (name: string) => `<div class="frames">${[1, 2, 3].map((n) => `<img src="/assets/${name}-${n}.jpg" alt="${name} look, frame ${n}">`).join("")}</div>`;
+  const shots = (name: string) => `<div class="frames">${[1, 2, 3].map((n) => `<img src="/assets/${name}-${n}.jpg" alt="${name} look, frame ${n}" loading="lazy">`).join("")}</div>`;
   return layout(
     product,
     `Demo — ${product}`,
@@ -340,7 +348,7 @@ const FEELS = ["playful", "calm", "curious", "dramatic", "funny", "honest"];
 const FACES: Record<string, [string, number]> = { anton: ["Anton", 400], montserrat: ["Montserrat", 800], "space-grotesk": ["Space Grotesk", 700], fredoka: ["Fredoka", 600], "baloo-2": ["Baloo 2", 700] };
 const HEX = /^#[0-9a-f]{6}$/i;
 /** Where the designer starts when there is nothing ready-made to start from. */
-const BLANK_LOOK: Fields = { l_paper: "#f2f0f7", l_card: "#ffffff", l_ink: "#1a1838", l_text: "#1a1838", l_a: "#5a31f4", l_b: "#ffcf33", l_c: "#ff7a59", l_accent: "#5a31f4", l_display: "fredoka", l_body: "space-grotesk", l_casing: "normal", l_surface: "plain", l_backdrop: "blobs", l_texture: "none", l_motion: "snappy", l_art: "flat", l_host: "left", l_host_size: "medium", l_lettering: "middle", l_pictures: "beside" };
+const BLANK_LOOK: Fields = { l_paper: "#f2f0f7", l_card: "#ffffff", l_ink: "#1a1838", l_text: "#1a1838", l_a: "#5a31f4", l_b: "#ffcf33", l_c: "#ff7a59", l_accent: "#5a31f4", l_display: "fredoka", l_body: "space-grotesk", l_casing: "normal", l_surface: "plain", l_backdrop: "blobs", l_texture: "none", l_motion: "snappy", l_art: "flat", l_host: "left", l_host_size: "medium", l_lettering: "middle", l_pictures: "beside", l_frames: "" };
 const BLANK_HOST: Fields = { h_rig: "flat-2d", h_shape: "blob", h_extra: "none", h_hair: "", h_eyes: "round", h_main: "#5a31f4", h_second: "#1a1838", h_accent: "#ffcf33", h_mood: "cheerful" };
 type Fields = Record<string, string>;
 
@@ -362,6 +370,42 @@ function frameStyle(f: Fields): string {
 
 function knob(name: string, label: string, options: readonly string[], value: string, text: (o: string) => string = words): string {
   return `<label class="knob"${options.length ? "" : " hidden"}>${esc(label)}<select name="${name}">${options.map((o) => `<option value="${esc(o)}"${o === value ? " selected" : ""}>${esc(text(o))}</option>`).join("")}</select></label>`;
+}
+
+const FRAME_NAMES: Record<string, string> = { "host-left": "Host on the left", "host-right": "Host on the right", "big-picture": "Big picture", split: "Split screen", "host-centre": "Host in the middle", "corner-host": "Host in the corner", "title-card": "Title card", "host-top": "Host up top", columns: "Columns", "picture-in-picture": "Picture in picture" };
+
+/** Worlds to start from: a tap fills the world field, and the customer can change every word. */
+const WORLDS = [
+  "A cozy wizard's library inside a giant hollow tree, candlelight, floating books, storybook watercolour",
+  "A retro-futurist space station orbiting Saturn, chrome and orange plastic, 1970s sci-fi paperback art",
+  "A tiny world on a kitchen table, objects as big as buildings, soft morning light, claymation",
+  "Ancient Rome at golden hour, marble, crowds of cloth awnings, painted like a museum fresco",
+  "A deep-sea trench full of glowing creatures, bioluminescent blues, cinematic and photoreal",
+  "A rainy cyberpunk market street, neon signs without words, reflections everywhere, anime",
+];
+
+/** A frame drawn small: the stage, the host's box, lettering lines and the picture. */
+function frameSketch(f: Frame): string {
+  const host = f.host ? `<rect x="${f.host.x + 3}" y="${f.host.y + 3}" width="${f.host.w - 6}" height="${f.host.h - 6}" rx="${Math.min(f.host.w, f.host.h) / 3}" class="fs-host"/>` : "";
+  const pic = f.picture ? `<rect x="${f.picture.x + 2}" y="${f.picture.y + 2}" width="${f.picture.w - 4}" height="${f.picture.h - 4}" rx="4" class="fs-pic"/>` : "";
+  const t = f.text;
+  const lines = Math.max(1, Math.min(4, Math.floor(t.h / 12)));
+  const top = t.y + (t.align === "top" ? 4 : t.align === "bottom" ? t.h - lines * 10 - 2 : (t.h - lines * 10) / 2);
+  const text = Array.from({ length: lines }, (_, i) => `<rect x="${t.x + 4 + (i % 2) * 4}" y="${top + i * 10}" width="${t.w - 8 - (i % 2) * 12}" height="5" rx="2.5" class="fs-text"/>`).join("");
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="6" class="fs-stage"/>${pic}${text}${host}</svg>`;
+}
+
+/** The scene layouts a look can switch between. The picked ones are kept as JSON in `l_frames`, with any frames of the look's own. */
+function frameTiles(value: string): string {
+  let picked: unknown[] = [];
+  try {
+    picked = value ? (JSON.parse(value) as unknown[]) : [];
+  } catch {
+    // An unreadable value is reported by the look's check when the form is sent; here nothing shows as picked.
+  }
+  const on = new Set(picked.filter((f): f is string => typeof f === "string"));
+  const own = picked.filter((f) => typeof f !== "string").length;
+  return `<div class="frames" role="group" aria-label="Scene layouts">${FRAME_PRESET_NAMES.map((n) => `<button type="button" class="frame-tile" data-frame-pick="${n}" aria-pressed="${on.has(n)}">${frameSketch(FRAME_PRESETS[n])}<span>${esc(FRAME_NAMES[n] ?? words(n))}</span></button>`).join("")}</div><input type="hidden" name="l_frames" value="${esc(value)}">${own ? `<p class="muted">This look also has ${own} layout${own > 1 ? "s" : ""} of its own, kept as they are.</p>` : ""}`;
 }
 
 const ink = (name: string, label: string, value: string, slot = "") => `<label class="ink"><input type="color" name="${name}" value="${HEX.test(value) ? esc(value) : "#888888"}"><span${slot ? ` data-colour="${slot}"` : ""}>${esc(label)}</span></label>`;
@@ -409,10 +453,14 @@ ${field("tone", values, errors, "text", "How it should feel, in a few words. Tap
 <div class="inks">${ink("l_paper", "Background", lf.l_paper)}${ink("l_a", "Colour 1", lf.l_a)}${ink("l_b", "Colour 2", lf.l_b)}${ink("l_c", "Colour 3", lf.l_c)}${ink("l_accent", "Highlight", lf.l_accent)}</div>
 <div class="knobs">${knob("l_display", "Headline lettering", displays, lf.l_display, face)}${knob("l_casing", "Letters", LOOK_CHOICES.l_casing, lf.l_casing, (o) => (o === "upper" ? "ALL CAPS" : "Sentence case"))}${knob("l_surface", "Cards and plates", LOOK_CHOICES.l_surface, lf.l_surface, (o) => ({ torn: "Torn paper", ruled: "Drafting lines", plain: "Soft cards", glow: "Glowing outlines" })[o] ?? words(o))}${knob("l_backdrop", "Behind everything", LOOK_CHOICES.l_backdrop, lf.l_backdrop, (o) => ({ sheets: "Paper sheets", grid: "A grid", blobs: "Soft colour", none: "Nothing" })[o] ?? words(o))}${knob("l_art", "Drawings", LOOK_CHOICES.l_art, lf.l_art, (o) => ({ cutout: "Paper cut-outs", line: "Line drawings", flat: "Flat shapes" })[o] ?? words(o))}${knob("l_motion", "Movement", LOOK_CHOICES.l_motion, lf.l_motion, (o) => ({ "stop-motion": "Stop motion", "draw-on": "Drawn on", snappy: "Quick and snappy" })[o] ?? words(o))}</div>
 <h3>Arrange the scene</h3>
-<div class="knobs">${knob("l_host", "Host stands", LOOK_CHOICES.l_host, lf.l_host, (o) => `On the ${o}`)}${knob("l_host_size", "Host size", LOOK_CHOICES.l_host_size, lf.l_host_size)}${knob("l_lettering", "Notes sit", LOOK_CHOICES.l_lettering, lf.l_lettering, (o) => ({ top: "High", middle: "In the middle", low: "Low, near the host" })[o] ?? words(o))}${knob("l_pictures", "Pictures go", LOOK_CHOICES.l_pictures, lf.l_pictures, (o) => (o === "beside" ? "Beside the host" : "Above the host"))}</div>
+<p class="muted">Pick scene layouts and each video switches between them, beat by beat, choosing one its words and pictures fit. Pick none to keep one arrangement, set below.</p>
+${frameTiles(lf.l_frames ?? "")}
+<div class="knobs" data-classic>${knob("l_host", "Host stands", LOOK_CHOICES.l_host, lf.l_host, (o) => `On the ${o}`)}${knob("l_host_size", "Host size", LOOK_CHOICES.l_host_size, lf.l_host_size)}${knob("l_lettering", "Notes sit", LOOK_CHOICES.l_lettering, lf.l_lettering, (o) => ({ top: "High", middle: "In the middle", low: "Low, near the host" })[o] ?? words(o))}${knob("l_pictures", "Pictures go", LOOK_CHOICES.l_pictures, lf.l_pictures, (o) => (o === "beside" ? "Beside the host" : "Above the host"))}</div>
 <details class="more"><summary>More settings</summary><div class="inks" style="margin-bottom:14px">${ink("l_card", "Cards", lf.l_card)}${ink("l_ink", "Text on cards", lf.l_ink)}${ink("l_text", "Text on background", lf.l_text)}</div>
 <div class="knobs">${knob("l_body", "Small lettering", LOOK_CHOICES.l_body, lf.l_body, face)}${knob("l_texture", "Texture", LOOK_CHOICES.l_texture, lf.l_texture, (o) => (o === "grain" ? "Paper grain" : "Clean"))}</div></details></fieldset>
-${field("look_note", values, errors, "area", "Optional. Anything the settings cannot say.", "Like a 1970s science textbook, a little faded")}</fieldset>
+${field("look_note", values, errors, "area", "Optional. Anything the settings cannot say.", "Like a 1970s science textbook, a little faded")}
+${field("world", values, errors, "area", "Where your stories happen and how they are drawn. Every line your host says is acted out in pictures of this world, with your host in them, so be as wild and specific as you like: the place, the era, the light, the art style. Leave it empty and we invent a simple cartoon world that suits your channel.", "A drowned neon city at night, glass towers under green water, schools of glowing fish, painted like a 1990s anime")}
+<div class="chips">${WORLDS.map((w) => `<button type="button" class="chip" data-world="${esc(w)}">${esc(w.split(",")[0])}</button>`).join("")}</div></fieldset>
 <fieldset class="step"><legend>Build the host</legend>
 <div><p class="label" style="margin-bottom:10px">Start from one, then change anything</p><div class="pick hosts" role="radiogroup" aria-label="Starting host">${hosts}</div>${errors.avatar ? `<span class="error">${esc(errors.avatar)}</span>` : ""}</div>
 <fieldset class="designer" data-designer="host" disabled><h3>Make it yours</h3>
@@ -579,7 +627,7 @@ ${finishBar(order, canRevise)}
 export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null): string {
   const d = order.design;
   const yours = d && (d.theme || d.model) ? `<div class="yours">${d.theme ? lookSwatch(d.theme) : ""}${d.model && HOST_RIGS[d.model.rig] ? `<img class="vis" src="${esc(hostPreviewUrl(hostFields(d.model)))}" alt="Your host">` : ""}<p class="muted" style="max-width:36ch">The look and host you designed. Your brand kit is built from these.</p></div>` : "";
-  const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f])}</dd></div>`).join("")}</dl></section>`;
+  const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f] ?? "")}</dd></div>`).join("")}</dl></section>`;
   // While something is being made the page reloads itself, so the result shows up without a tap.
   const waiting = order.status !== "awaiting-payment" && (isBuilding(order) || isMakingVideo(order));
   const revising = waiting && isBuilding(order) && order.build?.kind === "revise";

@@ -421,7 +421,7 @@ function referencesFor(ep: EpisodeRef, speaker: string, fake: boolean): { images
 }
 
 /** Save model output as a JPEG (smaller in git, accepted by Veo). */
-function saveJpeg(data: Buffer, out: string, work: string): void {
+export function saveJpeg(data: Buffer, out: string, work: string): void {
   mkdirSync(work, { recursive: true });
   mkdirSync(dirname(out), { recursive: true });
   const tmp = join(work, `${basename(out)}.src`);

@@ -100,6 +100,7 @@ export function orderSeed(order: Order): string {
     `Who it is for: ${i.audience}`,
     `How it should feel: ${i.tone}`,
     ...(i.look_note ? [`The look, in their words: ${i.look_note}`] : []),
+    ...(i.world ? [`The world the videos happen in, in their words: ${i.world}`] : []),
     ...(i.host ? [`Notes on the host: ${i.host}`] : []),
     ...(i.avoid ? [`Topics to avoid (add them to banned_topics): ${i.avoid}`] : []),
     "BRIEF END",
@@ -109,7 +110,7 @@ export function orderSeed(order: Order): string {
   if (theme) {
     lines.push(
       "",
-      `The customer designed the look ("${theme.name}"). The series renders with \`render-themed\` (plus \`render-talking-character\` for the host). Do not write theme.json: the engine writes this one into the channel after you finish. Choose the brand colours and font in channel.md to match it, and describe this look in the series' visual_style:`,
+      `The customer designed the look ("${theme.name}"). The series renders with \`render-themed\` (plus \`render-talking-character\` for the host). Do not write theme.json: the engine writes this one into the channel after you finish. Choose the brand colours and font in channel.md to match it, and describe this look in the series' visual_style. Its \`world\` is painted for every video: each line is acted out in painted shots (no lettering over them; the host appears only in shots that call for it), so plan the series' beats as moments of a story told in pictures:`,
       "```json",
       JSON.stringify(theme, null, 2),
       "```",

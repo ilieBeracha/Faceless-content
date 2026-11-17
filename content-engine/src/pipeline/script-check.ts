@@ -1,4 +1,6 @@
 import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { checkFrames, checkShots, parseTheme } from "../skills/render-themed/schema.ts";
 import { seriesDoc, type Channel } from "../core/channels.ts";
 import { canonicalJson, readJson, sha256 } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
@@ -35,6 +37,57 @@ export interface ScriptCheck {
 
 /** Roughly how many words per second Kokoro speaks at speed 1.0 (measured: ~3.0 w/s). */
 export const WORDS_PER_SECOND = 3.0;
+
+/**
+ * Seconds Kokoro takes per spoken syllable at speed 1.0, measured on real hooks (2026-11: 0.20–0.25 s a syllable;
+ * this is the slow end, because a hook that runs long fails QA after the whole video is made).
+ */
+export const SECONDS_PER_SYLLABLE = 0.25;
+
+/** Roughly how many syllables a word has when spoken (vowel groups, less silent endings; numbers by their digits). */
+export function wordSyllables(word: string): number {
+  const t = word.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z0-9']/g, "");
+  if (!t) return 0;
+  // A number is said in words ("1947" = "nineteen forty-seven"): about one and a half syllables a digit.
+  if (/\d/.test(t)) return Math.ceil(t.replace(/\D/g, "").length * 1.5);
+  const possessive = /'s$/.test(t);
+  const base = t.replace(/'s$/, "").replace(/'/g, "");
+  let n = (base.match(/[aeiouy]+/g) ?? []).length;
+  if (n > 1 && /[^aeiouy]e$/.test(base) && !/[^aeiouy]le$/.test(base)) n--; // phone, stone (not table)
+  else if (n > 1 && /[^sxzhcg]es$/.test(base)) n--; // makes, does (not boxes, pages)
+  else if (n > 1 && /[^td]ed$/.test(base)) n--; // jammed (not landed)
+  // "doesn't", "isn't", "couldn't": the n't after s, d or z is a syllable of its own (not in "don't", "can't").
+  if (/[sdz]n't$/.test(t)) n++;
+  // "Venus's", "box's": the 's after a hissing sound is a syllable of its own.
+  if (possessive && /(s|x|z|ch|sh|ce|ge)$/.test(base)) n++;
+  return Math.max(1, n);
+}
+
+export function syllables(text: string): number {
+  return text.split(/[\s-]+/).reduce((n, w) => n + wordSyllables(w), 0);
+}
+
+/** How long a hook may be for a character: in syllables for Kokoro voices, in words for the video model. */
+export function hookLimit(ws: Workspace, characterData: Record<string, unknown> | undefined): { unit: "syllables" | "words"; max: number } {
+  const voice = characterData?.voice as CharacterVoice | undefined;
+  const room = ws.config.hook.hook_line_ends_by_seconds - ws.config.audio.lead_in_seconds;
+  if (voice?.provider === "veo") return { unit: "words", max: Math.floor(room * ws.config.ai_video.words_per_second) };
+  return { unit: "syllables", max: Math.floor((room * Number(voice?.speed ?? 1)) / SECONDS_PER_SYLLABLE) };
+}
+
+/** When a first sentence will have been spoken, estimated before the voice exists, and the latest it may end. */
+export function hookTiming(ws: Workspace, characterData: Record<string, unknown> | undefined, sentence: string): { count: number; unit: "syllables" | "words"; seconds: number; limit: number } {
+  const voice = characterData?.voice as CharacterVoice | undefined;
+  const lead = ws.config.audio.lead_in_seconds;
+  const limit = ws.config.hook.hook_line_ends_by_seconds;
+  if (voice?.provider === "veo") {
+    const count = voiceTokens(sentence).length;
+    // The video model's speech is not measured per syllable; its estimate keeps the margin it always had.
+    return { count, unit: "words", seconds: lead + count / ws.config.ai_video.words_per_second, limit: limit + 0.25 };
+  }
+  const count = syllables(sentence);
+  return { count, unit: "syllables", seconds: lead + (count * SECONDS_PER_SYLLABLE) / Number(voice?.speed ?? 1), limit };
+}
 
 /** Spoken words per second for a character: Kokoro's measured rate × speed, or the video model's rate. */
 export function speechRate(ws: Workspace, characterData: Record<string, unknown> | undefined): number {
@@ -118,6 +171,16 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
     script.visuals[skill] = r.data;
     errors.push(...(spec.check?.(r.data, beatsUsing, { config: ws.config }) ?? []));
   }
+  // Frames a beat names must be the look's; a look with a world tells every beat in painted shots, one without in lettering.
+  const themedBeats = script.beats.filter((b) => b.visual.skill === "render-themed");
+  if (renderSkills.includes("render-themed") && themedBeats.length) {
+    const themePath = join(ctx.channel.dir, "theme.json");
+    if (!existsSync(themePath)) errors.push(`render-themed beats need the channel's look, but channels/${ctx.channel.slug}/theme.json does not exist`);
+    else {
+      const theme = parseTheme(readJson(themePath), `channels/${ctx.channel.slug}/theme.json`);
+      errors.push(...checkFrames(themedBeats, theme), ...checkShots(themedBeats, theme));
+    }
+  }
   for (const key of Object.keys(script.visuals)) if (!renderSkills.includes(key)) warnings.push(`visuals["${key}"] is ignored — not a render skill of this series`);
 
   const beatIds = new Set(got);
@@ -129,7 +192,7 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
     if (claim.confidence === "low") warnings.push(`claim ${claim.id} has low confidence — find a better source or cut it`);
   }
 
-  // Length and hook, estimated from word counts (measured exactly after the voice step).
+  // Length (from word counts) and hook (from syllables), estimated now and measured exactly after the voice step.
   const wps = speechRate(ws, ctx.channel.characters.get(script.beats[0].speaker)?.data);
   const words = script.beats.reduce((n, b) => n + voiceTokens(b.voiceover).length, 0);
   const cfg = ws.config.audio;
@@ -138,10 +201,11 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
   if (estimate < min * 0.85 || estimate > max * 1.08) {
     errors.push(`the script has ${words} words ≈ ${estimate.toFixed(1)}s of video, but the series needs ${min}–${max}s (aim for ~${Math.round(((min + max) / 2 - 2) * wps)} words)`);
   }
-  const hookWords = voiceTokens(firstSentence(script.beats[0].voiceover)).length;
-  const hookSeconds = cfg.lead_in_seconds + hookWords / wps;
-  if (hookSeconds > ws.config.hook.hook_line_ends_by_seconds + 0.25) {
-    errors.push(`the first sentence has ${hookWords} words (≈${hookSeconds.toFixed(1)}s) — the hook must land within ${ws.config.hook.hook_line_ends_by_seconds}s, keep it to ~${Math.floor((ws.config.hook.hook_line_ends_by_seconds - cfg.lead_in_seconds) * wps)} words`);
+  const hookSpeaker = ctx.channel.characters.get(script.beats[0].speaker)?.data;
+  const hook = hookTiming(ws, hookSpeaker, firstSentence(script.beats[0].voiceover));
+  if (hook.seconds > hook.limit) {
+    const room = hookLimit(ws, hookSpeaker);
+    errors.push(`the first sentence has ${hook.count} ${hook.unit} (≈${hook.seconds.toFixed(2)}s) — the hook must land within ${ws.config.hook.hook_line_ends_by_seconds}s, keep it to ${room.max} ${room.unit} or fewer`);
   }
   if (!script.beats[0].on_screen_text) warnings.push("the first beat has no on_screen_text — a visible hook in the first frames helps retention");
 

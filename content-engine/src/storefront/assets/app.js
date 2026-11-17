@@ -83,7 +83,32 @@
       if (!["h_shape", "h_extra", "h_hair", "h_eyes"].includes(name)) field.value = value;
     }
     if ("h_rig" in values) fitHostControls(values);
+    if ("l_frames" in values) showFrames();
   }
+
+  // Scene layouts: tiles toggle presets in the look's frame list (JSON in l_frames), keeping any frames of the look's own.
+  function frameList() {
+    return el("l_frames").value ? JSON.parse(el("l_frames").value) : [];
+  }
+  function showFrames() {
+    const on = new Set(frameList().filter((f) => typeof f === "string"));
+    for (const tile of form.querySelectorAll("[data-frame-pick]")) tile.setAttribute("aria-pressed", String(on.has(tile.dataset.framePick)));
+  }
+  form.addEventListener("click", (e) => {
+    const world = e.target.closest("[data-world]");
+    if (world) {
+      el("world").value = world.dataset.world;
+      el("world").dispatchEvent(new Event("input", { bubbles: true }));
+      return;
+    }
+    const tile = e.target.closest("[data-frame-pick]");
+    if (!tile) return;
+    const name = tile.dataset.framePick;
+    const list = frameList();
+    const next = list.includes(name) ? list.filter((f) => f !== name) : [...list, name];
+    el("l_frames").value = next.length ? JSON.stringify(next) : "";
+    showFrames();
+  });
 
   function drawLook() {
     for (const [v, name] of [["paper", "l_paper"], ["card", "l_card"], ["ink", "l_ink"], ["text", "l_text"], ["a", "l_a"], ["b", "l_b"], ["c", "l_c"], ["accent", "l_accent"]]) frame.style.setProperty("--" + v, el(name).value);
