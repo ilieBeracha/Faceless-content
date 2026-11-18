@@ -70,8 +70,10 @@ export interface Build {
   error?: string;
 }
 
-/** Where an order's first video stands (builder.ts). Absent until the kit is approved and its channel was built here. */
+/** Where an order's latest video stands (builder.ts). Absent until the kit is approved and its channel was built here. */
 export interface Video {
+  /** The idea the customer chose to make, from the channel's ideas. Absent on the first video (the next idea in line). */
+  idea?: string;
   /**
    * writing = the script is being written; facts = the customer is checking its facts;
    * making = being voiced, drawn and checked; done = on the order's page; failed = stopped, see `error`.
@@ -113,7 +115,21 @@ export interface Order {
   /** When the customer approved the whole brand kit. From then on it is locked. */
   kit_approved?: string;
   video?: Video;
+  /** The customer's latest request for new video ideas (written by the Claude API into the channel's drafts). */
+  suggest?: Suggest;
   decisions: Partial<Record<SectionId, Decision>>;
+}
+
+export interface Suggest {
+  state: "running" | "done" | "failed";
+  /** When it reached this state. */
+  at: string;
+  /** When each request started (for the daily limit). */
+  runs: string[];
+  /** What the customer asked the ideas to be about, in their words, if they said. */
+  direction?: string;
+  /** Why it failed. */
+  error?: string;
 }
 
 const LIMITS: Record<keyof Intake, { label: string; max: number; required: boolean }> = {
@@ -198,6 +214,12 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
 
 /** The most times one order's kit is revised automatically; after that, changes are made by hand. */
 export const MAX_ROUNDS = 3;
+/** Each one is paid (the Claude API, the image model): at most this many videos a channel can start in a day. */
+export const VIDEOS_PER_DAY = 3;
+/** At most this many requests for new ideas an order can make in a day (each is a paid Claude API call). */
+export const SUGGESTS_PER_DAY = 3;
+/** The longest topic a customer can give for a video or for new ideas. */
+export const TOPIC_MAX = 160;
 
 /** The change requests waiting on an order, in the kit's order. */
 export function changeRequests(order: Order): { id: SectionId; label: string; note: string }[] {
@@ -215,6 +237,17 @@ export function isBuilding(order: Order): boolean {
 /** True while the order's video is being worked on by the server (not while it waits for the customer). */
 export function isMakingVideo(order: Order): boolean {
   return order.video?.state === "writing" || order.video?.state === "making";
+}
+
+/** True while a video is under way: being worked on, or waiting for the customer to check its facts. */
+export function videoUnderWay(order: Order): boolean {
+  return isMakingVideo(order) || order.video?.state === "facts";
+}
+
+/** How many of `times` (ISO timestamps) fall on today (UTC). */
+export function countToday(times: string[]): number {
+  const day = new Date().toISOString().slice(0, 10);
+  return times.filter((t) => t.slice(0, 10) === day).length;
 }
 
 export class OrderStore {

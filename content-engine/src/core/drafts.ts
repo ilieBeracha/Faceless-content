@@ -158,7 +158,7 @@ export function approveDraft(ws: Workspace, draft: DraftInfo, opts: { only?: str
   const proposals = parseIdeas(body).filter((i) => i.status === "proposed" && (!opts.only || opts.only.includes(i.id)));
   if (!proposals.length) throw new EngineError(`No proposed ideas to approve in ${draft.rel}${opts.only ? ` matching ${opts.only.join(", ")}` : ""}.`);
   const { text, ids } = renderIdeas(
-    proposals.map((p) => ({ id: p.id, title: p.title, series: p.series, angle: p.angle, extra: { source: draft.rel } })),
+    proposals.map((p) => ({ id: p.id, title: p.title, series: p.series, angle: p.angle, extra: { ...pickFields(p.fields, ["fact", "fact_source"]), source: draft.rel } })),
     channel.ideas.map((i) => i.id),
     "new",
     today(),
@@ -188,4 +188,9 @@ export function rejectDraft(ws: Workspace, draft: DraftInfo, reason: string, opt
   }
   markDraft(draft.abs, { status: "rejected", decided: today(), note: reason });
   return { touched: [draft.abs], summary: `Rejected ${draft.rel} (kept for history)` };
+}
+
+/** The fields of `fields` named in `keys` that are set. */
+function pickFields(fields: Record<string, string>, keys: string[]): Record<string, string> {
+  return Object.fromEntries(keys.filter((k) => fields[k]).map((k) => [k, fields[k]]));
 }

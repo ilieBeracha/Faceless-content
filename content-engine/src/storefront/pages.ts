@@ -1,11 +1,13 @@
 /** Server-rendered pages. Every value that came from a person or a file goes through esc(). */
 import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
+import type { Dashboard } from "./builder.ts";
+import type { Idea } from "../core/ideas.ts";
 import { FRAME_PRESET_NAMES, FRAME_PRESETS, type Frame, type Theme } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
-import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, type Intake, type Order, type SectionId } from "./store.ts";
+import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, videoUnderWay, SUGGESTS_PER_DAY, TOPIC_MAX, type Intake, type Order, type SectionId } from "./store.ts";
 
 export function esc(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -190,7 +192,7 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .decide.warn .verdict{flex-basis:100%}.decide.warn .text{padding-left:0;padding-right:14px}
 .decide:has(details[open]) .btn.yes,.decide.warn:has(details[open]) .text{display:none}.decide.warn details[open] .text{display:inline}
 .decide .btn.yes{background:var(--ok);color:var(--surface)}
-.decide .text{font:600 15px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.decide .text:hover{color:var(--ink)}
+.decide .text,.ideas .text{font:600 15px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.decide .text:hover,.ideas .text:hover{color:var(--ink)}
 .decide details>summary{list-style:none;cursor:pointer}.decide details>summary::-webkit-details-marker{display:none}
 .decide details[open]{flex-basis:100%;order:2;display:flex;flex-direction:column;gap:12px}.decide details[open]>summary{display:none}
 .decide details .inner{display:flex;flex-direction:column;gap:12px}
@@ -203,6 +205,31 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
 .claims{display:flex;flex-direction:column;gap:16px;padding-left:22px;max-width:70ch}.claims li{font:400 17px/1.5 var(--body);color:var(--ink)}.claims small{display:block;font-size:14.5px;color:var(--muted);overflow-wrap:anywhere}.said{display:flex;flex-direction:column;gap:10px;max-width:70ch}.said small{display:block;font-size:14.5px;color:var(--muted)}#facts .decide{align-self:stretch}
 .notice{background:var(--surface);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+/* channel console: an approved channel's own app */
+.cbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;height:60px;padding:0 20px;background:var(--surface);border-bottom:1px solid var(--line)}
+.cbar .brand{font-size:19px}.cbar .sep{color:var(--line);font-size:22px}.cbar .chan{font:600 17px/1.2 var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.cbar .state{margin-left:auto}.cbar .mine{font-size:14.5px;color:var(--muted);text-decoration:none;white-space:nowrap}.cbar .mine:hover{color:var(--ink)}
+.state{display:inline-flex;align-items:center;gap:7px;font:600 13.5px/1 var(--body);padding:7px 11px;border-radius:99px;background:var(--soft);color:var(--muted);white-space:nowrap}.state i{width:8px;height:8px;border-radius:50%;background:var(--ok)}.state.paused i{background:var(--muted)}.state.busy i{background:var(--pop)}
+.shell{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:calc(100vh - 60px)}
+.rail{border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:2px;position:sticky;top:60px;align-self:start;height:calc(100vh - 60px)}
+.rail a{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;text-decoration:none;color:var(--muted);font-weight:500;font-size:15.5px}.rail a:hover{background:var(--soft);color:var(--ink)}
+.rail a[aria-current]{background:var(--soft);color:var(--ink);font-weight:600}.rail svg{width:20px;height:20px;flex:none}.rail b{margin-left:auto;font:600 12.5px/1 var(--body);background:var(--surface);padding:4px 7px;border-radius:99px}
+.pane{padding:32px clamp(18px,4vw,48px) 80px;display:flex;flex-direction:column;gap:28px;max-width:1080px;min-width:0}
+.pane h1{font-size:clamp(28px,4vw,38px)}.pane h2{font-size:22px}.pane .head{display:flex;flex-direction:row;flex-wrap:wrap;align-items:flex-end;gap:12px 20px;justify-content:space-between}
+.pane .head form{display:contents}.pane .tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.pane .tools form{display:contents}
+.card{background:var(--surface);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;min-width:0}
+.card>.swatches{align-self:stretch}.card .top-line{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%}.card .top-line a{font-size:14.5px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px;margin:0}.stats div{background:var(--surface);border-radius:18px;padding:16px 18px}.stats dt{font:600 13.5px/1.2 var(--body);color:var(--muted)}.stats dd{margin:8px 0 0;font:600 30px/1 var(--display)}
+.vids{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:14px;width:100%}.vids figure{margin:0;display:flex;flex-direction:column;gap:8px}.vids video{width:100%;aspect-ratio:9/16;border-radius:16px;background:#000;display:block}.vids figcaption{font-weight:600;font-size:15px;line-height:1.35}.vids a{font-size:14px}
+.ideas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;width:100%}.ideas li{background:var(--surface);border-radius:16px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}.card .ideas li{background:var(--bg)}
+.ideas li>div{flex:1 1 240px;min-width:0}.ideas b{display:block;font-size:16px}.ideas small{color:var(--muted);font-size:14.5px}.ideas form{display:contents}.ideas .btn[disabled],.pane .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.ideas .text{font:600 15px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.ideas .text:hover{color:var(--ink)}
+.fact{margin:8px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}.fact span{display:inline-block;font:600 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-right:8px}.fact .src{font-size:14px;color:var(--muted);white-space:nowrap}a.src{color:var(--accent)}
+.rail a.create{background:var(--ink);color:var(--bg);font-weight:600;margin-bottom:10px}.rail a.create:hover,.rail a.create[aria-current]{background:var(--ink);color:var(--bg);opacity:.88}
+.track.three{grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;margin:0;padding:0}
+form.own{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;width:100%}form.own label{flex:1 1 260px}
+@media(max-width:820px){.shell{grid-template-columns:1fr}.rail{position:sticky;top:60px;z-index:15;height:auto;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);background:var(--bg);padding:8px 12px;gap:4px}.rail a{flex:none;padding:9px 12px}.rail b{margin-left:4px}.cbar .mine{display:none}.pane{padding-top:22px}}
+@media(max-width:480px){.cbar .sep,.cbar .brand span{display:none}}
 .yours{display:flex;flex-wrap:wrap;gap:20px;align-items:center}.yours .vis{width:96px}.yours img.vis{aspect-ratio:1;object-fit:contain;background:var(--bg)}
 
 /* orders */
@@ -441,7 +468,7 @@ export function createPage(product: string, catalog: Catalog, values: Fields = {
     `<section><div class="head"><h1>Design your channel.</h1><p class="lede">Four short steps. The phone shows your host in your look as you build them.</p></div></section>
 <section class="create">
 <form class="wizard" method="post" action="/intake" data-wizard data-rigs="${esc(JSON.stringify(rigs))}" data-faces="${esc(JSON.stringify(FACES))}">
-<div class="progress"><p class="label" data-count>Step 1 of 4</p><div class="bar"><i></i></div></div>${any}
+<div class="progress"><p class="label" data-count>Step 1 of 4</p><div class="tools"><i></i></div></div>${any}
 <fieldset class="step"><legend>What is it about?</legend>
 ${field("idea", values, errors, "area", "One or two sentences. What is every video about?", "Surprising facts about the technology we use every day")}
 ${field("audience", values, errors, "text", "Who watches, and roughly how old they are.", "Curious teens and adults")}</fieldset>
@@ -567,7 +594,7 @@ function finishBar(order: Order, canRevise: boolean): string {
 }
 
 /** The fact-check, for the customer: every claim with its source, everything said and shown, and the decision. */
-function factsHtml(order: Order, script: Script): string {
+function factsHtml(order: Order, script: Script, first = true): string {
   const base = `/w/${esc(order.token)}`;
   const source = (text: string) => (/^https:\/\/\S+$/.test(text) ? `<a href="${esc(text)}" rel="noopener noreferrer nofollow" target="_blank">${esc(text)}</a>` : esc(text));
   const claims = script.claims.length
@@ -579,7 +606,7 @@ function factsHtml(order: Order, script: Script): string {
     left > 0
       ? `<details><summary class="btn ghost">Ask for a change</summary><form method="post" action="${base}/facts"><input type="hidden" name="decision" value="change"><div class="inner"><label class="f" for="facts-note">Which fact is wrong, and what should change?<textarea id="facts-note" name="note" maxlength="600" required></textarea></label><div class="row"><button type="submit" class="btn sm">Send request</button><button type="button" class="text" data-close>Cancel</button></div><small class="muted">The script is written again and comes back here. Rewrite ${MAX_ROUNDS - left + 1} of ${MAX_ROUNDS}.</small></div></form></details>`
       : `<p class="muted">This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand: quote <b>${esc(order.id)}</b> if you contact us.</p>`;
-  return `<section class="notice" id="facts"><h2>Check the facts</h2><p class="muted">The script for your first video, “${esc(script.title)}”, is written. Nothing is voiced or drawn until you approve every fact in it. Check each one against its source.</p>
+  return `<section class="notice" id="facts"><h2>Check the facts</h2><p class="muted">The script for your ${first ? "first " : ""}video, “${esc(script.title)}”, is written. Nothing is voiced or drawn until you approve every fact in it. Check each one against its source.</p>
 ${claims}
 <h3>Everything that is said and shown</h3><p class="muted">Read it for any fact the list above missed.</p>${said}
 <div class="decide" role="group" aria-label="Your decision on the facts"><form method="post" action="${base}/facts"><input type="hidden" name="decision" value="approve"><button type="submit" class="btn yes">Approve the facts</button></form>${change}</div><small class="muted">Approving starts the video. It is made exactly from these words.</small></section>`;
@@ -623,8 +650,152 @@ ${finishBar(order, canRevise)}
 </div></div>`;
 }
 
-/** `canRevise`: change requests are made automatically (automatic builds are on). `facts`: the script whose facts the customer is checking, if any. */
-export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null): string {
+/** What the channel is doing right now, on its dashboard. `newVideo`: the address of the New video flow. */
+function nowHtml(order: Order, dash: Dashboard, facts: Script | null, made: number, newVideo: string, settings: string): string {
+  const v = order.video;
+  const title = (t: string) => `<section class="card" id="now">${t}</section>`;
+  if (v?.state === "facts" && facts) return factsHtml(order, facts, made === 0).replace('class="notice" id="facts"', 'class="card" id="now"');
+  if (v?.state === "writing") return title(`<h2>A video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "The script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p>`);
+  if (v?.state === "making") return title(`<h2>A video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and it appears in Videos by itself.</p>`);
+  if (v?.state === "failed")
+    return title(`<h2>The last video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}. Nothing is lost: start another one, and quote <b>${esc(order.id)}</b> if you contact us about it.</p><a class="btn sm" href="${newVideo}">New video</a>`);
+  if (dash.paused) return title(`<h2>The channel is paused</h2><p class="muted">No new videos are made while it is paused.</p><a class="btn sm" href="${settings}">Resume it in Settings</a>`);
+  return title(`<h2>${made ? "Ready for the next video" : "Ready for your first video"}</h2><p class="muted">Pick an idea or give your own topic, and the script is written for you. You check its facts before anything is voiced or drawn.</p><a class="btn sm" href="${newVideo}">New video</a>`);
+}
+
+export type ConsoleView = "overview" | "new" | "videos" | "ideas" | "settings";
+export const CONSOLE_VIEWS: readonly ConsoleView[] = ["overview", "new", "videos", "ideas", "settings"];
+/** The areas in the console's menu ("new" is the button above them). */
+const RAIL_VIEWS = ["overview", "videos", "ideas", "settings"] as const;
+
+const RAIL_ICONS: Record<(typeof RAIL_VIEWS)[number], string> = {
+  overview: `<path d="M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-3H4zM14 7h6V4h-6z"/>`,
+  videos: `<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/>`,
+  ideas: `<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.8.6 1.1 1.4 1.1 2.2h5c0-.8.3-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>`,
+  settings: `<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>`,
+};
+
+/** A link to where an idea's fact can be checked; the address as plain text when it is not an https web address. */
+function factSource(source: string): string {
+  if (!/^https:\/\/\S+$/.test(source) || !URL.canParse(source)) return `<span class="src">Source: ${esc(source)}</span>`;
+  return `<a class="src" href="${esc(source)}" target="_blank" rel="noopener noreferrer nofollow">Check it at ${esc(new URL(source).hostname.replace(/^www\./, ""))}</a>`;
+}
+
+/** An idea's title, angle and the fact it turns on, with where to check that fact. */
+function ideaBody(i: Idea): string {
+  const fact = i.fields.fact;
+  const source = i.fields.fact_source;
+  const yours = i.fields.by === "customer" ? `<small>Your own topic</small>` : "";
+  return `<div><b>${esc(i.title)}</b>${i.angle ? `<small>${esc(i.angle)}</small>` : yours}${fact ? `<p class="fact"><span>Key fact</span>${esc(fact)}${source ? ` ${factSource(source)}` : ""}</p>` : ""}</div>`;
+}
+
+/**
+ * An approved channel's own app, like a project in a cloud console: a bar with the channel's name and state,
+ * a menu of its areas, and one area at a time. The order (brief, payment, kit review) is behind it now.
+ */
+function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboard, facts: Script | null, view: ConsoleView): string {
+  const base = `/w/${esc(order.token)}`;
+  const at = (v: ConsoleView) => (v === "overview" ? base : `${base}?view=${v}`);
+  const busy = videoUnderWay(order);
+  const made = kit.episodes.length;
+  // Why a video can't be started now, if it can't.
+  const blocked = busy ? "A video is under way" : dash.paused ? "The channel is paused" : dash.videosLeftToday === 0 ? "No more videos today" : "";
+  const blockedWhy = busy ? "Start the next video when this one is finished." : dash.paused ? "Resume the channel under Settings to make videos." : "You can start more tomorrow.";
+  const disabled = blocked ? ` disabled title="${esc(blocked)}"` : "";
+  const suggesting = order.suggest?.state === "running";
+  const suggestBtn = (cls: string) =>
+    suggesting
+      ? `<button type="button" class="btn ${cls}" disabled>Writing new ideas…</button>`
+      : dash.suggestsLeftToday
+        ? `<form method="post" action="${base}/suggest"><button type="submit" class="btn ${cls}">Suggest new ideas</button></form>`
+        : `<button type="button" class="btn ${cls}" disabled title="Ask again tomorrow">No more suggestions today</button>`;
+  const makeBtn = (i: Idea) => `<form method="post" action="${base}/make"><input type="hidden" name="idea" value="${esc(i.id)}"><button type="submit" class="btn sm"${disabled}>Make this video</button></form>`;
+  const idea = (i: Idea) => `<li>${ideaBody(i)}${makeBtn(i)}<form method="post" action="${base}/idea"><input type="hidden" name="idea" value="${esc(i.id)}"><button type="submit" class="text">Not for me</button></form></li>`;
+  const decide = (draft: string, ideaId: string, d: "keep" | "skip" | "keep-all", label: string, cls: string) =>
+    `<form method="post" action="${base}/proposal"><input type="hidden" name="draft" value="${esc(draft)}">${ideaId ? `<input type="hidden" name="idea" value="${esc(ideaId)}">` : ""}<input type="hidden" name="decision" value="${d}"><button type="submit" class="${cls}">${label}</button></form>`;
+  const proposal = (p: Dashboard["proposals"][number]) => `<li>${ideaBody(p.idea)}${decide(p.draft, p.idea.id, "keep", "Keep", "btn sm")}${decide(p.draft, p.idea.id, "skip", "Skip", "text")}</li>`;
+  const tiles = (eps: BrandKit["episodes"]) =>
+    `<div class="vids">${eps.map((e) => `<figure><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}"></video><figcaption>${esc(e.title)}</figcaption><a href="${base}/video/${esc(e.id)}?download=1">Download</a></figure>`).join("")}</div>`;
+  const newest = [...kit.episodes].reverse();
+  const blockedNote = blocked && dash.ideas.length ? `<p class="muted" style="font-size:14.5px">${esc(blocked)}: ${esc(blockedWhy.charAt(0).toLowerCase() + blockedWhy.slice(1))}</p>` : "";
+
+  let main: string;
+  if (view === "new") {
+    const v = order.video;
+    const step = v?.state === "writing" || v?.state === "facts" ? 1 : v?.state === "making" ? 2 : 0;
+    const steps: [string, string][] = [
+      ["Choose a topic", step === 0 ? "Now" : "Done"],
+      ["Check the facts", step === 1 ? (v?.state === "facts" ? "Your turn" : "Being written") : step > 1 ? "Approved" : "Next"],
+      ["Get the video", step === 2 ? "Being made" : "Last"],
+    ];
+    const track = `<ol class="track three">${steps.map(([name, note], i) => `<li class="${i < step ? "done" : i === step ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
+    let body: string;
+    if (step === 1 && v?.state === "facts" && facts) body = factsHtml(order, facts, made === 0).replace('class="notice" id="facts"', 'class="card" id="facts"');
+    else if (step === 1) body = `<div class="card"><h2>The script is being written</h2><p class="muted">${v?.rounds ? "It is being written again with your change." : "This takes several minutes."} Its facts appear here for you to check before anything is voiced or drawn. This page updates by itself.</p></div>`;
+    else if (step === 2) body = `<div class="card"><h2>Your video is being made</h2><p class="muted">The facts are approved. It is being voiced, drawn and checked, which takes several minutes. It appears here and in Videos by itself.</p></div>`;
+    else {
+      const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
+      const ready = last ? `<div class="card"><h2>Your new video is ready</h2>${tiles([last])}<p class="muted">Download it and post it. Make the next one below.</p></div>` : "";
+      const failed = v?.state === "failed" ? `<div class="card" role="alert"><h2>The last video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}. Nothing is lost: start another one. Quote <b>${esc(order.id)}</b> if you contact us about it.</p></div>` : "";
+      const stop = blocked ? `<div class="card" role="status"><h2>${esc(blocked)}</h2><p class="muted">${esc(blockedWhy)}</p>${dash.paused ? `<a class="btn sm" href="${at("settings")}">Go to Settings</a>` : ""}</div>` : "";
+      body = `${ready}${failed}${stop}
+<div class="card"><div class="top-line"><h2>Pick one of your ideas</h2><a href="${at("ideas")}">Get more ideas</a></div><p class="muted">Each idea shows the fact it is built on. Check it at its source, then make the video.</p>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.map((i) => `<li>${ideaBody(i)}${makeBtn(i)}</li>`).join("")}</ul>` : `<p class="muted">No ideas are waiting.</p>${suggestBtn("ghost sm")}`}</div>
+<div class="card"><h2>Or give your own topic</h2><form class="own" method="post" action="${base}/make"><label class="f" for="topic">What should the video be about?<input type="text" id="topic" name="topic" minlength="4" maxlength="${TOPIC_MAX}" required placeholder="Why the sea is salty"${blocked ? " disabled" : ""}></label><button type="submit" class="btn sm"${disabled}>Write this video</button></form><small class="muted">It must fit ${esc(kit.name)}. The script is written first, and you check every fact before anything is voiced or drawn.</small></div>`;
+    }
+    main = `<div class="head"><div><p class="eyebrow">${esc(kit.name)}</p><h1>New video</h1></div></div>${track}${body}`;
+  } else if (view === "videos") {
+    main = `<div class="head"><h1>Videos</h1><a class="btn sm" href="${at("new")}">New video</a></div>${made ? tiles(newest) : `<div class="card"><p class="muted">Your finished videos appear here, ready to download.</p><a class="btn sm" href="${at("new")}">Make your first video</a></div>`}`;
+  } else if (view === "ideas") {
+    const suggestState =
+      order.suggest?.state === "running"
+        ? `<p class="muted" role="status">New ideas${order.suggest.direction ? ` about “${esc(order.suggest.direction)}”` : ""} are being written for your channel. This takes a minute or two, and they appear below by themselves.</p>`
+        : order.suggest?.state === "failed"
+          ? `<p class="error" role="alert">The last request for ideas did not finish. Nothing is lost: ask again.</p>`
+          : "";
+    const ask = suggesting
+      ? `<button type="button" class="btn sm" disabled>Writing new ideas…</button>`
+      : dash.suggestsLeftToday
+        ? `<form class="own" method="post" action="${base}/suggest"><label class="f" for="direction">About what? <small>Optional. Leave it empty for ideas across the whole channel.</small><input type="text" id="direction" name="direction" maxlength="${TOPIC_MAX}" placeholder="The deep sea"></label><button type="submit" class="btn sm">Suggest ideas</button></form>`
+        : `<button type="button" class="btn sm" disabled title="Ask again tomorrow">No more suggestions today</button>`;
+    const batches = [...new Set(dash.proposals.map((p) => p.draft))].map((draft) => dash.proposals.filter((p) => p.draft === draft));
+    const batch = (ps: Dashboard["proposals"]) =>
+      `<div class="card"><div class="top-line"><h2>Suggested for you</h2>${ps.length > 1 ? decide(ps[0].draft, "", "keep-all", `Keep all ${ps.length}`, "btn ghost sm") : ""}</div><p class="muted">Check each key fact at its source. Kept ideas join your ideas, ready to make. Skipped ones are never made.</p><ul class="ideas">${ps.map(proposal).join("")}</ul></div>`;
+    main = `<div class="head"><h1>Ideas</h1></div>
+<div class="card"><div class="top-line"><h2>Get new ideas</h2><small class="muted">${dash.suggestsLeftToday} of ${SUGGESTS_PER_DAY} left today</small></div>${suggestState}${ask}</div>
+${batches.map(batch).join("")}
+<div class="card"><div class="top-line"><h2>Waiting to be made</h2><a href="${at("new")}">New video</a></div>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.map(idea).join("")}</ul>${blockedNote}` : `<p class="muted">No ideas are waiting. Ask for new ones above.</p>`}</div>`;
+  } else if (view === "settings") {
+    main = `<div class="head"><h1>Settings</h1></div>
+<div class="card"><h2>Channel</h2><p class="display" style="font-size:26px">${esc(kit.name)}</p><p class="muted">${esc(kit.promise)}</p></div>
+<div class="card"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p></div>
+<div class="card"><h2>Look</h2>${swatches(kit)}<p class="muted">${esc(kit.series.visual_style)}</p></div>
+<div class="card"><h2>Format</h2><p class="muted">${esc(kit.series.format)}</p></div>
+<div class="card"><h2>${dash.paused ? "Paused" : "Making videos"}</h2><p class="muted">${dash.paused ? "No new videos are made while the channel is paused. Nothing is lost." : "Pausing stops new videos. Nothing is lost, and you can resume at any time."}</p><form method="post" action="${base}/channel"><input type="hidden" name="status" value="${dash.paused ? "active" : "paused"}"><button type="submit" class="btn ${dash.paused ? "" : "ghost "}sm">${dash.paused ? "Resume the channel" : "Pause the channel"}</button></form></div>`;
+  } else {
+    main = `<div class="head"><div><p class="eyebrow">Overview</p><h1>${esc(kit.name)}</h1></div><div class="tools"><a class="btn sm" href="${at("new")}">New video</a>${suggestBtn("ghost sm")}</div></div>
+<dl class="stats"><div><dt>Videos made</dt><dd>${made}</dd></div><div><dt>Ideas waiting</dt><dd>${dash.ideas.length}</dd></div><div><dt>Videos left today</dt><dd>${dash.videosLeftToday}</dd></div></dl>
+${nowHtml(order, dash, facts, made, at("new"), at("settings"))}
+<div class="card"><div class="top-line"><h2>Latest videos</h2>${made > 3 ? `<a href="${at("videos")}">All ${made}</a>` : ""}</div>${made ? tiles(newest.slice(0, 3)) : `<p class="muted">Your finished videos appear here.</p>`}</div>
+<div class="card"><div class="top-line"><h2>Up next</h2><a href="${at("ideas")}">All ideas</a></div>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.slice(0, 3).map(idea).join("")}</ul>${blockedNote}` : `<p class="muted">No ideas are waiting.</p>${suggestBtn("sm")}`}</div>`;
+  }
+  const counts: Partial<Record<ConsoleView, number>> = { videos: made, ideas: dash.ideas.length + dash.proposals.length };
+  const names: Record<ConsoleView, string> = { overview: "Overview", new: "New video", videos: "Videos", ideas: "Ideas", settings: "Settings" };
+  const rail = `<nav class="rail" aria-label="${esc(kit.name)}"><a class="create" href="${at("new")}"${view === "new" ? ' aria-current="page"' : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New video</a>${RAIL_VIEWS.map(
+    (v) =>
+      `<a href="${at(v)}"${v === view ? ' aria-current="page"' : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RAIL_ICONS[v]}</svg>${names[v]}${counts[v] ? `<b>${counts[v]}</b>` : ""}</a>`,
+  ).join("")}</nav>`;
+  const state = dash.paused ? `<span class="state paused"><i></i>Paused</span>` : busy ? `<span class="state busy"><i></i>Working</span>` : `<span class="state"><i></i>Active</span>`;
+  const waiting = isMakingVideo(order) || suggesting;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(names[view])} — ${esc(kit.name)}</title>${waiting ? `<meta http-equiv="refresh" content="20">` : ""}<style>${CSS}</style></head><body>
+<header class="cbar"><a class="brand" href="/"><i></i><span>${esc(product)}</span></a><span class="sep" aria-hidden="true">/</span><span class="chan">${esc(kit.name)}</span>${state}${order.user ? `<a class="mine" href="/account">My channels</a>` : ""}</header>
+<div class="shell">${rail}<main class="pane">${main}</main></div>
+</body></html>`;
+}
+
+/** `canRevise`: change requests are made automatically (automatic builds are on). `facts`: the script whose facts the customer is checking, if any. `dash`: the channel's dashboard, once it has one. */
+export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null, dash: Dashboard | null = null, view: ConsoleView = "overview"): string {
+  // An approved channel built here is its own app from now on.
+  if (kit && dash) return consolePage(product, order, kit, dash, facts, view);
   const d = order.design;
   const yours = d && (d.theme || d.model) ? `<div class="yours">${d.theme ? lookSwatch(d.theme) : ""}${d.model && HOST_RIGS[d.model.rig] ? `<img class="vis" src="${esc(hostPreviewUrl(hostFields(d.model)))}" alt="Your host">` : ""}<p class="muted" style="max-width:36ch">The look and host you designed. Your brand kit is built from these.</p></div>` : "";
   const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f] ?? "")}</dd></div>`).join("")}</dl></section>`;

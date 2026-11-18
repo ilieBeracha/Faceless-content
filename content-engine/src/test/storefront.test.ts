@@ -8,7 +8,7 @@ import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
 import { AccountStore } from "../storefront/accounts.ts";
 import { brandKit, videoPath } from "../storefront/brand-kit.ts";
-import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser, type VideoMaker } from "../storefront/builder.ts";
+import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser, type Suggester, type VideoMaker } from "../storefront/builder.ts";
 import { episodesDir } from "../pipeline/episode.ts";
 import { readFactcheck, writeFactcheck } from "../pipeline/factcheck.ts";
 import { channelExists, loadChannel } from "../core/channels.ts";
@@ -521,11 +521,13 @@ describe("storefront: automatic builds", () => {
   const made: { slug: string; series: string; rewrite: boolean }[] = [];
   const EPISODE = "2026-01-01-first";
   // Stands in for the episode pipeline: writes a script and its fact-check list and stops there; once the list is approved, writes the video.
-  const video: VideoMaker = async (to, slug, series) => {
+  const video: VideoMaker = async (to, slug, series, pick) => {
     await hold;
     if (broken) throw new Error("the writer is down");
-    const dir = join(episodesDir(loadChannel(to, slug)), EPISODE);
-    const state = (status: "in-progress" | "done") => writeJson(join(dir, "episode.json"), { id: EPISODE, channel: slug, series, idea: "a-ballpoint-pen", title: "Inside a pen", created: "2026-01-01T00:00:00.000Z", updated: "2026-01-01T00:00:00.000Z", status, steps: {} });
+    // The first video is EPISODE; a video of a chosen idea gets its own folder.
+    const id = pick.episode ?? (pick.idea ? `2026-01-02-${pick.idea}` : EPISODE);
+    const dir = join(episodesDir(loadChannel(to, slug)), id);
+    const state = (status: "in-progress" | "done") => writeJson(join(dir, "episode.json"), { id, channel: slug, series, idea: pick.idea ?? "a-ballpoint-pen", title: pick.idea ? `Inside ${pick.idea}` : "Inside a pen", created: "2026-01-01T00:00:00.000Z", updated: "2026-01-01T00:00:00.000Z", status, steps: {} });
     const check = readFactcheck(dir);
     const rewrite = check?.status === "changes-requested";
     made.push({ slug, series, rewrite });
@@ -533,19 +535,31 @@ describe("storefront: automatic builds", () => {
       const script = { ...sampleScript(slug), title: rewrite ? "Inside a pen, corrected" : "Inside a pen" };
       writeJson(join(dir, "script.json"), script);
       state("in-progress");
-      writeFactcheck(dir, script, { channel: slug, episode: EPISODE });
-      return { episode: EPISODE, state: "facts" };
+      writeFactcheck(dir, script, { channel: slug, episode: id });
+      return { episode: id, state: "facts" };
     }
-    if (check.status !== "approved") return { episode: EPISODE, state: "facts" };
-    const file = videoPath(to, slug, EPISODE);
+    if (check.status !== "approved") return { episode: id, state: "facts" };
+    const file = videoPath(to, slug, id);
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, Buffer.from("0123456789"));
     state("done");
-    return { episode: EPISODE, state: "done" };
+    return { episode: id, state: "done" };
+  };
+  const suggested: { slug: string; series: string; direction?: string }[] = [];
+  // Stands in for the Claude API's brainstorm: writes two proposed ideas as a draft for the channel.
+  const suggest: Suggester = async (to, slug, series, direction) => {
+    await hold;
+    if (broken) throw new Error("the writer is down");
+    suggested.push({ slug, series, ...(direction ? { direction } : {}) });
+    const n = suggested.length;
+    writeText(
+      to.path("drafts", slug, "ideas", `2026-01-0${n}-batch.md`),
+      `---\ndraft: {kind: ideas, channel: ${slug}, status: proposed, created: 2026-01-0${n}}\n---\n\n## glass-bottles-${n}\n- title: How a glass bottle is blown ${n}\n- series: ${series}\n- status: proposed\n- angle: Sand turns into a bottle in seconds\n- fact: Glass is mostly sand melted at about 1,700 °C.\n- fact_source: https://www.britannica.com/technology/glass\n\n## zips-${n}\n- title: Why a zip never slips ${n}\n- series: ${series}\n- status: proposed\n`,
+    );
   };
   const setup = (name: string, perDay: number, paymentUrl: string | null) => {
     const store = new OrderStore(ws.path("storefront", `${name}.json`));
-    const builder = new Builder(store, built, { draft, revise, video }, perDay);
+    const builder = new Builder(store, built, { draft, revise, video, suggest }, perDay);
     return { store, builder, options: { ws, store, product: "Test Studio", paymentUrl, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null, builder } };
   };
   const serve = async (server: Server) => {
@@ -759,8 +773,8 @@ describe("storefront: automatic builds", () => {
       hold = new Promise<void>((r) => (release = r));
       assert.equal((await fetch(`${base}${link}/approve`, form({}))).status, 303);
       const writing = await page();
-      assert.match(writing, /Your first video is being written/);
-      assert.match(writing, /Script being written/);
+      assert.match(writing, /A video is being written/);
+      assert.match(writing, /class="state busy"><i><\/i>Working/);
       assert.match(writing, /http-equiv="refresh"/);
       const channel = loadChannel(built, id).doc.data;
       assert.deepEqual([channel.status, channel.approved_by], ["active", "Sam Example"], "the customer's approval of the kit makes the channel active");
@@ -770,7 +784,7 @@ describe("storefront: automatic builds", () => {
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.episode], ["facts", EPISODE]);
       const checking = await page();
       assert.match(checking, /Check the facts[\s\S]*A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*On screen: Why no leaks\?[\s\S]*A tiny ball sits in the tip[\s\S]*Approve the facts[\s\S]*Rewrite 1 of 3/);
-      assert.match(checking, /Facts ready to check/);
+      assert.match(checking, /class="state busy"><i><\/i>Working/, "a video waiting for its facts is still under way");
       assert.doesNotMatch(checking, /http-equiv="refresh"|<video/);
       assert.equal(existsSync(videoPath(built, id, EPISODE)), false, "nothing is made before the facts are approved");
 
@@ -788,8 +802,8 @@ describe("storefront: automatic builds", () => {
       const check = readFactcheck(dir);
       assert.deepEqual([check?.status, check?.approvedBy], ["approved", "Sam Example"]);
       const done = await page();
-      assert.match(done, new RegExp(`Your first video[\\s\\S]*<video[^>]*/video/${EPISODE}`));
-      assert.match(done, /First one ready/);
+      assert.match(done, new RegExp(`Latest videos[\\s\\S]*<video[^>]*/video/${EPISODE}`));
+      assert.match(done, /class="state"><i><\/i>Active/);
       assert.doesNotMatch(done, /Check the facts|http-equiv="refresh"/);
       assert.equal(await (await fetch(`${base}${link}/video/${EPISODE}`)).text(), "0123456789");
       assert.equal((await facts({ decision: "approve" })).status, 409);
@@ -813,7 +827,7 @@ describe("storefront: automatic builds", () => {
       await fetch(`${base}${link}/approve`, form({}));
       await builder.idle();
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.failed_at, store.byId(id)?.video?.error], ["failed", "writing", "the writer is down"]);
-      assert.match(await (await fetch(base + link)).text(), /Your first video did not finish[\s\S]*being written/);
+      assert.match(await (await fetch(base + link)).text(), /The last video did not finish[\s\S]*being written/);
       assert.match(await (await fetch(adminBase)).text(), /First video: failed[\s\S]*the writer is down[\s\S]*Make the video again/);
       builder.resume();
       await builder.idle();
@@ -839,6 +853,103 @@ describe("storefront: automatic builds", () => {
       broken = false;
       site.close();
       admin.close();
+    }
+  });
+
+  it("opens the channel's dashboard after the kit is approved: make videos from ideas, ask for ideas, keep or skip them, pause", async () => {
+    const { store, builder, options } = setup("dashboard", 20, null);
+    const site = createPublicServer(options);
+    try {
+      const base = await serve(site);
+      const link = (await fetch(`${base}/intake`, form(GOOD))).headers.get("location")!;
+      await builder.idle();
+      const id = store.list()[0].id;
+      const page = async (view = "") => (await fetch(base + link + (view ? `?view=${view}` : ""))).text();
+      const post = (action: string, values: Record<string, string>) => fetch(`${base}${link}/${action}`, form(values));
+      for (const s of SECTIONS) await post("decision", { section: s.id, decision: "approve" });
+      await post("approve", {});
+      await builder.idle();
+      await post("facts", { decision: "approve" });
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "done");
+
+      // The approved channel is its own app now: no order greeting, steps, brief or privacy note.
+      const home = await page();
+      assert.match(home, /class="cbar"[\s\S]*Active[\s\S]*class="rail"[\s\S]*Overview[\s\S]*Videos[\s\S]*Ideas[\s\S]*Settings/);
+      assert.match(home, /New video[\s\S]*Suggest new ideas[\s\S]*Ready for the next video[\s\S]*Latest videos[\s\S]*<video[\s\S]*Up next[\s\S]*A zipper[\s\S]*Make this video/);
+      assert.doesNotMatch(home, /Hello,|class="track"|Your brief|private to you|In production/);
+      assert.match(await page("settings"), /Pause the channel/);
+      assert.equal((await fetch(`${base}${link}?view=nope`)).status, 404);
+
+      // A video from a chosen idea: written, its facts checked by the customer, then made. One at a time.
+      assert.equal((await post("make", { idea: "no-such-idea" })).status, 409);
+      const made = await post("make", { idea: "a-zipper" });
+      assert.deepEqual([made.status, made.headers.get("location")], [303, `${link}?view=new`], "making a video opens the New video flow");
+      await builder.idle();
+      assert.match(await page("new"), /class="track three"[\s\S]*class="done">Choose a topic[\s\S]*class="now">Check the facts<small>Your turn[\s\S]*Approve the facts/);
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.idea, store.byId(id)?.video?.episode], ["facts", "a-zipper", "2026-01-02-a-zipper"]);
+      const checking = await page();
+      assert.match(checking, /Check the facts[\s\S]*The script for your video/);
+      assert.match(checking, /disabled title="A video is under way">Make this video/);
+      assert.match((await (await post("make", { idea: "a-ballpoint-pen" })).text()), /already under way/);
+      assert.equal((await post("facts", { decision: "approve" })).headers.get("location"), `${link}?view=new`);
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "done");
+      assert.match(await page("new"), /Your new video is ready[\s\S]*<video[\s\S]*Pick one of your ideas[\s\S]*Or give your own topic/);
+      assert.equal((await page("videos")).match(/<video /g)?.length, 2, "both videos are in Videos");
+
+      // Not wanted: the idea is marked rejected, never deleted.
+      assert.equal((await post("idea", { idea: "a-ballpoint-pen" })).status, 303);
+      const ideas = readText(loadChannel(built, id).ideasPath);
+      assert.match(ideas, /## a-ballpoint-pen[\s\S]*?status: rejected/);
+
+      // New ideas come back as suggestions; kept ones join the ideas, skipped ones stay in the draft as rejected.
+      assert.equal((await post("suggest", { direction: "  things in the kitchen " })).status, 303);
+      await builder.idle();
+      assert.equal(store.byId(id)?.suggest?.state, "done");
+      assert.equal(suggested.at(-1)?.direction, "things in the kitchen", "the customer's topic reaches the writer");
+      const suggestedPage = await page("ideas");
+      assert.match(suggestedPage, /Suggested for you[\s\S]*How a glass bottle is blown 1[\s\S]*Key fact<\/span>Glass is mostly sand melted at about 1,700 °C\.[\s\S]*href="https:\/\/www\.britannica\.com\/technology\/glass"[^>]*rel="noopener noreferrer nofollow">Check it at britannica\.com[\s\S]*Keep[\s\S]*Why a zip never slips 1/);
+      const draft = `drafts/${id}/ideas/2026-01-01-batch.md`;
+      assert.equal((await post("proposal", { draft, idea: "glass-bottles-1", decision: "keep" })).status, 303);
+      assert.equal((await post("proposal", { draft, idea: "zips-1", decision: "skip" })).status, 303);
+      assert.equal((await post("proposal", { draft, idea: "zips-1", decision: "keep" })).status, 409, "a skipped suggestion is decided");
+      assert.equal((await post("proposal", { draft: "../../orders.json", idea: "zips-1", decision: "keep" })).status, 409);
+      const after = await page("ideas");
+      assert.doesNotMatch(after, /Suggested for you/);
+      assert.match(after, /Waiting to be made[\s\S]*How a glass bottle is blown 1/);
+      assert.doesNotMatch(after, /Why a zip never slips 1/);
+      assert.match(readText(built.path(draft)), /## zips-1[\s\S]*?status: rejected/);
+      assert.match(readText(loadChannel(built, id).ideasPath), /## glass-bottles-1[\s\S]*?fact: Glass is mostly sand[\s\S]*?fact_source: https:\/\/www\.britannica\.com/, "a kept idea keeps its fact");
+      assert.match(await page("new"), /Pick one of your ideas[\s\S]*How a glass bottle is blown 1[\s\S]*Key fact/);
+      await post("suggest", {});
+      await builder.idle();
+      assert.equal((await post("proposal", { draft: `drafts/${id}/ideas/2026-01-02-batch.md`, decision: "keep-all" })).status, 303);
+      assert.match(await page("ideas"), /Waiting to be made[\s\S]*How a glass bottle is blown 2[\s\S]*Why a zip never slips 2/, "Keep all keeps the whole batch");
+      assert.match(await (await post("suggest", { direction: "x".repeat(161) })).text(), /160 characters/);
+      await post("suggest", {});
+      await builder.idle();
+      assert.match(await (await post("suggest", {})).text(), /3 times today/, "a paid request has a daily limit");
+
+      // Paused: no new videos until it is resumed.
+      assert.equal((await post("channel", { status: "paused" })).status, 303);
+      assert.equal(loadChannel(built, id).doc.data.status, "paused");
+      assert.match(await page(), /class="state paused"[\s\S]*The channel is paused[\s\S]*Resume it in Settings/);
+      assert.match(await page("settings"), /Resume the channel/);
+      assert.match(await (await post("make", { idea: "glass-bottles-1" })).text(), /channel is paused/);
+      await post("channel", { status: "active" });
+
+      // A video on the customer's own topic: it joins the ideas, marked as theirs, and is made like any other.
+      assert.match(await (await post("make", { topic: "hi" })).text(), /a few words/);
+      assert.equal((await post("make", { topic: "  Why the sea   is salty " })).status, 303);
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.idea, "why-the-sea-is-salty");
+      assert.match(readText(loadChannel(built, id).ideasPath), /## why-the-sea-is-salty\n- title: Why the sea is salty[\s\S]*?by: customer/);
+      assert.match(await (await post("make", { topic: "Why ice floats on water" })).text(), /already under way/, "one video at a time, own topics too");
+      assert.match(readText(loadChannel(built, id).ideasPath), /## why-the-sea-is-salty/);
+      assert.doesNotMatch(readText(loadChannel(built, id).ideasPath), /why-ice-floats/, "a refused topic is not added to the ideas");
+    } finally {
+      site.close();
     }
   });
 

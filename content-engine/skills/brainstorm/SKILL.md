@@ -52,8 +52,14 @@ format with `status: proposed`:
 - series: inside-it
 - status: proposed
 - angle: How do two rows of teeth lock so tight — and why does the slider open them so easily?
+- fact: A zip's slider is a wedge: it pushes the teeth together at an angle no tug on the cloth can copy.
+- fact_source: https://www.explainthatstuff.com/zippers.html
 - added: 2026-01-31
 ```
+
+Every idea has a `fact` (one sentence: the true, surprising fact the video turns on) and a `fact_source` (the
+https address of a solid source where a person can check that fact). The person decides on the idea from these,
+so the fact must be exactly what the source says. If you can't name a source for a fact, propose a different idea.
 
 A good idea has a question the audience already wonders about, a payoff that fits the series' length, and facts
 that can be verified from solid sources.

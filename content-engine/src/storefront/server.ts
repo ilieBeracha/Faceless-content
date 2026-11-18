@@ -13,11 +13,11 @@ import { join } from "node:path";
 import { channelExists, listChannelSlugs } from "../core/channels.ts";
 import { ENGINE_DIR, type Workspace } from "../core/workspace.ts";
 import { brandKit, framesDir, videoPath } from "./brand-kit.ts";
-import type { Builder } from "./builder.ts";
+import { CustomerError, type Builder } from "./builder.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
 import { hostSvg } from "./host-svg.tsx";
-import { accountPage, adminPage, createPage, demoPage, landingPage, messagePage, workspacePage, type Account } from "./pages.ts";
+import { CONSOLE_VIEWS, accountPage, adminPage, createPage, demoPage, landingPage, messagePage, workspacePage, type Account, type ConsoleView } from "./pages.ts";
 import { MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, isBuilding, validateIntake, type Order, type OrderStatus, type OrderStore, type SectionId } from "./store.ts";
 
 export interface StorefrontOptions {
@@ -167,8 +167,8 @@ function handler(product: string, name: string, route: (req: IncomingMessage, re
   return (req: IncomingMessage, res: ServerResponse) => {
     const url = new URL(req.url ?? "/", "http://localhost");
     route(req, res, url).catch((err: unknown) => {
-      if (err instanceof HttpError) {
-        send(res, err.status, messagePage(product, "That did not work", err.message));
+      if (err instanceof HttpError || err instanceof CustomerError) {
+        send(res, err instanceof HttpError ? err.status : 409, messagePage(product, "That did not work", err.message));
         return;
       }
       // Log the path without its secret token.
@@ -271,7 +271,11 @@ export function createPublicServer(o: StorefrontOptions): Server {
         if (req.method === "GET" && parts.length === 2) {
           const slug = linkedChannel(order);
           const facts = o.builder && order.video?.state === "facts" ? o.builder.facts(order) : null;
-          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null, facts));
+          // A channel built here, whose kit the customer approved, gets its dashboard: videos, ideas and controls.
+          const dash = o.builder && slug && order.kit_approved && channelExists(o.builder.ws, slug) ? o.builder.dashboard(order) : null;
+          const view = url.searchParams.get("view") ?? "overview";
+          if (!(CONSOLE_VIEWS as readonly string[]).includes(view)) throw new HttpError(404, "There is no page at this address.");
+          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");
@@ -324,7 +328,36 @@ export function createPublicServer(o: StorefrontOptions): Server {
             if (order.video.rounds >= MAX_ROUNDS) throw new HttpError(409, `This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand.`);
             o.builder.changeFacts(order.id, note);
           } else throw new HttpError(400, "Choose Approve the facts or Ask for a change.");
-          return redirect(res, `/w/${order.token}`);
+          return redirect(res, order.video.idea ? `/w/${order.token}?view=new` : `/w/${order.token}`);
+        }
+        // The channel's dashboard: make a video from an idea, ask for ideas, decide on suggestions, pause or resume.
+        if (req.method === "POST" && parts.length === 3 && o.builder && ["make", "suggest", "proposal", "idea", "channel"].includes(parts[2])) {
+          const form = await readForm(req);
+          const pick = (form.idea ?? "").trim();
+          if (parts[2] === "make") {
+            if (form.topic !== undefined) o.builder.makeOwnVideo(order.id, form.topic);
+            else if (!SLUG.test(pick)) throw new HttpError(400, "Choose an idea to make.");
+            else o.builder.makeVideo(order.id, pick);
+            return redirect(res, `/w/${order.token}?view=new`);
+          }
+          if (parts[2] === "suggest") {
+            o.builder.suggestIdeas(order.id, form.direction ?? "");
+            return redirect(res, `/w/${order.token}?view=ideas`);
+          }
+          if (parts[2] === "proposal") {
+            if (form.decision === "keep-all") o.builder.keepAll(order.id, form.draft ?? "");
+            else if (!SLUG.test(pick) || form.decision !== "keep" && form.decision !== "skip") throw new HttpError(400, "Choose Keep or Skip for a suggested idea.");
+            else o.builder.decideProposal(order.id, form.draft ?? "", pick, form.decision === "keep");
+            return redirect(res, `/w/${order.token}?view=ideas`);
+          }
+          if (parts[2] === "idea") {
+            if (!SLUG.test(pick)) throw new HttpError(400, "Choose an idea.");
+            o.builder.dropIdea(order.id, pick);
+            return redirect(res, `/w/${order.token}?view=ideas`);
+          }
+          if (form.status !== "paused" && form.status !== "active") throw new HttpError(400, "Choose Pause or Resume.");
+          o.builder.setPaused(order.id, form.status === "paused");
+          return redirect(res, `/w/${order.token}?view=settings`);
         }
         if (req.method === "GET" && parts.length === 4 && parts[2] === "video" && SLUG.test(parts[3])) {
           const slug = linkedChannel(order);
