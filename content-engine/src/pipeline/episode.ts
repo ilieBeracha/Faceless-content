@@ -23,7 +23,7 @@ import { formatIssues, hasErrors } from "../core/validate.ts";
 import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
-import { checkScript, factualHash, hookLimit, speechRate, type SeriesData } from "./script-check.ts";
+import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, LENGTH_MARGIN, budgetWordsPerSecond, checkScript, factualHash, hookLimit, type SeriesData } from "./script-check.ts";
 import { newStoryboard, readStoryboard, storyboardApproved, storyboardPath, writeStoryboard, type CaptionSettings } from "./storyboard.ts";
 
 export const STEPS = ["idea", "script", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
@@ -328,11 +328,13 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   }
 
   const speaker = ch.characters.get(series.characters[0])!;
-  const wps = speechRate(ws, speaker.data);
+  // With the pauses this voice adds (a slow, pausing voice fits fewer words), kept inside the series by the estimate's margin.
+  const wps = budgetWordsPerSecond(ws, speaker.data);
+  const voice = (speaker.data.voice ?? {}) as { sentence_pause?: number; clause_pause?: number };
   const { min_seconds: min, max_seconds: max } = series.length;
   const overhead = series.beats.length * ws.config.audio.beat_gap_seconds + ws.config.audio.lead_in_seconds + ws.config.audio.outro_hold_seconds;
-  const lo = Math.round((min - overhead) * wps);
-  const hi = Math.round((max - overhead) * wps * 0.95);
+  const lo = Math.round((min * (1 + LENGTH_MARGIN) - overhead) * wps);
+  const hi = Math.round((max * (1 - LENGTH_MARGIN) - overhead) * wps);
   const hook = hookLimit(ws, speaker.data);
   const banned = ((ch.doc.data.banned_topics as string[]) ?? []).join("; ");
 
@@ -342,7 +344,7 @@ Write the script for the idea **"${idea.title}"** (\`${idea.id}\`) as an episode
 Follow \`skills/${series.skills.script}/SKILL.md\` exactly. In particular:
 
 1. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
-2. **Length.** The series runs ${min}–${max}s. At ${speaker.name}'s voice speed that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s).
+2. **Length.** The series runs ${min}–${max}s. At ${speaker.name}'s voice speed, with its pauses, that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s). Every sentence end adds a ${(voice.sentence_pause ?? DEFAULT_SENTENCE_PAUSE).toFixed(2)}s pause and every comma or dash ${(voice.clause_pause ?? DEFAULT_CLAUSE_PAUSE).toFixed(2)}s, so many short sentences fit fewer words. The check after you write measures this exactly.
 3. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.
 4. **Voice.** Write the way the character in this channel talks (personality, vocabulary, catchphrases from its file — a catchphrase at most once, where it fits). Audience: ${JSON.stringify((ch.doc.data.audience as { who?: string })?.who ?? "")}.
 5. **Facts.** Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it. A person approves this list before anything renders.

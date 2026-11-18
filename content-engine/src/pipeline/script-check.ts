@@ -35,8 +35,20 @@ export interface ScriptCheck {
   estimatedSeconds?: number;
 }
 
-/** Roughly how many words per second Kokoro speaks at speed 1.0 (measured: ~3.0 w/s). */
-export const WORDS_PER_SECOND = 3.0;
+/**
+ * Words per second Kokoro speaks at speed 1.0, not counting the pauses it adds at sentence ends and clause breaks
+ * (those are counted on their own, by the voice's settings). Fitted 2026-11-18 to 11 recorded episodes with
+ * voice speeds 0.92–1.1 and pauses 0.18–0.5 s: every estimate was within 5% of the recording.
+ */
+export const WORDS_PER_SECOND = 3.24;
+/** The worst error of a length estimate against the recording; a script is kept this far inside the series length. */
+export const LENGTH_MARGIN = 0.05;
+/** The pauses the voice adds when a character's voice doesn't set them (the voice step uses the same). */
+export const DEFAULT_SENTENCE_PAUSE = 0.25;
+export const DEFAULT_CLAUSE_PAUSE = 0.1;
+/** Pauses per word in recorded scripts (sentence ends 0.15, clause breaks 0.06), for word budgets before a script exists. */
+const SENTENCE_ENDS_PER_WORD = 0.15;
+const CLAUSE_BREAKS_PER_WORD = 0.06;
 
 /**
  * Seconds Kokoro takes per spoken syllable at speed 1.0, measured on real hooks (2026-11: 0.20–0.25 s a syllable;
@@ -94,6 +106,28 @@ export function speechRate(ws: Workspace, characterData: Record<string, unknown>
   const voice = characterData?.voice as CharacterVoice | undefined;
   if (voice?.provider === "veo") return ws.config.ai_video.words_per_second;
   return WORDS_PER_SECOND * Number(voice?.speed ?? 1);
+}
+
+/** The pauses a character's voice adds to `text`: one at each sentence end, a shorter one at each clause break. The video model's pauses are in its rate. */
+export function pauseSeconds(characterData: Record<string, unknown> | undefined, text: string): number {
+  const voice = characterData?.voice as CharacterVoice | undefined;
+  if (voice?.provider === "veo") return 0;
+  const sentences = (text.match(/[.!?…]+(?=\s|$)/g) ?? []).length;
+  const clauses = (text.match(/[,;:—–]/g) ?? []).length;
+  return sentences * (voice?.sentence_pause ?? DEFAULT_SENTENCE_PAUSE) + clauses * (voice?.clause_pause ?? DEFAULT_CLAUSE_PAUSE);
+}
+
+/** How long a character takes to say `text`, pauses included (estimated before the voice exists). */
+export function speechSeconds(ws: Workspace, characterData: Record<string, unknown> | undefined, text: string): number {
+  return voiceTokens(text).length / speechRate(ws, characterData) + pauseSeconds(characterData, text);
+}
+
+/** Words per second for a word budget, with the pauses a typical script has: a voice with long pauses fits fewer words. */
+export function budgetWordsPerSecond(ws: Workspace, characterData: Record<string, unknown> | undefined): number {
+  const voice = characterData?.voice as CharacterVoice | undefined;
+  if (voice?.provider === "veo") return speechRate(ws, characterData);
+  const pausePerWord = SENTENCE_ENDS_PER_WORD * (voice?.sentence_pause ?? DEFAULT_SENTENCE_PAUSE) + CLAUSE_BREAKS_PER_WORD * (voice?.clause_pause ?? DEFAULT_CLAUSE_PAUSE);
+  return 1 / (1 / speechRate(ws, characterData) + pausePerWord);
 }
 
 export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel; series: string; idea: string }): ScriptCheck {
@@ -193,13 +227,18 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
   }
 
   // Length (from word counts) and hook (from syllables), estimated now and measured exactly after the voice step.
-  const wps = speechRate(ws, ctx.channel.characters.get(script.beats[0].speaker)?.data);
-  const words = script.beats.reduce((n, b) => n + voiceTokens(b.voiceover).length, 0);
+  // Each beat at its speaker's pace, with the pauses its voice adds; kept LENGTH_MARGIN inside the series, the estimate's worst error.
   const cfg = ws.config.audio;
-  const estimate = words / wps + script.beats.length * cfg.beat_gap_seconds + cfg.lead_in_seconds + cfg.outro_hold_seconds;
+  const overhead = script.beats.length * cfg.beat_gap_seconds + cfg.lead_in_seconds + cfg.outro_hold_seconds;
+  const words = script.beats.reduce((n, b) => n + voiceTokens(b.voiceover).length, 0);
+  const estimate = script.beats.reduce((s, b) => s + speechSeconds(ws, ctx.channel.characters.get(b.speaker)?.data, b.voiceover), 0) + overhead;
   const { min_seconds: min, max_seconds: max } = series.length;
-  if (estimate < min * 0.85 || estimate > max * 1.08) {
-    errors.push(`the script has ${words} words ≈ ${estimate.toFixed(1)}s of video, but the series needs ${min}–${max}s (aim for ~${Math.round(((min + max) / 2 - 2) * wps)} words)`);
+  const [lo, hi] = [min * (1 + LENGTH_MARGIN), max * (1 - LENGTH_MARGIN)];
+  if (estimate < lo || estimate > hi) {
+    const wps = budgetWordsPerSecond(ws, ctx.channel.characters.get(script.beats[0].speaker)?.data);
+    errors.push(
+      `the script has ${words} words ≈ ${estimate.toFixed(1)}s of video with the voice's pauses, but the series needs ${min}–${max}s, so aim for ${lo.toFixed(1)}–${hi.toFixed(1)}s (about ${Math.round((lo - overhead) * wps)}–${Math.round((hi - overhead) * wps)} words; every sentence end and comma adds a pause)`,
+    );
   }
   const hookSpeaker = ctx.channel.characters.get(script.beats[0].speaker)?.data;
   const hook = hookTiming(ws, hookSpeaker, firstSentence(script.beats[0].voiceover));

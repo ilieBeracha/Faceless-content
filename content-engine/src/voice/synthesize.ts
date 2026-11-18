@@ -14,7 +14,7 @@ import { canonicalJson, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
-import type { CharacterVoice, SeriesData } from "../pipeline/script-check.ts";
+import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, type CharacterVoice, type SeriesData } from "../pipeline/script-check.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { loudnessEnvelope, readWav, writeWavFloat } from "./wav.ts";
 
@@ -77,8 +77,8 @@ export function characterVoice(ep: EpisodeRef, speaker: string): CharacterVoice 
     voice_id: v.voice_id,
     speed: v.speed ?? 1,
     pitch_semitones: v.pitch_semitones ?? 0,
-    sentence_pause: v.sentence_pause ?? 0.25,
-    clause_pause: v.clause_pause ?? 0.1,
+    sentence_pause: v.sentence_pause ?? DEFAULT_SENTENCE_PAUSE,
+    clause_pause: v.clause_pause ?? DEFAULT_CLAUSE_PAUSE,
     pronunciations: (doc.data.pronunciations as Record<string, string> | undefined) ?? {},
   };
 }
@@ -126,8 +126,8 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
       voice: v.voice_id,
       lang: kokoroLang(v.voice_id),
       speed: v.speed ?? 1,
-      sentence_pause: v.sentence_pause ?? 0.25,
-      clause_pause: v.clause_pause ?? 0.1,
+      sentence_pause: v.sentence_pause ?? DEFAULT_SENTENCE_PAUSE,
+      clause_pause: v.clause_pause ?? DEFAULT_CLAUSE_PAUSE,
       say: tokensPerBeat[i].map((t) => sayFor(t, pron)),
     };
   });
