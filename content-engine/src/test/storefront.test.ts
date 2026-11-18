@@ -22,9 +22,27 @@ import { hostSvg } from "../storefront/host-svg.tsx";
 import { createAdminServer, createPublicServer } from "../storefront/server.ts";
 import { OrderStore, validateIntake } from "../storefront/store.ts";
 import { makeChannel, sampleScript, tempWorkspace } from "./helpers.ts";
+import { factualHash } from "../pipeline/script-check.ts";
+import { newStoryboard, readStoryboard, storyboardApproved, writeStoryboard } from "../pipeline/storyboard.ts";
+import { paintPaths } from "../skills/render-themed/paint.ts";
+import { showsHost, shotsUsed, type Shot } from "../skills/render-themed/schema.ts";
+import type { Script } from "../skills/write-script/schema.ts";
+import { sha256 } from "../core/util.ts";
+import { NO_HOST } from "../storefront/catalog.ts";
 
 const GOOD = { contact_name: "Sam Example", email: "sam@example.com", idea: "How bridges stay up", audience: "Curious adults", tone: "calm, clear", look: "Blueprint", look_note: "", avatar: "Byte", host: "", avoid: "" };
 const OFFER = loadCatalog(ENGINE_DIR);
+
+/** The sample script told in painted shots (a look with a world): the same words, shots instead of 3D scenes. */
+function paintedScript(channel: string): Script {
+  const s = sampleScript(channel);
+  const shots: Record<string, Shot[]> = {
+    hook: [{ show: "The host stares at a giant pen dripping blue ink", host: true }],
+    explain: [{ show: "A tiny steel ball sits in the tip of a pen", host: false }, { at: "ink", show: "Thick blue ink waits behind the ball", host: false }],
+    payoff: [{ show: "A pen cap shaped like a round ball", host: false }],
+  };
+  return { ...s, visuals: {}, beats: s.beats.map((b) => ({ ...b, visual: { skill: "render-themed", shots: shots[b.id] } })) };
+}
 const form = (values: Record<string, string>) => ({ method: "POST", redirect: "manual" as const, headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(values).toString() });
 
 describe("storefront: intake and orders", () => {
@@ -521,7 +539,9 @@ describe("storefront: automatic builds", () => {
   const made: { slug: string; series: string; rewrite: boolean }[] = [];
   const EPISODE = "2026-01-01-first";
   // Stands in for the episode pipeline: writes a script and its fact-check list and stops there; once the list is approved, writes the video.
-  const video: VideoMaker = async (to, slug, series, pick) => {
+  // When set, the channel tells its videos in painted shots: the stand-in also paints them and stops at the storyboard.
+  let boards = false;
+  const video: VideoMaker = async (to, slug, series, pick, captions) => {
     await hold;
     if (broken) throw new Error("the writer is down");
     // The first video is EPISODE; a video of a chosen idea gets its own folder.
@@ -532,13 +552,33 @@ describe("storefront: automatic builds", () => {
     const rewrite = check?.status === "changes-requested";
     made.push({ slug, series, rewrite });
     if (!check || rewrite) {
-      const script = { ...sampleScript(slug), title: rewrite ? "Inside a pen, corrected" : "Inside a pen" };
+      const script = { ...(boards ? paintedScript(slug) : sampleScript(slug)), title: rewrite ? "Inside a pen, corrected" : "Inside a pen" };
       writeJson(join(dir, "script.json"), script);
       state("in-progress");
       writeFactcheck(dir, script, { channel: slug, episode: id });
       return { episode: id, state: "facts" };
     }
+    // Words changed after the approval (on the storyboard): the facts are checked again, as the real pipeline does.
+    const written = readJson<Script>(join(dir, "script.json"));
+    if (check.scriptHash !== factualHash(written)) {
+      writeFactcheck(dir, written, { channel: slug, episode: id });
+      return { episode: id, state: "facts" };
+    }
     if (check.status !== "approved") return { episode: id, state: "facts" };
+    if (boards) {
+      // "Paints" every shot: its picture is its words, so a changed shot gets a new picture.
+      const paint = paintPaths(dir);
+      const painted: Record<string, { sha: string }> = {};
+      for (const s of shotsUsed(written.beats)) {
+        const file = join(paint.dir, `${s.id}.jpg`);
+        mkdirSync(paint.dir, { recursive: true });
+        writeFileSync(file, `${s.shot.show} | host: ${showsHost(s.shot)}`);
+        painted[s.id] = { sha: sha256(readFileSync(file)) };
+      }
+      writeJson(paint.state, { shots: painted });
+      if (!readStoryboard(dir)) writeStoryboard(dir, newStoryboard(captions));
+      if (!storyboardApproved(dir, written)) return { episode: id, state: "storyboard" };
+    }
     const file = videoPath(to, slug, id);
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, Buffer.from("0123456789"));
@@ -951,6 +991,104 @@ describe("storefront: automatic builds", () => {
       assert.match(readText(loadChannel(built, id).ideasPath), /## why-the-sea-is-salty/);
       assert.doesNotMatch(readText(loadChannel(built, id).ideasPath), /why-ice-floats/, "a refused topic is not added to the ideas");
     } finally {
+      site.close();
+    }
+  });
+
+  it("stops a painted video at its storyboard: the customer changes shots, the host, on-screen text and captions, then approves", async () => {
+    const { store, builder, options } = setup("storyboard", 20, null);
+    const site = createPublicServer(options);
+    boards = true;
+    try {
+      const base = await serve(site);
+      const link = (await fetch(`${base}/intake`, form(GOOD))).headers.get("location")!;
+      await builder.idle();
+      const id = store.list()[0].id;
+      // This channel tells its videos in painted shots, in the world the customer's look carries.
+      const seriesDoc = [...loadChannel(built, id).series.values()][0].abs;
+      writeText(seriesDoc, readText(seriesDoc).replace("render-3d-explainer", "render-themed"));
+      const page = async (view = "") => (await fetch(base + link + (view ? `?view=${view}` : ""))).text();
+      const post = (action: string, values: Record<string, string>) => fetch(`${base}${link}/${action}`, form(values));
+      for (const s of SECTIONS) await post("decision", { section: s.id, decision: "approve" });
+      await post("approve", {});
+      await builder.idle();
+      assert.equal((await post("storyboard/approve", {})).status, 409, "no storyboard before the facts are approved");
+      // Held, to see the step it is on while it works.
+      let release = () => {};
+      hold = new Promise<void>((r) => (release = r));
+      await post("facts", { decision: "approve" });
+      assert.equal(store.byId(id)?.video?.state, "painting", "approved facts go to painting, not straight to the video");
+      release();
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "storyboard");
+      const dir = join(episodesDir(loadChannel(built, id)), EPISODE);
+
+      const board = await page("new");
+      assert.match(board, /class="track four"[\s\S]*class="done">Check the facts[\s\S]*class="now">Storyboard<small>Your turn[\s\S]*Get the video/);
+      assert.match(board, /Check your storyboard[\s\S]*Part 1[\s\S]*Why doesn&#39;t your pen leak\?[\s\S]*\/shot\/hook-1\?v=[0-9a-f]{12}[\s\S]*name="host_1" checked[\s\S]*Part 2[\s\S]*Cuts in on the word[\s\S]*Captions[\s\S]*Approve the storyboard/);
+      assert.match(board, /10 repaints left/);
+      assert.match(await page(), /Your storyboard is ready[\s\S]*Open the storyboard/);
+      const picture = await fetch(`${base}${link}/shot/hook-1`);
+      assert.deepEqual([picture.status, picture.headers.get("content-type"), await picture.text()], [200, "image/jpeg", "The host stares at a giant pen dripping blue ink | host: true"]);
+      assert.equal((await fetch(`${base}${link}/shot/../../orders`)).status, 404);
+
+      // One part: the first shot shows something else without the host, the second is removed. Only the changed shot is repainted.
+      hold = new Promise<void>((r) => (release = r));
+      const edit = await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", show_2: "Thick blue ink waits behind the ball", at_2: "ink", remove_2: "on", text: "" });
+      assert.deepEqual([edit.status, edit.headers.get("location")], [303, `${link}?view=new`]);
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.repaints], ["painting", 1]);
+      release();
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "storyboard");
+      const explain = readJson<Script>(join(dir, "script.json")).beats.find((b) => b.id === "explain")!;
+      assert.deepEqual((explain.visual as unknown as { shots: Shot[] }).shots, [{ show: "A tiny steel ball rolls inside the tip of a pen", host: false }]);
+      assert.match(readText(join(dir, "shots", "explain-1.jpg")), /rolls inside the tip/);
+      assert.match(await page("new"), /9 repaints left/);
+
+      // Refused, with the reason, and nothing changes: the host left out of a shot whose words still say "the host"; an added shot with no word to cut in on.
+      assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", text: "Why no leaks?" })).text(), /leaves the host out, but its words say &quot;the host&quot;/);
+      assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", show_2: "A puddle of ink on a desk", text: "Why no leaks?" })).text(), /Pick the word shot 2 cuts in on/);
+      assert.equal(store.byId(id)?.video?.repaints, 1);
+
+      // New on-screen text changes what is shown, so the facts come back to be approved; then the storyboard again.
+      assert.equal((await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", text: "Why no drips?" })).status, 303);
+      assert.equal(store.byId(id)?.video?.repaints, 1, "the same picture is not painted again");
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "facts");
+      assert.match(await page("new"), /Check the facts[\s\S]*On screen: Why no drips\?/);
+      await post("facts", { decision: "approve" });
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "storyboard");
+
+      // Repaints are paid: past the limit, a change that needs one is refused.
+      store.update(id, (o) => {
+        o.video = { ...o.video!, repaints: 10 };
+      });
+      assert.match(await (await post("storyboard/beat", { beat: "payoff", show_1: "A round pen cap rolls across a desk", text: "" })).text(), /0 repaints left/);
+
+      // Captions: bigger, in the middle, all caps, own colour, and off on the last part.
+      assert.match(await (await post("storyboard/captions", { show: "on", size: "huge", place: "bottom", case: "normal" })).text(), /caption settings are not valid/);
+      assert.equal((await post("storyboard/captions", { show: "on", size: "large", place: "middle", case: "upper", own_color: "on", color: "#ff0055", hide_payoff: "on" })).status, 303);
+      assert.deepEqual(readStoryboard(dir)?.captions, { show: true, size: "large", place: "middle", case: "upper", color: "#ff0055", hide_beats: ["payoff"] });
+      assert.match(await page("new"), /name="hide_payoff" checked/);
+
+      assert.equal((await post("storyboard/approve", {})).status, 303);
+      assert.deepEqual([readStoryboard(dir)?.status, readStoryboard(dir)?.approved_by], ["approved", "Sam Example"]);
+      await builder.idle();
+      assert.equal(store.byId(id)?.video?.state, "done");
+
+      // Settings: the channel's caption defaults, and the host off screen (then no shot may show it) and back.
+      assert.match(await page("settings"), /Take the host off screen[\s\S]*Save caption settings/);
+      assert.equal((await post("captions", { case: "normal", size: "small", place: "bottom" })).status, 303);
+      assert.deepEqual(store.byId(id)?.captions, { show: false, size: "small", place: "bottom", case: "normal", hide_beats: [] });
+      assert.equal((await post("host", { on: "0" })).status, 303);
+      const theme = () => readJson<{ world: { host?: boolean } }>(join(loadChannel(built, id).dir, "theme.json")).world;
+      assert.equal(theme().host, false);
+      assert.match(await page("settings"), /The host is off screen[\s\S]*Put the host on screen/);
+      await post("host", { on: "1" });
+      assert.equal(theme().host, undefined);
+    } finally {
+      boards = false;
       site.close();
     }
   });

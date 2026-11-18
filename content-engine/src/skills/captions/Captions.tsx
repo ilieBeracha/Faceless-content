@@ -6,8 +6,14 @@ import { clamp, easeOut, regions } from "../../render/timeline.ts";
 import type { EpisodeProps } from "../../render/types.ts";
 import { activeWordIndex, buildPages, estimateWidth, pageAt } from "./pages.ts";
 
-const FONT_SIZE = 74;
+const FONT_SIZES = { small: 58, medium: 74, large: 88 } as const;
+const SINGLE_SIZES = { small: 48, medium: 60, large: 72 } as const;
 const GAP = 30;
+
+/** The beats a storyboard shows without captions. */
+function hiddenBeats(props: EpisodeProps): Set<string> {
+  return new Set(props.captionLayout?.hide_beats ?? []);
+}
 
 /**
  * Word-by-word captions: a short page of words at a time, the word being spoken highlighted.
@@ -26,23 +32,25 @@ const SingleWord: React.FC<{ props: EpisodeProps }> = ({ props }) => {
   const active = activeWordIndex(props.words, t);
   const word = active >= 0 ? props.words[active] : null;
   const next = word ? props.words[active + 1] : null;
-  const visible = word !== null && (t <= word.end + 0.35 || (next !== null && next !== undefined && t < next.start && next.start - word.end < 0.35));
+  const visible = word !== null && !hiddenBeats(props).has(word.beat) && (t <= word.end + 0.35 || (next !== null && next !== undefined && t < next.start && next.start - word.end < 0.35));
   const ref = useRef<HTMLDivElement>(null);
   useQaProbe(props.qaProbe && visible, ref, "captions", "caption", { word: visible ? active : -1 });
   if (!word || !visible) return null;
   const font = fontFor(props.brand.font);
   const pop = easeOut((t - word.start) / 0.08);
   const upper = props.brand.caption_case === "upper";
-  const safe = regions(width, height, props.safeArea).safe;
+  const r = regions(width, height, props.safeArea);
+  const safe = r.safe;
+  const centreY = props.captionLayout?.place === "bottom" ? r.captions.y + r.captions.h / 2 : height * SINGLE_WORD_Y;
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
-      <div style={{ position: "absolute", left: safe.x, width: safe.w, top: height * SINGLE_WORD_Y - 50, height: 100, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "absolute", left: safe.x, width: safe.w, top: centreY - 50, height: 100, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div
           ref={ref}
           style={{
             fontFamily: font.family,
             fontWeight: font.heavy,
-            fontSize: 60,
+            fontSize: SINGLE_SIZES[props.captionLayout?.size ?? "medium"],
             lineHeight: 1,
             whiteSpace: "nowrap",
             textTransform: upper ? "uppercase" : "none",
@@ -64,9 +72,17 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
   const { fps, width, height } = useVideoConfig();
   const t = frame / fps;
   const font = fontFor(props.brand.font);
-  const region = regions(width, height, props.safeArea).captions;
+  const low = regions(width, height, props.safeArea).captions;
+  // "middle": the same band, centred on the picture instead of above the platform's buttons.
+  const region = props.captionLayout?.place === "middle" ? { ...low, y: Math.round(height / 2 - low.h / 2) } : low;
+  const FONT_SIZE = FONT_SIZES[props.captionLayout?.size ?? "medium"];
   const upper = props.brand.caption_case === "upper";
-  const pages = useMemo(() => buildPages(props.words, (text) => estimateWidth(text, FONT_SIZE, upper), region.w - 80, 2, GAP), [props.words, upper, region.w]);
+  const hideKey = (props.captionLayout?.hide_beats ?? []).join(" ");
+  // A page never spans two beats, so a hidden beat's pages are simply left out.
+  const pages = useMemo(() => {
+    const hidden = new Set(hideKey.split(" ").filter(Boolean));
+    return buildPages(props.words, (text) => estimateWidth(text, FONT_SIZE, upper), region.w - 80, 2, GAP).filter((p) => !hidden.has(p.lines[0].words[0].beat));
+  }, [props.words, upper, region.w, FONT_SIZE, hideKey]);
   const page = pageAt(pages, t);
   const active = activeWordIndex(props.words, t);
   const ref = useRef<HTMLDivElement>(null);

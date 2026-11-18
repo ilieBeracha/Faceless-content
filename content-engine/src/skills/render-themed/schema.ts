@@ -101,7 +101,10 @@ const layoutSchema = z
  * tells each story in pictures: every line is acted out by shots painted in this world, with the host drawn in them.
  */
 export const worldSchema = z
-  .object({ description: z.string().trim().min(10).max(1500).describe("the world in words, as specific as you like: setting, materials, era, light, mood, art style") })
+  .object({
+    description: z.string().trim().min(10).max(1500).describe("the world in words, as specific as you like: setting, materials, era, light, mood, art style"),
+    host: z.boolean().optional().describe("false = the channel has no host on screen: no shot shows one, and the voice narrates; leave out to have one"),
+  })
   .strict();
 export type World = z.infer<typeof worldSchema>;
 
@@ -205,9 +208,15 @@ const shot = z
     at: z.string().trim().min(1).max(40).optional().describe("the word of the beat's voiceover this shot cuts in on (leave out on the first shot)"),
     show: z.string().trim().min(10).max(500).describe("what we see, acting out the words: who does what, where. Say \"the host\" to put the host in the shot; leave it out for a shot of the story alone. The world's style is added by the engine"),
     camera: z.enum(CAMERA_MOVES).optional().describe("how the camera moves over the shot; leave out to take the next move in turn"),
+    host: z.boolean().optional().describe("true = the host is drawn in the shot, false = it is not; leave out to decide by whether `show` says \"the host\""),
   })
   .strict();
 export type Shot = z.infer<typeof shot>;
+
+/** A shot has the host in it when it says so (`host`), else when its words say "the host". */
+export function showsHost(shot: Shot): boolean {
+  return shot.host ?? /\bthe host\b/i.test(shot.show);
+}
 
 export const beatVisualSchema = z
   .object({
@@ -270,6 +279,10 @@ export function checkShots(beats: { id: string; voiceover: string; visual: unkno
       if (!v.shots?.length) errors.push(`beat "${b.id}": the look has a world, so the beat needs \`shots\` that act out its words`);
       if (v.elements?.length) errors.push(`beat "${b.id}": the look has a world, so the pictures tell the story; take out \`elements\``);
       if (v.shots?.length) {
+        for (const [n, shot] of v.shots.entries()) {
+          if (shot.host === false && /\bthe host\b/i.test(shot.show)) errors.push(`beat "${b.id}": shot ${n + 1} leaves the host out, but its words say "the host"; take them out or put the host in`);
+          if (theme.world.host === false && showsHost(shot)) errors.push(`beat "${b.id}": shot ${n + 1} shows the host, but the channel has no host on screen`);
+        }
         if (v.shots[0].at) errors.push(`beat "${b.id}": the first shot starts with the beat, so it takes no \`at\``);
         const r = shotCuts(v.shots, voiceTokens(b.voiceover));
         if (r.error) errors.push(`beat "${b.id}": ${r.error}`);

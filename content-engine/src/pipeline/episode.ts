@@ -24,6 +24,7 @@ import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
 import { checkScript, factualHash, hookLimit, speechRate, type SeriesData } from "./script-check.ts";
+import { newStoryboard, readStoryboard, storyboardApproved, storyboardPath, writeStoryboard, type CaptionSettings } from "./storyboard.ts";
 
 export const STEPS = ["idea", "script", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
 export type StepName = (typeof STEPS)[number];
@@ -62,6 +63,11 @@ export interface MakeEpisodeOptions {
   log?: (line: string) => void;
   /** false: the QA agent review's findings (except banned topics) are notes and don't stop the episode. Default true. */
   reviewBlocks?: boolean;
+  /**
+   * Stop after the painted shots for a person to approve the storyboard (looks with a world only); its caption
+   * settings start as `captions`. Absent: no storyboard stop.
+   */
+  storyboard?: { captions: CaptionSettings };
 }
 
 export function episodesDir(channel: Channel): string {
@@ -162,7 +168,7 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
       `Approve: ./engine approve factcheck --channel ${channel.slug} --episode ${ep.state.id} --by "<your name>"`,
       `Or ask for changes: ./engine reject factcheck --channel ${channel.slug} --episode ${ep.state.id} --reason "…"`,
       "Nothing is voiced or rendered until then.",
-    ]);
+    ], "factcheck");
   }
   if (!done("factcheck")) mark(ep, "factcheck", "done", `approved by ${factcheck.approvedBy}`);
   log(`• fact-check: approved by ${factcheck.approvedBy} (${factcheck.approvedAt})`);
@@ -187,6 +193,20 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
       const count = Object.keys(paint.files).length;
       if (!done("paint") || paint.regenerated) mark(ep, "paint", "done", `${count} shots, $${paint.spentUsd.toFixed(2)} spent${paint.fake ? " (PLACEHOLDERS)" : ""}`);
       log(`• paint: ${count} shots, $${paint.spentUsd.toFixed(2)} spent${paint.fake ? " — placeholders, not real pictures" : paint.regenerated ? "" : " (cached)"}`);
+
+      // 3d. Storyboard — a person looks at every shot and the captions before anything is voiced.
+      if (opts.storyboard) {
+        if (!readStoryboard(ep.dir)) writeStoryboard(ep.dir, newStoryboard(opts.storyboard.captions));
+        if (!storyboardApproved(ep.dir, script)) {
+          const board = readStoryboard(ep.dir)!;
+          if (board.status === "approved") writeStoryboard(ep.dir, { schema: board.schema, captions: board.captions, status: "pending" });
+          mark(ep, "paint", "waiting", "storyboard waiting for approval");
+          throw new PipelinePause("awaiting-approval", [`Look at every shot and the captions (${ws.rel(storyboardPath(ep.dir))}), then approve the storyboard.`, "Nothing is voiced or rendered until then."], "storyboard");
+        }
+        const by = readStoryboard(ep.dir)!.approved_by;
+        if (ep.state.steps.paint?.status !== "done") mark(ep, "paint", "done", `storyboard approved by ${by}`);
+        log(`• storyboard: approved by ${by}`);
+      }
     }
   }
 

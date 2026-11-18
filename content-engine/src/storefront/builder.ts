@@ -29,8 +29,13 @@ import { draftChannelTask } from "../pipeline/draft-channel.ts";
 import { episodesDir, listEpisodes, makeEpisode } from "../pipeline/episode.ts";
 import { approveFactcheck, readFactcheck, rejectFactcheck } from "../pipeline/factcheck.ts";
 import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
+import { approveStoryboard, captionSettingsSchema, readStoryboard, setCaptions, type CaptionSettings } from "../pipeline/storyboard.ts";
+import { checkScript } from "../pipeline/script-check.ts";
+import { brandOf, loadChannelTheme } from "../render/render-episode.ts";
+import { paintPaths } from "../skills/render-themed/paint.ts";
+import { checkShots, shotsUsed, showsHost, type Shot, type ThBeatVisual } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
-import { MAX_ROUNDS, SUGGESTS_PER_DAY, TOPIC_MAX, VIDEOS_PER_DAY, changeRequests, countToday, isBuilding, isMakingVideo, videoUnderWay, type Order, type OrderStore } from "./store.ts";
+import { MAX_ROUNDS, REPAINTS_PER_VIDEO, SUGGESTS_PER_DAY, TOPIC_MAX, VIDEOS_PER_DAY, changeRequests, countToday, isBuilding, isMakingVideo, videoUnderWay, type Order, type OrderStore } from "./store.ts";
 
 /** What a channel's dashboard shows: ideas to make, suggestions to decide on, and what can be started today. */
 export interface Dashboard {
@@ -39,10 +44,71 @@ export interface Dashboard {
   paused: boolean;
   videosLeftToday: number;
   suggestsLeftToday: number;
+  /** Whether the channel's host is on screen; null when its look has no painted world (the host is always on screen). */
+  hostOnScreen: boolean | null;
+  /** The caption settings every new video starts with. */
+  captions: CaptionSettings;
+  /** The current video's storyboard, while the customer is checking it. */
+  storyboard: StoryboardView | null;
 }
 
 /** A refusal the customer should read as it is (the page shows its message). */
 export class CustomerError extends Error {}
+
+/** What the storyboard page shows. */
+export interface StoryboardView {
+  script: Script;
+  captions: CaptionSettings;
+  /** False when the channel has no host on screen (then no shot can show one). */
+  hostOnScreen: boolean;
+  /** Shots that can still be painted again for this video. */
+  repaintsLeft: number;
+  /** Shot id → a short version of its picture (changes when it is painted again). */
+  pictures: Record<string, string>;
+}
+
+/** One beat as the customer left it on the storyboard: its shots in order, and its on-screen text ("" = none). */
+export interface BeatEdit {
+  shots: { show: string; host: boolean; at?: string }[];
+  on_screen_text: string;
+}
+
+/**
+ * A beat's storyboard form: slots 1–3, each `show_<n>` (empty or `remove_<n>` = no shot), `host_<n>` ("on"),
+ * `at_<n>` (the word a later shot cuts in on), and `text` (the on-screen text). Throws (for the customer) when it
+ * is not filled in right.
+ */
+export function parseBeatForm(form: Record<string, string>, hostOnScreen: boolean): BeatEdit {
+  const shots: BeatEdit["shots"] = [];
+  for (const n of [1, 2, 3]) {
+    const show = (form[`show_${n}`] ?? "").replace(/\s+/g, " ").trim();
+    if (!show || form[`remove_${n}`] === "on") continue;
+    if (show.length < 10 || show.length > 500) throw new CustomerError(`Describe shot ${n} in 10 to 500 characters.`);
+    const at = (form[`at_${n}`] ?? "").trim();
+    if (shots.length > 0 && !at) throw new CustomerError(`Pick the word shot ${n} cuts in on.`);
+    shots.push({ show, host: hostOnScreen && form[`host_${n}`] === "on", ...(shots.length > 0 ? { at } : {}) });
+  }
+  if (!shots.length) throw new CustomerError("Each part needs at least one shot.");
+  const text = form.text ?? "";
+  if (text.trim().length > 48) throw new CustomerError("Keep the on-screen text to 48 characters or fewer.");
+  return { shots, on_screen_text: text };
+}
+
+/** The captions form: `show`, `size`, `place`, `case`, `color` (used when `own_color` is "on"; else the channel's accent) and `hide_<beat id>` ("on"). */
+export function parseCaptionForm(form: Record<string, string>): CaptionSettings {
+  const r = captionSettingsSchema.safeParse({
+    show: form.show === "on",
+    size: form.size,
+    place: form.place,
+    case: form.case,
+    ...(form.own_color === "on" ? { color: form.color ?? "" } : {}),
+    hide_beats: Object.keys(form)
+      .filter((k) => k.startsWith("hide_") && form[k] === "on")
+      .map((k) => k.slice("hide_".length)),
+  });
+  if (!r.success) throw new CustomerError(`Those caption settings are not valid: ${r.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}.`);
+  return r.data;
+}
 
 /** Writes a full channel draft into `channels/<slug>/` of `ws`, whose skeleton already exists. */
 export type Drafter = (ws: Workspace, slug: string, seed: string, skills: string[]) => Promise<void>;
@@ -55,7 +121,7 @@ export type Reviser = (ws: Workspace, slug: string, requests: ChangeRequest[], s
  * asked for changes) and stops at "facts" until the fact-check is approved; after that voices,
  * renders and checks it, and returns "done". Throws when a step fails.
  */
-export type VideoMaker = (ws: Workspace, slug: string, series: string, pick: VideoPick) => Promise<{ episode: string; state: "facts" | "done" }>;
+export type VideoMaker = (ws: Workspace, slug: string, series: string, pick: VideoPick, captions: CaptionSettings) => Promise<{ episode: string; state: "facts" | "storyboard" | "done" }>;
 
 /** Which video to work on: the episode already started, else a new one for `idea`, else (the first video) the next idea in line. */
 export interface VideoPick {
@@ -75,16 +141,17 @@ export interface Writer {
 }
 
 /** The engine's own episode pipeline, with the Claude API (paid) writing the script and reviewing the frames. */
-const claudeVideo: VideoMaker = async (ws, slug, series, pick) => {
+const claudeVideo: VideoMaker = async (ws, slug, series, pick, captions) => {
   const open = () => listEpisodes(loadChannel(ws, slug)).filter((e) => e.series === series && e.status !== "done").at(-1);
   const current = pick.episode ?? (pick.idea ? undefined : open()?.id);
   const rewrite = current !== undefined && readFactcheck(join(episodesDir(loadChannel(ws, slug)), current))?.status === "changes-requested";
   try {
-    const ep = await makeEpisode(ws, { channel: slug, series, llm: "anthropic", reviewBlocks: false, ...(current ? { episode: current } : pick.idea ? { idea: pick.idea } : {}), redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
+    const ep = await makeEpisode(ws, { channel: slug, series, llm: "anthropic", reviewBlocks: false, storyboard: { captions }, ...(current ? { episode: current } : pick.idea ? { idea: pick.idea } : {}), redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
     return { episode: ep.state.id, state: "done" };
   } catch (err) {
     if (!(err instanceof PipelinePause)) throw err;
-    if (err.kind === "awaiting-approval") return { episode: current ?? open()!.id, state: "facts" };
+    if (err.kind === "awaiting-approval" && err.gate === "factcheck") return { episode: current ?? open()!.id, state: "facts" };
+    if (err.kind === "awaiting-approval" && err.gate === "storyboard") return { episode: current ?? open()!.id, state: "storyboard" };
     throw new Error(err.lines.join(" "));
   }
 };
@@ -157,6 +224,8 @@ export function orderSeed(order: Order): string {
       JSON.stringify(theme, null, 2),
       "```",
     );
+    if (theme.world?.host === false)
+      lines.push("", "The customer chose **no host on screen**: the character is only the narrator's voice. Write its personality and voice as usual, give it a simple model.json, and never put it in a shot.");
   }
   if (model) {
     lines.push(
@@ -353,6 +422,9 @@ export class Builder {
       paused: channelStatus(channel) !== "active",
       videosLeftToday: Math.max(0, VIDEOS_PER_DAY - countToday(listEpisodes(channel).map((e) => e.created))),
       suggestsLeftToday: Math.max(0, SUGGESTS_PER_DAY - countToday(order.suggest?.runs ?? [])),
+      hostOnScreen: this.hostOnScreen(channel),
+      captions: this.channelCaptions(order),
+      storyboard: order.video?.state === "storyboard" ? this.storyboard(order) : null,
     };
   }
 
@@ -459,9 +531,11 @@ export class Builder {
   approveFacts(id: string): void {
     const order = this.store.byId(id);
     if (!order) throw new Error(`No order "${id}".`);
+    // A look with a painted world paints its shots next, for the storyboard; other looks go straight to the video.
+    const painted = this.hostOnScreen(loadChannel(this.ws, order.channel!)) !== null;
     approveFactcheck(this.episodeDir(order.channel!, order.video!.episode!), this.facts(order), order.intake.contact_name);
     this.store.update(id, (o) => {
-      o.video = { ...o.video!, state: "making", attempts: 0, at: nowIso() };
+      o.video = { ...o.video!, state: painted ? "painting" : "making", attempts: 0, at: nowIso() };
     });
     this.queueVideo(id);
   }
@@ -479,6 +553,147 @@ export class Builder {
     this.queueVideo(id);
   }
 
+  /** The caption settings a new video's storyboard starts with: the channel's own, else on, medium, at the bottom, in the channel's case. */
+  channelCaptions(order: Order): CaptionSettings {
+    if (order.captions) return order.captions;
+    const brand = brandOf(loadChannel(this.ws, order.channel!).doc.data);
+    return { show: true, size: "medium", place: "bottom", case: brand.caption_case, hide_beats: [] };
+  }
+
+  /** The storyboard the customer is checking: every beat's line, shots and on-screen text, and the captions. Throws when the order is not at that step. */
+  storyboard(order: Order): StoryboardView {
+    const { dir, script } = this.storyboardEpisode(order);
+    const board = readStoryboard(dir);
+    if (!board) throw new Error(`Order ${order.id}: episode ${order.video!.episode} has no storyboard.json.`);
+    const theme = loadChannelTheme(loadChannel(this.ws, order.channel!).dir, order.channel!);
+    const painted = readJson<{ shots: Record<string, { sha: string }> }>(paintPaths(dir).state).shots;
+    const pictures = Object.fromEntries(shotsUsed(script.beats).map(({ id }) => {
+      if (!painted[id]) throw new Error(`Order ${order.id}: shot "${id}" has no painted picture.`);
+      return [id, painted[id].sha.slice(0, 12)];
+    }));
+    return { script, captions: board.captions, hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures };
+  }
+
+  /** The picture of one painted shot of the order's current video, for its storyboard. Throws when there is none. */
+  shotPicture(order: Order, shotId: string): string {
+    if (!order.video?.episode || !order.channel || !/^[a-z0-9]+(?:-[a-z0-9]+)*-[1-3]$/.test(shotId)) throw new CustomerError("That picture is not available.");
+    const file = join(paintPaths(this.episodeDir(order.channel, order.video.episode)).dir, `${shotId}.jpg`);
+    if (!existsSync(file)) throw new CustomerError("That picture is not available.");
+    return file;
+  }
+
+  /**
+   * The customer changed one beat on the storyboard: its shots (what each shows, whether the host is in it, the word
+   * it cuts in on) and its on-screen text. Shots whose picture changes are painted again (each counts against the
+   * video's repaints); changed on-screen text sends the facts back for approval. Throws (for the customer) when the
+   * change is not valid.
+   */
+  editBeat(id: string, beatId: string, edit: BeatEdit): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { dir, script } = this.storyboardEpisode(order);
+    const channel = loadChannel(this.ws, order.channel!);
+    const theme = loadChannelTheme(channel.dir, channel.slug);
+    const beat = script.beats.find((b) => b.id === beatId);
+    if (!beat) throw new CustomerError("That part is not in this video.");
+    if (edit.shots.length < 1 || edit.shots.length > 3) throw new CustomerError("Each part needs 1 to 3 shots.");
+    const old = ((beat.visual as ThBeatVisual).shots ?? []) as Shot[];
+    const shots: Shot[] = edit.shots.map((s, n) => ({
+      ...(n > 0 ? { at: s.at } : {}),
+      show: s.show,
+      ...(old[n]?.camera ? { camera: old[n].camera } : {}),
+      host: s.host,
+    }));
+    const text = edit.on_screen_text.replace(/\s+/g, " ").trim();
+    const next: Script = {
+      ...script,
+      beats: script.beats.map((b) => {
+        if (b.id !== beatId) return b;
+        const { on_screen_text: _was, ...rest } = b;
+        return { ...rest, visual: { ...b.visual, shots }, ...(text ? { on_screen_text: text } : {}) };
+      }),
+    };
+    const check = checkScript(this.ws, next, { channel, series: script.series, idea: script.idea });
+    const problems = [...check.errors, ...checkShots(next.beats, theme)];
+    if (problems.length) throw new CustomerError(`That change can't be made: ${problems.join("; ")}`);
+    // A shot is painted again when what it shows or whether the host is in it changes (the painter's words for it).
+    const repaints = shots.filter((s, n) => !old[n] || old[n].show !== s.show || showsHost(old[n]) !== showsHost(s)).length;
+    const textChanged = (beat.on_screen_text ?? "") !== text;
+    const shotsChanged = JSON.stringify(old) !== JSON.stringify(shots);
+    if (!textChanged && !shotsChanged) return;
+    const left = REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0);
+    if (repaints > left) throw new CustomerError(`That would paint ${repaints} shot${repaints === 1 ? "" : "s"} again, and this video has ${left} repaint${left === 1 ? "" : "s"} left.`);
+    writeJson(join(dir, "script.json"), next);
+    this.store.update(id, (o) => {
+      o.video = { ...o.video!, state: "painting", attempts: 0, repaints: (o.video!.repaints ?? 0) + repaints, at: nowIso() };
+    });
+    this.queueVideo(id);
+  }
+
+  /** The customer changed this video's captions. The storyboard then waits for their approval again. */
+  setVideoCaptions(id: string, captions: CaptionSettings): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { dir, script } = this.storyboardEpisode(order);
+    setCaptions(dir, script, captions);
+  }
+
+  /** The customer approved the storyboard as it is now: record it under their name and voice, render and check the video. */
+  approveStoryboard(id: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { dir, script } = this.storyboardEpisode(order);
+    approveStoryboard(dir, script, order.intake.contact_name);
+    this.store.update(id, (o) => {
+      o.video = { ...o.video!, state: "making", attempts: 0, at: nowIso() };
+    });
+    this.queueVideo(id);
+  }
+
+  /** The caption settings every new video of the channel starts with. */
+  setChannelCaptions(id: string, captions: CaptionSettings): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    this.dashboardChannel(order);
+    const parsed = captionSettingsSchema.parse(captions);
+    this.store.update(id, (o) => {
+      o.captions = parsed;
+    });
+  }
+
+  /** Put the host on screen in the channel's videos, or take it off (the voice then narrates). Only for looks with a painted world. */
+  setHost(id: string, onScreen: boolean): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { channel } = this.dashboardChannel(order);
+    if (videoUnderWay(order) || this.waiting.has(order.id)) throw new CustomerError("A video is under way. Change the host when it is finished.");
+    const theme = loadChannelTheme(channel.dir, channel.slug);
+    if (!theme.world) throw new CustomerError("This channel's look has no painted world, so its host is always on screen.");
+    if (onScreen) {
+      const series = [...channel.series.values()].find((s) => s.data.status === "active")!;
+      const host = channel.characters.get(String((series.data.characters as string[])[0]));
+      if (!host || !existsSync(host.modelPath)) throw new Error(`The channel "${channel.slug}" has no host design (model.json) to put on screen.`);
+    }
+    const { host: _old, ...world } = theme.world;
+    writeJson(join(channel.dir, "theme.json"), { ...theme, world: onScreen ? world : { ...world, host: false } });
+  }
+
+  /** Whether the channel's host is on screen; null when its videos are not told in painted shots (no world, or a series that doesn't paint). */
+  private hostOnScreen(channel: Channel): boolean | null {
+    const series = [...channel.series.values()].find((s) => s.data.status === "active");
+    const render = ((series?.data.skills as { render?: string[] } | undefined)?.render ?? []);
+    if (!render.includes("render-themed") || !existsSync(join(channel.dir, "theme.json"))) return null;
+    const world = loadChannelTheme(channel.dir, channel.slug).world;
+    return world ? world.host !== false : null;
+  }
+
+  /** The order's current video, when it is at its storyboard. Throws otherwise. */
+  private storyboardEpisode(order: Order): { dir: string; script: Script } {
+    if (order.video?.state !== "storyboard" || !order.video.episode || !order.channel) throw new CustomerError("This video has no storyboard to check now.");
+    const dir = this.episodeDir(order.channel, order.video.episode);
+    return { dir, script: readJson<Script>(join(dir, "script.json")) };
+  }
+
   private episodeDir(slug: string, episode: string): string {
     return join(episodesDir(loadChannel(this.ws, slug)), episode);
   }
@@ -492,7 +707,7 @@ export class Builder {
     console.error(`Order ${id}: its video failed. ${error}`);
     this.store.update(id, (o) => {
       const v = o.video!;
-      o.video = { ...v, state: "failed", failed_at: v.state === "making" ? "making" : "writing", at: nowIso(), error };
+      o.video = { ...v, state: "failed", failed_at: v.state === "making" || v.state === "painting" ? "making" : "writing", at: nowIso(), error };
     });
   }
 
@@ -504,11 +719,12 @@ export class Builder {
       const channel = loadChannel(this.ws, order.channel!);
       const series = [...channel.series.values()].find((s) => s.data.status === "active");
       if (!series) throw new Error(`The channel "${order.channel}" has no active series to make a video in.`);
-      const result = await this.writer.video(this.ws, order.channel!, String(series.data.slug), { ...(order.video!.episode ? { episode: order.video!.episode } : {}), ...(order.video!.idea ? { idea: order.video!.idea } : {}) });
+      const result = await this.writer.video(this.ws, order.channel!, String(series.data.slug), { ...(order.video!.episode ? { episode: order.video!.episode } : {}), ...(order.video!.idea ? { idea: order.video!.idea } : {}) }, this.channelCaptions(order));
       this.store.update(id, (o) => {
-        o.video = { ...(o.video!.idea ? { idea: o.video!.idea } : {}), state: result.state, episode: result.episode, attempts: o.video!.attempts, rounds: o.video!.rounds, at: nowIso() };
+        const v = o.video!;
+        o.video = { ...(v.idea ? { idea: v.idea } : {}), state: result.state, episode: result.episode, attempts: v.attempts, rounds: v.rounds, ...(v.repaints ? { repaints: v.repaints } : {}), at: nowIso() };
       });
-      console.log(`Order ${id}: video ${result.episode} is ${result.state === "done" ? "made" : "waiting for its facts to be approved"}.`);
+      console.log(`Order ${id}: video ${result.episode} is ${{ done: "made", facts: "waiting for its facts to be approved", storyboard: "waiting for its storyboard to be approved" }[result.state]}.`);
     } catch (err) {
       this.failVideo(id, err instanceof Error ? err.message : String(err));
     } finally {

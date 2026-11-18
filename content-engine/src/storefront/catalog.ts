@@ -13,6 +13,8 @@ import { parseTheme, type Theme } from "../skills/render-themed/schema.ts";
 /** The choices that are always offered, whatever the folders hold. */
 export const OWN_LOOK = "Something else";
 export const OWN_HOST = "Design one for me";
+/** A channel with no host on screen: the voice narrates (looks with a painted world only). */
+export const NO_HOST = "No host, just the voice";
 
 const ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const hostFile = z.object({ name: z.string().min(1).max(40), summary: z.string().min(1).max(80), model: z.unknown() }).strict();
@@ -47,8 +49,8 @@ function ids(dir: string, folder: string): string[] {
 }
 
 /** Names are what the customer picks and what is stored on the order, so they must be unique. */
-function unique<T extends { id: string; name: string }>(folder: string, options: T[], reserved: string): T[] {
-  const seen = new Map<string, string>([[reserved.toLowerCase(), "the built-in choice"]]);
+function unique<T extends { id: string; name: string }>(folder: string, options: T[], ...reserved: string[]): T[] {
+  const seen = new Map<string, string>(reserved.map((r) => [r.toLowerCase(), "a built-in choice"]));
   for (const o of options) {
     const clash = seen.get(o.name.toLowerCase());
     if (clash) throw new Error(`${folder}/${o.id}.json: the name "${o.name}" is already used by ${clash}.`);
@@ -80,6 +82,7 @@ export function readHosts(dir: string): HostOption[] {
       return { id, name: file.data.name, summary: file.data.summary, model: parseCharacterModel(file.data.model) };
     }),
     OWN_HOST,
+    NO_HOST,
   );
 }
 

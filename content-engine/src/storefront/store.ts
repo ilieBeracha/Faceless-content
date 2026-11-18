@@ -9,7 +9,8 @@ import { dirname } from "node:path";
 import { nowIso } from "../core/util.ts";
 import type { CharacterModel } from "../skills/render-talking-character/rigs.ts";
 import type { Theme } from "../skills/render-themed/schema.ts";
-import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
+import type { CaptionSettings } from "../pipeline/storyboard.ts";
+import { NO_HOST, OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { READY_RIG, buildHost, buildLook, hasHost, hasLook } from "./designer.ts";
 
 export const ORDER_STATUSES = ["awaiting-payment", "paid", "in-production", "delivered"] as const;
@@ -76,9 +77,12 @@ export interface Video {
   idea?: string;
   /**
    * writing = the script is being written; facts = the customer is checking its facts;
+   * painting = its shots are being painted (again); storyboard = the customer is checking its shots and captions;
    * making = being voiced, drawn and checked; done = on the order's page; failed = stopped, see `error`.
    */
-  state: "writing" | "facts" | "making" | "done" | "failed";
+  state: "writing" | "facts" | "painting" | "storyboard" | "making" | "done" | "failed";
+  /** How many shots the customer had painted again from the storyboard (each is paid). */
+  repaints?: number;
   /** The step that was running when it failed. */
   failed_at?: "writing" | "making";
   /** The episode folder in the channel, once there is one. */
@@ -117,6 +121,8 @@ export interface Order {
   video?: Video;
   /** The customer's latest request for new video ideas (written by the Claude API into the channel's drafts). */
   suggest?: Suggest;
+  /** The caption settings each new video's storyboard starts with. Absent = captions on, medium, at the bottom, in the channel's case. */
+  captions?: CaptionSettings;
   decisions: Partial<Record<SectionId, Decision>>;
 }
 
@@ -196,8 +202,12 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
   if (design.theme) design.theme = { ...design.theme, world: { description: worldBrief(values) } };
 
   const readyHost = catalog.hosts.find((h) => h.name === values.avatar);
-  if (!errors.avatar && values.avatar !== OWN_HOST && !readyHost) errors.avatar = "Pick a host to start from.";
-  if (!errors.avatar && hasHost(form)) {
+  if (values.avatar === NO_HOST) {
+    // No host on screen: the world is told without one, and the voice narrates.
+    if (!errors.avatar && !errors.look && !design.theme) errors.avatar = "A channel without a host needs one of the painted looks: pick a look above, or pick a host.";
+    else if (design.theme?.world) design.theme = { ...design.theme, world: { ...design.theme.world, host: false } };
+  } else if (!errors.avatar && values.avatar !== OWN_HOST && !readyHost) errors.avatar = "Pick a host to start from.";
+  if (values.avatar !== NO_HOST && !errors.avatar && hasHost(form)) {
     if (form.h_rig === READY_RIG) {
       if (readyHost?.model.rig === READY_RIG) design.model = readyHost.model;
       else errors.avatar = "A 3D robot is used as it is: start from one of the 3D robots, or pick another kind of host.";
@@ -218,6 +228,8 @@ export const MAX_ROUNDS = 3;
 export const VIDEOS_PER_DAY = 3;
 /** At most this many requests for new ideas an order can make in a day (each is a paid Claude API call). */
 export const SUGGESTS_PER_DAY = 3;
+/** Each repaint is a paid picture: at most this many shots a video can have painted again from its storyboard. */
+export const REPAINTS_PER_VIDEO = 10;
 /** The longest topic a customer can give for a video or for new ideas. */
 export const TOPIC_MAX = 160;
 
@@ -236,12 +248,12 @@ export function isBuilding(order: Order): boolean {
 
 /** True while the order's video is being worked on by the server (not while it waits for the customer). */
 export function isMakingVideo(order: Order): boolean {
-  return order.video?.state === "writing" || order.video?.state === "making";
+  return order.video?.state === "writing" || order.video?.state === "painting" || order.video?.state === "making";
 }
 
-/** True while a video is under way: being worked on, or waiting for the customer to check its facts. */
+/** True while a video is under way: being worked on, or waiting for the customer to check its facts or its storyboard. */
 export function videoUnderWay(order: Order): boolean {
-  return isMakingVideo(order) || order.video?.state === "facts";
+  return isMakingVideo(order) || order.video?.state === "facts" || order.video?.state === "storyboard";
 }
 
 /** How many of `times` (ISO timestamps) fall on today (UTC). */

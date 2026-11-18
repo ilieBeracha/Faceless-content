@@ -311,7 +311,7 @@ class Purse {
         `Spending log: ${this.ws.rel(footagePaths(this.ep.dir).ledger)}`,
         `To allow more: ./engine ai-video budget --channel ${this.ep.channel.slug} --episode ${this.ep.state.id} --usd <new total> --by "<your name>"`,
         "Nothing more is generated until then.",
-      ]);
+      ], "footage");
     }
   }
   record(entry: Omit<LedgerEntry, "at" | "fake">): void {
@@ -518,7 +518,7 @@ export async function runFootage(ws: Workspace, ep: EpisodeRef, script: Script, 
       `Approve: ./engine approve footage --channel ${ep.channel.slug} --episode ${ep.state.id} --by "<your name>"`,
       `Redo one still: ./engine ai-video redo --channel ${ep.channel.slug} --episode ${ep.state.id} --shot <id>   (or change the shot in script.json)`,
       "No video is generated until then.",
-    ]);
+    ], "footage");
   }
 
   // 4–5. Clips, each checked by ear.

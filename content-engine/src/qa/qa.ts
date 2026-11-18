@@ -16,6 +16,7 @@ import { allText, bannedTopicHits, factualHash, type SeriesData } from "../pipel
 import type { LayoutSummary } from "../render/render-episode.ts";
 import { outputPath } from "../render/render-episode.ts";
 import { activeWordIndex } from "../skills/captions/pages.ts";
+import { readStoryboard } from "../pipeline/storyboard.ts";
 import { footagePaths, readLedger, spent, type FootageState } from "../skills/render-ai-video/footage.ts";
 import { firstSentence, voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
@@ -128,12 +129,16 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
     const vals = envelope.slice(a, b);
     return vals.reduce((s, v) => s + v, 0) / Math.max(1, vals.length) < 0.12;
   });
-  const syncOk = sameWords && probed > 0 && mismatched / probed <= cfg.qa.caption_sync_max_bad_ratio && quiet.length <= Math.ceil(voiced.length * 0.03);
+  // A person can switch captions off for the video or for some beats (storyboard.json); then fewer or no frames show them.
+  const chosen = readStoryboard(ep.dir)?.captions;
+  const shown = chosen ? chosen.show && script.beats.some((b) => !chosen.hide_beats.includes(b.id)) : true;
+  const highlightOk = shown ? probed > 0 && mismatched / probed <= cfg.qa.caption_sync_max_bad_ratio : probed === 0;
+  const syncOk = sameWords && highlightOk && quiet.length <= Math.ceil(voiced.length * 0.03);
   add(
     "captions-sync",
     "Captions in sync",
     syncOk,
-    `${timings.words.length} words; text matches script: ${sameWords ? "yes" : "NO"}; highlight off on ${mismatched}/${probed} frames; words over silent audio: ${quiet.length}${quiet.length ? ` (${quiet.slice(0, 4).map((w) => w.text).join(", ")})` : ""}`,
+    `${timings.words.length} words; text matches script: ${sameWords ? "yes" : "NO"}; ${shown ? `highlight off on ${mismatched}/${probed} frames` : `captions switched off in the storyboard, seen on ${probed} frames`}; words over silent audio: ${quiet.length}${quiet.length ? ` (${quiet.slice(0, 4).map((w) => w.text).join(", ")})` : ""}`,
   );
 
   const loud = measureLoudness(out);

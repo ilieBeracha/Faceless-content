@@ -8,6 +8,7 @@ import { canonicalJson, nowIso, readJson, sha256, writeJson } from "../core/util
 import type { Workspace } from "../core/workspace.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
+import { readStoryboard } from "../pipeline/storyboard.ts";
 import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
 import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schema.ts";
@@ -62,20 +63,24 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     characters[name] = { name, display_name: String(doc.data.display_name ?? name), model: parseCharacterModel(readJson(doc.modelPath)) };
   }
   const v = ws.config.video;
+  // A storyboard's caption settings (the person's choices) override the channel's.
+  const captions = readStoryboard(ep.dir)?.captions ?? null;
+  const brand = brandOf(ep.channel.doc.data);
   return {
     width: v.width,
     height: v.height,
     fps: v.fps,
     durationInFrames: timings.frames,
     safeArea: ws.config.safe_area,
-    brand: brandOf(ep.channel.doc.data),
+    brand: captions ? { ...brand, caption_case: captions.case, ...(captions.color ? { caption_color: captions.color } : {}) } : brand,
+    ...(captions ? { captionLayout: { size: captions.size, place: captions.place, hide_beats: captions.hide_beats } } : {}),
     script,
     words: timings.words,
     beats: timings.beats,
     envelope,
     characters,
     renderSkills: series.skills.render,
-    captionsSkill: series.skills.captions ?? null,
+    captionsSkill: captions?.show === false ? null : (series.skills.captions ?? null),
     captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
     audioFile: "voice.wav",
     ...(series.skills.render.includes("render-themed") ? themedProps(ep, script) : {}),

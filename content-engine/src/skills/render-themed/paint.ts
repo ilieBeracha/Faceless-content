@@ -19,7 +19,7 @@ import type { EpisodeRef } from "../../pipeline/episode.ts";
 import { backend, saveJpeg } from "../render-ai-video/footage.ts";
 import { parseCharacterModel, type CharacterModel } from "../render-talking-character/rigs.ts";
 import type { Script } from "../write-script/schema.ts";
-import { shotsUsed, type Shot, type Theme, type World } from "./schema.ts";
+import { showsHost, shotsUsed, type Shot, type Theme, type World } from "./schema.ts";
 
 /** Bump to repaint everything (when the prompts below change in a way old pictures should follow). */
 export const PAINT_VERSION = 3;
@@ -34,11 +34,6 @@ const RULES = [
 
 export function worldKeyPrompt(world: World): string {
   return [`An establishing view of this world, with nobody in it: ${world.description}`, "This picture sets the art style, palette, line work, materials and light that every later picture of the world follows, so make them clear and distinctive.", RULES].join("\n");
-}
-
-/** A shot has the host in it when its words say "the host"; every other shot is painted without one. */
-export function showsHost(shot: Shot): boolean {
-  return /\bthe host\b/i.test(shot.show);
 }
 
 export function shotPrompt(world: World, shot: Shot, line: string): string {

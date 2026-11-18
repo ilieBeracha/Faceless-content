@@ -85,7 +85,10 @@ With a world, every beat tells its words in 1–3 shots, and takes no `elements`
 - `show` is **what we see acting out the words**: who does what, where, with what expression. The host is not
   required: most shots show the story itself (the geese, the sugar cube, the fish). Write "the host" only when the
   host should be in the shot; it is then drawn from its picture. A channel whose shots never say "the host" needs
-  no drawable host. The world's style is added by the engine; don't repeat it.
+  no drawable host. The world's style is added by the engine; don't repeat it. A shot can also say it outright:
+  `"host": true` draws the host in it, `"host": false` leaves it out (then its words must not say "the host").
+- When the world says `"host": false`, the channel has **no host on screen**: the voice narrates, and no shot may
+  show the host.
 - Each shot is a new picture: its own place, objects and camera angle (close-up, wide, from above). The world's
   picture only sets the style, so don't lean on it for the setting.
 - The first shot starts with the beat. Each later shot cuts in on its `at` word, just as that word is spoken, so

@@ -13,7 +13,7 @@ import { join } from "node:path";
 import { channelExists, listChannelSlugs } from "../core/channels.ts";
 import { ENGINE_DIR, type Workspace } from "../core/workspace.ts";
 import { brandKit, framesDir, videoPath } from "./brand-kit.ts";
-import { CustomerError, type Builder } from "./builder.ts";
+import { CustomerError, parseBeatForm, parseCaptionForm, type Builder } from "./builder.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
 import { hostSvg } from "./host-svg.tsx";
@@ -329,6 +329,29 @@ export function createPublicServer(o: StorefrontOptions): Server {
             o.builder.changeFacts(order.id, note);
           } else throw new HttpError(400, "Choose Approve the facts or Ask for a change.");
           return redirect(res, order.video.idea ? `/w/${order.token}?view=new` : `/w/${order.token}`);
+        }
+        // The storyboard of the video under way: change a part, set its captions, or approve it.
+        if (req.method === "POST" && parts.length === 4 && parts[2] === "storyboard" && o.builder) {
+          const form = await readForm(req);
+          if (parts[3] === "beat") {
+            const beat = (form.beat ?? "").trim();
+            if (!SLUG.test(beat)) throw new HttpError(400, "Choose a part of the video.");
+            o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen));
+          } else if (parts[3] === "captions") o.builder.setVideoCaptions(order.id, parseCaptionForm(form));
+          else if (parts[3] === "approve") o.builder.approveStoryboard(order.id);
+          else throw new HttpError(404, "There is no page at this address.");
+          return redirect(res, `/w/${order.token}?view=new`);
+        }
+        if (req.method === "POST" && parts.length === 3 && o.builder && (parts[2] === "host" || parts[2] === "captions")) {
+          const form = await readForm(req);
+          if (parts[2] === "host") {
+            if (form.on !== "0" && form.on !== "1") throw new HttpError(400, "Choose to put the host on screen or take it off.");
+            o.builder.setHost(order.id, form.on === "1");
+          } else o.builder.setChannelCaptions(order.id, parseCaptionForm(form));
+          return redirect(res, `/w/${order.token}?view=settings`);
+        }
+        if (req.method === "GET" && parts.length === 4 && parts[2] === "shot" && o.builder) {
+          return sendFile(req, res, o.builder.shotPicture(order, parts[3]), "image/jpeg", null);
         }
         // The channel's dashboard: make a video from an idea, ask for ideas, decide on suggestions, pause or resume.
         if (req.method === "POST" && parts.length === 3 && o.builder && ["make", "suggest", "proposal", "idea", "channel"].includes(parts[2])) {

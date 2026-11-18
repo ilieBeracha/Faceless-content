@@ -1,11 +1,12 @@
 /** Server-rendered pages. Every value that came from a person or a file goes through esc(). */
 import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
-import type { Dashboard } from "./builder.ts";
+import type { Dashboard, StoryboardView } from "./builder.ts";
+import type { CaptionSettings } from "../pipeline/storyboard.ts";
 import type { Idea } from "../core/ideas.ts";
-import { FRAME_PRESET_NAMES, FRAME_PRESETS, type Frame, type Theme } from "../skills/render-themed/schema.ts";
-import type { Script } from "../skills/write-script/schema.ts";
-import { OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
+import { FRAME_PRESET_NAMES, FRAME_PRESETS, showsHost, type Frame, type Shot, type ThBeatVisual, type Theme } from "../skills/render-themed/schema.ts";
+import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
+import { NO_HOST, OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
 import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, videoUnderWay, SUGGESTS_PER_DAY, TOPIC_MAX, type Intake, type Order, type SectionId } from "./store.ts";
 
@@ -228,6 +229,18 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .rail a.create{background:var(--ink);color:var(--bg);font-weight:600;margin-bottom:10px}.rail a.create:hover,.rail a.create[aria-current]{background:var(--ink);color:var(--bg);opacity:.88}
 .review{font-size:14px}.review summary{cursor:pointer;color:var(--warn);font-weight:600}.review ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}.review p{margin:6px 0 0;font-size:13.5px}
 .track.three{grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;margin:0;padding:0}
+.track.four{list-style:none;margin:0;padding:0}
+.part .shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,210px));gap:14px;margin:12px 0}
+.part .shot{display:flex;flex-direction:column;gap:8px;min-width:0}
+.part .shot img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.part .shot.add{border:2px dashed var(--line);border-radius:12px;padding:12px;align-self:start}
+.part .shot.add summary{cursor:pointer;font-weight:600}
+.part textarea{min-height:84px}
+.said1{margin:6px 0}.said1 span{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-right:8px}
+label.check{display:flex;gap:8px;align-items:center;font-size:15px}
+.caps{display:flex;flex-direction:column;gap:12px}.caps>button,.caps fieldset{align-self:flex-start}.caps .row3{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
+.caps fieldset.hide{border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+.caps input[type=color]{width:64px;height:40px;padding:2px}
 form.own{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;width:100%}form.own label{flex:1 1 260px}
 @media(max-width:820px){.shell{grid-template-columns:1fr}.rail{position:sticky;top:60px;z-index:15;height:auto;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);background:var(--bg);padding:8px 12px;gap:4px}.rail a{flex:none;padding:9px 12px}.rail b{margin-left:4px}.cbar .mine{display:none}.pane{padding-top:22px}}
 @media(max-width:480px){.cbar .sep,.cbar .brand span{display:none}}
@@ -441,7 +454,7 @@ const ink = (name: string, label: string, value: string, slot = "") => `<label c
 /** The real creation: four short steps. The phone on the right is the customer's own host standing in their own look. */
 export function createPage(product: string, catalog: Catalog, values: Fields = {}, errors: Partial<Record<keyof Intake, string>> = {}, account: Account = null): string {
   const look = values.look === OWN_LOOK || catalog.looks.some((l) => l.name === values.look) ? values.look : (catalog.looks[0]?.name ?? OWN_LOOK);
-  const host = values.avatar === OWN_HOST || catalog.hosts.some((h) => h.name === values.avatar) ? values.avatar : (catalog.hosts[0]?.name ?? OWN_HOST);
+  const host = values.avatar === OWN_HOST || values.avatar === NO_HOST || catalog.hosts.some((h) => h.name === values.avatar) ? values.avatar : (catalog.hosts[0]?.name ?? OWN_HOST);
   const startLook = catalog.looks.find((l) => l.name === look);
   const startHost = catalog.hosts.find((h) => h.name === host);
   const lf = hasLook(values) ? values : startLook ? lookFields(startLook.theme) : BLANK_LOOK;
@@ -457,6 +470,7 @@ export function createPage(product: string, catalog: Catalog, values: Fields = {
   const hosts = [
     ...catalog.hosts.map((h) => start("avatar", h.name, host, `<img class="vis" src="/assets/host/${h.id}.jpg" alt="${esc(h.summary)}" loading="lazy">`, h.name, ` data-preset="${esc(JSON.stringify(hostFields(h.model)))}" data-pic="/assets/host/${h.id}.jpg"`)),
     start("avatar", OWN_HOST, host, `<span class="vis blank">?</span>`, "Design one for me"),
+    start("avatar", NO_HOST, host, `<span class="vis blank">—</span>`, "No host, just the voice"),
   ].join("");
   const displays = [...LOOK_CHOICES.l_display, ...(lf.l_display.includes(",") ? [lf.l_display] : [])];
   const face = (o: string) => (o.includes(",") ? "Mixed faces" : (FACES[o]?.[0] ?? words(o)));
@@ -521,7 +535,7 @@ const STATUS_TEXT: Record<Order["status"], string> = {
 };
 
 /** The first video's step, in the customer's words. An order whose video is made by hand has no state: it reads as being made. */
-const VIDEO_TEXT = { writing: "Script being written", facts: "Facts ready to check", making: "First one being made", done: "First one ready", failed: "Did not finish" } as const;
+const VIDEO_TEXT = { writing: "Script being written", facts: "Facts ready to check", painting: "Shots being painted", storyboard: "Storyboard ready to check", making: "First one being made", done: "First one ready", failed: "Did not finish" } as const;
 
 function track(order: Order, hasKit: boolean): string {
   // The step the customer is on now: payment, then the brand kit (being made or under review), then done.
@@ -613,12 +627,68 @@ ${claims}
 <div class="decide" role="group" aria-label="Your decision on the facts"><form method="post" action="${base}/facts"><input type="hidden" name="decision" value="approve"><button type="submit" class="btn yes">Approve the facts</button></form>${change}</div><small class="muted">Approving starts the video. It is made exactly from these words.</small></section>`;
 }
 
+/** The channel's accent colour (the default caption highlight). */
+function accentOf(kit: BrandKit): string {
+  const accent = kit.colours.find((c) => c.name === "Accent");
+  if (!accent) throw new Error(`The brand kit of "${kit.name}" has no accent colour.`);
+  return accent.hex;
+}
+
+const CAPTION_SIZE_NAMES: Record<CaptionSettings["size"], string> = { small: "Small", medium: "Medium", large: "Large" };
+const CAPTION_PLACE_NAMES: Record<CaptionSettings["place"], string> = { bottom: "Bottom", middle: "Middle" };
+
+/** The caption settings form. `beats`: the video's parts, to switch captions off on some (absent for the channel's defaults). */
+function captionsForm(action: string, c: CaptionSettings, accent: string, beats: Script["beats"] | null, submit: string): string {
+  const select = (name: string, value: string, options: [string, string][]) =>
+    `<select name="${name}" id="cap-${name}">${options.map(([v, l]) => `<option value="${esc(v)}"${v === value ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
+  const hide = beats
+    ? `<fieldset class="hide"><legend>No captions on these parts</legend>${beats.map((b, i) => `<label class="check"><input type="checkbox" name="hide_${esc(b.id)}"${c.hide_beats.includes(b.id) ? " checked" : ""}> Part ${i + 1}: “${esc(b.voiceover.split(/\s+/).slice(0, 6).join(" "))}…”</label>`).join("")}</fieldset>`
+    : "";
+  return `<form class="caps" method="post" action="${action}">
+<label class="check"><input type="checkbox" name="show"${c.show ? " checked" : ""}> Show captions</label>
+<div class="row3"><label class="f" for="cap-size">Size${select("size", c.size, Object.entries(CAPTION_SIZE_NAMES))}</label><label class="f" for="cap-place">Where${select("place", c.place, Object.entries(CAPTION_PLACE_NAMES))}</label><label class="f" for="cap-case">Letters${select("case", c.case, [["normal", "As written"], ["upper", "ALL CAPS"]])}</label></div>
+<div class="row3"><label class="check"><input type="checkbox" name="own_color"${c.color ? " checked" : ""}> My own highlight colour</label><label class="f" for="cap-color">Colour<input type="color" id="cap-color" name="color" value="${esc(c.color ?? accent)}"></label></div>
+${hide}<button type="submit" class="btn ghost sm">${esc(submit)}</button></form>`;
+}
+
+/** The storyboard, for the customer: every part's line, its painted shots and on-screen text, and the captions, then the approval. */
+function storyboardHtml(order: Order, sb: StoryboardView, accent: string): string {
+  const base = `/w/${esc(order.token)}`;
+  const part = (b: Script["beats"][number], i: number) => {
+    const shots = ((b.visual as ThBeatVisual).shots ?? []) as Shot[];
+    const words = voiceTokens(b.voiceover);
+    const at = (n: number, chosen: string | undefined) =>
+      n === 1 ? "" : `<label class="f" for="at-${esc(b.id)}-${n}">Cuts in on the word<select id="at-${esc(b.id)}-${n}" name="at_${n}"><option value="">Choose…</option>${words.map((w) => `<option value="${esc(w)}"${w === chosen ? " selected" : ""}>${esc(w)}</option>`).join("")}</select></label>`;
+    const host = (n: number, on: boolean) => (sb.hostOnScreen ? `<label class="check"><input type="checkbox" name="host_${n}"${on ? " checked" : ""}> The host is in this shot</label>` : "");
+    const slot = (n: number) => {
+      const s = shots[n - 1];
+      if (s) {
+        const id = `${b.id}-${n}`;
+        return `<div class="shot"><img src="${base}/shot/${esc(id)}?v=${esc(sb.pictures[id] ?? "")}" alt="Shot ${n}: ${esc(s.show)}" loading="lazy"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${at(n, s.at)}${shots.length > 1 ? `<label class="check"><input type="checkbox" name="remove_${n}"> Remove this shot</label>` : ""}</div>`;
+      }
+      if (n !== shots.length + 1) return "";
+      return `<details class="shot add"><summary>Add a shot</summary><label class="f" for="show-${esc(b.id)}-${n}">What we see<textarea id="show-${esc(b.id)}-${n}" name="show_${n}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(n, false)}${at(n, undefined)}</details>`;
+    };
+    return `<form class="card part" method="post" action="${base}/storyboard/beat"><input type="hidden" name="beat" value="${esc(b.id)}">
+<div class="top-line"><h3>Part ${i + 1}</h3></div><p class="said1"><span>Said</span>${esc(b.voiceover)}</p>
+<div class="shots">${[1, 2, 3].map(slot).join("")}</div>
+<label class="f" for="text-${esc(b.id)}">On-screen text <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(b.id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label>
+<div class="row"><button type="submit" class="btn ghost sm">Save this part</button><small class="muted">A changed or added shot is painted again: ${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left for this video.</small></div></form>`;
+  };
+  return `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. Change what a shot shows${sb.hostOnScreen ? ", whether the host is in it," : ""} or the on-screen text, add or remove shots, and set the captions. Nothing is voiced until you approve.</p></div>
+${sb.script.beats.map(part).join("")}
+<div class="card"><h2>Captions</h2><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, sb.captions, accent, sb.script.beats, "Save captions")}</div>
+<div class="card"><div class="decide" role="group" aria-label="Your decision on the storyboard"><form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Approve the storyboard</button></form></div><small class="muted">Approving voices and renders the video exactly like this.</small></div>`;
+}
+
 /** What stands where the first video will be, until it is there. */
 function videoNotice(order: Order, facts: Script | null): string {
   const v = order.video;
   if (v?.state === "facts" && facts) return factsHtml(order, facts);
   if (v?.state === "writing")
     return `<section class="notice" id="next"><h2>Your first video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "Your brand kit is approved and the script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p></section>`;
+  if (v?.state === "painting") return `<section class="notice" id="next"><h2>The shots of your first video are being painted</h2><p class="muted">Its facts are approved. When the pictures are ready you check them, and the captions, before anything is voiced.</p></section>`;
+  if (v?.state === "storyboard") return `<section class="notice" id="next"><h2>Check your storyboard</h2><p class="muted">Every shot of your first video is painted. Look at them, change what you want, then approve the storyboard to make the video.</p><a class="btn sm" href="/w/${esc(order.token)}?view=new">Open the storyboard</a></section>`;
   if (v?.state === "making") return `<section class="notice" id="next"><h2>Your first video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and the video appears here by itself.</p></section>`;
   if (v?.state === "failed")
     return `<section class="notice" id="next" role="alert"><h2>Your first video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}, and it has to be started again on our side. Nothing is lost. Quote <b>${esc(order.id)}</b> if you contact us.</p></section>`;
@@ -657,6 +727,8 @@ function nowHtml(order: Order, dash: Dashboard, facts: Script | null, made: numb
   const title = (t: string) => `<section class="card" id="now">${t}</section>`;
   if (v?.state === "facts" && facts) return factsHtml(order, facts, made === 0).replace('class="notice" id="facts"', 'class="card" id="now"');
   if (v?.state === "writing") return title(`<h2>A video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "The script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p>`);
+  if (v?.state === "painting") return title(`<h2>Shots are being painted</h2><p class="muted">When they are ready you check them, and the captions, before anything is voiced.</p>`);
+  if (v?.state === "storyboard") return title(`<h2>Your storyboard is ready</h2><p class="muted">Every shot is painted. Look at them, change what you want, then approve to make the video.</p><a class="btn sm" href="${newVideo}">Open the storyboard</a>`);
   if (v?.state === "making") return title(`<h2>A video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and it appears in Videos by itself.</p>`);
   if (v?.state === "failed")
     return title(`<h2>The last video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}. Nothing is lost: start another one, and quote <b>${esc(order.id)}</b> if you contact us about it.</p><a class="btn sm" href="${newVideo}">New video</a>`);
@@ -729,17 +801,22 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
   let main: string;
   if (view === "new") {
     const v = order.video;
-    const step = v?.state === "writing" || v?.state === "facts" ? 1 : v?.state === "making" ? 2 : 0;
+    // Looks with a painted world stop at a storyboard between the facts and the video.
+    const boards = dash.hostOnScreen !== null;
+    const step = v?.state === "writing" || v?.state === "facts" ? 1 : v?.state === "painting" || v?.state === "storyboard" ? 2 : v?.state === "making" ? (boards ? 3 : 2) : 0;
     const steps: [string, string][] = [
       ["Choose a topic", step === 0 ? "Now" : "Done"],
       ["Check the facts", step === 1 ? (v?.state === "facts" ? "Your turn" : "Being written") : step > 1 ? "Approved" : "Next"],
-      ["Get the video", step === 2 ? "Being made" : "Last"],
+      ...(boards ? [["Storyboard", step === 2 ? (v?.state === "storyboard" ? "Your turn" : "Being painted") : step > 2 ? "Approved" : "Next"] as [string, string]] : []),
+      ["Get the video", step === (boards ? 3 : 2) ? "Being made" : "Last"],
     ];
-    const track = `<ol class="track three">${steps.map(([name, note], i) => `<li class="${i < step ? "done" : i === step ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
+    const track = `<ol class="track ${boards ? "four" : "three"}">${steps.map(([name, note], i) => `<li class="${i < step ? "done" : i === step ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
     let body: string;
     if (step === 1 && v?.state === "facts" && facts) body = factsHtml(order, facts, made === 0).replace('class="notice" id="facts"', 'class="card" id="facts"');
     else if (step === 1) body = `<div class="card"><h2>The script is being written</h2><p class="muted">${v?.rounds ? "It is being written again with your change." : "This takes several minutes."} Its facts appear here for you to check before anything is voiced or drawn. This page updates by itself.</p></div>`;
-    else if (step === 2) body = `<div class="card"><h2>Your video is being made</h2><p class="muted">The facts are approved. It is being voiced, drawn and checked, which takes several minutes. It appears here and in Videos by itself.</p></div>`;
+    else if (v?.state === "storyboard" && dash.storyboard) body = storyboardHtml(order, dash.storyboard, accentOf(kit));
+    else if (v?.state === "painting") body = `<div class="card"><h2>The shots are being painted</h2><p class="muted">This takes a minute or two. Then you check every shot and the captions here before anything is voiced. This page updates by itself.</p></div>`;
+    else if (step > 0) body = `<div class="card"><h2>Your video is being made</h2><p class="muted">${boards ? "The storyboard is approved." : "The facts are approved."} It is being voiced, drawn and checked, which takes several minutes. It appears here and in Videos by itself.</p></div>`;
     else {
       const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
       const ready = last ? `<div class="card"><h2>Your new video is ready</h2>${tiles([last])}<p class="muted">Download it and post it. Make the next one below.</p></div>` : "";
@@ -774,7 +851,12 @@ ${batches.map(batch).join("")}
   } else if (view === "settings") {
     main = `<div class="head"><h1>Settings</h1></div>
 <div class="card"><h2>Channel</h2><p class="display" style="font-size:26px">${esc(kit.name)}</p><p class="muted">${esc(kit.promise)}</p></div>
-<div class="card"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p></div>
+<div class="card"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${
+      dash.hostOnScreen === null
+        ? ""
+        : `<p class="muted">${dash.hostOnScreen ? "The host appears in the shots that call for it. Take it off screen and the voice narrates every video on its own." : "The host is off screen: the voice narrates every video. Put it back to have it appear in the shots that call for it."}</p><form method="post" action="${base}/host"><input type="hidden" name="on" value="${dash.hostOnScreen ? "0" : "1"}"><button type="submit" class="btn ghost sm"${busy ? ` disabled title="A video is under way"` : ""}>${dash.hostOnScreen ? "Take the host off screen" : "Put the host on screen"}</button></form>`
+    }</div>
+<div class="card"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
 <div class="card"><h2>Look</h2>${swatches(kit)}<p class="muted">${esc(kit.series.visual_style)}</p></div>
 <div class="card"><h2>Format</h2><p class="muted">${esc(kit.series.format)}</p></div>
 <div class="card"><h2>${dash.paused ? "Paused" : "Making videos"}</h2><p class="muted">${dash.paused ? "No new videos are made while the channel is paused. Nothing is lost." : "Pausing stops new videos. Nothing is lost, and you can resume at any time."}</p><form method="post" action="${base}/channel"><input type="hidden" name="status" value="${dash.paused ? "active" : "paused"}"><button type="submit" class="btn ${dash.paused ? "" : "ghost "}sm">${dash.paused ? "Resume the channel" : "Pause the channel"}</button></form></div>`;
