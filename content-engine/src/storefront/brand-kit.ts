@@ -115,7 +115,8 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
 /** The QA agent review's requested fixes, when the review did not pass. None when there is no review. */
 function reviewNotes(path: string): string[] {
   if (!existsSync(path)) return [];
-  const r = readJson<{ overall: string; tone: { pass: boolean }; visuals: { pass: boolean }; character: { pass: boolean }; banned_topics: { pass: boolean }; fixes: string[] }>(path);
+  const r = readJson<{ overall: string; tone: { pass: boolean }; visuals: { pass: boolean }; character: { pass: boolean }; banned_topics: { pass: boolean; notes: string }; fixes: string[] }>(path);
   const pass = r.overall === "pass" && r.tone.pass && r.visuals.pass && r.character.pass && r.banned_topics.pass;
-  return pass ? [] : r.fixes;
+  // A banned-topic concern comes first: the customer decides whether the video is posted.
+  return pass ? [] : [...(r.banned_topics.pass ? [] : [`Banned topics: ${r.banned_topics.notes}`]), ...r.fixes];
 }

@@ -1091,6 +1091,19 @@ describe("storefront: automatic builds", () => {
       assert.match(await page("settings"), /The host is off screen[\s\S]*Put the host on screen/);
       await post("host", { on: "1" });
       assert.equal(theme().host, undefined);
+
+      // The review's reading of banned topics is a note on the finished video (first), not a reason to stop it.
+      writeJson(join(dir, "qa-review.json"), { render_hash: "x", tone: { pass: true, notes: "" }, banned_topics: { pass: false, notes: "A glass poured until it spills reads as excess." }, visuals: { pass: true, notes: "" }, character: { pass: true, notes: "" }, overall: "fail", fixes: ["Show a modest pour."], learnings: [] });
+      assert.match(await page("videos"), /Review notes \(2\)[\s\S]*Banned topics: A glass poured until it spills reads as excess\.[\s\S]*Show a modest pour\./);
+
+      // Videos that failed made nothing, so they don't use up the day; finished ones do.
+      const today = (n: number, status: "in-progress" | "done") =>
+        writeJson(join(episodesDir(loadChannel(built, id)), `today-${n}`, "episode.json"), { id: `today-${n}`, channel: id, series: "inside", idea: `today-${n}`, title: "x", created: new Date().toISOString(), updated: new Date().toISOString(), status, steps: {} });
+      for (const n of [1, 2, 3]) today(n, "in-progress");
+      assert.equal(builder.dashboard(store.byId(id)!).videosLeftToday, 3, "three failed videos today leave all three");
+      for (const n of [1, 2, 3]) today(n, "done");
+      assert.equal(builder.dashboard(store.byId(id)!).videosLeftToday, 0);
+      assert.match(await (await post("make", { idea: "a-zipper" })).text(), /made 3 videos today/);
     } finally {
       boards = false;
       site.close();

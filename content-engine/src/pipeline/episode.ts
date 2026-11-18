@@ -61,7 +61,7 @@ export interface MakeEpisodeOptions {
   /** Steps to run again even if already done (e.g. ["voice", "render"]). */
   redo?: StepName[];
   log?: (line: string) => void;
-  /** false: the QA agent review's findings (except banned topics) are notes and don't stop the episode. Default true. */
+  /** false: the QA agent review's findings (its reading of banned topics too) are notes and don't stop the episode; the automated checks still do. Default true. */
   reviewBlocks?: boolean;
   /**
    * Stop after the painted shots for a person to approve the storyboard (looks with a world only); its caption

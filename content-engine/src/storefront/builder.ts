@@ -421,7 +421,13 @@ export class Builder {
     const { channel } = this.dashboardChannel(order);
     if (videoUnderWay(order) || this.waiting.has(order.id)) throw new CustomerError("A video is already under way. Start the next one when it is finished.");
     if (channelStatus(channel) !== "active") throw new CustomerError("The channel is paused. Resume it to make videos.");
-    if (countToday(listEpisodes(channel).map((e) => e.created)) >= VIDEOS_PER_DAY) throw new CustomerError(`This channel has started ${VIDEOS_PER_DAY} videos today. Make the next one tomorrow.`);
+    if (this.videosToday(order, channel) >= VIDEOS_PER_DAY) throw new CustomerError(`This channel has made ${VIDEOS_PER_DAY} videos today. Make the next one tomorrow.`);
+  }
+
+  /** Videos of today that use up the daily limit: finished ones and the one under way. One that failed made nothing, so it doesn't count. */
+  private videosToday(order: Order, channel: Channel): number {
+    const current = videoUnderWay(order) ? order.video?.episode : undefined;
+    return countToday(listEpisodes(channel).filter((e) => e.status === "done" || e.id === current).map((e) => e.created));
   }
 
   /** Everything the channel's dashboard shows and offers. Throws when the channel is not ready. */
@@ -431,7 +437,7 @@ export class Builder {
       ideas: this.ideas(order),
       proposals: this.proposals(order),
       paused: channelStatus(channel) !== "active",
-      videosLeftToday: Math.max(0, VIDEOS_PER_DAY - countToday(listEpisodes(channel).map((e) => e.created))),
+      videosLeftToday: Math.max(0, VIDEOS_PER_DAY - this.videosToday(order, channel)),
       suggestsLeftToday: Math.max(0, SUGGESTS_PER_DAY - countToday(order.suggest?.runs ?? [])),
       hostOnScreen: this.hostOnScreen(channel),
       captions: this.channelCaptions(order),

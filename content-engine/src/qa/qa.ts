@@ -40,8 +40,8 @@ export interface QaReview {
 }
 
 /**
- * `reviewBlocks: false`: the agent review's tone, visual and character findings come back as `notes` and don't fail
- * QA. Banned topics and the automated checks still do.
+ * `reviewBlocks: false`: the agent review's findings (tone, visuals, character, and its reading of banned topics) come
+ * back as `notes` and don't fail QA. The automated checks still do, the banned-topic keyword screen among them.
  */
 export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts: { llm: LlmProviderName; log: (l: string) => void; fresh: boolean; reviewBlocks?: boolean }): Promise<{ passed: boolean; summary: string; failures: string[]; notes: string[] }> {
   const log = opts.log;
@@ -68,9 +68,13 @@ export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts:
   }
   const reviewPass = review.overall === "pass" && review.tone.pass && review.banned_topics.pass && review.visuals.pass && review.character.pass;
   const reviewBlocks = opts.reviewBlocks ?? true;
-  const reviewFails = reviewBlocks ? !reviewPass : !review.banned_topics.pass;
+  const reviewFails = reviewBlocks && !reviewPass;
   const failures = [...checks.filter((c) => !c.pass).map((c) => `${c.label}: ${c.detail}`), ...(reviewFails ? ["Agent review: " + (review.fixes.join("; ") || "failed")] : [])];
-  const notes = !reviewPass && !reviewFails ? (review.fixes.length ? review.fixes : ["The agent review did not pass; see qa-report.md."]) : [];
+  // Not blocking: every finding is a note for the person, a banned-topic concern first, since they decide what is posted.
+  const notes =
+    !reviewPass && !reviewFails
+      ? [...(review.banned_topics.pass ? [] : [`Banned topics: ${review.banned_topics.notes}`]), ...(review.fixes.length ? review.fixes : ["The agent review did not pass; see qa-report.md."])]
+      : [];
   const passed = failures.length === 0;
   writeReport(ws, ep, script, checks, review, frames, passed, notes.length > 0);
   if (passed) {
