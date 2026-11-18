@@ -226,6 +226,7 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .ideas .text{font:600 15px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.ideas .text:hover{color:var(--ink)}
 .fact{margin:8px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}.fact span{display:inline-block;font:600 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-right:8px}.fact .src{font-size:14px;color:var(--muted);white-space:nowrap}a.src{color:var(--accent)}
 .rail a.create{background:var(--ink);color:var(--bg);font-weight:600;margin-bottom:10px}.rail a.create:hover,.rail a.create[aria-current]{background:var(--ink);color:var(--bg);opacity:.88}
+.review{font-size:14px}.review summary{cursor:pointer;color:var(--warn);font-weight:600}.review ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}.review p{margin:6px 0 0;font-size:13.5px}
 .track.three{grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;margin:0;padding:0}
 form.own{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;width:100%}form.own label{flex:1 1 260px}
 @media(max-width:820px){.shell{grid-template-columns:1fr}.rail{position:sticky;top:60px;z-index:15;height:auto;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);background:var(--bg);padding:8px 12px;gap:4px}.rail a{flex:none;padding:9px 12px}.rail b{margin-left:4px}.cbar .mine{display:none}.pane{padding-top:22px}}
@@ -681,6 +682,12 @@ function factSource(source: string): string {
   return `<a class="src" href="${esc(source)}" target="_blank" rel="noopener noreferrer nofollow">Check it at ${esc(new URL(source).hostname.replace(/^www\./, ""))}</a>`;
 }
 
+/** The QA review's notes on a finished video: shown, not blocking. */
+function reviewHtml(notes: string[]): string {
+  if (!notes.length) return "";
+  return `<details class="review"><summary>Review notes (${notes.length})</summary><p class="muted">Our automatic review would change these. The video is finished; they are for the next one.</p><ul>${notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></details>`;
+}
+
 /** An idea's title, angle and the fact it turns on, with where to check that fact. */
 function ideaBody(i: Idea): string {
   const fact = i.fields.fact;
@@ -715,7 +722,7 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
     `<form method="post" action="${base}/proposal"><input type="hidden" name="draft" value="${esc(draft)}">${ideaId ? `<input type="hidden" name="idea" value="${esc(ideaId)}">` : ""}<input type="hidden" name="decision" value="${d}"><button type="submit" class="${cls}">${label}</button></form>`;
   const proposal = (p: Dashboard["proposals"][number]) => `<li>${ideaBody(p.idea)}${decide(p.draft, p.idea.id, "keep", "Keep", "btn sm")}${decide(p.draft, p.idea.id, "skip", "Skip", "text")}</li>`;
   const tiles = (eps: BrandKit["episodes"]) =>
-    `<div class="vids">${eps.map((e) => `<figure><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}"></video><figcaption>${esc(e.title)}</figcaption><a href="${base}/video/${esc(e.id)}?download=1">Download</a></figure>`).join("")}</div>`;
+    `<div class="vids">${eps.map((e) => `<figure><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}"></video><figcaption>${esc(e.title)}</figcaption><a href="${base}/video/${esc(e.id)}?download=1">Download</a>${reviewHtml(e.review)}</figure>`).join("")}</div>`;
   const newest = [...kit.episodes].reverse();
   const blockedNote = blocked && dash.ideas.length ? `<p class="muted" style="font-size:14.5px">${esc(blocked)}: ${esc(blockedWhy.charAt(0).toLowerCase() + blockedWhy.slice(1))}</p>` : "";
 

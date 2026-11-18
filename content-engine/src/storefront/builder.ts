@@ -80,7 +80,7 @@ const claudeVideo: VideoMaker = async (ws, slug, series, pick) => {
   const current = pick.episode ?? (pick.idea ? undefined : open()?.id);
   const rewrite = current !== undefined && readFactcheck(join(episodesDir(loadChannel(ws, slug)), current))?.status === "changes-requested";
   try {
-    const ep = await makeEpisode(ws, { channel: slug, series, llm: "anthropic", ...(current ? { episode: current } : pick.idea ? { idea: pick.idea } : {}), redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
+    const ep = await makeEpisode(ws, { channel: slug, series, llm: "anthropic", reviewBlocks: false, ...(current ? { episode: current } : pick.idea ? { idea: pick.idea } : {}), redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
     return { episode: ep.state.id, state: "done" };
   } catch (err) {
     if (!(err instanceof PipelinePause)) throw err;

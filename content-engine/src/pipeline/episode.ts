@@ -60,6 +60,8 @@ export interface MakeEpisodeOptions {
   /** Steps to run again even if already done (e.g. ["voice", "render"]). */
   redo?: StepName[];
   log?: (line: string) => void;
+  /** false: the QA agent review's findings (except banned topics) are notes and don't stop the episode. Default true. */
+  reviewBlocks?: boolean;
 }
 
 export function episodesDir(channel: Channel): string {
@@ -208,7 +210,8 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
 
   // 6. QA
   const { runQa } = await import("../qa/qa.ts");
-  const qa = await runQa(ws, ep, script, { llm, log, fresh: render.regenerated || redo.has("qa") });
+  const qa = await runQa(ws, ep, script, { llm, log, fresh: render.regenerated || redo.has("qa"), ...(opts.reviewBlocks === false ? { reviewBlocks: false } : {}) });
+  for (const n of qa.notes) log(`  ↳ review note (not blocking): ${n}`);
   mark(ep, "qa", qa.passed ? "done" : "failed", qa.summary);
   if (qa.passed) {
     ep.state.status = "done";

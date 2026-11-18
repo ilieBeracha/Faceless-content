@@ -542,6 +542,8 @@ describe("storefront: automatic builds", () => {
     const file = videoPath(to, slug, id);
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, Buffer.from("0123456789"));
+    // The video of a chosen idea passes with review notes that don't block it (as the real pipeline does for the storefront).
+    if (pick.idea) writeJson(join(dir, "qa-review.json"), { render_hash: "x", tone: { pass: true, notes: "" }, banned_topics: { pass: true, notes: "" }, visuals: { pass: false, notes: "" }, character: { pass: true, notes: "" }, overall: "fail", fixes: ["Move the caption above the <label>"], learnings: [] });
     state("done");
     return { episode: id, state: "done" };
   };
@@ -895,7 +897,7 @@ describe("storefront: automatic builds", () => {
       assert.equal((await post("facts", { decision: "approve" })).headers.get("location"), `${link}?view=new`);
       await builder.idle();
       assert.equal(store.byId(id)?.video?.state, "done");
-      assert.match(await page("new"), /Your new video is ready[\s\S]*<video[\s\S]*Pick one of your ideas[\s\S]*Or give your own topic/);
+      assert.match(await page("new"), /Your new video is ready[\s\S]*<video[\s\S]*Review notes \(1\)[\s\S]*Move the caption above the &lt;label&gt;[\s\S]*Pick one of your ideas[\s\S]*Or give your own topic/);
       assert.equal((await page("videos")).match(/<video /g)?.length, 2, "both videos are in Videos");
 
       // Not wanted: the idea is marked rejected, never deleted.

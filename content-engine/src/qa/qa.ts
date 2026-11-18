@@ -38,7 +38,11 @@ export interface QaReview {
   learnings: string[];
 }
 
-export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts: { llm: LlmProviderName; log: (l: string) => void; fresh: boolean }): Promise<{ passed: boolean; summary: string; failures: string[] }> {
+/**
+ * `reviewBlocks: false`: the agent review's tone, visual and character findings come back as `notes` and don't fail
+ * QA. Banned topics and the automated checks still do.
+ */
+export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts: { llm: LlmProviderName; log: (l: string) => void; fresh: boolean; reviewBlocks?: boolean }): Promise<{ passed: boolean; summary: string; failures: string[]; notes: string[] }> {
   const log = opts.log;
   const checks = automatedChecks(ws, ep, script);
   const renderHash = readJson<{ inputs_hash: string }>(join(ep.dir, "render.json")).inputs_hash;
@@ -62,14 +66,17 @@ export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts:
     bannedHits.detail += " — reviewed: false positive";
   }
   const reviewPass = review.overall === "pass" && review.tone.pass && review.banned_topics.pass && review.visuals.pass && review.character.pass;
-  const failures = [...checks.filter((c) => !c.pass).map((c) => `${c.label}: ${c.detail}`), ...(reviewPass ? [] : ["Agent review: " + (review.fixes.join("; ") || "failed")])];
+  const reviewBlocks = opts.reviewBlocks ?? true;
+  const reviewFails = reviewBlocks ? !reviewPass : !review.banned_topics.pass;
+  const failures = [...checks.filter((c) => !c.pass).map((c) => `${c.label}: ${c.detail}`), ...(reviewFails ? ["Agent review: " + (review.fixes.join("; ") || "failed")] : [])];
+  const notes = !reviewPass && !reviewFails ? (review.fixes.length ? review.fixes : ["The agent review did not pass; see qa-report.md."]) : [];
   const passed = failures.length === 0;
-  writeReport(ws, ep, script, checks, review, frames, passed);
+  writeReport(ws, ep, script, checks, review, frames, passed, notes.length > 0);
   if (passed) {
     writePublishMetadata(ws, ep, script);
     appendLearnings(ws, ep, script, review);
   }
-  return { passed, summary: passed ? "all checks passed" : `${failures.length} problem(s)`, failures };
+  return { passed, summary: passed ? (notes.length ? `passed, with ${notes.length} review note(s) that don't block` : "all checks passed") : `${failures.length} problem(s)`, failures, notes };
 }
 
 function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[] {
@@ -222,8 +229,8 @@ Be strict: a fail sends the episode back for fixes. Learnings are appended to th
   };
 }
 
-function writeReport(ws: Workspace, ep: EpisodeRef, script: Script, checks: Check[], review: QaReview | null, frames: string[], passed?: boolean): void {
-  const status = passed === undefined ? "PENDING REVIEW" : passed ? "PASS" : "FAIL";
+function writeReport(ws: Workspace, ep: EpisodeRef, script: Script, checks: Check[], review: QaReview | null, frames: string[], passed?: boolean, notesOnly = false): void {
+  const status = passed === undefined ? "PENDING REVIEW" : passed ? (notesOnly ? "PASS (the agent review's findings are notes, not blocking)" : "PASS") : "FAIL";
   const rows = checks.map((c) => `| ${c.pass ? "✅" : "❌"} | ${c.label} | ${c.detail.replace(/\|/g, "\\|")} |`).join("\n");
   const reviewRows = review
     ? (["tone", "banned_topics", "visuals", "character"] as const).map((k) => `| ${review[k].pass ? "✅" : "❌"} | ${k.replace("_", " ")} | ${review[k].notes.replace(/\|/g, "\\|")} |`).join("\n")

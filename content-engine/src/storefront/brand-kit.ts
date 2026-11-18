@@ -5,6 +5,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { loadChannel } from "../core/channels.ts";
+import { readJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { episodesDir, listEpisodes } from "../pipeline/episode.ts";
 
@@ -24,7 +25,8 @@ export interface BrandKit {
   font: string;
   host: { name: string; concept: string; look: string; personality: string[]; good_at: string[]; bad_at: string[]; catchphrases: string[]; voice: string };
   series: { name: string; format: string; visual_style: string; beats: { id: string; purpose: string }[] };
-  episodes: { id: string; title: string; frames: string[] }[];
+  /** `review`: what the QA agent review asked to change, when it didn't pass (shown as notes; it doesn't block storefront videos). */
+  episodes: { id: string; title: string; frames: string[]; review: string[] }[];
 }
 
 const str = (v: unknown): string => (typeof v === "string" ? v : v === undefined || v === null ? "" : String(v));
@@ -74,7 +76,7 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
       const all = existsSync(dir) ? readdirSync(dir).filter((f) => /^[\w.-]+\.jpg$/.test(f)).sort() : [];
       // Three frames spread across the video: near the start, the middle, near the end.
       const frames = all.length <= 3 ? all : [all[1], all[Math.floor(all.length / 2)], all[all.length - 2]];
-      return { id: e.id, title: e.title, frames };
+      return { id: e.id, title: e.title, frames, review: reviewNotes(join(episodesDir(channel), e.id, "qa-review.json")) };
     });
   return {
     slug,
@@ -108,4 +110,12 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
     },
     episodes,
   };
+}
+
+/** The QA agent review's requested fixes, when the review did not pass. None when there is no review. */
+function reviewNotes(path: string): string[] {
+  if (!existsSync(path)) return [];
+  const r = readJson<{ overall: string; tone: { pass: boolean }; visuals: { pass: boolean }; character: { pass: boolean }; banned_topics: { pass: boolean }; fixes: string[] }>(path);
+  const pass = r.overall === "pass" && r.tone.pass && r.visuals.pass && r.character.pass && r.banned_topics.pass;
+  return pass ? [] : r.fixes;
 }
