@@ -150,11 +150,22 @@ const claudeVideo: VideoMaker = async (ws, slug, series, pick, captions) => {
     return { episode: ep.state.id, state: "done" };
   } catch (err) {
     if (!(err instanceof PipelinePause)) throw err;
-    if (err.kind === "awaiting-approval" && err.gate === "factcheck") return { episode: current ?? open()!.id, state: "facts" };
-    if (err.kind === "awaiting-approval" && err.gate === "storyboard") return { episode: current ?? open()!.id, state: "storyboard" };
+    if (err.kind === "awaiting-approval" && err.gate === "factcheck") return { episode: current ?? pausedEpisode(ws, slug, series, pick), state: "facts" };
+    if (err.kind === "awaiting-approval" && err.gate === "storyboard") return { episode: current ?? pausedEpisode(ws, slug, series, pick), state: "storyboard" };
     throw new Error(err.lines.join(" "));
   }
 };
+
+/**
+ * The episode a new video stopped at: the unfinished one made for its idea (other unfinished episodes, such as one
+ * that failed earlier, are not it), or for the first video, which names no idea, the latest unfinished one.
+ */
+export function pausedEpisode(ws: Workspace, slug: string, series: string, pick: VideoPick): string {
+  const open = listEpisodes(loadChannel(ws, slug)).filter((e) => e.series === series && e.status !== "done" && (!pick.idea || e.idea === pick.idea));
+  const ep = open.at(-1);
+  if (!ep) throw new Error(`Channel "${slug}" has no unfinished episode${pick.idea ? ` for idea "${pick.idea}"` : ""} in series "${series}".`);
+  return ep.id;
+}
 
 /** The engine's brainstorm, with the Claude API (paid) proposing five ideas. */
 const claudeSuggest: Suggester = async (ws, slug, series, direction) => {

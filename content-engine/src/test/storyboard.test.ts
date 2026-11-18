@@ -2,15 +2,17 @@ import assert from "node:assert/strict";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it } from "node:test";
-import { readJson } from "../core/util.ts";
+import { readJson, writeJson } from "../core/util.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import { approveStoryboard, newStoryboard, readStoryboard, setCaptions, storyboardApproved, type CaptionSettings } from "../pipeline/storyboard.ts";
 import { checkShots, parseTheme, showsHost } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
-import { CustomerError, parseBeatForm, parseCaptionForm } from "../storefront/builder.ts";
+import { CustomerError, parseBeatForm, parseCaptionForm, pausedEpisode } from "../storefront/builder.ts";
+import { loadChannel } from "../core/channels.ts";
+import { episodesDir } from "../pipeline/episode.ts";
 import { NO_HOST, OWN_LOOK, loadCatalog } from "../storefront/catalog.ts";
 import { validateIntake } from "../storefront/store.ts";
-import { tempWorkspace } from "./helpers.ts";
+import { makeChannel, tempWorkspace } from "./helpers.ts";
 
 const world = { description: "A very simple cartoon town: flat shapes, thick black outlines." };
 const look = (w: Record<string, unknown>) => parseTheme({ ...readJson<Record<string, unknown>>(join(ENGINE_DIR, "themes", "blueprint.json")), world: w }, "t.json");
@@ -89,6 +91,20 @@ describe("storefront: storyboard forms", () => {
     assert.deepEqual(parseCaptionForm({ show: "on", size: "small", place: "middle", case: "upper", color: "#123456", hide_intro: "on" }), { show: true, size: "small", place: "middle", case: "upper", hide_beats: ["intro"] });
     assert.deepEqual(parseCaptionForm({ size: "large", place: "bottom", case: "normal", own_color: "on", color: "#ABCDEF" }), { show: false, size: "large", place: "bottom", case: "normal", color: "#ABCDEF", hide_beats: [] });
     assert.throws(() => parseCaptionForm({ show: "on", size: "large", place: "bottom", case: "normal", own_color: "on", color: "red" }), /hex colour/);
+  });
+});
+
+describe("storefront: the episode a new video is at", () => {
+  it("is the one made for its idea, not an earlier unfinished one that sorts after it", () => {
+    const ws = tempWorkspace();
+    makeChannel(ws, "wines");
+    const episode = (id: string, idea: string) =>
+      writeJson(join(episodesDir(loadChannel(ws, "wines")), id, "episode.json"), { id, channel: "wines", series: "inside", idea, title: idea, created: "2026-11-18T10:00:00.000Z", updated: "2026-11-18T10:00:00.000Z", status: "in-progress", steps: {} });
+    episode("2026-11-18-wine-legs", "wine-legs"); // an earlier video that failed and was left unfinished
+    episode("2026-11-18-screw-caps", "screw-caps");
+    assert.equal(pausedEpisode(ws, "wines", "inside", { idea: "screw-caps" }), "2026-11-18-screw-caps");
+    assert.equal(pausedEpisode(ws, "wines", "inside", {}), "2026-11-18-wine-legs", "the first video names no idea: the latest unfinished one");
+    assert.throws(() => pausedEpisode(ws, "wines", "inside", { idea: "corks" }), /no unfinished episode for idea "corks"/);
   });
 });
 
