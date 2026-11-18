@@ -483,7 +483,7 @@ export function createPage(product: string, catalog: Catalog, values: Fields = {
     `<section><div class="head"><h1>Design your channel.</h1><p class="lede">Four short steps. The phone shows your host in your look as you build them.</p></div></section>
 <section class="create">
 <form class="wizard" method="post" action="/intake" data-wizard data-rigs="${esc(JSON.stringify(rigs))}" data-faces="${esc(JSON.stringify(FACES))}">
-<div class="progress"><p class="label" data-count>Step 1 of 4</p><div class="tools"><i></i></div></div>${any}
+<div class="progress"><p class="label" data-count>Step 1 of 4</p><div class="bar"><i></i></div></div>${any}
 <fieldset class="step"><legend>What is it about?</legend>
 ${field("idea", values, errors, "area", "One or two sentences. What is every video about?", "Surprising facts about the technology we use every day")}
 ${field("audience", values, errors, "text", "Who watches, and roughly how old they are.", "Curious teens and adults")}</fieldset>

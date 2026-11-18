@@ -507,7 +507,11 @@ describe("storefront: sign-in and accounts", () => {
     assert.match(await (await b.go("/create")).text(), /Why bread rises twice/);
     assert.match((await b.go("/intake", form({ ...GOOD, idea: "Why bread rises twice" }))).headers.get("location")!, /^\/w\//);
     assert.doesNotMatch(await (await b.go("/account")).text(), /Your saved design/);
-    assert.match(await (await b.go("/create")).text(), /Save for later/);
+    const create = await (await b.go("/create")).text();
+    assert.match(create, /Save for later/);
+    // Everything the step-by-step script (assets/app.js) looks up on load is on the page; without one, it stops and the form can't be sent.
+    for (const [needed, found] of [["the wizard form", /<form[^>]*data-wizard/], ["the steps", /class="step"/], ["the progress bar", /class="bar"><i><\/i>/], ["the step count", /data-count/], ["Back", /data-back/], ["Continue", /data-next/], ["Create", /data-submit/], ["the phone", /data-frame/], ["the host picture", /data-host-img/]] as const)
+      assert.match(create, found, `the create page has ${needed}`);
   });
 });
 
