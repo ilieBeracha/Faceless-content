@@ -43,8 +43,8 @@ describe("video length, estimated before the voice exists", () => {
 
   it("adds the pauses the voice makes at sentence ends and clause breaks, by the voice's own settings", () => {
     const line = "Swirl. A film climbs, then falls — slowly.";
-    assert.ok(Math.abs(pauseSeconds(wine, line) - (2 * 0.5 + 2 * 0.15)) < 1e-9);
-    assert.ok(Math.abs(pauseSeconds(kokoro(1), line) - (2 * 0.25 + 2 * 0.1)) < 1e-9, "a voice without pause settings gets the voice step's defaults");
+    assert.ok(Math.abs(pauseSeconds(tempWorkspace(), wine, line) - (2 * 0.5 + 2 * 0.15)) < 1e-9);
+    assert.ok(Math.abs(pauseSeconds(tempWorkspace(), kokoro(1), line) - (2 * 0.25 + 2 * 0.1)) < 1e-9, "a voice without pause settings gets the voice step's defaults");
     assert.ok(Math.abs(speechSeconds(tempWorkspace(), wine, line) - (7 / (WORDS_PER_SECOND * 0.92) + 1.3)) < 1e-9);
   });
 
@@ -54,6 +54,21 @@ describe("video length, estimated before the voice exists", () => {
     assert.ok(wps < budgetWordsPerSecond(ws, kokoro(1)));
     const most = Math.round((45 * (1 - LENGTH_MARGIN) - voiceOverhead(ws, 1)) * wps);
     assert.ok(most < 103, `budget tops out at ${most} words`);
+  });
+
+  it("takes a hosted voice at its own pace: its measured rate with pauses in it, and a shorter hook for a slower voice", () => {
+    const ws = tempWorkspace();
+    const george = { voice: { provider: "elevenlabs", voice_id: "George", speed: 1 } };
+    const pace = ws.config.voice.providers.elevenlabs;
+    const line = "Swirl. A film climbs, then falls — slowly.";
+    assert.equal(pauseSeconds(ws, george, line), 0, "its pauses are its own, already in its rate");
+    assert.ok(Math.abs(speechSeconds(ws, george, line) - 7 / pace.words_per_second!) < 1e-9);
+    assert.equal(budgetWordsPerSecond(ws, george), pace.words_per_second);
+    const room = ws.config.hook.hook_line_ends_by_seconds - ws.config.audio.lead_in_seconds;
+    assert.deepEqual(hookLimit(ws, george), { unit: "syllables", max: Math.floor(room / pace.seconds_per_syllable!) });
+    assert.ok(hookLimit(ws, george).max < hookLimit(ws, kokoro(1)).max, "a slower voice fits fewer syllables in the hook");
+    const said = hookTiming(ws, george, "Rosé isn't half and half.");
+    assert.ok(Math.abs(said.seconds - (ws.config.audio.lead_in_seconds + said.count * pace.seconds_per_syllable!)) < 1e-9, "the hook is timed at the voice's own pace, whatever the character's speed says");
   });
 
   it("voices one speaker's consecutive beats as one turn, with a gap only between turns", () => {

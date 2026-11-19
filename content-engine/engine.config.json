@@ -49,6 +49,15 @@
           "soundfile==0.14.0"
         ]
       },
+      "elevenlabs": {
+        "kind": "api",
+        "cost": "paid: about $0.08 per 1,000 characters through fal.ai (about $0.05 a video); needs FAL_KEY",
+        "license": "ElevenLabs and fal.ai terms",
+        "endpoint": "elevenlabs/tts/eleven-v4",
+        "words_per_second": 2.65,
+        "seconds_per_syllable": 0.32,
+        "$comment": "A hosted voice with natural phrasing; voice_id is an ElevenLabs voice name (George, Daniel, …). It sets its own pace and pauses: a character's speed and pause settings are not used. The two rates were measured on one 42 s recording (2026-11-19): words a second with its pauses, and its slowest sentence per syllable, for the hook."
+      },
       "veo": {
         "kind": "api",
         "cost": "included in the Veo clip price",

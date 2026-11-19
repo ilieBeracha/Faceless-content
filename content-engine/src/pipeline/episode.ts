@@ -337,6 +337,11 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   const lo = Math.round((min * (1 + LENGTH_MARGIN) - overhead) * wps);
   const hi = Math.round((max * (1 - LENGTH_MARGIN) - overhead) * wps);
   const hook = hookLimit(ws, speaker.data);
+  // A hosted voice sets its own pace and pauses; Kokoro's pauses are the character's settings.
+  const ownPaced = ws.config.voice.providers[String((speaker.data.voice as { provider?: string } | undefined)?.provider)]?.words_per_second !== undefined;
+  const lengthNote = ownPaced
+    ? `In ${speaker.name}'s voice, with its natural pauses, that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s). The check after you write measures this exactly.`
+    : `At ${speaker.name}'s voice speed, with its pauses, that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s). Every sentence end adds a ${(voice.sentence_pause ?? DEFAULT_SENTENCE_PAUSE).toFixed(2)}s pause and every comma or dash ${(voice.clause_pause ?? DEFAULT_CLAUSE_PAUSE).toFixed(2)}s, so many short sentences fit fewer words. The check after you write measures this exactly.`;
   const banned = ((ch.doc.data.banned_topics as string[]) ?? []).join("; ");
 
   const instructions = `
@@ -345,7 +350,7 @@ Write the script for the idea **"${idea.title}"** (\`${idea.id}\`) as an episode
 Follow \`skills/${series.skills.script}/SKILL.md\` exactly. In particular:
 
 1. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
-2. **Length.** The series runs ${min}–${max}s. At ${speaker.name}'s voice speed, with its pauses, that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s). Every sentence end adds a ${(voice.sentence_pause ?? DEFAULT_SENTENCE_PAUSE).toFixed(2)}s pause and every comma or dash ${(voice.clause_pause ?? DEFAULT_CLAUSE_PAUSE).toFixed(2)}s, so many short sentences fit fewer words. The check after you write measures this exactly.
+2. **Length.** The series runs ${min}–${max}s. ${lengthNote}
 3. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.
 4. **Voice.** A full stop ends a thought: the voice drops its pitch and pauses there, so never split one phrase across sentences ("You think all wine improves. With time." → "You think all wine gets better with time?"). Join fragments with a comma, a dash or "…". Write the way the character in this channel talks (personality, vocabulary, catchphrases from its file — a catchphrase at most once, where it fits). Audience: ${JSON.stringify((ch.doc.data.audience as { who?: string })?.who ?? "")}.
 5. **Facts.** Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it. A person approves this list before anything renders.

@@ -96,11 +96,22 @@ export function syllables(text: string): number {
   return text.split(/[\s-]+/).reduce((n, w) => n + wordSyllables(w), 0);
 }
 
+/**
+ * A hosted voice that sets its own pace and pauses (its provider's entry in engine.config.json says how fast it
+ * speaks): the character's speed and pause settings don't apply to it. Null for Kokoro and the video model.
+ */
+function ownPace(ws: Workspace, voice: CharacterVoice | undefined): { words_per_second: number; seconds_per_syllable: number } | null {
+  const p = voice ? ws.config.voice.providers[voice.provider] : undefined;
+  return p?.words_per_second && p.seconds_per_syllable ? { words_per_second: p.words_per_second, seconds_per_syllable: p.seconds_per_syllable } : null;
+}
+
 /** How long a hook may be for a character: in syllables for Kokoro voices, in words for the video model. */
 export function hookLimit(ws: Workspace, characterData: Record<string, unknown> | undefined): { unit: "syllables" | "words"; max: number } {
   const voice = characterData?.voice as CharacterVoice | undefined;
   const room = ws.config.hook.hook_line_ends_by_seconds - ws.config.audio.lead_in_seconds;
   if (voice?.provider === "veo") return { unit: "words", max: Math.floor(room * ws.config.ai_video.words_per_second) };
+  const own = ownPace(ws, voice);
+  if (own) return { unit: "syllables", max: Math.floor(room / own.seconds_per_syllable) };
   return { unit: "syllables", max: Math.floor((room * Number(voice?.speed ?? 1)) / SECONDS_PER_SYLLABLE) };
 }
 
@@ -115,6 +126,8 @@ export function hookTiming(ws: Workspace, characterData: Record<string, unknown>
     return { count, unit: "words", seconds: lead + count / ws.config.ai_video.words_per_second, limit: limit + 0.25 };
   }
   const count = syllables(sentence);
+  const own = ownPace(ws, voice);
+  if (own) return { count, unit: "syllables", seconds: lead + count * own.seconds_per_syllable, limit };
   return { count, unit: "syllables", seconds: lead + (count * SECONDS_PER_SYLLABLE) / Number(voice?.speed ?? 1), limit };
 }
 
@@ -122,13 +135,13 @@ export function hookTiming(ws: Workspace, characterData: Record<string, unknown>
 export function speechRate(ws: Workspace, characterData: Record<string, unknown> | undefined): number {
   const voice = characterData?.voice as CharacterVoice | undefined;
   if (voice?.provider === "veo") return ws.config.ai_video.words_per_second;
-  return WORDS_PER_SECOND * Number(voice?.speed ?? 1);
+  return ownPace(ws, voice)?.words_per_second ?? WORDS_PER_SECOND * Number(voice?.speed ?? 1);
 }
 
 /** The pauses a character's voice adds to `text`: one at each sentence end, a shorter one at each clause break. The video model's pauses are in its rate. */
-export function pauseSeconds(characterData: Record<string, unknown> | undefined, text: string): number {
+export function pauseSeconds(ws: Workspace, characterData: Record<string, unknown> | undefined, text: string): number {
   const voice = characterData?.voice as CharacterVoice | undefined;
-  if (voice?.provider === "veo") return 0;
+  if (voice?.provider === "veo" || ownPace(ws, voice)) return 0;
   const sentences = (text.match(/[.!?…]+(?=\s|$)/g) ?? []).length;
   const clauses = (text.match(/[,;:—–]/g) ?? []).length;
   return sentences * (voice?.sentence_pause ?? DEFAULT_SENTENCE_PAUSE) + clauses * (voice?.clause_pause ?? DEFAULT_CLAUSE_PAUSE);
@@ -136,13 +149,13 @@ export function pauseSeconds(characterData: Record<string, unknown> | undefined,
 
 /** How long a character takes to say `text`, pauses included (estimated before the voice exists). */
 export function speechSeconds(ws: Workspace, characterData: Record<string, unknown> | undefined, text: string): number {
-  return voiceTokens(text).length / speechRate(ws, characterData) + pauseSeconds(characterData, text);
+  return voiceTokens(text).length / speechRate(ws, characterData) + pauseSeconds(ws, characterData, text);
 }
 
 /** Words per second for a word budget, with the pauses a typical script has: a voice with long pauses fits fewer words. */
 export function budgetWordsPerSecond(ws: Workspace, characterData: Record<string, unknown> | undefined): number {
   const voice = characterData?.voice as CharacterVoice | undefined;
-  if (voice?.provider === "veo") return speechRate(ws, characterData);
+  if (voice?.provider === "veo" || ownPace(ws, voice)) return speechRate(ws, characterData);
   const pausePerWord = SENTENCE_ENDS_PER_WORD * (voice?.sentence_pause ?? DEFAULT_SENTENCE_PAUSE) + CLAUSE_BREAKS_PER_WORD * (voice?.clause_pause ?? DEFAULT_CLAUSE_PAUSE);
   return 1 / (1 / speechRate(ws, characterData) + pausePerWord);
 }

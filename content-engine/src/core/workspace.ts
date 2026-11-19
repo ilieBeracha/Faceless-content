@@ -23,7 +23,7 @@ export interface EngineConfig {
   };
   voice: {
     default_provider: string;
-    providers: Record<string, { kind: "local" | "api"; cost: string; dir?: string; model_url?: string; voices_url?: string; python_packages?: string[]; license?: string }>;
+    providers: Record<string, { kind: "local" | "api"; cost: string; dir?: string; model_url?: string; voices_url?: string; python_packages?: string[]; license?: string; endpoint?: string; words_per_second?: number; seconds_per_syllable?: number }>;
   };
   llm: { provider: "agent" | "anthropic"; anthropic: { model: string; effort: string; max_tokens: number } };
   captions: { max_chars_per_line: number; max_lines: number };
