@@ -18,7 +18,7 @@ import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, speakerTurns, type Charac
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { loudnessEnvelope, readWav, writeWavFloat } from "./wav.ts";
 
-export const VOICE_PIPELINE_VERSION = 3;
+export const VOICE_PIPELINE_VERSION = 4;
 
 export interface WordTiming {
   i: number;

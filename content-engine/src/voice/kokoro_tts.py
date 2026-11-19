@@ -18,6 +18,7 @@ Output (JSON on stdout):
 import json
 import os
 import sys
+from difflib import SequenceMatcher
 
 import numpy as np
 import soundfile as sf
@@ -42,31 +43,46 @@ def phoneme_groups(spoken):
     return groups
 
 
-def align(counts, n_groups):
-    """Assign each caption word a run of phoneme words; counts[i] is what word i produces alone."""
-    if sum(counts) == n_groups:
-        out, g = [], 0
-        for c in counts:
-            out.append((g, g + c - 1) if c > 0 else None)
-            g += c
-        return out
+STRESS = set("ˈˌː")
+# A caption word the voice ran into its neighbour ("of the" said as one): it gets no sound of its own. Dearer than
+# the worst mismatch (10), because a word said alone can sound nothing like it does in a sentence ("a": "ay" / "uh").
+MERGED_COST = 11.0
+
+
+def plain(phonemes):
+    """Phonemes without spaces, stress marks and punctuation, to compare a written word with what was said."""
+    return "".join(c for c in phonemes if c not in SILENT and c not in STRESS)
+
+
+def align(words, sounds):
+    """Assign each caption word a run of spoken phoneme words, by how alike they sound.
+
+    words[i] is caption word i's phonemes said alone; sounds[j] is spoken phoneme word j. Counting alone can't
+    tell which word of a sentence was run into its neighbour, and a wrong guess shifts every word after it.
+    """
     inf = float("inf")
-    n = len(counts)
-    dp = [[inf] * (n_groups + 1) for _ in range(n + 1)]
-    back = [[None] * (n_groups + 1) for _ in range(n + 1)]
+    n, m = len(words), len(sounds)
+    dp = [[inf] * (m + 1) for _ in range(n + 1)]
+    back = [[None] * (m + 1) for _ in range(n + 1)]
     dp[0][0] = 0
     for i in range(n):
-        for j in range(n_groups + 1):
+        for j in range(m + 1):
             if dp[i][j] == inf:
                 continue
             for k in range(0, 5):
-                if j + k > n_groups:
+                if j + k > m:
                     break
-                cost = dp[i][j] + abs(k - counts[i]) * 10 + (3 if k == 0 else 0)
+                if k == 0:
+                    step = MERGED_COST if words[i] else 0.0
+                elif not words[i]:
+                    step = 10.0
+                else:
+                    step = (1 - SequenceMatcher(None, words[i], "".join(sounds[j : j + k]), autojunk=False).ratio()) * 10
+                cost = dp[i][j] + step
                 if cost < dp[i + 1][j + k]:
                     dp[i + 1][j + k] = cost
                     back[i + 1][j + k] = k
-    out, j = [], n_groups
+    out, j = [], m
     for i in range(n, 0, -1):
         k = back[i][j]
         if k is None:
@@ -74,6 +90,50 @@ def align(counts, n_groups):
         out.append((j - k, j - 1) if k > 0 else None)
         j -= k
     return list(reversed(out))
+
+
+SENTENCE_MARKS = set(".!?…")
+CLOSERS = "\"'”’)]»"
+
+
+def word_sentences(say):
+    """[start, end) runs of caption words, one per sentence (a word ending in . ! ? … closes one)."""
+    runs, start = [], 0
+    for i, word in enumerate(say):
+        core = word.rstrip(CLOSERS)
+        if core and core[-1] in SENTENCE_MARKS:
+            runs.append((start, i + 1))
+            start = i + 1
+    if start < len(say):
+        runs.append((start, len(say)))
+    return runs
+
+
+def group_sentences(spoken, groups):
+    """[start, end) runs of phoneme words, one per sentence (a phoneme word holding . ! ? … closes one)."""
+    runs, start = [], 0
+    for g, (a, b) in enumerate(groups):
+        if any(spoken[j].phoneme in SENTENCE_MARKS for j in range(a, b)):
+            runs.append((start, g + 1))
+            start = g + 1
+    if start < len(groups):
+        runs.append((start, len(groups)))
+    return runs
+
+
+def align_sentences(say, words, spoken, groups):
+    """Align sentence by sentence, so a mismatch stays inside its own sentence and never moves the words of the next.
+    When the voice and the text disagree on where sentences end, the whole text is aligned at once."""
+    sounds = [plain("".join(spoken[j].phoneme for j in range(a, b))) for a, b in groups]
+    written, said = word_sentences(say), group_sentences(spoken, groups)
+    if len(written) != len(said):
+        print(f"kokoro_tts: {len(written)} sentences written, {len(said)} spoken; aligning the whole text at once", file=sys.stderr)
+        return align(words, sounds)
+    out = []
+    for (w0, w1), (g0, g1) in zip(written, said):
+        for span in align(words[w0:w1], sounds[g0:g1]):
+            out.append(None if span is None else (span[0] + g0, span[1] + g0))
+    return out
 
 
 def main():
@@ -103,8 +163,8 @@ def main():
             continuous=continuous,
         )
         groups = phoneme_groups(spoken)
-        counts = [len(kokoro.tokenizer.phonemize(w, lang).split()) for w in say]
-        assignment = align(counts, len(groups))
+        words_alone = [plain(kokoro.tokenizer.phonemize(w, lang)) for w in say]
+        assignment = align_sentences(say, words_alone, spoken, groups)
 
         words, last_end = [], 0.0
         for i, span in enumerate(assignment):
