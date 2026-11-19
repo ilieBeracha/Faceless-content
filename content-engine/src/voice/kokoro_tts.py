@@ -8,8 +8,9 @@ straight from the model — no speech recognition or guessing.
 Input (JSON on stdin):
   {"model": path, "voices": path, "out_dir": path,
    "chunks": [{"id": str, "voice": str, "lang": "en-us", "speed": float, "sentence_pause": float,
-               "clause_pause": float, "say": [str, ...]}]}
+               "clause_pause": float, "continuous": bool, "say": [str, ...]}]}
   `say` has one entry per caption word: the text the voice should say for that word.
+  `continuous` synthesizes the chunk as one flowing text, so the intonation runs across its sentences.
 
 Output (JSON on stdout):
   {"sample_rate": 24000, "chunks": [{"id", "file", "duration", "words": [{"i", "start", "end"}]}]}
@@ -22,6 +23,7 @@ import numpy as np
 import soundfile as sf
 from kokoro_onnx import Kokoro
 
+CONTINUOUS_STYLE_TOKENS = 200  # the style of a ~200-phoneme passage (a few sentences)
 SILENT = set(";:,.!?¡¿—…\"«»“”()[]-' ")
 
 
@@ -87,13 +89,18 @@ def main():
         say = [w.strip() for w in chunk["say"]]
         if chunk["voice"] not in kokoro.voices:
             sys.exit(f'Unknown Kokoro voice "{chunk["voice"]}". Voices: {", ".join(sorted(kokoro.voices.keys()))}')
+        continuous = bool(chunk.get("continuous", False))
+        # Kokoro picks a speaking style by text length. A whole script falls in its longest style, which reads
+        # about 30% faster than the same lines said one at a time; a passage's style keeps the usual pace.
+        voice = kokoro.get_voice_style(chunk["voice"])[:CONTINUOUS_STYLE_TOKENS] if continuous else chunk["voice"]
         audio, sr, spoken = kokoro.create_timed(
             " ".join(say),
-            chunk["voice"],
+            voice,
             speed=float(chunk.get("speed", 1.0)),
             lang=lang,
             sentence_pause=float(chunk.get("sentence_pause", 0.25)),
             clause_pause=float(chunk.get("clause_pause", 0.1)),
+            continuous=continuous,
         )
         groups = phoneme_groups(spoken)
         counts = [len(kokoro.tokenizer.phonemize(w, lang).split()) for w in say]

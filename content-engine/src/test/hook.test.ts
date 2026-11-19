@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { LENGTH_MARGIN, budgetWordsPerSecond, hookLimit, hookTiming, pauseSeconds, speechSeconds, syllables, wordSyllables } from "../pipeline/script-check.ts";
+import { LENGTH_MARGIN, budgetWordsPerSecond, hookLimit, hookTiming, pauseSeconds, speakerTurns, speechSeconds, syllables, voiceOverhead, WORDS_PER_SECOND, wordSyllables } from "../pipeline/script-check.ts";
 import { tempWorkspace } from "./helpers.ts";
 
 const kokoro = (speed: number) => ({ voice: { provider: "kokoro", voice_id: "af_bella", speed } });
@@ -45,16 +45,23 @@ describe("video length, estimated before the voice exists", () => {
     const line = "Swirl. A film climbs, then falls — slowly.";
     assert.ok(Math.abs(pauseSeconds(wine, line) - (2 * 0.5 + 2 * 0.15)) < 1e-9);
     assert.ok(Math.abs(pauseSeconds(kokoro(1), line) - (2 * 0.25 + 2 * 0.1)) < 1e-9, "a voice without pause settings gets the voice step's defaults");
-    assert.ok(Math.abs(speechSeconds(tempWorkspace(), wine, line) - (7 / (3.24 * 0.92) + 1.3)) < 1e-9);
+    assert.ok(Math.abs(speechSeconds(tempWorkspace(), wine, line) - (7 / (WORDS_PER_SECOND * 0.92) + 1.3)) < 1e-9);
   });
 
   it("gives a slow voice with long pauses a smaller word budget: the 103-word script that ran 47.7 s no longer fits 30–45 s", () => {
     const ws = tempWorkspace();
     const wps = budgetWordsPerSecond(ws, wine);
     assert.ok(wps < budgetWordsPerSecond(ws, kokoro(1)));
-    const a = ws.config.audio;
-    const overhead = 6 * a.beat_gap_seconds + a.lead_in_seconds + a.outro_hold_seconds;
-    const most = Math.round((45 * (1 - LENGTH_MARGIN) - overhead) * wps);
+    const most = Math.round((45 * (1 - LENGTH_MARGIN) - voiceOverhead(ws, 1)) * wps);
     assert.ok(most < 103, `budget tops out at ${most} words`);
+  });
+
+  it("voices one speaker's consecutive beats as one turn, with a gap only between turns", () => {
+    assert.deepEqual(speakerTurns(["host", "host", "host"]), [[0, 1, 2]]);
+    assert.deepEqual(speakerTurns(["a", "a", "b", "a"]), [[0, 1], [2], [3]]);
+    const ws = tempWorkspace();
+    const a = ws.config.audio;
+    assert.equal(voiceOverhead(ws, 1), a.lead_in_seconds + a.outro_hold_seconds);
+    assert.equal(voiceOverhead(ws, 3), 2 * a.beat_gap_seconds + a.lead_in_seconds + a.outro_hold_seconds);
   });
 });

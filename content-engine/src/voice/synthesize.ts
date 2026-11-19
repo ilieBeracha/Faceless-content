@@ -14,11 +14,11 @@ import { canonicalJson, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
-import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, type CharacterVoice, type SeriesData } from "../pipeline/script-check.ts";
+import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, speakerTurns, type CharacterVoice, type SeriesData } from "../pipeline/script-check.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { loudnessEnvelope, readWav, writeWavFloat } from "./wav.ts";
 
-export const VOICE_PIPELINE_VERSION = 2;
+export const VOICE_PIPELINE_VERSION = 3;
 
 export interface WordTiming {
   i: number;
@@ -118,40 +118,54 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
 
   mkdirSync(paths.chunks, { recursive: true });
   const tokensPerBeat = script.beats.map((b) => voiceTokens(b.voiceover));
-  const chunks: KokoroChunk[] = script.beats.map((b, i) => {
-    const v = voices[b.speaker];
+  // One speaker's consecutive beats are voiced in one flowing pass, so the intonation runs across them
+  // instead of starting over at every beat.
+  const turns = speakerTurns(script.beats.map((b) => b.speaker));
+  const chunks: KokoroChunk[] = turns.map((turn, n) => {
+    const v = voices[script.beats[turn[0]].speaker];
     const pron = { ...v.pronunciations, ...script.pronunciations };
     return {
-      id: `${String(i).padStart(2, "0")}-${b.id}`,
+      id: `${String(n).padStart(2, "0")}-${script.beats[turn[0]].id}`,
       voice: v.voice_id,
       lang: kokoroLang(v.voice_id),
       speed: v.speed ?? 1,
       sentence_pause: v.sentence_pause ?? DEFAULT_SENTENCE_PAUSE,
       clause_pause: v.clause_pause ?? DEFAULT_CLAUSE_PAUSE,
-      say: tokensPerBeat[i].map((t) => sayFor(t, pron)),
+      continuous: true,
+      say: turn.flatMap((i) => tokensPerBeat[i].map((t) => sayFor(t, pron))),
     };
   });
-  log(`  ↳ synthesizing ${script.beats.length} beats with Kokoro (local, free)…`);
+  log(`  ↳ synthesizing ${script.beats.length} beats in ${turns.length} pass${turns.length === 1 ? "" : "es"} with Kokoro (local, free)…`);
   const out = runKokoro(ws, chunks, paths.chunks);
 
-  // Place beats on the timeline, applying each speaker's pitch.
+  // Place each speaker turn on the timeline, applying the speaker's pitch.
   const sr = out.sample_rate;
   const pieces: { at: number; samples: Float32Array }[] = [];
   const words: WordTiming[] = [];
   const beats: BeatTiming[] = [];
   let t = cfg.lead_in_seconds;
-  out.chunks.forEach((chunk, i) => {
-    const beat = script.beats[i];
-    const v = voices[beat.speaker];
+  out.chunks.forEach((chunk, n) => {
+    const turn = turns[n];
+    const v = voices[script.beats[turn[0]].speaker];
     const file = v.pitch_semitones ? pitchShift(chunk.file, v.pitch_semitones!, sr) : chunk.file;
     const pcm = readWav(file);
     const scale = pcm.samples.length / sr / chunk.duration; // pitch shifting may change the length by a few samples
-    pieces.push({ at: Math.round(t * sr), samples: pcm.samples });
-    for (const w of chunk.words) {
-      words.push({ i: words.length, beat: beat.id, text: tokensPerBeat[i][w.i], start: round(t + w.start * scale), end: round(t + w.end * scale) });
-    }
     const len = pcm.samples.length / sr;
-    beats.push({ id: beat.id, speaker: beat.speaker, start: round(t), end: round(t + len) });
+    pieces.push({ at: Math.round(t * sr), samples: pcm.samples });
+    // The chunk's words, back to their beats: a beat starts halfway through the pause before its first word
+    // (the turn's first beat at the turn's start) and ends where the next one starts (the last at the turn's end).
+    const timed = turn.flatMap((i) => tokensPerBeat[i].map((text) => ({ beat: i, text })));
+    if (chunk.words.length !== timed.length) throw new EngineError(`Kokoro timed ${chunk.words.length} words for chunk ${chunk.id}, which has ${timed.length}.`);
+    const starts: number[] = [];
+    chunk.words.forEach((w, k) => {
+      const at = { start: round(t + w.start * scale), end: round(t + w.end * scale) };
+      if (k > 0 && timed[k].beat !== timed[k - 1].beat) starts.push(round((words.at(-1)!.end + at.start) / 2));
+      words.push({ i: words.length, beat: script.beats[timed[k].beat].id, text: timed[k].text, ...at });
+    });
+    turn.forEach((i, k) => {
+      const beat = script.beats[i];
+      beats.push({ id: beat.id, speaker: beat.speaker, start: k === 0 ? round(t) : starts[k - 1], end: k === turn.length - 1 ? round(t + len) : starts[k] });
+    });
     t += len + cfg.beat_gap_seconds;
   });
   const speechEnd = Math.max(...words.map((w) => w.end), beats.at(-1)!.end);
@@ -200,6 +214,8 @@ export interface KokoroChunk {
   speed: number;
   sentence_pause: number;
   clause_pause: number;
+  /** Voice the chunk as one flowing text (the intonation runs across its sentences). */
+  continuous?: boolean;
   /** One entry per caption word: what the voice says for it. */
   say: string[];
 }

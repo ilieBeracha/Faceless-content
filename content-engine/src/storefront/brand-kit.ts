@@ -26,7 +26,8 @@ export interface BrandKit {
   host: { name: string; concept: string; look: string; personality: string[]; good_at: string[]; bad_at: string[]; catchphrases: string[]; voice: string };
   series: { name: string; format: string; visual_style: string; beats: { id: string; purpose: string }[] };
   /** `review`: what the QA agent review asked to change, when it didn't pass (shown as notes; it doesn't block storefront videos). */
-  episodes: { id: string; title: string; frames: string[]; review: string[] }[];
+  /** `revisable`: it has a storyboard, so it can be opened again and changed. `versions`: the earlier versions kept from revisions. */
+  episodes: { id: string; title: string; frames: string[]; review: string[]; revisable: boolean; versions: number[] }[];
 }
 
 const str = (v: unknown): string => (typeof v === "string" ? v : v === undefined || v === null ? "" : String(v));
@@ -44,6 +45,18 @@ function section(body: string, heading: string): string {
 /** Where the engine writes an episode's video (same path as render-episode.ts's outputPath, without loading the renderer). */
 export function videoPath(ws: Workspace, slug: string, episode: string): string {
   return ws.path("out", slug, `${episode}.mp4`);
+}
+
+/** An earlier version of an episode's video, kept when the video is revised. */
+export function versionPath(ws: Workspace, slug: string, episode: string, n: number): string {
+  return ws.path("out", slug, "versions", episode, `v${n}.mp4`);
+}
+
+/** The numbers of the earlier versions kept for an episode's video, oldest first. */
+export function videoVersions(ws: Workspace, slug: string, episode: string): number[] {
+  const dir = ws.path("out", slug, "versions", episode);
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir).flatMap((f) => { const m = /^v(\d+)\.mp4$/.exec(f); return m ? [Number(m[1])] : []; }).sort((a, b) => a - b);
 }
 
 export function framesDir(ws: Workspace, slug: string, episode: string): string {
@@ -76,7 +89,7 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
       const all = existsSync(dir) ? readdirSync(dir).filter((f) => /^[\w.-]+\.jpg$/.test(f)).sort() : [];
       // Three frames spread across the video: near the start, the middle, near the end.
       const frames = all.length <= 3 ? all : [all[1], all[Math.floor(all.length / 2)], all[all.length - 2]];
-      return { id: e.id, title: e.title, frames, review: reviewNotes(join(episodesDir(channel), e.id, "qa-review.json")) };
+      return { id: e.id, title: e.title, frames, review: reviewNotes(join(episodesDir(channel), e.id, "qa-review.json")), revisable: existsSync(join(episodesDir(channel), e.id, "storyboard.json")), versions: videoVersions(ws, slug, e.id) };
     });
   return {
     slug,

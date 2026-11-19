@@ -12,13 +12,13 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { join } from "node:path";
 import { channelExists, listChannelSlugs } from "../core/channels.ts";
 import { ENGINE_DIR, type Workspace } from "../core/workspace.ts";
-import { brandKit, framesDir, videoPath } from "./brand-kit.ts";
+import { brandKit, framesDir, versionPath, videoPath } from "./brand-kit.ts";
 import { CustomerError, parseBeatForm, parseCaptionForm, type Builder } from "./builder.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
 import { hostSvg } from "./host-svg.tsx";
 import { CONSOLE_VIEWS, accountPage, adminPage, createPage, demoPage, landingPage, messagePage, workspacePage, type Account, type ConsoleView } from "./pages.ts";
-import { MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, isBuilding, validateIntake, type Order, type OrderStatus, type OrderStore, type SectionId } from "./store.ts";
+import { MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, isBuilding, validateIntake, videoUnderWay, type Order, type OrderStatus, type OrderStore, type SectionId } from "./store.ts";
 
 export interface StorefrontOptions {
   ws: Workspace;
@@ -339,8 +339,25 @@ export function createPublicServer(o: StorefrontOptions): Server {
             o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen));
           } else if (parts[3] === "captions") o.builder.setVideoCaptions(order.id, parseCaptionForm(form));
           else if (parts[3] === "approve") o.builder.approveStoryboard(order.id);
-          else throw new HttpError(404, "There is no page at this address.");
+          else if (parts[3] === "cancel") {
+            o.builder.cancelRevision(order.id);
+            return redirect(res, `/w/${order.token}?view=videos`);
+          } else throw new HttpError(404, "There is no page at this address.");
+          // A revision with nothing changed is finished at once: back to the videos.
+          return redirect(res, `/w/${order.token}?view=${videoUnderWay(o.store.byId(order.id) ?? order) ? "new" : "videos"}`);
+        }
+        // Open a finished video again at its storyboard, to change it and make a new version.
+        if (req.method === "POST" && parts.length === 3 && parts[2] === "revise-video" && o.builder) {
+          const episode = ((await readForm(req)).episode ?? "").trim();
+          if (!SLUG.test(episode)) throw new HttpError(400, "Choose a video to revise.");
+          o.builder.reviseVideo(order.id, episode);
           return redirect(res, `/w/${order.token}?view=new`);
+        }
+        if (req.method === "GET" && parts.length === 6 && parts[2] === "video" && SLUG.test(parts[3]) && parts[4] === "v" && /^[1-9]\d{0,3}$/.test(parts[5])) {
+          const slug = linkedChannel(order);
+          const path = slug ? versionPath(channelHome(o, slug), slug, parts[3], Number(parts[5])) : null;
+          if (!path || !existsSync(path)) throw new HttpError(404, "That video is not available.");
+          return sendFile(req, res, path, "video/mp4", null);
         }
         if (req.method === "POST" && parts.length === 3 && o.builder && (parts[2] === "host" || parts[2] === "captions")) {
           const form = await readForm(req);

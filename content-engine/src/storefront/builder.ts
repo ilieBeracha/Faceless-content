@@ -13,8 +13,8 @@
  *
  * One job runs at a time. A job that fails is recorded on its order and is not retried by itself.
  */
-import { cpSync, existsSync, mkdirSync, symlinkSync } from "node:fs";
-import { basename } from "node:path";
+import { copyFileSync, cpSync, existsSync, mkdirSync, symlinkSync } from "node:fs";
+import { basename, dirname } from "node:path";
 import { join } from "node:path";
 import { channelExists, channelStatus, loadChannel, validateChannel, type Channel } from "../core/channels.ts";
 import { approveDraft, draftInfo, listDrafts, rejectDraft } from "../core/drafts.ts";
@@ -29,12 +29,13 @@ import { draftChannelTask } from "../pipeline/draft-channel.ts";
 import { episodesDir, listEpisodes, makeEpisode } from "../pipeline/episode.ts";
 import { approveFactcheck, readFactcheck, rejectFactcheck } from "../pipeline/factcheck.ts";
 import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
-import { approveStoryboard, captionSettingsSchema, readStoryboard, setCaptions, type CaptionSettings } from "../pipeline/storyboard.ts";
+import { approveStoryboard, captionSettingsSchema, readStoryboard, setCaptions, storyboardApproved, type CaptionSettings } from "../pipeline/storyboard.ts";
 import { checkScript } from "../pipeline/script-check.ts";
 import { brandOf, loadChannelTheme } from "../render/render-episode.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
 import { checkShots, shotsUsed, showsHost, type Shot, type ThBeatVisual } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
+import { versionPath, videoPath, videoVersions } from "./brand-kit.ts";
 import { MAX_ROUNDS, REPAINTS_PER_VIDEO, SUGGESTS_PER_DAY, TOPIC_MAX, VIDEOS_PER_DAY, changeRequests, countToday, isBuilding, isMakingVideo, videoUnderWay, type Order, type OrderStore } from "./store.ts";
 
 /** What a channel's dashboard shows: ideas to make, suggestions to decide on, and what can be started today. */
@@ -52,6 +53,11 @@ export interface Dashboard {
   storyboard: StoryboardView | null;
 }
 
+/** Where an episode records how many of its shots were painted again, across its revisions. */
+function repaintsPath(episodeDir: string): string {
+  return join(episodeDir, "repaints.json");
+}
+
 /** A refusal the customer should read as it is (the page shows its message). */
 export class CustomerError extends Error {}
 
@@ -63,6 +69,10 @@ export interface StoryboardView {
   hostOnScreen: boolean;
   /** Shots that can still be painted again for this video. */
   repaintsLeft: number;
+  /** True when this is a finished video opened again to be changed. */
+  revising: boolean;
+  /** True when the storyboard is not approved as it is now (new, or changed since). */
+  changed: boolean;
   /** Shot id → a short version of its picture (changes when it is painted again). */
   pictures: Record<string, string>;
 }
@@ -588,7 +598,45 @@ export class Builder {
       if (!painted[id]) throw new Error(`Order ${order.id}: shot "${id}" has no painted picture.`);
       return [id, painted[id].sha.slice(0, 12)];
     }));
-    return { script, captions: board.captions, hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures };
+    return { script, captions: board.captions, hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script) };
+  }
+
+  /**
+   * Open a finished video again at its storyboard, so the customer can change its captions, on-screen text or shots
+   * and have a new version made. The words stay (it is voiced again only if the channel's voice changed since); the video they have is kept as an earlier version
+   * when the new one is made. Throws (for the customer) when the video can't be revised now.
+   */
+  reviseVideo(id: string, episode: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { channel } = this.dashboardChannel(order);
+    if (videoUnderWay(order) || this.waiting.has(order.id)) throw new CustomerError("A video is under way. Revise this one when it is finished.");
+    const made = listEpisodes(channel).some((e) => e.id === episode && e.status === "done");
+    if (!made || !existsSync(videoPath(this.ws, channel.slug, episode))) throw new CustomerError("That video is not available.");
+    const dir = join(episodesDir(channel), episode);
+    if (!readStoryboard(dir)) throw new CustomerError("This video was made without a storyboard, so it can't be revised.");
+    // The repaints the video has used so far: they are counted per video, across its revisions.
+    const used = Math.max(existsSync(repaintsPath(dir)) ? readJson<{ repaints: number }>(repaintsPath(dir)).repaints : 0, order.video?.episode === episode ? (order.video.repaints ?? 0) : 0);
+    this.store.update(id, (o) => {
+      o.video = { state: "storyboard", episode, attempts: 0, rounds: 0, revising: true, ...(used ? { repaints: used } : {}), at: nowIso() };
+    });
+  }
+
+  /** The customer leaves a video they opened to revise as it is. Only while nothing on its storyboard has changed. */
+  cancelRevision(id: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { dir, script } = this.storyboardEpisode(order);
+    if (!order.video!.revising) throw new CustomerError("This video is not being revised.");
+    if (!storyboardApproved(dir, script)) throw new CustomerError("You changed this video. Make the new version, or set it back as it was first.");
+    this.finishRevision(id);
+  }
+
+  private finishRevision(id: string): void {
+    this.store.update(id, (o) => {
+      const { revising: _was, ...v } = o.video!;
+      o.video = { ...v, state: "done", at: nowIso() };
+    });
   }
 
   /** The picture of one painted shot of the order's current video, for its storyboard. Throws when there is none. */
@@ -641,6 +689,7 @@ export class Builder {
     const left = REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0);
     if (repaints > left) throw new CustomerError(`That would paint ${repaints} shot${repaints === 1 ? "" : "s"} again, and this video has ${left} repaint${left === 1 ? "" : "s"} left.`);
     writeJson(join(dir, "script.json"), next);
+    if (repaints) writeJson(repaintsPath(dir), { repaints: (order.video!.repaints ?? 0) + repaints });
     this.store.update(id, (o) => {
       o.video = { ...o.video!, state: "painting", attempts: 0, repaints: (o.video!.repaints ?? 0) + repaints, at: nowIso() };
     });
@@ -660,6 +709,15 @@ export class Builder {
     const order = this.store.byId(id);
     if (!order) throw new Error(`No order "${id}".`);
     const { dir, script } = this.storyboardEpisode(order);
+    if (order.video!.revising) {
+      // Nothing changed: the video they have is already this storyboard.
+      if (storyboardApproved(dir, script)) return this.finishRevision(id);
+      // The video they have becomes an earlier version; the new one takes its place.
+      const slug = order.channel!;
+      const keep = versionPath(this.ws, slug, order.video!.episode!, (videoVersions(this.ws, slug, order.video!.episode!).at(-1) ?? 0) + 1);
+      mkdirSync(dirname(keep), { recursive: true });
+      copyFileSync(videoPath(this.ws, slug, order.video!.episode!), keep);
+    }
     approveStoryboard(dir, script, order.intake.contact_name);
     this.store.update(id, (o) => {
       o.video = { ...o.video!, state: "making", attempts: 0, at: nowIso() };
@@ -739,7 +797,7 @@ export class Builder {
       const result = await this.writer.video(this.ws, order.channel!, String(series.data.slug), { ...(order.video!.episode ? { episode: order.video!.episode } : {}), ...(order.video!.idea ? { idea: order.video!.idea } : {}) }, this.channelCaptions(order));
       this.store.update(id, (o) => {
         const v = o.video!;
-        o.video = { ...(v.idea ? { idea: v.idea } : {}), state: result.state, episode: result.episode, attempts: v.attempts, rounds: v.rounds, ...(v.repaints ? { repaints: v.repaints } : {}), at: nowIso() };
+        o.video = { ...(v.idea ? { idea: v.idea } : {}), state: result.state, episode: result.episode, attempts: v.attempts, rounds: v.rounds, ...(v.repaints ? { repaints: v.repaints } : {}), ...(v.revising && result.state !== "done" ? { revising: true } : {}), at: nowIso() };
       });
       console.log(`Order ${id}: video ${result.episode} is ${{ done: "made", facts: "waiting for its facts to be approved", storyboard: "waiting for its storyboard to be approved" }[result.state]}.`);
     } catch (err) {

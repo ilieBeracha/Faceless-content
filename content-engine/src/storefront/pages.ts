@@ -675,10 +675,16 @@ function storyboardHtml(order: Order, sb: StoryboardView, accent: string): strin
 <label class="f" for="text-${esc(b.id)}">On-screen text <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(b.id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label>
 <div class="row"><button type="submit" class="btn ghost sm">Save this part</button><small class="muted">A changed or added shot is painted again: ${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left for this video.</small></div></form>`;
   };
-  return `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. Change what a shot shows${sb.hostOnScreen ? ", whether the host is in it," : ""} or the on-screen text, add or remove shots, and set the captions. Nothing is voiced until you approve.</p></div>
+  const intro = sb.revising
+    ? `<div class="card"><h2>Revise your video</h2><p class="muted">“${esc(sb.script.title)}” is finished. Change its captions, its on-screen text or what a shot shows${sb.hostOnScreen ? ", or whether the host is in it," : ""} and a new version is made with the same words, in the channel's voice as it is set now. The video you have now is kept as an earlier version.</p></div>`
+    : `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. Change what a shot shows${sb.hostOnScreen ? ", whether the host is in it," : ""} or the on-screen text, add or remove shots, and set the captions. Nothing is voiced until you approve.</p></div>`;
+  const decision = sb.revising
+    ? `<div class="card"><div class="decide" role="group" aria-label="Your decision on this revision">${sb.changed ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Make the new version</button></form>` : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="btn ghost">Leave it as it is</button></form>`}</div><small class="muted">${sb.changed ? "The new version takes a few minutes and does not use up one of today's videos." : "Nothing is changed yet. Save a part or the captions above to make a new version."}</small></div>`
+    : `<div class="card"><div class="decide" role="group" aria-label="Your decision on the storyboard"><form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Approve the storyboard</button></form></div><small class="muted">Approving voices and renders the video exactly like this.</small></div>`;
+  return `${intro}
 ${sb.script.beats.map(part).join("")}
 <div class="card"><h2>Captions</h2><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, sb.captions, accent, sb.script.beats, "Save captions")}</div>
-<div class="card"><div class="decide" role="group" aria-label="Your decision on the storyboard"><form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Approve the storyboard</button></form></div><small class="muted">Approving voices and renders the video exactly like this.</small></div>`;
+${decision}`;
 }
 
 /** What stands where the first video will be, until it is there. */
@@ -794,7 +800,10 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
     `<form method="post" action="${base}/proposal"><input type="hidden" name="draft" value="${esc(draft)}">${ideaId ? `<input type="hidden" name="idea" value="${esc(ideaId)}">` : ""}<input type="hidden" name="decision" value="${d}"><button type="submit" class="${cls}">${label}</button></form>`;
   const proposal = (p: Dashboard["proposals"][number]) => `<li>${ideaBody(p.idea)}${decide(p.draft, p.idea.id, "keep", "Keep", "btn sm")}${decide(p.draft, p.idea.id, "skip", "Skip", "text")}</li>`;
   const tiles = (eps: BrandKit["episodes"]) =>
-    `<div class="vids">${eps.map((e) => `<figure><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}"></video><figcaption>${esc(e.title)}</figcaption><a href="${base}/video/${esc(e.id)}?download=1">Download</a>${reviewHtml(e.review)}</figure>`).join("")}</div>`;
+    `<div class="vids">${eps.map((e) => `<figure><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}?r=${e.versions.length}"></video><figcaption>${esc(e.title)}</figcaption><a href="${base}/video/${esc(e.id)}?download=1">Download</a>${reviseHtml(e)}${reviewHtml(e.review)}</figure>`).join("")}</div>`;
+  // Change a finished video's captions, on-screen text or shots; the versions it replaced stay to watch.
+  const reviseHtml = (e: BrandKit["episodes"][number]) =>
+    `${e.revisable ? `<form method="post" action="${base}/revise-video"><input type="hidden" name="episode" value="${esc(e.id)}"><button type="submit" class="btn ghost sm"${busy ? ' disabled title="A video is under way"' : ""}>Revise</button></form>` : ""}${e.versions.length ? `<small class="muted">Earlier: ${e.versions.map((n) => `<a href="${base}/video/${esc(e.id)}/v/${n}">v${n}</a>`).join(", ")}</small>` : ""}`;
   const newest = [...kit.episodes].reverse();
   const blockedNote = blocked && dash.ideas.length ? `<p class="muted" style="font-size:14.5px">${esc(blocked)}: ${esc(blockedWhy.charAt(0).toLowerCase() + blockedWhy.slice(1))}</p>` : "";
 

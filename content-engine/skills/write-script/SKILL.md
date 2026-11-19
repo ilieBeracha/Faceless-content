@@ -17,6 +17,11 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
    screen too (`on_screen_text`, ≤ 30 characters works best). Questions and surprising claims work; greetings don't.
 3. **Write for the ear.** Short sentences. Contractions. One idea per sentence. Numbers the way people say them.
    Read it out loud in your head at the character's speed. Total words are given in the task — stay inside them.
+   **A full stop ends a thought.** The voice drops its pitch and pauses at every `.` `!` `?`, so never cut one
+   phrase into pieces: "You think all wine gets better with time?" — not "You think all wine improves. With
+   time." Fragments that hang off the sentence before ("With time." "Mere weeks after harvest." "On purpose.")
+   join it with a comma or a dash. For a beat of drama inside a line, use a comma, a dash or "…", which pause
+   without ending the thought. A one-word sentence only when it's a full reply on its own ("Wrong.").
 4. **Be the character.** Use its personality, vocabulary and verbal tics from its file. A catchphrase at most once.
 5. **Show, don't decorate.** Every beat has a visual that explains what is being said (see the render skills).
 6. **Facts are claims.** Every fact — spoken, on screen, in a part label, or a number in a graphic — goes into

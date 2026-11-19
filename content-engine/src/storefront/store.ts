@@ -83,6 +83,8 @@ export interface Video {
   state: "writing" | "facts" | "painting" | "storyboard" | "making" | "done" | "failed";
   /** How many shots the customer had painted again from the storyboard (each is paid). */
   repaints?: number;
+  /** True while a finished video is open again at its storyboard, to be changed and made as a new version. */
+  revising?: boolean;
   /** The step that was running when it failed. */
   failed_at?: "writing" | "making";
   /** The episode folder in the channel, once there is one. */

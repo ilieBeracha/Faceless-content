@@ -7,7 +7,7 @@ import { cpSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
 import { AccountStore } from "../storefront/accounts.ts";
-import { brandKit, videoPath } from "../storefront/brand-kit.ts";
+import { brandKit, videoPath, videoVersions } from "../storefront/brand-kit.ts";
 import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser, type Suggester, type VideoMaker } from "../storefront/builder.ts";
 import { episodesDir } from "../pipeline/episode.ts";
 import { readFactcheck, writeFactcheck } from "../pipeline/factcheck.ts";
@@ -1080,6 +1080,36 @@ describe("storefront: automatic builds", () => {
       assert.deepEqual([readStoryboard(dir)?.status, readStoryboard(dir)?.approved_by], ["approved", "Sam Example"]);
       await builder.idle();
       assert.equal(store.byId(id)?.video?.state, "done");
+
+      // A finished video can be opened again at its storyboard. Left as it is, nothing is made and no version is kept.
+      const now = () => [store.byId(id)?.video?.state, store.byId(id)?.video?.revising];
+      const used = store.byId(id)!.video!.repaints;
+      assert.match(await page("videos"), /\/revise-video"><input type="hidden" name="episode" value="2026-01-01-first"><button type="submit" class="btn ghost sm">Revise/);
+      assert.match(await (await post("revise-video", { episode: "2026-01-09-not-made" })).text(), /That video is not available/);
+      assert.equal((await post("revise-video", { episode: EPISODE })).status, 303);
+      assert.deepEqual(now(), ["storyboard", true]);
+      assert.equal(store.byId(id)?.video?.repaints, used, "repaints are counted per video, across its revisions");
+      assert.ok(readJson<{ repaints: number }>(join(dir, "repaints.json")).repaints > 0, "the video's repaints are recorded with it");
+      assert.match(await page("new"), /Revise your video[\s\S]*kept as an earlier version[\s\S]*Leave it as it is/);
+      assert.match(await page("videos"), /class="btn ghost sm" disabled title="A video is under way">Revise/);
+      const runs = made.length;
+      assert.equal((await post("storyboard/cancel", {})).status, 303);
+      assert.deepEqual(now(), ["done", undefined]);
+      assert.deepEqual([videoVersions(built, id, EPISODE), made.length], [[], runs]);
+
+      // With its captions changed, a new version is made (the facts and the storyboard's shots stay) and the old video is kept.
+      await post("revise-video", { episode: EPISODE });
+      assert.equal((await post("storyboard/captions", { show: "on", size: "small", place: "bottom", case: "normal" })).status, 303);
+      assert.match(await page("new"), /Make the new version/);
+      assert.match(await (await post("storyboard/cancel", {})).text(), /You changed this video/);
+      assert.equal((await post("storyboard/approve", {})).status, 303);
+      await builder.idle();
+      assert.deepEqual(now(), ["done", undefined]);
+      assert.deepEqual(readStoryboard(dir)?.captions, { show: true, size: "small", place: "bottom", case: "normal", hide_beats: [] });
+      assert.deepEqual(videoVersions(built, id, EPISODE), [1]);
+      assert.match(await page("videos"), /video\/2026-01-01-first\?r=1"[\s\S]*Earlier: <a href="[^"]+\/video\/2026-01-01-first\/v\/1">v1<\/a>/);
+      assert.equal((await fetch(`${base}${link}/video/${EPISODE}/v/1`)).status, 200);
+      assert.equal((await fetch(`${base}${link}/video/${EPISODE}/v/2`)).status, 404);
 
       // Settings: the channel's caption defaults, and the host off screen (then no shot may show it) and back.
       assert.match(await page("settings"), /Take the host off screen[\s\S]*Save caption settings/);

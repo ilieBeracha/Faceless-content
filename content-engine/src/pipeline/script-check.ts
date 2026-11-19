@@ -37,12 +37,29 @@ export interface ScriptCheck {
 
 /**
  * Words per second Kokoro speaks at speed 1.0, not counting the pauses it adds at sentence ends and clause breaks
- * (those are counted on their own, by the voice's settings). Fitted 2026-11-18 to 11 recorded episodes with
- * voice speeds 0.92–1.1 and pauses 0.18–0.5 s: every estimate was within 5% of the recording.
+ * (those are counted on their own, by the voice's settings). Fitted 2026-11-19 to 7 scripts voiced the way the
+ * voice step does it (each speaker turn in one flowing pass) at speeds 0.95–1.1: every estimate was within 8%.
  */
-export const WORDS_PER_SECOND = 3.24;
+export const WORDS_PER_SECOND = 3.38;
 /** The worst error of a length estimate against the recording; a script is kept this far inside the series length. */
-export const LENGTH_MARGIN = 0.05;
+export const LENGTH_MARGIN = 0.08;
+
+/** Runs of consecutive beats by the same speaker, as beat indexes: the voice says each run in one pass. */
+export function speakerTurns(speakers: string[]): number[][] {
+  const turns: number[][] = [];
+  speakers.forEach((s, i) => {
+    const last = turns.at(-1);
+    if (last && speakers[last[0]] === s) last.push(i);
+    else turns.push([i]);
+  });
+  return turns;
+}
+
+/** Video time around the speech: the lead-in, a gap between speaker turns, and the outro hold. */
+export function voiceOverhead(ws: Workspace, turns: number): number {
+  const a = ws.config.audio;
+  return Math.max(0, turns - 1) * a.beat_gap_seconds + a.lead_in_seconds + a.outro_hold_seconds;
+}
 /** The pauses the voice adds when a character's voice doesn't set them (the voice step uses the same). */
 export const DEFAULT_SENTENCE_PAUSE = 0.25;
 export const DEFAULT_CLAUSE_PAUSE = 0.1;
@@ -228,8 +245,7 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
 
   // Length (from word counts) and hook (from syllables), estimated now and measured exactly after the voice step.
   // Each beat at its speaker's pace, with the pauses its voice adds; kept LENGTH_MARGIN inside the series, the estimate's worst error.
-  const cfg = ws.config.audio;
-  const overhead = script.beats.length * cfg.beat_gap_seconds + cfg.lead_in_seconds + cfg.outro_hold_seconds;
+  const overhead = voiceOverhead(ws, speakerTurns(script.beats.map((b) => b.speaker)).length);
   const words = script.beats.reduce((n, b) => n + voiceTokens(b.voiceover).length, 0);
   const estimate = script.beats.reduce((s, b) => s + speechSeconds(ws, ctx.channel.characters.get(b.speaker)?.data, b.voiceover), 0) + overhead;
   const { min_seconds: min, max_seconds: max } = series.length;
