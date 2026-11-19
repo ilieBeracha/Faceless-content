@@ -346,6 +346,11 @@ export function createPublicServer(o: StorefrontOptions): Server {
           // A revision with nothing changed is finished at once: back to the videos.
           return redirect(res, `/w/${order.token}?view=${videoUnderWay(o.store.byId(order.id) ?? order) ? "new" : "videos"}`);
         }
+        // Continue a video that stopped, from the step it stopped at.
+        if (req.method === "POST" && parts.length === 3 && parts[2] === "retry" && o.builder) {
+          o.builder.retryVideo(order.id);
+          return redirect(res, `/w/${order.token}?view=new`);
+        }
         // Open a finished video again at its storyboard, to change it and make a new version.
         if (req.method === "POST" && parts.length === 3 && parts[2] === "revise-video" && o.builder) {
           const episode = ((await readForm(req)).episode ?? "").trim();

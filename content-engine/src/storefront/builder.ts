@@ -395,6 +395,14 @@ export class Builder {
     this.queueVideo(id);
   }
 
+  /** The customer asks for a video that stopped to be continued from the step it stopped at. Throws when none has. */
+  retryVideo(id: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    if (order.video?.state !== "failed" || this.waiting.has(id)) throw new CustomerError("There is no stopped video to try again.");
+    this.startVideo(id, true);
+  }
+
   /**
    * Start a new video from one of the channel's ideas, chosen by the customer. Throws (with a message for
    * the customer) when the channel can't take one now: a video is under way, the channel is paused, the

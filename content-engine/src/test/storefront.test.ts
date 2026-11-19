@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
@@ -873,11 +873,16 @@ describe("storefront: automatic builds", () => {
       await fetch(`${base}${link}/approve`, form({}));
       await builder.idle();
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.failed_at, store.byId(id)?.video?.error], ["failed", "writing", "the writer is down"]);
-      assert.match(await (await fetch(base + link)).text(), /The last video did not finish[\s\S]*being written/);
+      // The customer sees the step it stopped at, why, and a way to continue from that step.
+      assert.match(await (await fetch(base + link)).text(), /The last video did not finish[\s\S]*being written[\s\S]*<b>Why:<\/b> the writer is down[\s\S]*\/retry"><button type="submit" class="btn sm">Try again from that step/);
       assert.match(await (await fetch(adminBase)).text(), /First video: failed[\s\S]*the writer is down[\s\S]*Make the video again/);
       builder.resume();
       await builder.idle();
       assert.equal(store.byId(id)?.video?.state, "failed", "a failed video is not started again by itself");
+      // Trying again while the cause is still there stops again, with the reason; nothing is retried behind their back.
+      assert.equal((await fetch(`${base}${link}/retry`, form({}))).status, 303);
+      await builder.idle();
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.error], ["failed", "the writer is down"]);
 
       broken = false;
       assert.equal((await fetch(`${adminBase}/orders/${id}/video`, form({}))).status, 303);
@@ -1139,6 +1144,11 @@ describe("storefront: automatic builds", () => {
       assert.doesNotMatch(await page("settings"), /main character/);
       assert.match(await (await post("host", { lead: "1" })).text(), /Put the host on screen first/);
       await post("host", { on: "1" });
+
+      // A quality check the finished video missed (how fast the hook lands) is a note on it, shown before the review's.
+      writeJson(join(dir, "qa", "automated.json"), { checks: [{ id: "format", label: "Format", pass: true, detail: "1080×1920" }, { id: "hook-line", label: "Hook: first line lands in 2 s", pass: false, detail: '"Rotten grapes, great wine." ends at 2.34s (limit 2s)' }] });
+      assert.match(await page("videos"), /Review notes \(\d+\)[\s\S]*Hook: first line lands in 2 s: &quot;Rotten grapes, great wine\.&quot; ends at 2\.34s \(limit 2s\)/);
+      rmSync(join(dir, "qa", "automated.json"));
 
       // The review's reading of banned topics is a note on the finished video (first), not a reason to stop it.
       writeJson(join(dir, "qa-review.json"), { render_hash: "x", tone: { pass: true, notes: "" }, banned_topics: { pass: false, notes: "A glass poured until it spills reads as excess." }, visuals: { pass: true, notes: "" }, character: { pass: true, notes: "" }, overall: "fail", fixes: ["Show a modest pour."], learnings: [] });

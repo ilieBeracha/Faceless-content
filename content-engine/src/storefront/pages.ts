@@ -225,7 +225,7 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .ideas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;width:100%}.ideas li{background:var(--surface);border-radius:16px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}.card .ideas li{background:var(--bg)}
 .ideas li>div{flex:1 1 240px;min-width:0}.ideas b{display:block;font-size:16px}.ideas small{color:var(--muted);font-size:14.5px}.ideas form{display:contents}.ideas .btn[disabled],.pane .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
 .ideas .text{font:600 15px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 6px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.ideas .text:hover{color:var(--ink)}
-.fact{margin:8px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}.fact span{display:inline-block;font:600 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-right:8px}.fact .src{font-size:14px;color:var(--muted);white-space:nowrap}a.src{color:var(--accent)}
+.why{margin:8px 0 12px;font-size:15px;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}.fact{margin:8px 0 0;font-size:14.5px;line-height:1.45;color:var(--ink)}.fact span{display:inline-block;font:600 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-right:8px}.fact .src{font-size:14px;color:var(--muted);white-space:nowrap}a.src{color:var(--accent)}
 .rail a.create{background:var(--ink);color:var(--bg);font-weight:600;margin-bottom:10px}.rail a.create:hover,.rail a.create[aria-current]{background:var(--ink);color:var(--bg);opacity:.88}
 .review{font-size:14px}.review summary{cursor:pointer;color:var(--warn);font-weight:600}.review ul{margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px}.review p{margin:6px 0 0;font-size:13.5px}
 .track.three{grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;margin:0;padding:0}
@@ -651,6 +651,22 @@ function captionsForm(action: string, c: CaptionSettings, accent: string, beats:
 ${hide}<button type="submit" class="btn ghost sm">${esc(submit)}</button></form>`;
 }
 
+/** Why a stopped video stopped, in a sentence the customer can act on; the engine's own words when no plainer ones fit. */
+export function failureReason(error: string): string {
+  if (/spending cap|exceeded its monthly/i.test(error)) return "The picture service refused the request: its monthly spending limit is reached. Raise the limit in the Google AI project, then try again.";
+  if (/FAL_KEY|fal (GET|POST)/i.test(error)) return `The voice service did not answer as expected. ${error}`;
+  if (/^QA failed/.test(error)) return `The finished video did not pass a check that must pass:${error.replace(/^QA failed.*?qa-report\.md/, "").replace(/\s*Fix what it lists.*$/, "").replace(/\s+- /g, " ")}`;
+  if (/validation errors/i.test(error)) return "The channel's own files have a problem, so no video can be made until it is fixed on our side.";
+  return error;
+}
+
+/** A stopped video: the step it stopped at, why, and the way on. Nothing made so far is lost, so it continues from that step. */
+function failureHtml(order: Order): string {
+  const v = order.video!;
+  const reason = failureReason(v.error ?? "No reason was recorded.");
+  return `<p class="muted">It stopped while it was being ${v.failed_at === "making" ? "made (painted, voiced, rendered or checked)" : "written"}. Nothing made so far is lost.</p><p class="why"><b>Why:</b> ${esc(reason.length > 600 ? `${reason.slice(0, 600)}…` : reason)}</p><form method="post" action="/w/${esc(order.token)}/retry"><button type="submit" class="btn sm">Try again from that step</button></form><small class="muted">Quote <b>${esc(order.id)}</b> if you contact us about it.</small>`;
+}
+
 /** The storyboard, for the customer: every part's line, its painted shots and on-screen text, and the captions, then the approval. */
 function storyboardHtml(order: Order, sb: StoryboardView, accent: string): string {
   const base = `/w/${esc(order.token)}`;
@@ -697,7 +713,7 @@ function videoNotice(order: Order, facts: Script | null): string {
   if (v?.state === "storyboard") return `<section class="notice" id="next"><h2>Check your storyboard</h2><p class="muted">Every shot of your first video is painted. Look at them, change what you want, then approve the storyboard to make the video.</p><a class="btn sm" href="/w/${esc(order.token)}?view=new">Open the storyboard</a></section>`;
   if (v?.state === "making") return `<section class="notice" id="next"><h2>Your first video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and the video appears here by itself.</p></section>`;
   if (v?.state === "failed")
-    return `<section class="notice" id="next" role="alert"><h2>Your first video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}, and it has to be started again on our side. Nothing is lost. Quote <b>${esc(order.id)}</b> if you contact us.</p></section>`;
+    return `<section class="notice" id="next" role="alert"><h2>Your first video did not finish</h2>${failureHtml(order)}</section>`;
   return `<section class="notice" id="next"><h2>Brand kit approved</h2><p class="muted">Your first video is being made from this kit. It appears here when it has passed its checks. Nothing else is needed from you right now.</p></section>`;
 }
 
@@ -737,7 +753,7 @@ function nowHtml(order: Order, dash: Dashboard, facts: Script | null, made: numb
   if (v?.state === "storyboard") return title(`<h2>Your storyboard is ready</h2><p class="muted">Every shot is painted. Look at them, change what you want, then approve to make the video.</p><a class="btn sm" href="${newVideo}">Open the storyboard</a>`);
   if (v?.state === "making") return title(`<h2>A video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and it appears in Videos by itself.</p>`);
   if (v?.state === "failed")
-    return title(`<h2>The last video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}. Nothing is lost: start another one, and quote <b>${esc(order.id)}</b> if you contact us about it.</p><a class="btn sm" href="${newVideo}">New video</a>`);
+    return title(`<h2>The last video did not finish</h2>${failureHtml(order)}<a href="${newVideo}">Or start a new video</a>`);
   if (dash.paused) return title(`<h2>The channel is paused</h2><p class="muted">No new videos are made while it is paused.</p><a class="btn sm" href="${settings}">Resume it in Settings</a>`);
   return title(`<h2>${made ? "Ready for the next video" : "Ready for your first video"}</h2><p class="muted">Pick an idea or give your own topic, and the script is written for you. You check its facts before anything is voiced or drawn.</p><a class="btn sm" href="${newVideo}">New video</a>`);
 }
@@ -829,7 +845,7 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
     else {
       const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
       const ready = last ? `<div class="card"><h2>Your new video is ready</h2>${tiles([last])}<p class="muted">Download it and post it. Make the next one below.</p></div>` : "";
-      const failed = v?.state === "failed" ? `<div class="card" role="alert"><h2>The last video did not finish</h2><p class="muted">Something went wrong while it was being ${v.failed_at === "making" ? "made" : "written"}. Nothing is lost: start another one. Quote <b>${esc(order.id)}</b> if you contact us about it.</p></div>` : "";
+      const failed = v?.state === "failed" ? `<div class="card" role="alert"><h2>The last video did not finish</h2>${failureHtml(order)}</div>` : "";
       const stop = blocked ? `<div class="card" role="status"><h2>${esc(blocked)}</h2><p class="muted">${esc(blockedWhy)}</p>${dash.paused ? `<a class="btn sm" href="${at("settings")}">Go to Settings</a>` : ""}</div>` : "";
       body = `${ready}${failed}${stop}
 <div class="card"><div class="top-line"><h2>Pick one of your ideas</h2><a href="${at("ideas")}">Get more ideas</a></div><p class="muted">Each idea shows the fact it is built on. Check it at its source, then make the video.</p>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.map((i) => `<li>${ideaBody(i)}${makeBtn(i)}</li>`).join("")}</ul>` : `<p class="muted">No ideas are waiting.</p>${suggestBtn("ghost sm")}`}</div>

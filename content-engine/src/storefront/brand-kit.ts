@@ -89,7 +89,7 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
       const all = existsSync(dir) ? readdirSync(dir).filter((f) => /^[\w.-]+\.jpg$/.test(f)).sort() : [];
       // Three frames spread across the video: near the start, the middle, near the end.
       const frames = all.length <= 3 ? all : [all[1], all[Math.floor(all.length / 2)], all[all.length - 2]];
-      return { id: e.id, title: e.title, frames, review: reviewNotes(join(episodesDir(channel), e.id, "qa-review.json")), revisable: existsSync(join(episodesDir(channel), e.id, "storyboard.json")), versions: videoVersions(ws, slug, e.id) };
+      return { id: e.id, title: e.title, frames, review: [...checkNotes(join(episodesDir(channel), e.id, "qa", "automated.json")), ...reviewNotes(join(episodesDir(channel), e.id, "qa-review.json"))], revisable: existsSync(join(episodesDir(channel), e.id, "storyboard.json")), versions: videoVersions(ws, slug, e.id) };
     });
   return {
     slug,
@@ -123,6 +123,12 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
     },
     episodes,
   };
+}
+
+/** The automated checks a finished video missed (quality checks: they are notes on a customer's video, not stops). */
+function checkNotes(path: string): string[] {
+  if (!existsSync(path)) return [];
+  return readJson<{ checks: { label: string; detail: string; pass: boolean }[] }>(path).checks.filter((c) => !c.pass).map((c) => `${c.label}: ${c.detail}`);
 }
 
 /** The QA agent review's requested fixes, when the review did not pass. None when there is no review. */
