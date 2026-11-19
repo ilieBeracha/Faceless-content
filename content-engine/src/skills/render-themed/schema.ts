@@ -104,8 +104,10 @@ export const worldSchema = z
   .object({
     description: z.string().trim().min(10).max(1500).describe("the world in words, as specific as you like: setting, materials, era, light, mood, art style"),
     host: z.boolean().optional().describe("false = the channel has no host on screen: no shot shows one, and the voice narrates; leave out to have one"),
+    host_lead: z.boolean().optional().describe("true = the host is the main character: every beat shows the host in at least one of its shots; leave out and the host appears only where a shot calls for it"),
   })
-  .strict();
+  .strict()
+  .refine((w) => !(w.host === false && w.host_lead), { message: "host_lead needs a host on screen: take out `host: false` or `host_lead`", path: ["host_lead"] });
 export type World = z.infer<typeof worldSchema>;
 
 /** How the camera moves over a painted shot. */
@@ -283,6 +285,7 @@ export function checkShots(beats: { id: string; voiceover: string; visual: unkno
           if (shot.host === false && /\bthe host\b/i.test(shot.show)) errors.push(`beat "${b.id}": shot ${n + 1} leaves the host out, but its words say "the host"; take them out or put the host in`);
           if (theme.world.host === false && showsHost(shot)) errors.push(`beat "${b.id}": shot ${n + 1} shows the host, but the channel has no host on screen`);
         }
+        if (theme.world.host_lead && !v.shots.some(showsHost)) errors.push(`beat "${b.id}": the host is this channel's main character, so at least one of the beat's shots shows the host`);
         if (v.shots[0].at) errors.push(`beat "${b.id}": the first shot starts with the beat, so it takes no \`at\``);
         const r = shotCuts(v.shots, voiceTokens(b.voiceover));
         if (r.error) errors.push(`beat "${b.id}": ${r.error}`);

@@ -863,7 +863,11 @@ ${batches.map(batch).join("")}
 <div class="card"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${
       dash.hostOnScreen === null
         ? ""
-        : `<p class="muted">${dash.hostOnScreen ? "The host appears in the shots that call for it. Take it off screen and the voice narrates every video on its own." : "The host is off screen: the voice narrates every video. Put it back to have it appear in the shots that call for it."}</p><form method="post" action="${base}/host"><input type="hidden" name="on" value="${dash.hostOnScreen ? "0" : "1"}"><button type="submit" class="btn ghost sm"${busy ? ` disabled title="A video is under way"` : ""}>${dash.hostOnScreen ? "Take the host off screen" : "Put the host on screen"}</button></form>`
+        : `<p class="muted">${dash.hostOnScreen ? "The host appears in the shots that call for it. Take it off screen and the voice narrates every video on its own." : "The host is off screen: the voice narrates every video. Put it back to have it appear in the shots that call for it."}</p><form method="post" action="${base}/host"><input type="hidden" name="on" value="${dash.hostOnScreen ? "0" : "1"}"><button type="submit" class="btn ghost sm"${busy ? ` disabled title="A video is under way"` : ""}>${dash.hostOnScreen ? "Take the host off screen" : "Put the host on screen"}</button></form>${
+            dash.hostOnScreen
+              ? `<p class="muted">${dash.hostLead ? "The host is the main character: every part of a new video shows it in at least one shot." : "Optional: make the host the main character, so every part of a new video shows it in at least one shot."} Videos already made stay as they are.</p><form method="post" action="${base}/host"><input type="hidden" name="lead" value="${dash.hostLead ? "0" : "1"}"><button type="submit" class="btn ghost sm"${busy ? ` disabled title="A video is under way"` : ""}>${dash.hostLead ? "Show the host only where a shot calls for it" : "Make the host the main character"}</button></form>`
+              : ""
+          }`
     }</div>
 <div class="card"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
 <div class="card"><h2>Look</h2>${swatches(kit)}<p class="muted">${esc(kit.series.visual_style)}</p></div>

@@ -36,6 +36,16 @@ describe("render-themed: the host in painted shots", () => {
     assert.match(checkShots([beat("a", "Hi there.", [{ show: "A goose at a desk", host: true }])], hostless)[0], /no host on screen/);
     assert.equal(look(world).world?.host, undefined, "a world without the setting has a host, as before");
   });
+
+  it("makes the host the main character only when the channel asks for it: then every beat shows the host in a shot", () => {
+    const story = [beat("a", "Hi there.", [{ show: "The host waves at a goose" }]), beat("b", "Geese are loud.", [{ show: "A goose honks at a desk" }])];
+    assert.deepEqual(checkShots(story, look(world)), [], "without the setting, a beat may tell the story alone");
+    const lead = look({ ...world, host_lead: true });
+    assert.deepEqual(checkShots(story, lead).map((e) => e.replace(/:.*/, "")), ['beat "b"']);
+    assert.match(checkShots(story, lead)[0], /main character, so at least one of the beat's shots shows the host/);
+    assert.deepEqual(checkShots([story[0], beat("b", "Geese are loud.", [{ show: "A goose honks at a desk" }, { at: "loud.", show: "A goose honks at a desk again", host: true }])], lead), []);
+    assert.throws(() => look({ ...world, host: false, host_lead: true }), /host_lead needs a host on screen/);
+  });
 });
 
 describe("storyboard: approved as it was seen", () => {

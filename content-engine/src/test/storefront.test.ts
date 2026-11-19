@@ -1121,6 +1121,24 @@ describe("storefront: automatic builds", () => {
       assert.match(await page("settings"), /The host is off screen[\s\S]*Put the host on screen/);
       await post("host", { on: "1" });
       assert.equal(theme().host, undefined);
+      // Optional: the host as the main character. Off by default, not offered while it is off screen, dropped when it leaves the screen.
+      const lead = () => readJson<{ world: { host_lead?: boolean } }>(join(loadChannel(built, id).dir, "theme.json")).world.host_lead;
+      assert.equal(lead(), undefined);
+      assert.match(await page("settings"), /Optional: make the host the main character[\s\S]*name="lead" value="1"[\s\S]*Make the host the main character/);
+      assert.equal((await post("host", { lead: "1" })).status, 303);
+      assert.equal(lead(), true);
+      assert.match(await page("settings"), /The host is the main character[\s\S]*name="lead" value="0"[\s\S]*Show the host only where a shot calls for it/);
+      // A video made before that, with a part that never shows the host, can't be revised under the new setting.
+      assert.match(await (await post("revise-video", { episode: EPISODE })).text(), /made with a different host setting[\s\S]*main character/);
+      assert.equal(store.byId(id)?.video?.state, "done");
+      await post("host", { lead: "0" });
+      assert.equal(lead(), undefined);
+      await post("host", { lead: "1" });
+      await post("host", { on: "0" });
+      assert.deepEqual([theme().host, lead()], [false, undefined]);
+      assert.doesNotMatch(await page("settings"), /main character/);
+      assert.match(await (await post("host", { lead: "1" })).text(), /Put the host on screen first/);
+      await post("host", { on: "1" });
 
       // The review's reading of banned topics is a note on the finished video (first), not a reason to stop it.
       writeJson(join(dir, "qa-review.json"), { render_hash: "x", tone: { pass: true, notes: "" }, banned_topics: { pass: false, notes: "A glass poured until it spills reads as excess." }, visuals: { pass: true, notes: "" }, character: { pass: true, notes: "" }, overall: "fail", fixes: ["Show a modest pour."], learnings: [] });

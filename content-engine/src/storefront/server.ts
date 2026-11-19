@@ -362,8 +362,9 @@ export function createPublicServer(o: StorefrontOptions): Server {
         if (req.method === "POST" && parts.length === 3 && o.builder && (parts[2] === "host" || parts[2] === "captions")) {
           const form = await readForm(req);
           if (parts[2] === "host") {
-            if (form.on !== "0" && form.on !== "1") throw new HttpError(400, "Choose to put the host on screen or take it off.");
-            o.builder.setHost(order.id, form.on === "1");
+            if (form.lead === "0" || form.lead === "1") o.builder.setHostLead(order.id, form.lead === "1");
+            else if (form.on !== "0" && form.on !== "1") throw new HttpError(400, "Choose to put the host on screen or take it off.");
+            else o.builder.setHost(order.id, form.on === "1");
           } else o.builder.setChannelCaptions(order.id, parseCaptionForm(form));
           return redirect(res, `/w/${order.token}?view=settings`);
         }

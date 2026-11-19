@@ -47,6 +47,8 @@ export interface Dashboard {
   suggestsLeftToday: number;
   /** Whether the channel's host is on screen; null when its look has no painted world (the host is always on screen). */
   hostOnScreen: boolean | null;
+  /** Whether the host is the main character: in at least one shot of every part. Only when it is on screen. */
+  hostLead: boolean;
   /** The caption settings every new video starts with. */
   captions: CaptionSettings;
   /** The current video's storyboard, while the customer is checking it. */
@@ -450,6 +452,7 @@ export class Builder {
       videosLeftToday: Math.max(0, VIDEOS_PER_DAY - this.videosToday(order, channel)),
       suggestsLeftToday: Math.max(0, SUGGESTS_PER_DAY - countToday(order.suggest?.runs ?? [])),
       hostOnScreen: this.hostOnScreen(channel),
+      hostLead: this.hostOnScreen(channel) === true && loadChannelTheme(channel.dir, channel.slug).world?.host_lead === true,
       captions: this.channelCaptions(order),
       storyboard: order.video?.state === "storyboard" ? this.storyboard(order) : null,
     };
@@ -615,6 +618,9 @@ export class Builder {
     if (!made || !existsSync(videoPath(this.ws, channel.slug, episode))) throw new CustomerError("That video is not available.");
     const dir = join(episodesDir(channel), episode);
     if (!readStoryboard(dir)) throw new CustomerError("This video was made without a storyboard, so it can't be revised.");
+    // A video made under another host setting (on screen, off screen, main character) can't be made again under this one.
+    const misfit = checkShots(readJson<Script>(join(dir, "script.json")).beats, loadChannelTheme(channel.dir, channel.slug));
+    if (misfit.length) throw new CustomerError(`This video was made with a different host setting, so it can't be revised as the channel is set now (${misfit[0]}). Change the host setting back in Settings to revise it.`);
     // The repaints the video has used so far: they are counted per video, across its revisions.
     const used = Math.max(existsSync(repaintsPath(dir)) ? readJson<{ repaints: number }>(repaintsPath(dir)).repaints : 0, order.video?.episode === episode ? (order.video.repaints ?? 0) : 0);
     this.store.update(id, (o) => {
@@ -749,8 +755,24 @@ export class Builder {
       const host = channel.characters.get(String((series.data.characters as string[])[0]));
       if (!host || !existsSync(host.modelPath)) throw new Error(`The channel "${channel.slug}" has no host design (model.json) to put on screen.`);
     }
-    const { host: _old, ...world } = theme.world;
+    // Off screen it can't be the main character; back on screen it appears where a shot calls for it.
+    const { host: _old, host_lead: _lead, ...world } = theme.world;
     writeJson(join(channel.dir, "theme.json"), { ...theme, world: onScreen ? world : { ...world, host: false } });
+  }
+
+  /**
+   * Make the host the main character of the channel's new videos (in at least one shot of every part), or let it
+   * appear only where a shot calls for it. Optional, and only while the host is on screen. Videos already made stay as they are.
+   */
+  setHostLead(id: string, lead: boolean): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    const { channel } = this.dashboardChannel(order);
+    if (videoUnderWay(order) || this.waiting.has(order.id)) throw new CustomerError("A video is under way. Change the host when it is finished.");
+    if (this.hostOnScreen(channel) !== true) throw new CustomerError("Put the host on screen first.");
+    const theme = loadChannelTheme(channel.dir, channel.slug);
+    const { host_lead: _old, ...world } = theme.world!;
+    writeJson(join(channel.dir, "theme.json"), { ...theme, world: lead ? { ...world, host_lead: true } : world });
   }
 
   /** Whether the channel's host is on screen; null when its videos are not told in painted shots (no world, or a series that doesn't paint). */
