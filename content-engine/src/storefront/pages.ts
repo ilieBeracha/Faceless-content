@@ -253,6 +253,19 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .strip a{position:relative;flex:none;width:74px;scroll-snap-align:start}
 .strip img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:9px;border:1px solid var(--line)}
 .strip span{position:absolute;left:5px;top:5px;font:700 11px/1 var(--body);background:var(--surface);color:var(--ink);border-radius:99px;padding:4px 6px}
+.pane{overflow-x:clip}.deck{display:flex;gap:14px;min-width:0;max-width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;align-self:stretch;padding-bottom:6px}
+.slide{flex:none;width:min(100%,400px);scroll-snap-align:center;scroll-margin-top:130px;background:var(--surface);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.frame{position:relative;align-self:center;width:min(100%,calc(56vh*9/16))}
+.frame img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:14px;border:1px solid var(--line)}
+.frame .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 78%,transparent);color:var(--ink)}.frame .nav svg{width:18px;height:18px}
+.frame .prev{left:-6px}.frame .next{right:-6px}
+.frame .count{position:absolute;top:8px;left:8px;font:700 12px/1 var(--body);background:var(--surface);color:var(--ink);border-radius:99px;padding:5px 8px}
+.slide .said1 .num{display:block;margin-bottom:4px}.slide .what{margin:0;font-size:13.5px;line-height:1.4;color:var(--muted)}.slide .what b{color:var(--ink);font-weight:600}
+.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}.acts details[open]{flex-basis:100%;order:2}.acts .btn[disabled]{opacity:.45;cursor:not-allowed}
+.acts .edit>summary{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.acts .edit .inner{align-items:flex-start}.acts .edit .inner .f{align-self:stretch}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);border:0;padding:0}
+@media(prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}}
 .part{align-items:stretch;scroll-margin-top:130px}
 .part .shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px;max-width:640px}
 .part .shots figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -715,48 +728,56 @@ function failureHtml(order: Order): string {
   return `<p class="muted">It stopped while it was being ${v.failed_at === "making" ? "made (painted, voiced, rendered or checked)" : "written"}. Nothing made so far is lost.</p><p class="why"><b>Why:</b> ${esc(reason.length > 600 ? `${reason.slice(0, 600)}…` : reason)}</p><form method="post" action="/w/${esc(order.token)}/retry"><button type="submit" class="btn sm">Try again from that step</button></form><small class="muted">Quote <b>${esc(order.id)}</b> if you contact us about it.</small>`;
 }
 
-/** The storyboard, for the customer: all shots at a glance, then every part's line with its painted shots (changes behind one button), the captions, and the approval. */
+/** The storyboard, for the customer: one shot at a time at the size it is watched, its line and its changes under it, then speed, captions and the approval. */
 function storyboardHtml(order: Order, sb: StoryboardView, accent: string): string {
   const base = `/w/${esc(order.token)}`;
   const shotsOf = (b: Script["beats"][number]) => ((b.visual as ThBeatVisual).shots ?? []) as Shot[];
   const src = (id: string) => `${base}/shot/${esc(id)}?v=${esc(sb.pictures[id] ?? "")}`;
-  const part = (b: Script["beats"][number], i: number) => {
+  const all = sb.script.beats.flatMap((b, i) => shotsOf(b).map((s, k) => ({ b, i, s, n: k + 1, id: `${b.id}-${k + 1}` })));
+  const arrow = (d: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  // Each shot is its own form for its part: the part's other shots travel along unchanged.
+  const slide = ({ b, i, s, n, id }: (typeof all)[number], at: number) => {
     const shots = shotsOf(b);
     const words = voiceTokens(b.voiceover);
-    const at = (n: number, chosen: string | undefined) =>
-      n === 1 ? "" : `<label class="f" for="at-${esc(b.id)}-${n}">Cuts in on the word<select id="at-${esc(b.id)}-${n}" name="at_${n}"><option value="">Choose…</option>${words.map((w) => `<option value="${esc(w)}"${w === chosen ? " selected" : ""}>${esc(w)}</option>`).join("")}</select></label>`;
-    const host = (n: number, on: boolean) => (sb.hostOnScreen ? `<label class="check"><input type="checkbox" name="host_${n}"${on ? " checked" : ""}> The host is in this shot</label>` : "");
-    // Each shot is changed where it stands: its fields open under its own picture.
-    const picture = (s: Shot, k: number) => {
-      const n = k + 1;
-      const id = `${b.id}-${n}`;
-      return `<figure><img src="${src(id)}" alt="Shot ${n}: ${esc(s.show)}" loading="lazy"><figcaption>${s.at ? `<b>From “${esc(s.at)}”</b> ` : ""}${esc(s.show)}</figcaption><details class="edit"><summary class="btn ghost sm">Change shot ${n}</summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${at(n, s.at)}${shots.length > 1 ? `<label class="check"><input type="checkbox" name="remove_${n}"> Remove this shot</label>` : ""}</div></details></figure>`;
-    };
+    const cut = (k: number, chosen: string | undefined) =>
+      `<label class="f" for="at-${esc(id)}-${k}">Cuts in on the word<select id="at-${esc(id)}-${k}" name="at_${k}"><option value="">Choose…</option>${words.map((w) => `<option value="${esc(w)}"${w === chosen ? " selected" : ""}>${esc(w)}</option>`).join("")}</select></label>`;
+    const host = (k: number, on: boolean) => (sb.hostOnScreen ? `<label class="check"><input type="checkbox" name="host_${k}"${on ? " checked" : ""}> The host is in this shot</label>` : "");
+    const others = shots
+      .map((o, k) => (k + 1 === n ? "" : `<input type="hidden" name="show_${k + 1}" value="${esc(o.show)}">${showsHost(o) ? `<input type="hidden" name="host_${k + 1}" value="on">` : ""}${o.at ? `<input type="hidden" name="at_${k + 1}" value="${esc(o.at)}">` : ""}`))
+      .join("");
     const next = shots.length + 1;
-    const add = next > 3 ? "" : `<details class="shot add"><summary>Add a shot</summary><label class="f" for="show-${esc(b.id)}-${next}">What we see<textarea id="show-${esc(b.id)}-${next}" name="show_${next}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(next, false)}${at(next, undefined)}</details>`;
-    return `<form class="card part" id="part-${esc(b.id)}" method="post" action="${base}/storyboard/beat"><input type="hidden" name="beat" value="${esc(b.id)}">
-<div class="top-line"><h3>Part ${i + 1}</h3><small class="muted">${shots.length} shot${shots.length === 1 ? "" : "s"}</small></div><p class="said1">${esc(b.voiceover)}</p>
-<details class="edit text"><summary class="${b.on_screen_text ? "ost" : "btn ghost sm"}">${b.on_screen_text ? `On screen: ${esc(b.on_screen_text)} · Change` : "Add on-screen text"}</summary><div class="inner"><label class="f" for="text-${esc(b.id)}">On-screen text <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(b.id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label></div></details>
-<div class="shots">${shots.map(picture).join("")}${add}</div>
-<div class="row save"><button type="submit" class="btn sm">Save part ${i + 1}</button><small class="muted">A changed or added shot is painted again: ${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left for this video.</small></div></form>`;
+    const add =
+      n === shots.length && next <= 3
+        ? `<details class="edit"><summary class="btn ghost sm">Add a shot</summary><div class="inner"><label class="f" for="show-${esc(id)}-add">What the new shot shows<textarea id="show-${esc(id)}-add" name="show_${next}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(next, false)}${cut(next, undefined)}<button type="submit" class="btn sm">Add and paint it</button></div></details>`
+        : "";
+    const before = all[at - 1];
+    const after = all[at + 1];
+    return `<form class="slide" id="shot-${esc(id)}" method="post" action="${base}/storyboard/beat"><input type="hidden" name="beat" value="${esc(b.id)}"><button type="submit" class="vh" tabindex="-1" aria-hidden="true"></button>${others}
+<div class="frame"><img src="${src(id)}" alt="Shot ${at + 1}: ${esc(s.show)}" loading="lazy">${before ? `<a class="nav prev" href="#shot-${esc(before.id)}" aria-label="Previous shot">${arrow("M15 5l-7 7 7 7")}</a>` : ""}${after ? `<a class="nav next" href="#shot-${esc(after.id)}" aria-label="Next shot">${arrow("M9 5l7 7-7 7")}</a>` : ""}<span class="count">${at + 1} / ${all.length}</span></div>
+<p class="said1"><span class="num">Part ${i + 1}${shots.length > 1 ? ` · shot ${n} of ${shots.length}` : ""}</span>${esc(b.voiceover)}</p>
+<p class="what">${s.at ? `<b>From “${esc(s.at)}”</b> ` : ""}${esc(s.show)}</p>
+<div class="acts"><button type="submit" name="repaint" value="${n}" class="btn ghost sm"${sb.repaintsLeft ? "" : ' disabled title="No repaints left for this video"'}>New picture</button>
+<details class="edit"><summary class="btn ghost sm">Change shot</summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${n > 1 ? cut(n, s.at) : ""}${shots.length > 1 ? `<label class="check"><input type="checkbox" name="remove_${n}"> Remove this shot</label>` : ""}<button type="submit" class="btn sm">Save and paint again</button></div></details>
+<details class="edit"><summary class="btn ghost sm">${b.on_screen_text ? `Text: ${esc(b.on_screen_text)}` : "Add text"}</summary><div class="inner"><label class="f" for="text-${esc(id)}">On-screen text for part ${i + 1} <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label><button type="submit" class="btn sm">Save text</button></div></details>
+${add}</div></form>`;
   };
-  const total = sb.script.beats.reduce((sum, b) => sum + shotsOf(b).length, 0);
-  const strip = `<div class="strip" aria-label="All shots in order">${sb.script.beats.map((b, i) => shotsOf(b).map((s, k) => `<a href="#part-${esc(b.id)}"><img src="${src(`${b.id}-${k + 1}`)}" alt="Part ${i + 1}, shot ${k + 1}: ${esc(s.show)}" loading="lazy"><span>${i + 1}</span></a>`).join("")).join("")}</div>
-<p class="meta"><span>${sb.script.beats.length} parts</span><span>${total} shot${total === 1 ? "" : "s"}</span><span>${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left</span></p>`;
+  const strip = `<div class="strip" aria-label="All shots in order">${all.map((x, at) => `<a href="#shot-${esc(x.id)}"><img src="${src(x.id)}" alt="Shot ${at + 1}, part ${x.i + 1}: ${esc(x.s.show)}" loading="lazy"><span>${at + 1}</span></a>`).join("")}</div>
+<p class="meta"><span>${sb.script.beats.length} parts</span><span>${all.length} shot${all.length === 1 ? "" : "s"}</span><span>${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left</span></p>`;
   const intro = sb.revising
-    ? `<div class="card"><h2>Revise your video</h2><p class="muted">“${esc(sb.script.title)}” is finished. Change its captions, its on-screen text or what a shot shows${sb.hostOnScreen ? ", or whether the host is in it," : ""} and a new version is made with the same words, in the channel's voice as it is set now. The video you have now is kept as an earlier version.</p>${strip}</div>`
-    : `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. If it looks right, approve it below: the video is voiced and rendered exactly like this. To change something, tap Change under that shot.</p>${strip}</div>`;
+    ? `<div class="card"><h2>Revise your video</h2><p class="muted">“${esc(sb.script.title)}” is finished. Change its captions, its speed, its on-screen text or what a shot shows${sb.hostOnScreen ? ", or whether the host is in it," : ""} and a new version is made with the same words, in the channel's voice as it is set now. The video you have now is kept as an earlier version.</p>${strip}</div>`
+    : `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. Swipe through them. If they look right, approve below: the video is voiced and rendered exactly like this.</p>${strip}</div>`;
   const decision = sb.revising
-    ? `<p class="muted">${sb.changed ? "The new version takes a few minutes and does not use up one of today's videos." : "Nothing is changed yet. Save a part or the captions above to make a new version."}</p><div class="card stick"><div class="decide" role="group" aria-label="Your decision on this revision">${sb.changed ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Make the new version</button></form>` : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="btn ghost">Leave it as it is</button></form>`}</div></div>`
+    ? `<p class="muted">${sb.changed ? "The new version takes a few minutes and does not use up one of today's videos." : "Nothing is changed yet. Change a shot, the speed or the captions to make a new version."}</p><div class="card stick"><div class="decide" role="group" aria-label="Your decision on this revision">${sb.changed ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Make the new version</button></form>` : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="btn ghost">Leave it as it is</button></form>`}</div></div>`
     : `<div class="card stick"><div class="decide" role="group" aria-label="Your decision on the storyboard"><form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Approve the storyboard</button></form></div></div>`;
   const c = sb.captions;
   const capsNow = c.show ? `${CAPTION_SIZE_NAMES[c.size]}, ${CAPTION_PLACE_NAMES[c.place].toLowerCase()}${c.case === "upper" ? ", all caps" : ""}` : "Off";
   return `${intro}
-${sb.script.beats.map(part).join("")}
+<div class="deck">${all.map(slide).join("")}</div>
 <form class="card" method="post" action="${base}/storyboard/speed"><div class="top-line"><h2>Speed</h2><small class="muted">How fast the voice speaks</small></div><div class="seg" role="group" aria-label="Speaking speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}"${p === sb.pace ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${PACE_NAMES[p]}</button>`).join("")}</div><p class="muted">Faster makes the video shorter, slower makes it longer. The pictures and captions follow the voice.</p></form>
 <details class="card fold"><summary><h2>Captions</h2><small class="muted">${esc(capsNow)} · Change</small></summary><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, c, accent, sb.script.beats, "Save captions")}</details>
 ${decision}`;
 }
+
 /** What stands where the first video will be, until it is there. */
 function videoNotice(order: Order, facts: Script | null): string {
   const v = order.video;

@@ -665,11 +665,11 @@ export class Builder {
 
   /**
    * The customer changed one beat on the storyboard: its shots (what each shows, whether the host is in it, the word
-   * it cuts in on) and its on-screen text. Shots whose picture changes are painted again (each counts against the
+   * it cuts in on) and its on-screen text; `again` asks for one unchanged shot (1-based) to be painted once more. Shots whose picture changes are painted again (each counts against the
    * video's repaints); changed on-screen text sends the facts back for approval. Throws (for the customer) when the
    * change is not valid.
    */
-  editBeat(id: string, beatId: string, edit: BeatEdit): void {
+  editBeat(id: string, beatId: string, edit: BeatEdit, again?: number): void {
     const order = this.store.byId(id);
     if (!order) throw new Error(`No order "${id}".`);
     const { dir, script } = this.storyboardEpisode(order);
@@ -698,14 +698,23 @@ export class Builder {
     const problems = [...check.errors, ...checkShots(next.beats, theme)];
     if (problems.length) throw new CustomerError(`That change can't be made: ${problems.join("; ")}`);
     // A shot is painted again when what it shows or whether the host is in it changes (the painter's words for it).
-    const repaints = shots.filter((s, n) => !old[n] || old[n].show !== s.show || showsHost(old[n]) !== showsHost(s)).length;
+    const changed = (n: number) => !old[n] || old[n].show !== shots[n].show || showsHost(old[n]) !== showsHost(shots[n]);
+    // "New picture": the same shot painted once more. Only when that shot is not being painted again anyway.
+    const fresh = again !== undefined && shots.length === old.length && shots[again - 1] && !changed(again - 1) ? again : undefined;
+    const repaints = shots.filter((_, n) => changed(n)).length + (fresh ? 1 : 0);
     const textChanged = (beat.on_screen_text ?? "") !== text;
     const shotsChanged = JSON.stringify(old) !== JSON.stringify(shots);
-    if (!textChanged && !shotsChanged) return;
+    if (!textChanged && !shotsChanged && !fresh) return;
     const left = REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0);
     if (repaints > left) throw new CustomerError(`That would paint ${repaints} shot${repaints === 1 ? "" : "s"} again, and this video has ${left} repaint${left === 1 ? "" : "s"} left.`);
     writeJson(join(dir, "script.json"), next);
     if (repaints) writeJson(repaintsPath(dir), { repaints: (order.video!.repaints ?? 0) + repaints });
+    if (fresh) {
+      // Forget the picture it has, so the painter makes it again from the same words.
+      const state = readJson<{ shots: Record<string, unknown> }>(paintPaths(dir).state);
+      delete state.shots[`${beatId}-${fresh}`];
+      writeJson(paintPaths(dir).state, state);
+    }
     this.store.update(id, (o) => {
       o.video = { ...o.video!, state: "painting", attempts: 0, repaints: (o.video!.repaints ?? 0) + repaints, at: nowIso() };
     });

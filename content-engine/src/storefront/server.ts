@@ -336,7 +336,9 @@ export function createPublicServer(o: StorefrontOptions): Server {
           if (parts[3] === "beat") {
             const beat = (form.beat ?? "").trim();
             if (!SLUG.test(beat)) throw new HttpError(400, "Choose a part of the video.");
-            o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen));
+            const again = Number(form.repaint);
+            o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen), Number.isInteger(again) && again >= 1 && again <= 3 ? again : undefined);
+            return redirect(res, `/w/${order.token}?view=new#shot-${beat}-1`);
           } else if (parts[3] === "captions") o.builder.setVideoCaptions(order.id, parseCaptionForm(form));
           else if (parts[3] === "speed") o.builder.setVideoPace(order.id, (form.pace ?? "").trim());
           else if (parts[3] === "approve") o.builder.approveStoryboard(order.id);

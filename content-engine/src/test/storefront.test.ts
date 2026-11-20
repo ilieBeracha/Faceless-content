@@ -1034,7 +1034,7 @@ describe("storefront: automatic builds", () => {
 
       const board = await page("new");
       assert.match(board, /class="track four"[\s\S]*class="done">Check the facts[\s\S]*class="now">Storyboard<small>Your turn[\s\S]*Get the video/);
-      assert.match(board, /Check your storyboard[\s\S]*Part 1[\s\S]*Why doesn&#39;t your pen leak\?[\s\S]*\/shot\/hook-1\?v=[0-9a-f]{12}[\s\S]*name="host_1" checked[\s\S]*Part 2[\s\S]*Cuts in on the word[\s\S]*Captions[\s\S]*Approve the storyboard/);
+      assert.match(board, /Check your storyboard[\s\S]*id="shot-hook-1"[\s\S]*\/shot\/hook-1\?v=[0-9a-f]{12}[\s\S]*1 \/ \d[\s\S]*Part 1[\s\S]*Why doesn&#39;t your pen leak\?[\s\S]*name="repaint" value="1"[\s\S]*name="host_1" checked[\s\S]*Part 2[\s\S]*Cuts in on the word[\s\S]*Speed[\s\S]*Captions[\s\S]*Approve the storyboard/);
       assert.match(board, /10 repaints left/);
       assert.match(await page(), /Your storyboard is ready[\s\S]*Open the storyboard/);
       const picture = await fetch(`${base}${link}/shot/hook-1`);
@@ -1044,7 +1044,7 @@ describe("storefront: automatic builds", () => {
       // One part: the first shot shows something else without the host, the second is removed. Only the changed shot is repainted.
       hold = new Promise<void>((r) => (release = r));
       const edit = await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", show_2: "Thick blue ink waits behind the ball", at_2: "ink", remove_2: "on", text: "" });
-      assert.deepEqual([edit.status, edit.headers.get("location")], [303, `${link}?view=new`]);
+      assert.deepEqual([edit.status, edit.headers.get("location")], [303, `${link}?view=new#shot-explain-1`]);
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.repaints], ["painting", 1]);
       release();
       await builder.idle();
@@ -1054,14 +1054,20 @@ describe("storefront: automatic builds", () => {
       assert.match(readText(join(dir, "shots", "explain-1.jpg")), /rolls inside the tip/);
       assert.match(await page("new"), /9 repaints left/);
 
+      // "New picture": the same shot, painted once more. It counts as a repaint.
+      assert.equal((await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", text: "", repaint: "1" })).status, 303);
+      await builder.idle();
+      assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.repaints], ["storyboard", 2]);
+      assert.match(await page("new"), /8 repaints left/);
+
       // Refused, with the reason, and nothing changes: the host left out of a shot whose words still say "the host"; an added shot with no word to cut in on.
       assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", text: "Why no leaks?" })).text(), /leaves the host out, but its words say &quot;the host&quot;/);
       assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", show_2: "A puddle of ink on a desk", text: "Why no leaks?" })).text(), /Pick the word shot 2 cuts in on/);
-      assert.equal(store.byId(id)?.video?.repaints, 1);
+      assert.equal(store.byId(id)?.video?.repaints, 2);
 
       // New on-screen text changes what is shown, so the facts come back to be approved; then the storyboard again.
       assert.equal((await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", text: "Why no drips?" })).status, 303);
-      assert.equal(store.byId(id)?.video?.repaints, 1, "the same picture is not painted again");
+      assert.equal(store.byId(id)?.video?.repaints, 2, "the same picture is not painted again");
       await builder.idle();
       assert.equal(store.byId(id)?.video?.state, "facts");
       assert.match(await page("new"), /Check the facts[\s\S]*On screen: Why no drips\?/);
