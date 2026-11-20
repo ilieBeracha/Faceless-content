@@ -249,23 +249,8 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .wait .bar i{display:block;width:34%;height:100%;border-radius:3px;background:var(--accent);animation:wait 1.7s ease-in-out infinite}
 @keyframes wait{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
 @media(prefers-reduced-motion:reduce){.wait .bar i{animation:none;width:100%;opacity:.5}}
-.strip{display:flex;gap:8px;overflow-x:auto;align-self:stretch;padding-bottom:4px;scroll-snap-type:x proximity}
-.strip a{position:relative;flex:none;width:74px;scroll-snap-align:start}
-.strip img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:9px;border:1px solid var(--line)}
-.strip span{position:absolute;left:5px;top:5px;font:700 11px/1 var(--body);background:var(--surface);color:var(--ink);border-radius:99px;padding:4px 6px}
-.pane{overflow-x:clip}.deck{display:flex;gap:14px;min-width:0;max-width:100%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;align-self:stretch;padding-bottom:6px}
-.slide{flex:none;width:min(100%,400px);scroll-snap-align:center;scroll-margin-top:130px;background:var(--surface);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.frame{position:relative;align-self:center;width:min(100%,calc(56vh*9/16))}
-.frame img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:14px;border:1px solid var(--line)}
-.frame .nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 78%,transparent);color:var(--ink)}.frame .nav svg{width:18px;height:18px}
-.frame .prev{left:-6px}.frame .next{right:-6px}
-.frame .count{position:absolute;top:8px;left:8px;font:700 12px/1 var(--body);background:var(--surface);color:var(--ink);border-radius:99px;padding:5px 8px}
-.slide .said1 .num{display:block;margin-bottom:4px}.slide .what{margin:0;font-size:13.5px;line-height:1.4;color:var(--muted)}.slide .what b{color:var(--ink);font-weight:600}
-.acts{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start}.acts details[open]{flex-basis:100%;order:2}.acts .btn[disabled]{opacity:.45;cursor:not-allowed}
-.acts .edit>summary{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
-.acts .edit .inner{align-items:flex-start}.acts .edit .inner .f{align-self:stretch}
+.pane{overflow-x:clip}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);border:0;padding:0}
-@media(prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}}
 .part{align-items:stretch;scroll-margin-top:130px}
 .part .shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px;max-width:640px}
 .part .shots figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -285,8 +270,6 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);box-shadow:none}
 .part .shot.add summary{cursor:pointer;font-weight:600}
 .part textarea{min-height:84px}
-.said1{margin:0;font:500 18px/1.45 var(--body);color:var(--ink);max-width:70ch}
-.fold>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%}.fold>summary::-webkit-details-marker{display:none}.fold[open]>summary small{display:none}.fold>summary small{text-align:right;min-width:0}.fold[open]>summary{margin-bottom:12px}.fold[open]>*+*{margin-top:12px}
 @media(min-width:700px){.stick .btn{flex:0 0 auto}}
 label.check{display:flex;gap:8px;align-items:center;font-size:15px}
 .caps{display:flex;flex-direction:column;gap:12px}.caps>button,.caps fieldset{align-self:flex-start}.caps .row3{display:flex;flex-wrap:wrap;gap:12px;align-items:end}
@@ -296,6 +279,51 @@ form.own{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;width:100%}fo
 @media(max-width:820px){.shell{grid-template-columns:1fr}.rail{position:sticky;top:60px;z-index:15;height:auto;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);background:var(--bg);padding:8px 12px;gap:4px}.rail a{flex:none;padding:9px 12px}.rail b{margin-left:4px}.cbar .mine{display:none}.pane{padding-top:22px}}
 @media(max-width:480px){.cbar .sep,.cbar .brand span{display:none}}
 .yours{display:flex;flex-wrap:wrap;gap:20px;align-items:center}.yours .vis{width:96px}.yours img.vis{aspect-ratio:1;object-fit:contain;background:var(--bg)}
+
+/* a video under way: one step per page */
+body.vflow{--bg:#f5f2ea;--surface:#fff;--ink:#17161b;--muted:#6d6a75;--line:#dedad0;--soft:#ebe7dc;--accent:#17161b;--on-accent:#f5f2ea;--ok:#1f7a4d;--warn:#b3261e;color-scheme:light;font-size:16px;line-height:1.5}
+.fl{max-width:560px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column}
+.fl-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:6px 20px 0;font:500 14px/1 var(--body);color:var(--muted)}
+.fl-top a{text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.fl-steps{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;padding:4px 20px 0;font:600 13px/1.2 var(--body);color:var(--muted)}
+.fl-steps li{border-top:3px solid var(--line);padding-top:7px}.fl-steps li.done{border-color:var(--ink);color:var(--ink)}
+.fl main{flex:1;display:flex;flex-direction:column;gap:14px;padding:22px 20px 28px;min-width:0}
+.fl h1{font:700 30px/1.1 "Space Grotesk",var(--body);letter-spacing:-.01em}.fl h2.more{font:700 18px/1.2 "Space Grotesk",var(--body)}
+.fl .sub{font-size:15px;line-height:1.45;color:var(--muted)}
+.fl-bar{position:sticky;bottom:0;z-index:10;display:flex;gap:10px;align-items:center;padding:12px 20px calc(14px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line)}
+.fl-bar form{flex:1;display:flex}
+.fl-bar .go{flex:1;min-height:52px;border-radius:26px;border:0;background:var(--ink);color:var(--bg);font:600 16px/1 var(--body);cursor:pointer}
+.fl-bar .go.quiet{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.fl-bar .alt{font:500 14.5px/1 var(--body);padding:0 6px;min-height:52px;display:inline-flex;align-items:center;text-underline-offset:3px;white-space:nowrap}
+.lines{display:flex;flex-direction:column}
+.lines li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid var(--line)}
+.lines .n{font:600 13px/1.95 var(--body);color:var(--muted)}
+.lines li>div{display:flex;flex-direction:column;gap:7px;align-items:flex-start;min-width:0}
+.lines p{font-size:18px;line-height:1.4}
+.fl .ost{font-size:12.5px;font-weight:600;background:none;border:1px solid var(--ink);border-radius:5px;padding:2px 7px}
+.fl .proof{font-size:13.5px;line-height:1.4;color:var(--ok);font-weight:500}.fl .proof::before{content:"✓ "}
+.fl .proof .src{color:var(--muted);font-weight:400;overflow-wrap:anywhere}.fl .proof small{display:block;color:var(--muted);font-weight:400}
+.opts{display:flex;flex-wrap:wrap;gap:8px;scroll-margin-top:16px}
+.opt{display:inline-flex;align-items:center;min-height:42px;padding:0 15px;border-radius:21px;border:1px solid var(--line);background:var(--surface);font:500 14px/1 var(--body);text-decoration:none}
+.pics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tile{position:relative;display:block;scroll-margin:24px 0 110px;border-radius:10px;overflow:hidden;background:var(--soft)}
+.tile img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover}
+.tile span{position:absolute;left:6px;top:6px;font:600 11px/1 var(--body);color:#fff;background:rgba(0,0,0,.6);border-radius:4px;padding:3px 6px}
+.sheet{display:none;position:fixed;inset:0;z-index:40}.sheet:target{display:block}
+.sheet .scrim{position:absolute;inset:0;background:rgba(23,22,27,.45)}
+.sheet .in{position:absolute;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;max-height:90dvh;overflow-y:auto;background:var(--surface);border-radius:22px 22px 0 0;padding:20px 20px calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column}
+.sheet h2{font:700 20px/1.2 "Space Grotesk",var(--body);margin-bottom:12px}
+.sheet .x{align-self:center;font:500 14.5px/1 var(--body);color:var(--muted);min-height:48px;display:inline-flex;align-items:center}
+.sheet .inner{display:flex;flex-direction:column;gap:12px;padding:2px 0 16px;align-items:flex-start}.sheet .inner .f,.sheet .inner .caps{align-self:stretch}
+.sh-head{display:flex;gap:14px;align-items:center;padding-bottom:14px}
+.sh-head img{flex:none;width:84px;aspect-ratio:9/16;object-fit:cover;border-radius:10px}
+.sh-head p{font-size:15.5px;line-height:1.4;margin-top:4px}.sh-head .what{font-size:13.5px;color:var(--muted)}
+.act,.actd>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;min-height:54px;border:0;border-top:1px solid var(--line);background:none;color:var(--ink);font:500 16px/1.2 var(--body);text-align:left;cursor:pointer;padding:0;list-style:none}
+.actd>summary::-webkit-details-marker{display:none}
+.act span,.actd>summary span{font-weight:400;font-size:14px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.act[disabled]{opacity:.45;cursor:not-allowed}.act.warn{color:var(--warn)}
+.sheet .seg{background:none;padding:0;border-radius:0}
+@media(min-width:700px){.pics{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 /* orders */
 .order{background:var(--surface);border-radius:24px;padding:24px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:20px 32px}
@@ -659,11 +687,6 @@ function finishBar(order: Order, canRevise: boolean): string {
   return `<div class="finish" id="finish" data-live><div class="count"><span aria-live="polite">${count}</span><span class="pips" aria-hidden="true">${pips}</span></div>${action}</div>`;
 }
 
-/** A step that is running by itself: what is happening, and what the customer does next. */
-function waitCard(title: string, text: string): string {
-  return `<div class="card wait" role="status"><div class="bar" aria-hidden="true"><i></i></div><h2>${esc(title)}</h2><p class="muted">${esc(text)}</p></div>`;
-}
-
 /** The fact-check, for the customer: the script part by part, each fact under the line that states it with its source, and the decision. */
 function factsHtml(order: Order, script: Script, first = true): string {
   const base = `/w/${esc(order.token)}`;
@@ -728,54 +751,128 @@ function failureHtml(order: Order): string {
   return `<p class="muted">It stopped while it was being ${v.failed_at === "making" ? "made (painted, voiced, rendered or checked)" : "written"}. Nothing made so far is lost.</p><p class="why"><b>Why:</b> ${esc(reason.length > 600 ? `${reason.slice(0, 600)}…` : reason)}</p><form method="post" action="/w/${esc(order.token)}/retry"><button type="submit" class="btn sm">Try again from that step</button></form><small class="muted">Quote <b>${esc(order.id)}</b> if you contact us about it.</small>`;
 }
 
-/** The storyboard, for the customer: one shot at a time at the size it is watched, its line and its changes under it, then speed, captions and the approval. */
-function storyboardHtml(order: Order, sb: StoryboardView, accent: string): string {
+/** One step of a video under way, shown on a page of its own. `bar`: its decision, kept in reach at the bottom. `sheets`: what slides over the page. */
+interface FlowStep {
+  meta: string;
+  head: string;
+  body: string;
+  bar: string;
+  sheets: string;
+}
+
+/** A sheet over the page, shown while it is the address's target (no script). `back`: the element closing it returns to. `form`: its attributes, when the whole sheet is one form. */
+function sheet(id: string, back: string, label: string, inner: string, form = ""): string {
+  const el = form ? "form" : "div";
+  return `<div class="sheet" id="${esc(id)}"><a class="scrim" href="#${esc(back)}" aria-label="Close"></a><${el}${form ? ` ${form}` : ""} class="in" role="dialog" aria-label="${esc(label)}">${inner}<a class="x" href="#${esc(back)}">Close</a></${el}></div>`;
+}
+
+/** A step that runs by itself: what is happening and what comes next. */
+function waitStep(title: string, text: string): FlowStep {
+  return { meta: "", head: `<h1>${esc(title)}</h1><p class="sub">${esc(text)}</p>`, body: `<div class="wait" role="status"><div class="bar" aria-hidden="true"><i></i></div></div>`, bar: "", sheets: "" };
+}
+
+/** The script step: the script line by line, each fact under the line that states it with its source, and the decision. */
+function scriptStep(order: Order, script: Script): FlowStep {
+  const base = `/w/${esc(order.token)}`;
+  const fact = (c: Script["claims"][number]) => `<p class="proof">${esc(c.claim)} ${factSource(c.source)}${c.note ? `<small>${esc(c.note)}</small>` : ""}</p>`;
+  const ids = new Set(script.beats.map((b) => b.id));
+  const loose = script.claims.filter((c) => !ids.has(c.beat));
+  const line = (b: Script["beats"][number], i: number) =>
+    `<li><span class="n">${i + 1}</span><div><p>${esc(b.voiceover)}</p>${b.on_screen_text ? `<small class="ost">On screen: ${esc(b.on_screen_text)}</small>` : ""}${script.claims
+      .filter((c) => c.beat === b.id)
+      .map(fact)
+      .join("")}</div></li>`;
+  const n = script.claims.length;
+  const left = MAX_ROUNDS - (order.video?.rounds ?? 0);
+  const change =
+    left > 0
+      ? sheet(
+          "change",
+          "bar",
+          "Ask for a change",
+          `<input type="hidden" name="decision" value="change"><h2>Ask for a change</h2><div class="inner"><label class="f" for="facts-note">Which line or fact is wrong, and what should change?<textarea id="facts-note" name="note" maxlength="600" required></textarea></label><button type="submit" class="btn">Send request</button><small class="muted">The script is written again and comes back here. Rewrite ${MAX_ROUNDS - left + 1} of ${MAX_ROUNDS}.</small></div>`,
+          `method="post" action="${base}/facts"`,
+        )
+      : "";
+  return {
+    meta: `${script.beats.length} parts · ${n} fact${n === 1 ? "" : "s"}`,
+    head: `<h1>${esc(script.title)}</h1><p class="sub">Read the script once. Each fact stands under its line, with its source. Nothing is voiced or drawn until you approve it.</p>`,
+    body: `<ol class="lines">${script.beats.map(line).join("")}</ol>
+${loose.length ? `<h2 class="more">More facts</h2>${loose.map(fact).join("")}` : ""}
+<p class="sub">If a line states a fact that is not listed under it, ask for a change. The video is made exactly from these words.</p>${left > 0 ? "" : `<p class="sub">This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand: quote <b>${esc(order.id)}</b> if you contact us.</p>`}`,
+    bar: `${left > 0 ? `<a class="alt" href="#change">Ask for a change</a>` : ""}<form method="post" action="${base}/facts"><input type="hidden" name="decision" value="approve"><button type="submit" class="go">Approve the script</button></form>`,
+    sheets: change,
+  };
+}
+
+/** The pictures step (the storyboard): every picture at a glance; a picture opens a sheet with its line and its changes. Speed and captions each open a sheet. */
+function picturesStep(order: Order, sb: StoryboardView, accent: string): FlowStep {
   const base = `/w/${esc(order.token)}`;
   const shotsOf = (b: Script["beats"][number]) => ((b.visual as ThBeatVisual).shots ?? []) as Shot[];
   const src = (id: string) => `${base}/shot/${esc(id)}?v=${esc(sb.pictures[id] ?? "")}`;
   const all = sb.script.beats.flatMap((b, i) => shotsOf(b).map((s, k) => ({ b, i, s, n: k + 1, id: `${b.id}-${k + 1}` })));
-  const arrow = (d: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
-  // Each shot is its own form for its part: the part's other shots travel along unchanged.
-  const slide = ({ b, i, s, n, id }: (typeof all)[number], at: number) => {
+  // Each picture's sheet is a form for its part: the part's other pictures travel along unchanged.
+  const shotSheet = ({ b, i, s, n, id }: (typeof all)[number]) => {
     const shots = shotsOf(b);
     const words = voiceTokens(b.voiceover);
     const cut = (k: number, chosen: string | undefined) =>
       `<label class="f" for="at-${esc(id)}-${k}">Cuts in on the word<select id="at-${esc(id)}-${k}" name="at_${k}"><option value="">Choose…</option>${words.map((w) => `<option value="${esc(w)}"${w === chosen ? " selected" : ""}>${esc(w)}</option>`).join("")}</select></label>`;
-    const host = (k: number, on: boolean) => (sb.hostOnScreen ? `<label class="check"><input type="checkbox" name="host_${k}"${on ? " checked" : ""}> The host is in this shot</label>` : "");
+    const host = (k: number, on: boolean) => (sb.hostOnScreen ? `<label class="check"><input type="checkbox" name="host_${k}"${on ? " checked" : ""}> The host is in this picture</label>` : "");
     const others = shots
       .map((o, k) => (k + 1 === n ? "" : `<input type="hidden" name="show_${k + 1}" value="${esc(o.show)}">${showsHost(o) ? `<input type="hidden" name="host_${k + 1}" value="on">` : ""}${o.at ? `<input type="hidden" name="at_${k + 1}" value="${esc(o.at)}">` : ""}`))
       .join("");
     const next = shots.length + 1;
     const add =
       n === shots.length && next <= 3
-        ? `<details class="edit"><summary class="btn ghost sm">Add a shot</summary><div class="inner"><label class="f" for="show-${esc(id)}-add">What the new shot shows<textarea id="show-${esc(id)}-add" name="show_${next}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(next, false)}${cut(next, undefined)}<button type="submit" class="btn sm">Add and paint it</button></div></details>`
+        ? `<details class="actd"><summary>Add a picture after this<span>part ${i + 1}</span></summary><div class="inner"><label class="f" for="show-${esc(id)}-add">What the new picture shows<textarea id="show-${esc(id)}-add" name="show_${next}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(next, false)}${cut(next, undefined)}<button type="submit" class="btn sm">Add and paint it</button></div></details>`
         : "";
-    const before = all[at - 1];
-    const after = all[at + 1];
-    return `<form class="slide" id="shot-${esc(id)}" method="post" action="${base}/storyboard/beat"><input type="hidden" name="beat" value="${esc(b.id)}"><button type="submit" class="vh" tabindex="-1" aria-hidden="true"></button>${others}
-<div class="frame"><img src="${src(id)}" alt="Shot ${at + 1}: ${esc(s.show)}" loading="lazy">${before ? `<a class="nav prev" href="#shot-${esc(before.id)}" aria-label="Previous shot">${arrow("M15 5l-7 7 7 7")}</a>` : ""}${after ? `<a class="nav next" href="#shot-${esc(after.id)}" aria-label="Next shot">${arrow("M9 5l7 7-7 7")}</a>` : ""}<span class="count">${at + 1} / ${all.length}</span></div>
-<p class="said1"><span class="num">Part ${i + 1}${shots.length > 1 ? ` · shot ${n} of ${shots.length}` : ""}</span>${esc(b.voiceover)}</p>
-<p class="what">${s.at ? `<b>From “${esc(s.at)}”</b> ` : ""}${esc(s.show)}</p>
-<div class="acts"><button type="submit" name="repaint" value="${n}" class="btn ghost sm"${sb.repaintsLeft ? "" : ' disabled title="No repaints left for this video"'}>New picture</button>
-<details class="edit"><summary class="btn ghost sm">Change shot</summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${n > 1 ? cut(n, s.at) : ""}${shots.length > 1 ? `<label class="check"><input type="checkbox" name="remove_${n}"> Remove this shot</label>` : ""}<button type="submit" class="btn sm">Save and paint again</button></div></details>
-<details class="edit"><summary class="btn ghost sm">${b.on_screen_text ? `Text: ${esc(b.on_screen_text)}` : "Add text"}</summary><div class="inner"><label class="f" for="text-${esc(id)}">On-screen text for part ${i + 1} <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label><button type="submit" class="btn sm">Save text</button></div></details>
-${add}</div></form>`;
+    return sheet(
+      `shot-${id}`,
+      `t-${id}`,
+      `Part ${i + 1}, picture ${n}`,
+      `<input type="hidden" name="beat" value="${esc(b.id)}"><button type="submit" class="vh" tabindex="-1" aria-hidden="true"></button>${others}
+<div class="sh-head"><img src="${src(id)}" alt="${esc(s.show)}" loading="lazy"><div><span class="num">Part ${i + 1}${shots.length > 1 ? ` · picture ${n} of ${shots.length}` : ""}</span><p>${esc(b.voiceover)}</p><p class="what">${s.at ? `From “${esc(s.at)}”: ` : ""}${esc(s.show)}</p></div></div>
+<button type="submit" name="repaint" value="${n}" class="act"${sb.repaintsLeft ? "" : ' disabled title="No repaints left for this video"'}>Paint it again<span>same idea</span></button>
+<details class="actd"><summary>Show something else<span>describe it</span></summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${n > 1 ? cut(n, s.at) : ""}<button type="submit" class="btn sm">Save and paint again</button></div></details>
+<details class="actd"><summary>Text on screen<span>${b.on_screen_text ? esc(b.on_screen_text) : "None"}</span></summary><div class="inner"><label class="f" for="text-${esc(id)}">On-screen text for part ${i + 1} <small>Leave it empty for none. Changing it sends the script back to you to approve.</small><input type="text" id="text-${esc(id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label><button type="submit" class="btn sm">Save text</button></div></details>
+${add}${shots.length > 1 ? `<button type="submit" name="remove_${n}" value="on" class="act warn">Remove this picture</button>` : ""}`,
+      `method="post" action="${base}/storyboard/beat"`,
+    );
   };
-  const strip = `<div class="strip" aria-label="All shots in order">${all.map((x, at) => `<a href="#shot-${esc(x.id)}"><img src="${src(x.id)}" alt="Shot ${at + 1}, part ${x.i + 1}: ${esc(x.s.show)}" loading="lazy"><span>${at + 1}</span></a>`).join("")}</div>
-<p class="meta"><span>${sb.script.beats.length} parts</span><span>${all.length} shot${all.length === 1 ? "" : "s"}</span><span>${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left</span></p>`;
-  const intro = sb.revising
-    ? `<div class="card"><h2>Revise your video</h2><p class="muted">“${esc(sb.script.title)}” is finished. Change its captions, its speed, its on-screen text or what a shot shows${sb.hostOnScreen ? ", or whether the host is in it," : ""} and a new version is made with the same words, in the channel's voice as it is set now. The video you have now is kept as an earlier version.</p>${strip}</div>`
-    : `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. Swipe through them. If they look right, approve below: the video is voiced and rendered exactly like this.</p>${strip}</div>`;
-  const decision = sb.revising
-    ? `<p class="muted">${sb.changed ? "The new version takes a few minutes and does not use up one of today's videos." : "Nothing is changed yet. Change a shot, the speed or the captions to make a new version."}</p><div class="card stick"><div class="decide" role="group" aria-label="Your decision on this revision">${sb.changed ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Make the new version</button></form>` : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="btn ghost">Leave it as it is</button></form>`}</div></div>`
-    : `<div class="card stick"><div class="decide" role="group" aria-label="Your decision on the storyboard"><form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Approve the storyboard</button></form></div></div>`;
   const c = sb.captions;
-  const capsNow = c.show ? `${CAPTION_SIZE_NAMES[c.size]}, ${CAPTION_PLACE_NAMES[c.place].toLowerCase()}${c.case === "upper" ? ", all caps" : ""}` : "Off";
-  return `${intro}
-<div class="deck">${all.map(slide).join("")}</div>
-<form class="card" method="post" action="${base}/storyboard/speed"><div class="top-line"><h2>Speed</h2><small class="muted">How fast the voice speaks</small></div><div class="seg" role="group" aria-label="Speaking speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}"${p === sb.pace ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${PACE_NAMES[p]}</button>`).join("")}</div><p class="muted">Faster makes the video shorter, slower makes it longer. The pictures and captions follow the voice.</p></form>
-<details class="card fold"><summary><h2>Captions</h2><small class="muted">${esc(capsNow)} · Change</small></summary><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, c, accent, sb.script.beats, "Save captions")}</details>
-${decision}`;
+  const speed = sheet(
+    "speed",
+    "set",
+    "Speed",
+    `<h2>Speed</h2><div class="inner"><div class="seg" role="group" aria-label="Speaking speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}"${p === sb.pace ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${PACE_NAMES[p]}</button>`).join("")}</div><p class="muted">How fast the voice speaks. Faster makes the video shorter, slower makes it longer. The pictures and captions follow the voice.</p></div>`,
+    `method="post" action="${base}/storyboard/speed"`,
+  );
+  const caps = sheet("captions", "set", "Captions", `<h2>Captions</h2><div class="inner"><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, c, accent, sb.script.beats, "Save captions")}</div>`);
+  const bar = sb.revising
+    ? sb.changed
+      ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the new version</button></form>`
+      : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="go quiet">Leave it as it is</button></form>`
+    : `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Approve and make the video</button></form>`;
+  const sub = sb.revising
+    ? `“${esc(sb.script.title)}” is finished. Tap a picture to change it, or change the speed or the captions. ${sb.changed ? "The new version takes a few minutes, keeps the same words and does not use up one of today's videos." : "Nothing is changed yet."} The video you have now is kept as an earlier version.`
+    : `The storyboard of “${esc(sb.script.title)}”. Tap a picture to change it. The video is voiced and rendered exactly like this.`;
+  return {
+    meta: `${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left`,
+    head: `<h1>${all.length} picture${all.length === 1 ? "" : "s"}</h1><p class="sub">${sub}</p><div class="opts" id="set"><a class="opt" href="#speed">Speed · ${PACE_NAMES[sb.pace]}</a><a class="opt" href="#captions">Captions · ${c.show ? "On" : "Off"}</a></div>`,
+    body: `<div class="pics">${all.map((x) => `<a class="tile" id="t-${esc(x.id)}" href="#shot-${esc(x.id)}"><img src="${src(x.id)}" alt="Part ${x.i + 1}: ${esc(x.s.show)}" loading="lazy"><span>${x.i + 1}</span></a>`).join("")}</div>`,
+    bar,
+    sheets: `${all.map(shotSheet).join("")}${speed}${caps}`,
+  };
+}
+
+/** The page of a video under way: back to the channel, the steps, this step, and its decision at the bottom. `at`: the step's place in `names`. */
+function flowPage(channel: string, back: string, names: string[], at: number, step: FlowStep, refresh: boolean): string {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(names[at]!)} — ${esc(channel)}</title>${refresh ? `<meta http-equiv="refresh" content="20">` : ""}<style>${CSS}</style></head><body class="vflow">
+<div class="fl"><header class="fl-top"><a href="${back}">‹ Videos</a><span>${esc(step.meta)}</span></header>
+<ol class="fl-steps">${names.map((name, i) => `<li${i <= at ? ' class="done"' : ""}${i === at ? ' aria-current="step"' : ""}>${i + 1} ${esc(name)}</li>`).join("")}</ol>
+<main>${step.head}${step.body}</main>
+${step.bar ? `<div class="fl-bar" id="bar">${step.bar}</div>` : ""}</div>
+${step.sheets}</body></html>`;
 }
 
 /** What stands where the first video will be, until it is there. */
@@ -822,7 +919,7 @@ ${finishBar(order, canRevise)}
 function nowHtml(order: Order, dash: Dashboard, facts: Script | null, made: number, newVideo: string, settings: string): string {
   const v = order.video;
   const title = (t: string) => `<section class="card" id="now">${t}</section>`;
-  if (v?.state === "facts" && facts) return factsHtml(order, facts, made === 0).replace('class="notice" id="facts"', 'class="card" id="now"');
+  if (v?.state === "facts") return title(`<h2>Your script is ready</h2><p class="muted">Read it and check its facts. Nothing is voiced or drawn until you approve it.</p><a class="btn sm" href="${newVideo}">Open the script</a>`);
   if (v?.state === "writing") return title(`<h2>A video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "The script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p>`);
   if (v?.state === "painting") return title(`<h2>Shots are being painted</h2><p class="muted">When they are ready you check them, and the captions, before anything is voiced.</p>`);
   if (v?.state === "storyboard") return title(`<h2>Your storyboard is ready</h2><p class="muted">Every shot is painted. Look at them, change what you want, then approve to make the video.</p><a class="btn sm" href="${newVideo}">Open the storyboard</a>`);
@@ -901,32 +998,26 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
   let main: string;
   if (view === "new") {
     const v = order.video;
-    // Looks with a painted world stop at a storyboard between the facts and the video.
+    // Looks with a painted world stop at their pictures between the script and the video.
     const boards = dash.hostOnScreen !== null;
-    const step = v?.state === "writing" || v?.state === "facts" ? 1 : v?.state === "painting" || v?.state === "storyboard" ? 2 : v?.state === "making" ? (boards ? 3 : 2) : 0;
-    const steps: [string, string][] = [
-      ["Choose a topic", step === 0 ? "Now" : "Done"],
-      ["Check the facts", step === 1 ? (v?.state === "facts" ? "Your turn" : "Being written") : step > 1 ? "Approved" : "Next"],
-      ...(boards ? [["Storyboard", step === 2 ? (v?.state === "storyboard" ? "Your turn" : "Being painted") : step > 2 ? "Approved" : "Next"] as [string, string]] : []),
-      ["Get the video", step === (boards ? 3 : 2) ? "Being made" : "Last"],
-    ];
-    const track = `<ol class="track ${boards ? "four" : "three"}">${steps.map(([name, note], i) => `<li class="${i < step ? "done" : i === step ? "now" : ""}">${esc(name)}<small>${esc(note)}</small></li>`).join("")}</ol>`;
-    let body: string;
-    if (step === 1 && v?.state === "facts" && facts) body = factsHtml(order, facts, made === 0).replace('class="notice" id="facts"', 'class="card" id="facts"');
-    else if (step === 1) body = waitCard("The script is being written", `${v?.rounds ? "It is being written again with your change." : "This takes several minutes."} Next, you check its facts here before anything is voiced or drawn. This page updates by itself.`);
-    else if (v?.state === "storyboard" && dash.storyboard) body = storyboardHtml(order, dash.storyboard, accentOf(kit));
-    else if (v?.state === "painting") body = waitCard("The shots are being painted", "This takes a minute or two. Next, you check every shot and the captions here before anything is voiced. This page updates by itself.");
-    else if (step > 0) body = waitCard("Your video is being made", `${boards ? "The storyboard is approved." : "The facts are approved."} It is being voiced, drawn and checked, which takes several minutes. Nothing more is needed from you: it appears here and in Videos by itself.`);
-    else {
-      const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
-      const ready = last ? `<div class="card"><h2>Your new video is ready</h2>${tiles([last])}<p class="muted">Download it and post it. Make the next one below.</p></div>` : "";
-      const failed = v?.state === "failed" ? `<div class="card" role="alert"><h2>The last video did not finish</h2>${failureHtml(order)}</div>` : "";
-      const stop = blocked ? `<div class="card" role="status"><h2>${esc(blocked)}</h2><p class="muted">${esc(blockedWhy)}</p>${dash.paused ? `<a class="btn sm" href="${at("settings")}">Go to Settings</a>` : ""}</div>` : "";
-      body = `${ready}${failed}${stop}
+    const names = boards ? ["Script", "Pictures", "Video"] : ["Script", "Video"];
+    const flow = (i: number, step: FlowStep) => flowPage(kit.name, at("videos"), names, i, step, isMakingVideo(order));
+    if (v?.state === "facts" && facts) return flow(0, scriptStep(order, facts));
+    if (v?.state === "writing" || v?.state === "facts") return flow(0, waitStep("The script is being written", `${v.rounds ? "It is being written again with your change." : "This takes several minutes."} Next, you check it and its facts here before anything is voiced or drawn. This page updates by itself.`));
+    if (v?.state === "storyboard" && dash.storyboard) return flow(1, picturesStep(order, dash.storyboard, accentOf(kit)));
+    if (v?.state === "painting" || v?.state === "storyboard") return flow(1, waitStep("The pictures are being painted", "This takes a minute or two. Next, you check every picture and the captions here before anything is voiced. This page updates by itself."));
+    if (v?.state === "making") return flow(names.length - 1, waitStep("Your video is being made", `${boards ? "The pictures are approved." : "The script is approved."} It is being voiced, drawn and checked, which takes several minutes. Nothing more is needed from you: it appears in Videos by itself.`));
+    const stages = ["Choose a topic", "Check the script", ...(boards ? ["Check the pictures"] : []), "Get the video"];
+    const track = `<ol class="track ${boards ? "four" : "three"}">${stages.map((name, i) => `<li${i === 0 ? ' class="now"' : ""}>${esc(name)}<small>${i === 0 ? "Now" : i === stages.length - 1 ? "Last" : "Next"}</small></li>`).join("")}</ol>`;
+    const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
+    const ready = last ? `<div class="card"><h2>Your new video is ready</h2>${tiles([last])}<p class="muted">Download it and post it. Make the next one below.</p></div>` : "";
+    const failed = v?.state === "failed" ? `<div class="card" role="alert"><h2>The last video did not finish</h2>${failureHtml(order)}</div>` : "";
+    const stop = blocked ? `<div class="card" role="status"><h2>${esc(blocked)}</h2><p class="muted">${esc(blockedWhy)}</p>${dash.paused ? `<a class="btn sm" href="${at("settings")}">Go to Settings</a>` : ""}</div>` : "";
+    const body = `${ready}${failed}${stop}
 <div class="card"><div class="top-line"><h2>Pick one of your ideas</h2><a href="${at("ideas")}">Get more ideas</a></div><p class="muted">Each idea shows the fact it is built on. Check it at its source, then make the video.</p>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.map((i) => `<li>${ideaBody(i)}${makeBtn(i)}</li>`).join("")}</ul>` : `<p class="muted">No ideas are waiting.</p>${suggestBtn("ghost sm")}`}</div>
 <div class="card"><h2>Or give your own topic</h2><form class="own" method="post" action="${base}/make"><label class="f" for="topic">What should the video be about?<input type="text" id="topic" name="topic" minlength="4" maxlength="${TOPIC_MAX}" required placeholder="Why the sea is salty"${blocked ? " disabled" : ""}></label><button type="submit" class="btn sm"${disabled}>Write this video</button></form><small class="muted">It must fit ${esc(kit.name)}. The script is written first, and you check every fact before anything is voiced or drawn.</small></div>`;
-    }
     main = `<div class="head"><div><p class="eyebrow">${esc(kit.name)}</p><h1>New video</h1></div></div>${track}${body}`;
+
   } else if (view === "videos") {
     main = `<div class="head"><h1>Videos</h1><a class="btn sm" href="${at("new")}">New video</a></div>${made ? tiles(newest) : `<div class="card"><p class="muted">Your finished videos appear here, ready to download.</p><a class="btn sm" href="${at("new")}">Make your first video</a></div>`}`;
   } else if (view === "ideas") {
