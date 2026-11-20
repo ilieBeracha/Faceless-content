@@ -829,7 +829,7 @@ describe("storefront: automatic builds", () => {
 
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.episode], ["facts", EPISODE]);
       const checking = await page();
-      assert.match(checking, /Check the facts[\s\S]*A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*On screen: Why no leaks\?[\s\S]*A tiny ball sits in the tip[\s\S]*Approve the facts[\s\S]*Rewrite 1 of 3/);
+      assert.match(checking, /Check the facts[\s\S]*Part 1[\s\S]*On screen: Why no leaks\?[\s\S]*No fact is listed for this part[\s\S]*Part 2[\s\S]*A tiny ball sits in the tip[\s\S]*A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*Approve the facts[\s\S]*Rewrite 1 of 3/);
       assert.match(checking, /class="state busy"><i><\/i>Working/, "a video waiting for its facts is still under way");
       assert.doesNotMatch(checking, /http-equiv="refresh"|<video/);
       assert.equal(existsSync(videoPath(built, id, EPISODE)), false, "nothing is made before the facts are approved");
