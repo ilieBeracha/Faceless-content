@@ -14,6 +14,7 @@ import { canonicalJson, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
+import { episodePace } from "../pipeline/storyboard.ts";
 import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, speakerTurns, type CharacterVoice, type SeriesData } from "../pipeline/script-check.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { runElevenLabs } from "./elevenlabs.ts";
@@ -111,7 +112,9 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
       throw new EngineError(`${name} uses voice provider "${v.provider}", which isn't wired up yet.`, v.provider === "veo" ? "A Veo voice only works when every speaker of the series uses it (the video model speaks inside the clips)." : "The voices that work are kokoro (free, local) and elevenlabs (paid, through fal.ai).");
     }
   }
-  const hash = sha256(canonicalJson({ v: VOICE_PIPELINE_VERSION, beats: script.beats.map((b) => [b.id, b.speaker, b.voiceover]), pron: script.pronunciations, voices, audio: cfg, fps, min: series.length.min_seconds }));
+  // The speed chosen for this video on its storyboard, on top of each voice's own.
+  const pace = episodePace(ep.dir);
+  const hash = sha256(canonicalJson({ v: VOICE_PIPELINE_VERSION, beats: script.beats.map((b) => [b.id, b.speaker, b.voiceover]), pron: script.pronunciations, voices, audio: cfg, fps, min: series.length.min_seconds, ...(pace !== 1 ? { pace } : {}) }));
   if (!opts.force && existsSync(paths.timings) && existsSync(paths.wav) && existsSync(paths.envelope)) {
     const existing = readJson<Timings>(paths.timings);
     if (existing.hash === hash) return { duration: existing.duration, words: existing.words.length, regenerated: false };
@@ -129,7 +132,7 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
       id: `${String(n).padStart(2, "0")}-${script.beats[turn[0]].id}`,
       voice: v.voice_id,
       lang: kokoroLang(v.voice_id),
-      speed: v.speed ?? 1,
+      speed: (v.speed ?? 1) * pace,
       sentence_pause: v.sentence_pause ?? DEFAULT_SENTENCE_PAUSE,
       clause_pause: v.clause_pause ?? DEFAULT_CLAUSE_PAUSE,
       continuous: true,
@@ -141,7 +144,7 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
   const hosted = chunks.filter((_, n) => voices[script.beats[turns[n][0]].speaker].provider === "elevenlabs");
   const local = chunks.filter((c) => !hosted.includes(c));
   if (local.length) log(`  ↳ synthesizing ${local.length === chunks.length ? `${script.beats.length} beats in ${turns.length} pass${turns.length === 1 ? "" : "es"}` : `${local.length} pass${local.length === 1 ? "" : "es"}`} with Kokoro (local, free)…`);
-  const made = [...(local.length ? runKokoro(ws, local, paths.chunks).chunks : []), ...(hosted.length ? (await runElevenLabs(ws, hosted, paths.chunks, log)).chunks : [])];
+  const made = [...(local.length ? runKokoro(ws, local, paths.chunks).chunks : []), ...(hosted.length ? (await runElevenLabs(ws, hosted.map((c) => ({ id: c.id, voice: c.voice, say: c.say, tempo: pace })), paths.chunks, log)).chunks : [])];
   const out: KokoroResult = { sample_rate: 24000, chunks: chunks.map((c) => made.find((m) => m.id === c.id)!) };
 
   // Place each speaker turn on the timeline, applying the speaker's pitch.

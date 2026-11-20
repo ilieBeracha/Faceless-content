@@ -330,7 +330,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
           } else throw new HttpError(400, "Choose Approve the facts or Ask for a change.");
           return redirect(res, order.video.idea ? `/w/${order.token}?view=new` : `/w/${order.token}`);
         }
-        // The storyboard of the video under way: change a part, set its captions, or approve it.
+        // The storyboard of the video under way: change a part, set its captions or its speaking speed, or approve it.
         if (req.method === "POST" && parts.length === 4 && parts[2] === "storyboard" && o.builder) {
           const form = await readForm(req);
           if (parts[3] === "beat") {
@@ -338,6 +338,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
             if (!SLUG.test(beat)) throw new HttpError(400, "Choose a part of the video.");
             o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen));
           } else if (parts[3] === "captions") o.builder.setVideoCaptions(order.id, parseCaptionForm(form));
+          else if (parts[3] === "speed") o.builder.setVideoPace(order.id, (form.pace ?? "").trim());
           else if (parts[3] === "approve") o.builder.approveStoryboard(order.id);
           else if (parts[3] === "cancel") {
             o.builder.cancelRevision(order.id);

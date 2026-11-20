@@ -29,7 +29,7 @@ import { draftChannelTask } from "../pipeline/draft-channel.ts";
 import { episodesDir, listEpisodes, makeEpisode } from "../pipeline/episode.ts";
 import { approveFactcheck, readFactcheck, rejectFactcheck } from "../pipeline/factcheck.ts";
 import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
-import { approveStoryboard, captionSettingsSchema, readStoryboard, setCaptions, storyboardApproved, type CaptionSettings } from "../pipeline/storyboard.ts";
+import { PACES, approveStoryboard, captionSettingsSchema, readStoryboard, setCaptions, setPace, storyboardApproved, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
 import { checkScript } from "../pipeline/script-check.ts";
 import { brandOf, loadChannelTheme } from "../render/render-episode.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
@@ -67,6 +67,8 @@ export class CustomerError extends Error {}
 export interface StoryboardView {
   script: Script;
   captions: CaptionSettings;
+  /** How fast the voice speaks in this video. */
+  pace: Pace;
   /** False when the channel has no host on screen (then no shot can show one). */
   hostOnScreen: boolean;
   /** Shots that can still be painted again for this video. */
@@ -609,7 +611,7 @@ export class Builder {
       if (!painted[id]) throw new Error(`Order ${order.id}: shot "${id}" has no painted picture.`);
       return [id, painted[id].sha.slice(0, 12)];
     }));
-    return { script, captions: board.captions, hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script) };
+    return { script, captions: board.captions, pace: board.pace ?? "normal", hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script) };
   }
 
   /**
@@ -716,6 +718,14 @@ export class Builder {
     if (!order) throw new Error(`No order "${id}".`);
     const { dir, script } = this.storyboardEpisode(order);
     setCaptions(dir, script, captions);
+  }
+
+  /** The customer chose how fast the voice speaks in this video. The storyboard then waits for their approval again. */
+  setVideoPace(id: string, pace: string): void {
+    const order = this.store.byId(id);
+    if (!order) throw new Error(`No order "${id}".`);
+    if (!(PACES as readonly string[]).includes(pace)) throw new CustomerError("Choose one of the speeds.");
+    setPace(this.storyboardEpisode(order).dir, pace as Pace);
   }
 
   /** The customer approved the storyboard as it is now: record it under their name and voice, render and check the video. */

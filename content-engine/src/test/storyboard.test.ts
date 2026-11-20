@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { describe, it } from "node:test";
 import { readJson, writeJson } from "../core/util.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
-import { approveStoryboard, newStoryboard, readStoryboard, setCaptions, storyboardApproved, type CaptionSettings } from "../pipeline/storyboard.ts";
+import { approveStoryboard, episodePace, newStoryboard, readStoryboard, setCaptions, setPace, storyboardApproved, type CaptionSettings } from "../pipeline/storyboard.ts";
 import { checkShots, parseTheme, showsHost } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { CustomerError, parseBeatForm, parseCaptionForm, pausedEpisode } from "../storefront/builder.ts";
@@ -76,6 +76,24 @@ describe("storyboard: approved as it was seen", () => {
     setCaptions(dir, script, { ...CAPTIONS, show: false });
     assert.deepEqual([readStoryboard(dir)?.status, readStoryboard(dir)?.captions.show], ["pending", false]);
     assert.equal(storyboardApproved(dir, script), false);
+  });
+
+  it("a changed speaking speed must be approved again, and the same speed changes nothing", () => {
+    const dir = episode();
+    approveStoryboard(dir, script, "Sam Example");
+    assert.equal(episodePace(dir), 1);
+    setPace(dir, "normal");
+    assert.equal(storyboardApproved(dir, script), true, "normal is what it already was");
+    setPace(dir, "faster");
+    assert.deepEqual([readStoryboard(dir)?.status, readStoryboard(dir)?.pace, episodePace(dir)], ["pending", "faster", 1.1]);
+    approveStoryboard(dir, script, "Sam Example");
+    assert.equal(storyboardApproved(dir, script), true);
+    // Captions keep the speed; going back to normal is a change again.
+    setCaptions(dir, script, { ...CAPTIONS, show: false });
+    assert.equal(readStoryboard(dir)?.pace, "faster");
+    approveStoryboard(dir, script, "Sam Example");
+    setPace(dir, "normal");
+    assert.deepEqual([readStoryboard(dir)?.status, readStoryboard(dir)?.pace, episodePace(dir)], ["pending", undefined, 1]);
   });
 
   it("refuses captions hidden on a part the video doesn't have, and a shot without its picture", () => {

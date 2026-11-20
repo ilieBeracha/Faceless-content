@@ -2,7 +2,7 @@
 import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
 import type { Dashboard, StoryboardView } from "./builder.ts";
-import type { CaptionSettings } from "../pipeline/storyboard.ts";
+import { PACES, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
 import type { Idea } from "../core/ideas.ts";
 import { FRAME_PRESET_NAMES, FRAME_PRESETS, showsHost, type Frame, type Shot, type ThBeatVisual, type Theme } from "../skills/render-themed/schema.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
@@ -258,11 +258,18 @@ details.more summary{cursor:pointer;font:600 14.5px/1.3 var(--body);color:var(--
 .part .shots figure{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
 .part .shots img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
 .part figcaption{font-size:13.5px;line-height:1.4;color:var(--muted)}.part figcaption b{color:var(--ink);font-weight:600}
-.edit{align-self:stretch}.edit>summary{list-style:none;cursor:pointer;display:inline-flex}.edit>summary::-webkit-details-marker{display:none}.edit[open]>summary{display:none}
-.edit .inner{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:14px}
-.edit fieldset{border:1px solid var(--line);border-radius:12px;padding:10px 14px 14px;margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}.edit legend{font-weight:600;font-size:14.5px;padding:0 6px}
-.edit .row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
-.part .shot.add{border:2px dashed var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.edit>summary{list-style:none;cursor:pointer;display:inline-flex}.edit>summary::-webkit-details-marker{display:none}
+.edit .inner{display:flex;flex-direction:column;gap:12px;padding-top:12px}
+.edit.text{align-self:flex-start}.edit.text[open]{align-self:stretch}
+.part .shots figure:has(details[open]),.part .shot.add[open]{grid-column:1/-1}
+.part .shots figure:has(details[open]){display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px 12px;background:var(--bg);border-radius:14px;padding:10px}
+.part .shots figure:has(details[open]) .edit{grid-column:1/-1}
+.part .save{display:none;flex-wrap:wrap;gap:10px 14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}
+.part:has(details[open]) .save{display:flex}
+.part .shot.add{border:2px dashed var(--line);border-radius:12px;padding:12px;align-self:start}.part .shot.add[open]{display:flex;flex-direction:column;gap:10px}
+.seg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;align-self:stretch}@media(max-width:560px){.seg{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.seg button{font:600 15px/1 var(--body);padding:13px 8px;border-radius:12px;border:0;cursor:pointer;background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);box-shadow:none}
 .part .shot.add summary{cursor:pointer;font-weight:600}
 .part textarea{min-height:84px}
 .said1{margin:0;font:500 18px/1.45 var(--body);color:var(--ink);max-width:70ch}
@@ -675,6 +682,7 @@ function accentOf(kit: BrandKit): string {
 }
 
 const CAPTION_SIZE_NAMES: Record<CaptionSettings["size"], string> = { small: "Small", medium: "Medium", large: "Large" };
+const PACE_NAMES: Record<Pace, string> = { slower: "Slower", normal: "Normal", faster: "Faster", fastest: "Fastest" };
 const CAPTION_PLACE_NAMES: Record<CaptionSettings["place"], string> = { bottom: "Bottom", middle: "Middle" };
 
 /** The caption settings form. `beats`: the video's parts, to switch captions off on some (absent for the channel's defaults). */
@@ -718,30 +726,26 @@ function storyboardHtml(order: Order, sb: StoryboardView, accent: string): strin
     const at = (n: number, chosen: string | undefined) =>
       n === 1 ? "" : `<label class="f" for="at-${esc(b.id)}-${n}">Cuts in on the word<select id="at-${esc(b.id)}-${n}" name="at_${n}"><option value="">Choose…</option>${words.map((w) => `<option value="${esc(w)}"${w === chosen ? " selected" : ""}>${esc(w)}</option>`).join("")}</select></label>`;
     const host = (n: number, on: boolean) => (sb.hostOnScreen ? `<label class="check"><input type="checkbox" name="host_${n}"${on ? " checked" : ""}> The host is in this shot</label>` : "");
-    const picture = (s: Shot, k: number) =>
-      `<figure><img src="${src(`${b.id}-${k + 1}`)}" alt="Shot ${k + 1}: ${esc(s.show)}" loading="lazy"><figcaption>${s.at ? `<b>From “${esc(s.at)}”</b> ` : ""}${esc(s.show)}</figcaption></figure>`;
-    const slot = (n: number) => {
-      const s = shots[n - 1];
-      if (s) {
-        const id = `${b.id}-${n}`;
-        return `<fieldset><legend>Shot ${n}</legend><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${at(n, s.at)}${shots.length > 1 ? `<label class="check"><input type="checkbox" name="remove_${n}"> Remove this shot</label>` : ""}</fieldset>`;
-      }
-      if (n !== shots.length + 1) return "";
-      return `<details class="shot add"><summary>Add a shot</summary><label class="f" for="show-${esc(b.id)}-${n}">What we see<textarea id="show-${esc(b.id)}-${n}" name="show_${n}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(n, false)}${at(n, undefined)}</details>`;
+    // Each shot is changed where it stands: its fields open under its own picture.
+    const picture = (s: Shot, k: number) => {
+      const n = k + 1;
+      const id = `${b.id}-${n}`;
+      return `<figure><img src="${src(id)}" alt="Shot ${n}: ${esc(s.show)}" loading="lazy"><figcaption>${s.at ? `<b>From “${esc(s.at)}”</b> ` : ""}${esc(s.show)}</figcaption><details class="edit"><summary class="btn ghost sm">Change shot ${n}</summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${at(n, s.at)}${shots.length > 1 ? `<label class="check"><input type="checkbox" name="remove_${n}"> Remove this shot</label>` : ""}</div></details></figure>`;
     };
+    const next = shots.length + 1;
+    const add = next > 3 ? "" : `<details class="shot add"><summary>Add a shot</summary><label class="f" for="show-${esc(b.id)}-${next}">What we see<textarea id="show-${esc(b.id)}-${next}" name="show_${next}" maxlength="500" placeholder="Close-up of …"></textarea></label>${host(next, false)}${at(next, undefined)}</details>`;
     return `<form class="card part" id="part-${esc(b.id)}" method="post" action="${base}/storyboard/beat"><input type="hidden" name="beat" value="${esc(b.id)}">
-<div class="top-line"><h3>Part ${i + 1}</h3><small class="muted">${shots.length} shot${shots.length === 1 ? "" : "s"}</small></div><p class="said1">${esc(b.voiceover)}</p>${b.on_screen_text ? `<small class="ost">On screen: ${esc(b.on_screen_text)}</small>` : ""}
-<div class="shots">${shots.map(picture).join("")}</div>
-<details class="edit"><summary class="btn ghost sm">Change this part</summary><div class="inner">${[1, 2, 3].map(slot).join("")}
-<label class="f" for="text-${esc(b.id)}">On-screen text <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(b.id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label>
-<div class="row"><button type="submit" class="btn sm">Save this part</button><small class="muted">A changed or added shot is painted again: ${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left for this video.</small></div></div></details></form>`;
+<div class="top-line"><h3>Part ${i + 1}</h3><small class="muted">${shots.length} shot${shots.length === 1 ? "" : "s"}</small></div><p class="said1">${esc(b.voiceover)}</p>
+<details class="edit text"><summary class="${b.on_screen_text ? "ost" : "btn ghost sm"}">${b.on_screen_text ? `On screen: ${esc(b.on_screen_text)} · Change` : "Add on-screen text"}</summary><div class="inner"><label class="f" for="text-${esc(b.id)}">On-screen text <small>Leave it empty for none. Changing it sends the facts back to you to approve.</small><input type="text" id="text-${esc(b.id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label></div></details>
+<div class="shots">${shots.map(picture).join("")}${add}</div>
+<div class="row save"><button type="submit" class="btn sm">Save part ${i + 1}</button><small class="muted">A changed or added shot is painted again: ${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left for this video.</small></div></form>`;
   };
   const total = sb.script.beats.reduce((sum, b) => sum + shotsOf(b).length, 0);
   const strip = `<div class="strip" aria-label="All shots in order">${sb.script.beats.map((b, i) => shotsOf(b).map((s, k) => `<a href="#part-${esc(b.id)}"><img src="${src(`${b.id}-${k + 1}`)}" alt="Part ${i + 1}, shot ${k + 1}: ${esc(s.show)}" loading="lazy"><span>${i + 1}</span></a>`).join("")).join("")}</div>
 <p class="meta"><span>${sb.script.beats.length} parts</span><span>${total} shot${total === 1 ? "" : "s"}</span><span>${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left</span></p>`;
   const intro = sb.revising
     ? `<div class="card"><h2>Revise your video</h2><p class="muted">“${esc(sb.script.title)}” is finished. Change its captions, its on-screen text or what a shot shows${sb.hostOnScreen ? ", or whether the host is in it," : ""} and a new version is made with the same words, in the channel's voice as it is set now. The video you have now is kept as an earlier version.</p>${strip}</div>`
-    : `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. If it looks right, approve it below: the video is voiced and rendered exactly like this. To change a shot or the on-screen text, open that part.</p>${strip}</div>`;
+    : `<div class="card"><h2>Check your storyboard</h2><p class="muted">Every shot of “${esc(sb.script.title)}” is painted. If it looks right, approve it below: the video is voiced and rendered exactly like this. To change something, tap Change under that shot.</p>${strip}</div>`;
   const decision = sb.revising
     ? `<p class="muted">${sb.changed ? "The new version takes a few minutes and does not use up one of today's videos." : "Nothing is changed yet. Save a part or the captions above to make a new version."}</p><div class="card stick"><div class="decide" role="group" aria-label="Your decision on this revision">${sb.changed ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Make the new version</button></form>` : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="btn ghost">Leave it as it is</button></form>`}</div></div>`
     : `<div class="card stick"><div class="decide" role="group" aria-label="Your decision on the storyboard"><form method="post" action="${base}/storyboard/approve"><button type="submit" class="btn yes">Approve the storyboard</button></form></div></div>`;
@@ -749,6 +753,7 @@ function storyboardHtml(order: Order, sb: StoryboardView, accent: string): strin
   const capsNow = c.show ? `${CAPTION_SIZE_NAMES[c.size]}, ${CAPTION_PLACE_NAMES[c.place].toLowerCase()}${c.case === "upper" ? ", all caps" : ""}` : "Off";
   return `${intro}
 ${sb.script.beats.map(part).join("")}
+<form class="card" method="post" action="${base}/storyboard/speed"><div class="top-line"><h2>Speed</h2><small class="muted">How fast the voice speaks</small></div><div class="seg" role="group" aria-label="Speaking speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}"${p === sb.pace ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${PACE_NAMES[p]}</button>`).join("")}</div><p class="muted">Faster makes the video shorter, slower makes it longer. The pictures and captions follow the voice.</p></form>
 <details class="card fold"><summary><h2>Captions</h2><small class="muted">${esc(capsNow)} · Change</small></summary><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, c, accent, sb.script.beats, "Save captions")}</details>
 ${decision}`;
 }

@@ -1081,6 +1081,13 @@ describe("storefront: automatic builds", () => {
       assert.deepEqual(readStoryboard(dir)?.captions, { show: true, size: "large", place: "middle", case: "upper", color: "#ff0055", hide_beats: ["payoff"] });
       assert.match(await page("new"), /name="hide_payoff" checked/);
 
+      // Speed: one of the four, shown as chosen.
+      assert.match(await page("new"), /value="normal" aria-pressed="true"/);
+      assert.match(await (await post("storyboard/speed", { pace: "warp" })).text(), /Choose one of the speeds/);
+      assert.equal((await post("storyboard/speed", { pace: "faster" })).status, 303);
+      assert.equal(readStoryboard(dir)?.pace, "faster");
+      assert.match(await page("new"), /value="faster" aria-pressed="true"/);
+
       assert.equal((await post("storyboard/approve", {})).status, 303);
       assert.deepEqual([readStoryboard(dir)?.status, readStoryboard(dir)?.approved_by], ["approved", "Sam Example"]);
       await builder.idle();

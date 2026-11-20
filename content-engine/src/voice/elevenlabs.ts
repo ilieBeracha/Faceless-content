@@ -23,6 +23,8 @@ export interface HostedChunk {
   voice: string;
   /** One entry per caption word, as it is written. */
   say: string[];
+  /** How much faster than the voice's own pace it is played (1 = as spoken). The pitch stays. */
+  tempo: number;
 }
 
 export interface HostedResult {
@@ -94,13 +96,14 @@ export async function runElevenLabs(ws: Workspace, chunks: HostedChunk[], outDir
     }
     const out = await call<{ audio?: { url?: string }; timestamps?: CharTimings[] | null }>("GET", job.response_url);
     if (!out.audio?.url || !out.timestamps?.length) throw new EngineError("The ElevenLabs voice returned no audio or no timings.");
-    const words = wordTimings(chunk.say, out.timestamps);
+    // The API has no speed setting, so the audio is played faster or slower (same pitch) and the words move with it.
+    const words = wordTimings(chunk.say, out.timestamps).map((w) => ({ i: w.i, start: round(w.start / chunk.tempo), end: round(w.end / chunk.tempo) }));
     const audio = await fetch(out.audio.url);
     if (!audio.ok) throw new EngineError(`Downloading the ElevenLabs audio failed (${audio.status}).`);
     const mp3 = join(outDir, `${chunk.id}.mp3`);
     writeFileSync(mp3, Buffer.from(await audio.arrayBuffer()));
     const file = join(outDir, `${chunk.id}.wav`);
-    runFfmpeg(["-y", "-i", mp3, "-ar", String(SAMPLE_RATE), "-ac", "1", "-c:a", "pcm_f32le", file], "converting the voice");
+    runFfmpeg(["-y", "-i", mp3, ...(chunk.tempo === 1 ? [] : ["-filter:a", `atempo=${chunk.tempo}`]), "-ar", String(SAMPLE_RATE), "-ac", "1", "-c:a", "pcm_f32le", file], "converting the voice");
     result.chunks.push({ id: chunk.id, file, duration: readWav(file).samples.length / SAMPLE_RATE, words });
   }
   return result;

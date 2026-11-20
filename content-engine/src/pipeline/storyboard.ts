@@ -1,7 +1,7 @@
 /**
  * storyboard.json — a person looks at an episode's painted shots and its captions before it is voiced and
  * rendered, and approves them. The approval is bound to what they saw: the shots (words and pictures), the
- * on-screen text and the caption settings. Change any of them and it must be approved again.
+ * on-screen text, the caption settings and the speaking speed. Change any of them and it must be approved again.
  *
  * The caption settings also apply to episodes that never stop for a storyboard: they are read at render time.
  */
@@ -18,6 +18,16 @@ export const CAPTION_SIZES = ["small", "medium", "large"] as const;
 export const CAPTION_PLACES = ["bottom", "middle"] as const;
 export type CaptionSize = (typeof CAPTION_SIZES)[number];
 export type CaptionPlace = (typeof CAPTION_PLACES)[number];
+
+/** How fast the voice speaks in one video, against the voice's own pace. */
+export const PACES = ["slower", "normal", "faster", "fastest"] as const;
+export type Pace = (typeof PACES)[number];
+export const PACE_FACTOR: Record<Pace, number> = { slower: 0.9, normal: 1, faster: 1.1, fastest: 1.2 };
+
+/** The speed an episode is voiced at: its storyboard's pace, or 1 when it has none. */
+export function episodePace(episodeDir: string): number {
+  return PACE_FACTOR[readStoryboard(episodeDir)?.pace ?? "normal"];
+}
 
 export const captionSettingsSchema = z
   .object({
@@ -39,6 +49,7 @@ export const storyboardSchema = z
   .object({
     schema: z.literal("storyboard/v1"),
     captions: captionSettingsSchema,
+    pace: z.enum(PACES).optional().describe("how fast the voice speaks in this video; leave out for normal"),
     status: z.enum(["pending", "approved"]),
     /** What was approved (storyboardHash); absent until approved. */
     hash: z.string().optional(),
@@ -75,8 +86,8 @@ export function checkCaptions(captions: CaptionSettings, script: Script): string
   return captions.hide_beats.filter((id) => !ids.has(id)).map((id) => `captions: hide_beats names "${id}", which is not a beat of this script`);
 }
 
-/** What a storyboard approval covers: every beat's on-screen text and visual, each painted picture, and the captions. */
-export function storyboardHash(episodeDir: string, script: Script, captions: CaptionSettings): string {
+/** What a storyboard approval covers: every beat's on-screen text and visual, each painted picture, the captions, and the speaking speed when it is not normal. */
+export function storyboardHash(episodeDir: string, script: Script, captions: CaptionSettings, pace: Pace = "normal"): string {
   const pictures = shotsUsed(script.beats).map(({ id }) => {
     const file = join(paintPaths(episodeDir).dir, `${id}.jpg`);
     if (!existsSync(file)) throw new EngineError(`Shot "${id}" has no painted picture yet, so the storyboard can't be checked.`);
@@ -87,6 +98,7 @@ export function storyboardHash(episodeDir: string, script: Script, captions: Cap
       beats: script.beats.map((b) => ({ id: b.id, on_screen_text: b.on_screen_text ?? "", visual: b.visual, character: b.character })),
       pictures,
       captions,
+      ...(pace !== "normal" ? { pace } : {}),
     }),
   );
 }
@@ -94,7 +106,7 @@ export function storyboardHash(episodeDir: string, script: Script, captions: Cap
 /** True when the storyboard was approved exactly as the episode is now. */
 export function storyboardApproved(episodeDir: string, script: Script): boolean {
   const board = readStoryboard(episodeDir);
-  return board?.status === "approved" && board.hash === storyboardHash(episodeDir, script, board.captions);
+  return board?.status === "approved" && board.hash === storyboardHash(episodeDir, script, board.captions, board.pace);
 }
 
 /** A person approved the storyboard as it is now. */
@@ -104,7 +116,7 @@ export function approveStoryboard(episodeDir: string, script: Script, by: string
   if (!by.trim()) throw new EngineError('Say who is approving: --by "<your name>".');
   const problems = checkCaptions(board.captions, script);
   if (problems.length) throw new EngineError(problems.join("\n"));
-  writeStoryboard(episodeDir, { ...board, status: "approved", hash: storyboardHash(episodeDir, script, board.captions), approved_by: by.trim(), approved_at: nowIso() });
+  writeStoryboard(episodeDir, { ...board, status: "approved", hash: storyboardHash(episodeDir, script, board.captions, board.pace), approved_by: by.trim(), approved_at: nowIso() });
 }
 
 /** Change the caption settings; the storyboard then waits for approval again. */
@@ -114,5 +126,13 @@ export function setCaptions(episodeDir: string, script: Script, captions: Captio
   const parsed = captionSettingsSchema.parse(captions);
   const problems = checkCaptions(parsed, script);
   if (problems.length) throw new EngineError(problems.join("\n"));
-  writeStoryboard(episodeDir, { schema: "storyboard/v1", captions: parsed, status: "pending" });
+  writeStoryboard(episodeDir, { schema: "storyboard/v1", captions: parsed, ...(board.pace ? { pace: board.pace } : {}), status: "pending" });
+}
+
+/** Change how fast the voice speaks in this video; the storyboard then waits for approval again. Nothing changes when it is already that speed. */
+export function setPace(episodeDir: string, pace: Pace): void {
+  const board = readStoryboard(episodeDir);
+  if (!board) throw new EngineError("This episode has no storyboard yet.");
+  if ((board.pace ?? "normal") === pace) return;
+  writeStoryboard(episodeDir, { schema: "storyboard/v1", captions: board.captions, ...(pace !== "normal" ? { pace } : {}), status: "pending" });
 }
