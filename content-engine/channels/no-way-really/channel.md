@@ -41,6 +41,14 @@ approved_by: "ilieBeracha"      # optional string — who approved it
 Every video hands you one fact you did not know, will not need, and will repeat to someone today, with the proof
 on screen so you can trust it.
 
+## Belief <!-- required -->
+
+Nothing around you is boring; it only looks that way until you know the story behind it.
+
+## What the viewer gets <!-- required -->
+
+One true thing to say out loud today that makes something ordinary in their hands, pocket or screen interesting again, with the proof to back it up.
+
 ## Style notes
 
 - Lead with the fact, never with "did you know". The surprise is the first sentence.

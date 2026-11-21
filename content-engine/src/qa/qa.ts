@@ -35,6 +35,8 @@ export interface QaReview {
   banned_topics: { pass: boolean; notes: string };
   visuals: { pass: boolean; notes: string };
   character: { pass: boolean; notes: string };
+  /** Does it argue something and leave the viewer with something? Absent on reviews from before it was judged. */
+  point?: { pass: boolean; notes: string };
   overall: "pass" | "fail";
   fixes: string[];
   learnings: string[];
@@ -75,7 +77,7 @@ export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts:
     bannedHits.pass = true;
     bannedHits.detail += " — reviewed: false positive";
   }
-  const reviewPass = review.overall === "pass" && review.tone.pass && review.banned_topics.pass && review.visuals.pass && review.character.pass;
+  const reviewPass = review.overall === "pass" && review.tone.pass && review.banned_topics.pass && review.visuals.pass && review.character.pass && (review.point?.pass ?? true);
   const reviewBlocks = opts.reviewBlocks ?? true;
   const reviewFails = reviewBlocks && !reviewPass;
   const missed = checks.filter((c) => !c.pass);
@@ -220,7 +222,7 @@ Review the rendered episode **${ep.state.id}** against \`workflows/qa.md\` and t
 1. Look at every sampled frame (open the images):
 ${frames.map((f) => `   - \`${ws.rel(f)}\``).join("\n")}
    The full video is \`${ws.rel(outputPath(ws, ep.channel.slug, ep.state.id))}\`.
-${lang.rtl ? `   The video is in **${lang.name}**, read right to left: check that every caption and on-screen text runs right to left (words in order, punctuation at the left end), and that no letter shows as an empty box or a different alphabet.\n` : ""}${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
+${lang.rtl ? `   The video is in **${lang.name}**, read right to left: check that every caption and on-screen text runs right to left (words in order, punctuation at the left end), and that no letter shows as an empty box or a different alphabet.\n` : ""}${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file), **point** (does the video argue the point in its script's \`angle\` and the channel's Belief, told through someone with something at stake, with a turn, and does the last beat leave the viewer with the takeaway in plain words? A string of true facts with no point fails).
 3. Write \`${ws.rel(reviewPath)}\` as JSON:
 
 \`\`\`json
@@ -230,6 +232,7 @@ ${lang.rtl ? `   The video is in **${lang.name}**, read right to left: check tha
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
   "character": { "pass": true, "notes": "…" },
+  "point": { "pass": true, "notes": "…" },
   "overall": "pass",
   "fixes": [],
   "learnings": ["What worked or didn't for THIS channel, phrased so the next script can use it"]
@@ -254,7 +257,7 @@ function writeReport(ws: Workspace, ep: EpisodeRef, script: Script, checks: Chec
   const status = passed === undefined ? "PENDING REVIEW" : passed ? (notesOnly ? "PASS (the agent review's findings are notes, not blocking)" : "PASS") : "FAIL";
   const rows = checks.map((c) => `| ${c.pass ? "✅" : "❌"} | ${c.label} | ${c.detail.replace(/\|/g, "\\|")} |`).join("\n");
   const reviewRows = review
-    ? (["tone", "banned_topics", "visuals", "character"] as const).map((k) => `| ${review[k].pass ? "✅" : "❌"} | ${k.replace("_", " ")} | ${review[k].notes.replace(/\|/g, "\\|")} |`).join("\n")
+    ? (["tone", "banned_topics", "visuals", "character", "point"] as const).flatMap((k) => { const r = review[k]; return r ? [`| ${r.pass ? "✅" : "❌"} | ${k.replace("_", " ")} | ${r.notes.replace(/\|/g, "\\|")} |`] : []; }).join("\n")
     : "| ⏳ | agent review | waiting for `qa-review.json` |";
   const body = [
     `# QA report — ${script.title}`,

@@ -11,6 +11,18 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
 
 ## How to write it
 
+0. **Find the point before you write a line.** Facts told well are a report; people follow a point of view. Fill
+   `angle` first:
+   - `point`: the one sentence this video argues. It is the channel's **Belief** (channel.md), proved again by this
+     story. "The French judges didn't lose to California, they lost to their own labels" — not "a 1976 tasting".
+   - `stakes`: who in the story has something to lose, and what (pride, money, a name, a life's work). Tell the
+     story through them, never as a list of events.
+   - `turn`: the moment the facts change meaning. Build the middle so the viewer walks into it.
+   - `takeaway`: what the viewer leaves with and can use in their own life (**What the viewer gets** in channel.md):
+     a way of seeing, a line to say at dinner, permission to trust themselves. The last beat lands it in plain
+     words, in the character's voice; a catchphrase can close it but never replaces it.
+   Every beat serves the point: a fact that doesn't move the story toward the turn or the takeaway is cut, however
+   true. The angle is opinion and framing; anything factual inside it is a claim like any other.
 1. **Follow the series.** Use its beats, in order, with the same ids. Each beat's `purpose` says what it must do;
    `seconds` is a target — the voice decides the real timing.
 2. **Hook first.** The first sentence of the first beat is ~5 words and lands within 2 seconds. Put the hook on
@@ -39,6 +51,12 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
   "series": "<series slug>",
   "idea": "<idea id>",
   "title": "<episode title>",
+  "angle": {                               // required: written first, see step 0
+    "point": "The one sentence this video argues (the channel's belief, from this story)",
+    "stakes": "Who has something to lose, and what",
+    "turn": "The moment the facts change meaning",
+    "takeaway": "What the viewer leaves with and can use"
+  },
   "language": "en",
   "beats": [                               // the series' beats, same ids, same order
     {
@@ -75,6 +93,7 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
 
 ## Checks the engine runs (fix and re-run until clean)
 
+- a new script has an `angle` (point, stakes, turn, takeaway)
 - beats match the series exactly; speakers are series characters; expressions exist in the character's model.json
 - each beat's `visual.skill` is one of the series' scene skills and its payload is valid
 - `visuals[...]` payloads are valid for their skill (part ids unique, targets/callouts exist, sizes present …)

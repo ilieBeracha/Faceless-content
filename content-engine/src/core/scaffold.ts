@@ -33,6 +33,9 @@ export interface ChannelInput {
   banned_topics: string[];
   brand: { primary_color: string; accent_color: string; background_top: string; background_bottom: string; text_color?: string; font: string; caption_case?: string };
   promise?: string;
+  /** The one idea every video argues, and what a viewer leaves each video with (channel.md's Belief and What the viewer gets). */
+  belief?: string;
+  gets?: string;
 }
 
 /** channel.md + ideas.md + learnings.md, status draft. */
@@ -40,11 +43,13 @@ export function createChannel(ws: Workspace, input: ChannelInput): string[] {
   assertSlug(input.slug, "channel slug");
   const dir = ws.channelDir(input.slug);
   if (existsSync(dir)) throw new EngineError(`channels/${input.slug} already exists — channels are never overwritten.`, "Pick another slug, or edit the existing channel's files.");
-  const { promise, ...fields } = input;
+  const { promise, belief, gets, ...fields } = input;
   const data = { ...fields, status: "draft", created: today() };
   const ordered = { slug: data.slug, name: data.name, status: data.status, niche: data.niche, audience: data.audience, tone: data.tone, language: data.language, platforms: data.platforms, cadence: data.cadence, banned_topics: data.banned_topics, brand: data.brand, created: data.created };
   let text = renderFromTemplate(ws, "channel.md", ordered, { name: input.name });
   if (promise) text = text.replace(/(## Promise[^\n]*\n\n)<!--[^]*?-->/, `$1${promise}`);
+  if (belief) text = text.replace(/(## Belief[^\n]*\n\n)<!--[^]*?-->/, `$1${belief}`);
+  if (gets) text = text.replace(/(## What the viewer gets[^\n]*\n\n)<!--[^]*?-->/, `$1${gets}`);
   const files = [join(dir, "channel.md"), join(dir, "ideas.md"), join(dir, "learnings.md")];
   createFileExclusive(files[0], text);
   createFileExclusive(files[1], templateBody(ws, "ideas.md", { name: input.name }).trimStart());

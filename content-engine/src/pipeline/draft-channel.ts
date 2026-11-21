@@ -36,13 +36,20 @@ export function draftChannelTask(ws: Workspace, slug: string, seed: string, skil
 Draft a complete channel from the seed below, following \`workflows/new-channel.md\` and \`skills/brainstorm/SKILL.md\`.
 Keep \`slug: ${slug}\` and \`status: draft\`. Everything goes inside \`channels/${slug}/\`:
 
-1. \`channel.md\` — fill every field of the template (it's already there, with the annotations) and write the Promise section.
+1. \`channel.md\` — fill every field of the template (it's already there, with the annotations) and write the Promise,
+   Belief and What the viewer gets sections. The Belief is the channel's point of view: one idea about the world that
+   every video argues from a new angle (a topic is not a belief). What the viewer gets is what they can use from every
+   video in their own life. These are why anyone follows the channel; make them specific and a little opinionated.
 2. One original character (two at most): \`characters/<name>.md\` from templates/character.md, plus
    \`characters/<name>/model.json\` (a rig from skills/render-talking-character — pick the one that fits the
    visual style, choose colours and expressions: at least neutral, curious, excited). Pick a voice from the list.
 3. One series (two at most): \`series/<slug>.md\` from templates/series.md. Its \`skills.render\` must only
-   use the render skills listed below; its beats must add up to its length.
-4. \`ideas.md\` — append exactly 10 ideas in the ideas format (status \`new\`, one-line angle, series slug, added ${today()}).
+   use the render skills listed below; its beats must add up to its length. Shape the beats as a story with a point,
+   not a list of facts: hook → setup → stakes (who has something to lose) → turn (the facts change meaning) →
+   takeaway (what the viewer leaves with), named and adapted to the series.
+4. \`ideas.md\` — append exactly 10 ideas in the ideas format (status \`new\`, one-line angle, series slug, added ${today()}),
+   each with a \`- point:\` line: what this story argues for the channel's Belief, and why a viewer would care. A fact
+   with no point is trivia: pick another story.
 5. Leave \`learnings.md\` as it is.
 
 Then run \`./engine validate --channel ${slug}\` and fix every error. Finally tell the person to review the files and

@@ -5,6 +5,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { loadChannel } from "../core/channels.ts";
+import { bodySection } from "../core/markdown.ts";
 import { readJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { episodesDir, listEpisodes } from "../pipeline/episode.ts";
@@ -13,6 +14,9 @@ export interface BrandKit {
   slug: string;
   name: string;
   promise: string;
+  /** The idea every video argues, and what a viewer leaves each video with ("" on channels from before them). */
+  belief: string;
+  gets: string;
   niche: string;
   audience: { who: string; age_range: string };
   language: string;
@@ -34,14 +38,6 @@ export interface BrandKit {
 const str = (v: unknown): string => (typeof v === "string" ? v : v === undefined || v === null ? "" : String(v));
 const list = (v: unknown): string[] => (Array.isArray(v) ? v.map(str) : []);
 
-/** The text under a `## Heading` in a markdown body, up to the next heading. */
-function section(body: string, heading: string): string {
-  const lines = body.split(/\r?\n/);
-  const start = lines.findIndex((l) => l.replace(/<!--.*?-->/g, "").trim().toLowerCase() === `## ${heading.toLowerCase()}`);
-  if (start === -1) return "";
-  const end = lines.findIndex((l, i) => i > start && /^##\s/.test(l));
-  return lines.slice(start + 1, end === -1 ? undefined : end).join("\n").trim();
-}
 
 /** Where the engine writes an episode's video (same path as render-episode.ts's outputPath, without loading the renderer). */
 export function videoPath(ws: Workspace, slug: string, episode: string): string {
@@ -115,7 +111,9 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
   return {
     slug,
     name: str(c.name),
-    promise: section(channel.doc.md.body, "Promise"),
+    promise: bodySection(channel.doc.md.body, "Promise"),
+    belief: bodySection(channel.doc.md.body, "Belief"),
+    gets: bodySection(channel.doc.md.body, "What the viewer gets"),
     niche: str(c.niche),
     audience: { who: str(audience.who), age_range: str(audience.age_range) },
     language: str(c.language),
@@ -123,7 +121,7 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
     platforms: list(c.platforms),
     tone: list(c.tone),
     never: list(c.banned_topics),
-    styleNotes: section(channel.doc.md.body, "Style notes").split(/\r?\n/).filter((l) => l.startsWith("- ")).map((l) => l.slice(2).trim()),
+    styleNotes: bodySection(channel.doc.md.body, "Style notes").split(/\r?\n/).filter((l) => l.startsWith("- ")).map((l) => l.slice(2).trim()),
     colours,
     font: str(brand.font),
     host: {

@@ -41,6 +41,14 @@ approved_by: "ilieBeracha (approved in chat)" # optional string — who approved
 Every video is one true footnote from science: a tiny, strange clue that turned out to change how we see the
 universe, and why it matters to you.
 
+## Belief <!-- required -->
+
+The universe gives up its biggest secrets through small things somebody refused to ignore. Paying attention is the whole of science.
+
+## What the viewer gets <!-- required -->
+
+Permission to take a strange little detail seriously, in science and in their own life, and one true story that shows why it can matter.
+
 ## Style notes
 
 - Every episode has a point. Before writing, answer: "So what? What did this change, or what does it mean for

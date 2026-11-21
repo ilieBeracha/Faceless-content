@@ -22,6 +22,7 @@ script (`qa-review.json`). Results are written to the episode's `qa-report.md`.
 
 ## Review (agent, from the frames and the script)
 
+- [ ] **Point** — argues the point in the script's `angle` (the channel's Belief), told through someone with something at stake, with a turn, and the last beat leaves the viewer with the takeaway. True facts with no point fail.
 - [ ] **Tone** — sounds like this channel (tone adjectives, audience age, the character's way of talking).
 - [ ] **Banned topics** — nothing touches them, even indirectly.
 - [ ] **Visuals** — readable at phone size, nothing overlapping, the object/graphics are clear, the visual

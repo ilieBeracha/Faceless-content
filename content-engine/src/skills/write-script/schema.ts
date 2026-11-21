@@ -35,6 +35,20 @@ export const beatSchema = z
   })
   .strict();
 
+/**
+ * Why the video exists: the point it argues and what the viewer leaves with. Written before a single line, so the
+ * facts serve a story instead of being the story. Optional here so scripts written before it still load; a new
+ * script must have one (the writing task's check).
+ */
+export const angleSchema = z
+  .object({
+    point: z.string().min(10).describe("the one sentence this video argues: the channel's belief, proved again from this story"),
+    stakes: z.string().min(10).describe("who in the story has something to lose, and what"),
+    turn: z.string().min(10).describe("the moment the facts change meaning"),
+    takeaway: z.string().min(10).describe("what the viewer leaves with and can use in their own life"),
+  })
+  .strict();
+
 export const scriptSchema = z
   .object({
     schema: z.literal("script/v1"),
@@ -42,6 +56,7 @@ export const scriptSchema = z
     series: slug,
     idea: slug,
     title: z.string().min(3).max(90),
+    angle: angleSchema.optional(),
     language: z.string().default("en"),
     beats: z.array(beatSchema).min(2),
     visuals: z.record(z.string(), z.unknown()).default({}),
@@ -60,6 +75,7 @@ export const scriptSchema = z
 export type Script = z.infer<typeof scriptSchema>;
 export type Beat = z.infer<typeof beatSchema>;
 export type Claim = z.infer<typeof claimSchema>;
+export type Angle = z.infer<typeof angleSchema>;
 
 /**
  * The words of a voiceover as the voice and the captions both see them: split on whitespace, with

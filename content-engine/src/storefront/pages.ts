@@ -873,7 +873,7 @@ function factsHtml(order: Order, script: Script, first = true): string {
       : `<p class="muted">This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand: quote <b>${esc(order.id)}</b> if you contact us.</p>`;
   return `<section class="notice" id="facts"><h2>Check the facts</h2><p class="muted">The script for your ${first ? "first " : ""}video, “${esc(script.title)}”, is written. Nothing is voiced or drawn until you approve it.</p>
 <p class="meta"><span>${script.beats.length} parts</span><span>${n} fact${n === 1 ? "" : "s"} to check</span></p>
-<ol class="script">${script.beats.map(part).join("")}</ol>
+${angleHtml(script)}<ol class="script">${script.beats.map(part).join("")}</ol>
 ${loose.length ? `<h3>More facts</h3><ul class="claims loose">${loose.map(fact).join("")}</ul>` : ""}
 <p class="muted">Each fact stands under the line that states it. If a line states a fact that is not listed, ask for a change. Approving starts the video: it is made exactly from these words.</p></section>
 <div class="decide stick" role="group" aria-label="Your decision on the facts"><form method="post" action="${base}/facts"><input type="hidden" name="decision" value="approve"><button type="submit" class="btn yes">Approve the facts</button></form>${change}</div>`;
@@ -883,6 +883,11 @@ function accentOf(kit: BrandKit): string {
   const accent = kit.colours.find((c) => c.name === "Accent");
   if (!accent) throw new Error(`The brand kit of "${kit.name}" has no accent colour.`);
   return accent.hex;
+}
+
+/** The channel's point of view: what every video argues and what a viewer gets from it (absent on channels from before them). */
+function pointHtml(kit: { belief: string; gets: string }): string {
+  return [kit.belief ? `<p><b>What every video argues:</b> ${esc(kit.belief)}</p>` : "", kit.gets ? `<p><b>What a viewer gets:</b> ${esc(kit.gets)}</p>` : ""].join("");
 }
 
 const CAPTION_SIZE_NAMES: Record<CaptionSettings["size"], string> = { small: "Small", medium: "Medium", large: "Large" };
@@ -954,6 +959,12 @@ const LINE_FIXES: [string, string][] = [
   ["This fact is wrong", "The fact in this line is wrong: check it and fix it, or cut it."],
 ];
 
+/** What a script argues and what the viewer leaves with (scripts from before angles have none). */
+function angleHtml(script: Script): string {
+  const a = script.angle;
+  return a ? `<div class="panel angle"><p><b>The point:</b> ${esc(a.point)}</p><p><b>Who has something at stake:</b> ${esc(a.stakes)}</p><p><b>The turn:</b> ${esc(a.turn)}</p><p><b>What the viewer leaves with:</b> ${esc(a.takeaway)}</p></div>` : "";
+}
+
 /** The script step: the script line by line, each fact under the line that states it with its source. A line opens to change just that line. */
 function scriptStep(order: Order, script: Script, boards: boolean): FlowStep {
   const base = `/w/${esc(order.token)}`;
@@ -985,7 +996,7 @@ function scriptStep(order: Order, script: Script, boards: boolean): FlowStep {
   return {
     meta: "",
     head: `<div class="head"><h1>${esc(script.title)}</h1><div class="pills"><span>${script.beats.length} lines</span><span class="ok">${n} fact${n === 1 ? "" : "s"}, each with its source</span></div>${left > 0 ? `<p class="sub">Tap a line to change it.</p>` : ""}</div>`,
-    body: `<ol class="lines">${script.beats.map(line).join("")}</ol>
+    body: `${angleHtml(script)}<ol class="lines">${script.beats.map(line).join("")}</ol>
 ${loose.length ? `<h2>More facts</h2>${loose.map(fact).join("")}` : ""}
 ${left > 0 ? "" : `<p class="sub">This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand: quote <b>${esc(order.id)}</b> if you contact us.</p>`}`,
     bar: `${left > 0 ? `<a class="alt" href="#change">Change all of it</a>` : ""}<form method="post" action="${base}/facts"><input type="hidden" name="decision" value="approve"><button type="submit" class="go">${boards ? "Looks right · paint the pictures" : "Looks right · make the video"}</button></form>`,
@@ -1100,7 +1111,7 @@ function kitHtml(order: Order, kit: BrandKit, canRevise: boolean, facts: Script 
   }).join("")}</nav>`;
   return `<div class="ws">${side}<div class="content">
 ${failed}${video}
-${kitSection(order, "name", `<p class="display" style="font-size:clamp(30px,5vw,46px)">${esc(kit.name)}</p><p class="lede">${esc(kit.promise)}</p>${identityFacts(kit)}`)}
+${kitSection(order, "name", `<p class="display" style="font-size:clamp(30px,5vw,46px)">${esc(kit.name)}</p><p class="lede">${esc(kit.promise)}</p>${pointHtml(kit)}${identityFacts(kit)}`)}
 ${kitSection(order, "host", `<p class="lede"><b style="color:var(--ink)">${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${hostFacts(kit)}`)}
 ${kitSection(order, "colours", `${swatches(kit)}<p class="muted">Lettering: ${esc(kit.font)}</p>`)}
 ${kitSection(order, "look", `<p>${esc(kit.series.visual_style)}</p>${frames}`)}
@@ -1190,12 +1201,12 @@ function factSource(source: string): string {
   return `<a class="src" href="${esc(source)}" target="_blank" rel="noopener noreferrer nofollow">Check it at ${esc(new URL(source).hostname.replace(/^www\./, ""))}</a>`;
 }
 
-/** An idea's title, angle and the fact it turns on, with where to check that fact. */
+/** An idea's title, angle, its point and the fact it turns on, with where to check that fact. */
 function ideaBody(i: Idea): string {
   const fact = i.fields.fact;
   const source = i.fields.fact_source;
   const yours = i.fields.by === "customer" ? `<small>Your own topic</small>` : "";
-  return `<div><b>${esc(i.title)}</b>${i.angle ? `<small>${esc(i.angle)}</small>` : yours}${fact ? `<p class="fact"><span>Key fact</span>${esc(fact)}${source ? ` ${factSource(source)}` : ""}</p>` : ""}</div>`;
+  return `<div><b>${esc(i.title)}</b>${i.angle ? `<small>${esc(i.angle)}</small>` : yours}${i.fields.point ? `<p class="fact"><span>The point</span>${esc(i.fields.point)}</p>` : ""}${fact ? `<p class="fact"><span>Key fact</span>${esc(fact)}${source ? ` ${factSource(source)}` : ""}</p>` : ""}</div>`;
 }
 
 /**
@@ -1312,7 +1323,7 @@ ${batches.map(batch).join("")}
           }`;
     main = `<h1>Look &amp; voice</h1>
 <div class="look">${latest ? `<div class="prev">${thumb(base, latest)}</div>` : ""}<div class="cols">
-<div class="panel"><h2>Name and promise</h2><b class="big-name">${esc(kit.name)}</b><p class="muted">${esc(kit.promise)}</p></div>
+<div class="panel"><h2>Name, promise and point</h2><b class="big-name">${esc(kit.name)}</b><p class="muted">${esc(kit.promise)}</p>${pointHtml(kit)}</div>
 <div class="panel"><h2>${order.design?.theme ? esc(lookName(order.design.theme)) : "Look"}</h2><div class="sws">${kit.colours.map((c) => `<div><i style="background:${esc(c.hex)}"></i>${esc(c.name)}</div>`).join("")}</div></div>
 <div class="panel"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
 <div class="panel"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${host}</div>

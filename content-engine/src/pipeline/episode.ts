@@ -12,6 +12,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { channelStatus, loadChannel, seriesDoc, validateChannel, type Channel } from "../core/channels.ts";
+import { bodySection } from "../core/markdown.ts";
 import { ContextBundle } from "../core/context.ts";
 import { EngineError, PipelinePause, ValidationError } from "../core/errors.ts";
 import { commitPaths } from "../core/git.ts";
@@ -141,6 +142,8 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
   }
   const script = readScript(ep);
   if (!done("script")) {
+    // A new script says what it argues; episodes accepted before angles keep going without one.
+    if (!script.angle) throw new PipelinePause("needs-fix", [`${ws.rel(scriptPath)} has no "angle": write the point, stakes, turn and takeaway first (step 0 of skills/write-script/SKILL.md), then run the same command again.`]);
     ep.state.title = script.title;
     mark(ep, "script", "done");
     commitPaths(ws, [ep.dir], `${channel.slug}: script ready for ${ep.state.id}`);
@@ -315,7 +318,7 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   if (series.skills.render.includes("render-themed")) ctx.addFile(`channels/${ch.slug}/theme.json`, "channel");
   for (const skill of skills) if (known.has(skill)) ctx.addFile(`skills/${skill}/SKILL.md`, "skill");
   const idea = ch.ideas.find((i) => i.id === ep.state.idea)!;
-  ctx.addInline("the idea for this episode", ["```", `id: ${idea.id}`, `title: ${idea.title}`, `angle: ${idea.angle ?? "(none)"}`, "```"].join("\n"));
+  ctx.addInline("the idea for this episode", ["```", `id: ${idea.id}`, `title: ${idea.title}`, `angle: ${idea.angle ?? "(none)"}`, ...(idea.fields.point ? [`point: ${idea.fields.point}`] : []), "```"].join("\n"));
   // A fact-check that asked for changes: the next script starts from the one that was checked.
   const scriptPath = join(ep.dir, "script.json");
   const asked = readFactcheck(ep.dir);
@@ -357,16 +360,17 @@ Follow \`skills/${series.skills.script}/SKILL.md\` exactly. In particular:
 ${lang.code === "en" ? "" : `
 0. **Language: ${lang.name}.** Write everything the viewer hears or reads in ${lang.name} (${lang.native}): every voiceover line, \`on_screen_text\`, any words in a visual, and \`publish\` (title, description, hashtags). ${lang.style ?? ""} Claims are written in ${lang.name} too; their sources may be in any language. The house rules about contractions and English examples apply in spirit: short spoken sentences, everyday words.
 `}
-1. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
-2. **Length.** The series runs ${min}–${max}s. ${lengthNote}
-3. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.
-4. **Voice.** A full stop ends a thought: the voice drops its pitch and pauses there, so never split one phrase across sentences ("You think all wine improves. With time." → "You think all wine gets better with time?"). Join fragments with a comma, a dash or "…". Write the way the character in this channel talks (personality, vocabulary, catchphrases from its file — a catchphrase at most once, where it fits). Audience: ${JSON.stringify((ch.doc.data.audience as { who?: string })?.who ?? "")}.
-5. **Facts.** Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it. A person approves this list before anything renders.
-6. **Visuals.** Use only these render skills: ${series.skills.render.map((s) => `\`${s}\``).join(", ")}. Follow each skill's SKILL.md for the \`visuals\` payload and each beat's \`visual\` block.
-7. **Banned topics** for this channel (never touch them): ${banned || "none listed"}.
-8. **Learnings.** Apply what \`learnings.md\` says worked or failed for this channel.
-9. **Publish metadata.** Fill \`publish\` (title, description, up to 5 hashtags). Don't add AI-label text — the engine adds the AI disclosure fields itself.
-${revising ? `10. **This is a revision.** \`${ws.rel(scriptPath)}\` is the script that was fact-checked. Make the change the fact-check asked for (below) and keep everything else as it is. If it asks for something the house rules forbid, leave that part as it is.\n` : ""}
+1. **Point.** Before any line, fill \`angle\` (step 0 of the skill): the one sentence this video argues, proving the channel's **Belief** again (${JSON.stringify(bodySection(ch.doc.md.body, "Belief"))}); who has something at stake; the turn; and the takeaway, which gives the viewer what the channel promises them (${JSON.stringify(bodySection(ch.doc.md.body, "What the viewer gets"))}). Tell the story through the person with something at stake, build to the turn, and land the takeaway in the last beat in plain words. Cut any fact that doesn't serve the point.
+2. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
+3. **Length.** The series runs ${min}–${max}s. ${lengthNote}
+4. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.
+5. **Voice.** A full stop ends a thought: the voice drops its pitch and pauses there, so never split one phrase across sentences ("You think all wine improves. With time." → "You think all wine gets better with time?"). Join fragments with a comma, a dash or "…". Write the way the character in this channel talks (personality, vocabulary, catchphrases from its file — a catchphrase at most once, where it fits). Audience: ${JSON.stringify((ch.doc.data.audience as { who?: string })?.who ?? "")}.
+6. **Facts.** Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it. A person approves this list before anything renders.
+7. **Visuals.** Use only these render skills: ${series.skills.render.map((s) => `\`${s}\``).join(", ")}. Follow each skill's SKILL.md for the \`visuals\` payload and each beat's \`visual\` block.
+8. **Banned topics** for this channel (never touch them): ${banned || "none listed"}.
+9. **Learnings.** Apply what \`learnings.md\` says worked or failed for this channel.
+10. **Publish metadata.** Fill \`publish\` (title, description, up to 5 hashtags). Don't add AI-label text — the engine adds the AI disclosure fields itself.
+${revising ? `11. **This is a revision.** \`${ws.rel(scriptPath)}\` is the script that was fact-checked. Make the change the fact-check asked for (below) and keep everything else as it is. If it asks for something the house rules forbid, leave that part as it is.\n` : ""}
 Write the JSON to \`${ws.rel(scriptPath)}\` (schema \`script/v1\`, documented in the write-script skill).
 `;
   return {
@@ -380,7 +384,8 @@ Write the JSON to \`${ws.rel(scriptPath)}\` (schema \`script/v1\`, documented in
     research: { maxSearches: 8 },
     check: () => {
       const r = checkScript(ws, readJson(scriptPath), { channel: ep.channel, series: ep.series, idea: ep.state.idea });
-      return r.errors;
+      // Scripts from before angles still load; a new one says what it argues (makeEpisode refuses one without).
+      return [...r.errors, ...(r.script && !r.script.angle ? ['"angle" is missing: write the point, stakes, turn and takeaway first (step 0 of the skill)'] : [])];
     },
   };
 }

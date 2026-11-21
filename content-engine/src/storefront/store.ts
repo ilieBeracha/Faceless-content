@@ -19,7 +19,7 @@ export type OrderStatus = (typeof ORDER_STATUSES)[number];
 
 /** The parts of a brand kit a customer signs off, one decision each. */
 export const SECTIONS = [
-  { id: "name", label: "The name and the promise" },
+  { id: "name", label: "The name, the promise and the point" },
   { id: "host", label: "The host: look, personality, voice" },
   { id: "colours", label: "The colours" },
   { id: "look", label: "The look" },

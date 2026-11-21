@@ -766,7 +766,7 @@ describe("storefront: automatic builds", () => {
       assert.equal(channelExists(built, id), true, "the earlier version is kept");
       assert.equal(loadChannel(built, id).doc.data.name, `Test ${id}`);
       const call = revised[revised.length - 1];
-      assert.deepEqual(call.requests, [{ about: "The name and the promise", note: "A shorter name" }]);
+      assert.deepEqual(call.requests, [{ about: "The name, the promise and the point", note: "A shorter name" }]);
       assert.deepEqual(call.keep, [`channels/${id}-r1/theme.json`, `channels/${id}-r1/characters/bot/model.json`]);
       assert.deepEqual(readJson(join(built.channelDir(`${id}-r1`), "theme.json")), order.design?.theme);
       assert.match(await (await fetch(base + link)).text(), /Revised name[\s\S]*5 of 6 decided/);

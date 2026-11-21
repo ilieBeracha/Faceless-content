@@ -30,6 +30,8 @@ export function makeChannel(ws: Workspace, slug: string, opts: { status?: "draft
     banned_topics: opts.banned ?? ["weapons", "medical advice"],
     brand: { primary_color: "#3d5afe", accent_color: "#ffb300", background_top: "#0d1b2a", background_bottom: "#1b263b", font: "montserrat" },
     promise: "Short peeks inside everyday objects.",
+    belief: "Every everyday object is a clever answer to a problem somebody once had.",
+    gets: "The one why behind something they use every day.",
   });
   createCharacter(ws, slug, {
     name: "bot",
@@ -84,6 +86,12 @@ export function sampleScript(channel: string, idea = "a-ballpoint-pen"): Script 
     series: "inside",
     idea,
     title: "Inside a pen",
+    angle: {
+      point: "A pen works because of a ball smaller than a grain of sand, not because of the ink.",
+      stakes: "Every student whose pen leaks in their pocket before an exam.",
+      turn: "The ball is a door: it only lets ink out while it rolls.",
+      takeaway: "When a pen skips, warm the tip and roll it: the door is stuck, not the ink gone.",
+    },
     language: "en",
     beats: [
       { id: "hook", speaker: "bot", voiceover: "Why doesn't your pen leak?", on_screen_text: "Why no leaks?", visual: { skill: "render-3d-explainer", shot: "establish" }, character: { placement: "full", expression: "curious" } },

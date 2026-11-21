@@ -41,6 +41,14 @@ approved_by: "ilieBeracha (approved in chat)" # optional string — who approved
 Every episode is a holiday to a famous moment in history or a real wonder of the universe: what it would really
 be like to be there, what nobody tells you, and an honest rating at the end.
 
+## Belief <!-- required -->
+
+The famous moments of history and the wonders of the universe were real places with real weather, smells and inconveniences; seeing them as places, not legends, makes them stranger and closer.
+
+## What the viewer gets <!-- required -->
+
+What it would really have been like to stand there, the detail nobody tells you, and an honest sense of whether the legend is worth the trip.
+
 ## Style notes
 
 - Selfie-vlog voice: first person, present tense, short sentences, light modern slang (no swearing, no slurs).

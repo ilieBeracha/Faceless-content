@@ -158,7 +158,7 @@ export function approveDraft(ws: Workspace, draft: DraftInfo, opts: { only?: str
   const proposals = parseIdeas(body).filter((i) => i.status === "proposed" && (!opts.only || opts.only.includes(i.id)));
   if (!proposals.length) throw new EngineError(`No proposed ideas to approve in ${draft.rel}${opts.only ? ` matching ${opts.only.join(", ")}` : ""}.`);
   const { text, ids } = renderIdeas(
-    proposals.map((p) => ({ id: p.id, title: p.title, series: p.series, angle: p.angle, extra: { ...pickFields(p.fields, ["fact", "fact_source"]), source: draft.rel } })),
+    proposals.map((p) => ({ id: p.id, title: p.title, series: p.series, angle: p.angle, extra: { ...pickFields(p.fields, ["fact", "fact_source", "point"]), source: draft.rel } })),
     channel.ideas.map((i) => i.id),
     "new",
     today(),
