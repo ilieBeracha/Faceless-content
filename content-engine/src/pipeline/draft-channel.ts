@@ -49,7 +49,8 @@ Keep \`slug: ${slug}\` and \`status: draft\`. Everything goes inside \`channels/
    takeaway (what the viewer leaves with), named and adapted to the series.
 4. \`ideas.md\` — append exactly 10 ideas in the ideas format (status \`new\`, one-line angle, series slug, added ${today()}),
    each with a \`- point:\` line: what this story argues for the channel's Belief, and why a viewer would care. A fact
-   with no point is trivia: pick another story.
+   with no point is trivia: pick another story. Find them as skills/brainstorm/SKILL.md says under "Ideas only this
+   channel would make": from the Belief, not the topic, so no other channel in the niche could make them as is.
 5. Leave \`learnings.md\` as it is.
 
 Then run \`./engine validate --channel ${slug}\` and fix every error. Finally tell the person to review the files and

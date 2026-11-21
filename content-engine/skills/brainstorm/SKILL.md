@@ -67,3 +67,27 @@ care. A true fact with no point is trivia; pick a story where someone has someth
 
 A good idea has a question the audience already wonders about, a payoff that fits the series' length, and facts
 that can be verified from solid sources.
+
+### Ideas only this channel would make
+
+The niche says what the channel is about; the Belief, Promise and What the viewer gets (channel.md) say why it
+exists. Ideas come from the second, not the first.
+
+1. **Start from the Belief.** Before any idea, ask: what does someone who holds this Belief notice that others
+   miss? Who proves it, who got caught by it, who was wrong about it, where does it show up in the viewer's own day?
+   Find ideas there.
+2. **The other-channel test.** If any channel in the same niche could make the video as is, it isn't this
+   channel's idea. "Bananas are berries" is any trivia channel's; the story behind it, told so it argues this
+   channel's Belief, is this one's.
+3. **Skip the famous ones.** The first facts on every "top 10" list are already known and already made. Go one step
+   behind them: the person, the date, the place, the decision or the money that made the fact true.
+4. **Someone with something at stake.** A person or group who could win or lose, so the facts can turn.
+5. **No two ideas share a shape.** Mix them: someone caught out, a hidden cause, a thing the viewer owns or does
+   every day, a belief the viewer holds that turns out wrong, a number that changes meaning, an insider's trick.
+6. **The title is a hook, not a label.** Specific (a name, a number, a place) and something the viewer wants
+   answered: "The wine that beat France in a blind test", not "The 1976 Paris tasting".
+7. **The point lands on the viewer.** It finishes the sentence "after this video, you'll…": a way of seeing, a line
+   to say, a thing to try or to trust.
+
+Work it as a funnel: think of about three times as many candidates as you're asked for, cut every one that fails
+the other-channel test or repeats a shape, and write only the strongest.
