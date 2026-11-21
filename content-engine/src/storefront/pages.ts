@@ -8,7 +8,7 @@ import { FRAME_PRESET_NAMES, FRAME_PRESETS, showsHost, type Frame, type Shot, ty
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { NO_HOST, OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
-import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, videoUnderWay, SUGGESTS_PER_DAY, TOPIC_MAX, type Intake, type Order, type SectionId } from "./store.ts";
+import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, OWN_DESIGN, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, videoUnderWay, SUGGESTS_PER_DAY, TOPIC_MAX, type Intake, type Order, type SectionId } from "./store.ts";
 
 export function esc(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -482,7 +482,7 @@ details.more2{align-self:stretch}details.more2>summary{cursor:pointer;font:600 1
 .ch .empty{aspect-ratio:27/13;background:var(--soft);display:grid;place-items:center;color:var(--muted);font-size:14px}
 .ch .info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px}
 .ch .t{display:flex;align-items:center;gap:8px}.ch .t b{flex:1;font-size:18px;line-height:1.25;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ch small{font-size:14px;color:var(--muted)}.ch:hover b{text-decoration:underline}
+.ch small{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}.dots{display:inline-flex}.dots i{width:14px;height:14px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px var(--surface)}.dots i:first-child{margin-left:0}.ch:hover b{text-decoration:underline}
 body.studio .fl{margin:0 auto}body.studio .fl h1{font-size:clamp(30px,5vw,44px)}
 @media(max-width:760px){
 .stab,.sbar .new,.sbar .sep,.sbar .brand span,.sbar .who{display:none}
@@ -1309,7 +1309,7 @@ ${batches.map(batch).join("")}
     main = `<h1>Look &amp; voice</h1>
 <div class="look">${latest ? `<div class="prev">${thumb(base, latest)}</div>` : ""}<div class="cols">
 <div class="panel"><h2>Name and promise</h2><b class="big-name">${esc(kit.name)}</b><p class="muted">${esc(kit.promise)}</p></div>
-<div class="panel"><h2>Look${order.design?.theme ? `: ${esc(order.design.theme.name)}` : ""}</h2><div class="sws">${kit.colours.map((c) => `<div><i style="background:${esc(c.hex)}"></i>${esc(c.name)}</div>`).join("")}</div></div>
+<div class="panel"><h2>${order.design?.theme ? esc(lookName(order.design.theme)) : "Look"}</h2><div class="sws">${kit.colours.map((c) => `<div><i style="background:${esc(c.hex)}"></i>${esc(c.name)}</div>`).join("")}</div></div>
 <div class="panel"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
 <div class="panel"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${host}</div>
 <div class="panel"><h2>Format</h2><p class="muted">${esc(kit.series.format)}</p></div>
@@ -1378,6 +1378,11 @@ ${body}${brief}`,
   );
 }
 
+/** A look as the customer says it: "Your own look" for one they designed, else "Bistro chalkboard look". */
+function lookName(theme: Theme): string {
+  return theme.name === OWN_DESIGN ? "Your own look" : `${theme.name} look`;
+}
+
 /** Where a channel stands, as one short tag on its card. */
 function channelTag(o: Order, kit: BrandKit | undefined): string {
   const v = o.video?.state;
@@ -1406,8 +1411,11 @@ export function accountPage(product: string, user: User, orders: Order[], kits: 
     // Until the kit is built the channel has no name, so the first words of its brief stand in.
     const name = kit?.name ?? o.intake.idea.split(/[.:!?\n]/)[0].slice(0, 60);
     const n = kit?.episodes.length ?? 0;
-    const sub = [o.design?.theme ? `${o.design.theme.name} look` : "", kit ? `${n} video${n === 1 ? "" : "s"}` : `Sent ${day(o.created.slice(0, 10))}`].filter(Boolean).join(" · ");
-    return `<a class="ch" href="${base}">${cover}<span class="info"><span class="t"><b>${esc(name)}</b>${channelTag(o, kit)}</span><small>${esc(sub)}</small></span></a>`;
+    const theme = o.design?.theme;
+    const sub = [theme ? lookName(theme) : "", kit ? `${n} video${n === 1 ? "" : "s"}` : `Sent ${day(o.created.slice(0, 10))}`].filter(Boolean).join(" · ");
+    // The look's own colours, so channels with the same name and an own-designed look still look different here.
+    const dots = theme ? `<span class="dots" aria-hidden="true">${[theme.paper, theme.accent, ...theme.colors].map((c) => `<i style="background:${esc(c)}"></i>`).join("")}</span>` : "";
+    return `<a class="ch" href="${base}">${cover}<span class="info"><span class="t"><b>${esc(name)}</b>${channelTag(o, kit)}</span><small>${dots}${esc(sub)}</small></span></a>`;
   };
   const cards = orders.slice().reverse().map(card).join("");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My channels — ${esc(product)}</title><style>${CSS}</style></head><body class="studio">

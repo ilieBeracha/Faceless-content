@@ -1169,8 +1169,9 @@ describe("storefront: automatic builds", () => {
       await post("host", { on: "1" });
 
       // A quality check the finished video missed (how fast the hook lands) is a note on it, shown before the review's.
-      writeJson(join(dir, "qa", "automated.json"), { checks: [{ id: "format", label: "Format", pass: true, detail: "1080×1920" }, { id: "hook-line", label: "Hook: first line lands in 2 s", pass: false, detail: '"Rotten grapes, great wine." ends at 2.34s (limit 2s)' }] });
-      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /Before you post[\s\S]*Hook: first line lands in 2 s: &quot;Rotten grapes, great wine\.&quot; ends at 2\.34s \(limit 2s\)/);
+      writeJson(join(dir, "qa", "automated.json"), { checks: [{ id: "format", label: "Format", pass: true, detail: "1080×1920" }, { id: "hook-line", label: "Hook: first line lands in 2 s", pass: false, detail: '"Rotten grapes, great wine." ends at 2.34s (limit 2s)' }, { id: "cut-off", label: "Nothing cut off", pass: false, detail: "headline:hook:text-overflow (22 frames)" }] });
+      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /Before you post[\s\S]*The first line, “Rotten grapes, great wine\.”, takes 2\.3 seconds to say\. Under 2 seconds keeps more viewers watching\.[\s\S]*Some on-screen text is cut off/);
+      assert.doesNotMatch(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /headline:hook|22 frames|limit 2s/, "the notes are advice, not the measurement");
       rmSync(join(dir, "qa", "automated.json"));
 
       // The review's reading of banned topics is a note on the finished video (first), not a reason to stop it.

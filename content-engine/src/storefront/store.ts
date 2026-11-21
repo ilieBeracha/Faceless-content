@@ -195,7 +195,7 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
   const readyLook = catalog.looks.find((l) => l.name === values.look);
   if (!errors.look && values.look !== OWN_LOOK && !readyLook) errors.look = "Pick a look to start from.";
   if (!errors.look && hasLook(form)) {
-    const built = buildLook(form, readyLook ? readyLook.name : "Own design");
+    const built = buildLook(form, readyLook ? readyLook.name : OWN_DESIGN);
     if (built.problems) errors.look = `These look settings are not valid: ${built.problems.join("; ")}.`;
     else design.theme = built.theme;
   } else if (!errors.look && readyLook) design.theme = readyLook.theme;
@@ -230,6 +230,9 @@ export const MAX_ROUNDS = 3;
 export const VIDEOS_PER_DAY = 3;
 /** At most this many requests for new ideas an order can make in a day (each is a paid Claude API call). */
 export const SUGGESTS_PER_DAY = 3;
+
+/** The name a look gets when the customer designed it from scratch rather than starting from a ready-made one. */
+export const OWN_DESIGN = "Own design";
 /** Each repaint is a paid picture: at most this many shots a video can have painted again from its storyboard. */
 export const REPAINTS_PER_VIDEO = 10;
 /** The longest topic a customer can give for a video or for new ideas. */

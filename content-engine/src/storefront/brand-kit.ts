@@ -143,7 +143,25 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
 /** The automated checks a finished video missed (quality checks: they are notes on a customer's video, not stops). */
 function checkNotes(path: string): string[] {
   if (!existsSync(path)) return [];
-  return readJson<{ checks: { label: string; detail: string; pass: boolean }[] }>(path).checks.filter((c) => !c.pass).map((c) => `${c.label}: ${c.detail}`);
+  return readJson<{ checks: { id: string; label: string; detail: string; pass: boolean }[] }>(path).checks.filter((c) => !c.pass).map(plainNote);
+}
+
+/** A missed automatic check as advice a customer can act on, without the measurement's working. */
+export function plainNote(c: { id: string; label: string; detail: string }): string {
+  switch (c.id) {
+    case "hook-line": {
+      const m = /^"(.*)" ends at ([\d.]+)s/.exec(c.detail);
+      return m ? `The first line, “${m[1]}”, takes ${Number(m[2]).toFixed(1)} seconds to say. Under 2 seconds keeps more viewers watching.` : "The first line takes more than 2 seconds to say. A shorter one keeps more viewers watching.";
+    }
+    case "hook-speech": return "The voice starts a moment late. Starting straight away keeps more viewers watching.";
+    case "hook-text": return "The headline doesn't show in the first half second. Text on screen from the start helps people stop scrolling.";
+    case "length": return "The video runs a little outside the length this series aims for.";
+    case "safe-areas": return "Some text sits close to the edge, where a phone app's buttons or caption can cover it.";
+    case "cut-off": return "Some on-screen text is cut off or runs past its box for a moment. Watch it once before posting.";
+    case "loudness": return "The sound is a little quieter or louder than the apps aim for, so they may turn it up or down.";
+    case "banned-topics": return `The words come close to one of the channel's banned topics (${c.detail}). Check it before posting.`;
+    default: return `${c.label}: this check was missed. Watch the video once before posting.`;
+  }
 }
 
 /** The QA agent review's requested fixes, when the review did not pass. None when there is no review. */
