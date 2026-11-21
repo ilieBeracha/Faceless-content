@@ -234,7 +234,8 @@ export function createPublicServer(o: StorefrontOptions): Server {
         if (req.method === "GET" && url.pathname === "/account") {
           if (!user) return redirect(res, "/signin");
           const orders = o.store.listFor(user.id);
-          return send(res, 200, accountPage(o.product, user, orders, new Set(orders.filter((ord) => linkedChannel(ord)).map((ord) => ord.id)), acc.store.draft(user.id)));
+          const kits = new Map(orders.flatMap((ord) => { const slug = linkedChannel(ord); return slug ? [[ord.id, brandKit(channelHome(o, slug), slug)] as const] : []; }));
+          return send(res, 200, accountPage(o.product, user, orders, kits, acc.store.draft(user.id)));
         }
         if (req.method === "POST" && url.pathname === "/draft") {
           const form = await readForm(req);
@@ -275,7 +276,11 @@ export function createPublicServer(o: StorefrontOptions): Server {
           const dash = o.builder && slug && order.kit_approved && channelExists(o.builder.ws, slug) ? o.builder.dashboard(order) : null;
           const view = url.searchParams.get("view") ?? "overview";
           if (!(CONSOLE_VIEWS as readonly string[]).includes(view)) throw new HttpError(404, "There is no page at this address.");
-          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView, url.searchParams.has("pick")));
+          const kit = slug ? brandKit(channelHome(o, slug), slug) : null;
+          // One finished video's own page: it has to be one of this channel's.
+          const episode = view === "video" ? url.searchParams.get("e") : null;
+          if (view === "video" && !(dash && kit?.episodes.some((e) => e.id === episode))) throw new HttpError(404, "That video is not available.");
+          return send(res, 200, workspacePage(o.product, order, kit, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView, url.searchParams.has("pick"), episode));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");

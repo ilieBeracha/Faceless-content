@@ -27,7 +27,8 @@ export interface BrandKit {
   series: { name: string; format: string; visual_style: string; beats: { id: string; purpose: string }[] };
   /** `review`: what the QA agent review asked to change, when it didn't pass (shown as notes; it doesn't block storefront videos). */
   /** `revisable`: it has a storyboard, so it can be opened again and changed. `versions`: the earlier versions kept from revisions. */
-  episodes: { id: string; title: string; frames: string[]; review: string[]; revisable: boolean; versions: number[] }[];
+  /** `seconds`: its length, from the voice's timings. `date`: when it was last made (YYYY-MM-DD). `caption`: the post text written with it, when there is one. */
+  episodes: { id: string; title: string; frames: string[]; review: string[]; revisable: boolean; versions: number[]; seconds: number | null; date: string; caption: { text: string; hashtags: string[] } | null }[];
 }
 
 const str = (v: unknown): string => (typeof v === "string" ? v : v === undefined || v === null ? "" : String(v));
@@ -89,7 +90,21 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
       const all = existsSync(dir) ? readdirSync(dir).filter((f) => /^[\w.-]+\.jpg$/.test(f)).sort() : [];
       // Three frames spread across the video: near the start, the middle, near the end.
       const frames = all.length <= 3 ? all : [all[1], all[Math.floor(all.length / 2)], all[all.length - 2]];
-      return { id: e.id, title: e.title, frames, review: [...checkNotes(join(episodesDir(channel), e.id, "qa", "automated.json")), ...reviewNotes(join(episodesDir(channel), e.id, "qa-review.json"))], revisable: existsSync(join(episodesDir(channel), e.id, "storyboard.json")), versions: videoVersions(ws, slug, e.id) };
+      const epDir = join(episodesDir(channel), e.id);
+      const timings = join(epDir, "audio", "timings.json");
+      const publish = join(epDir, "publish.json");
+      const post = existsSync(publish) ? readJson<{ description?: unknown; hashtags?: unknown }>(publish) : null;
+      return {
+        id: e.id,
+        title: e.title,
+        frames,
+        review: [...checkNotes(join(epDir, "qa", "automated.json")), ...reviewNotes(join(epDir, "qa-review.json"))],
+        revisable: existsSync(join(epDir, "storyboard.json")),
+        versions: videoVersions(ws, slug, e.id),
+        seconds: existsSync(timings) ? Number(readJson<{ duration: number }>(timings).duration) : null,
+        date: e.updated.slice(0, 10),
+        caption: post && str(post.description) ? { text: str(post.description), hashtags: list(post.hashtags) } : null,
+      };
     });
   return {
     slug,

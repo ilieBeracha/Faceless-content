@@ -404,6 +404,99 @@ form.own{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;width:100%}fo
 .order select{flex:1;min-width:140px;padding:9px 12px}
 code.link,pre.json{font:500 12.5px/1.5 ui-monospace,Menlo,monospace;word-break:break-all;user-select:all;background:var(--soft);padding:10px 12px;border-radius:12px;margin:0;white-space:pre-wrap}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.bar i{transition:none}}
+
+/* the studio: an approved channel and My channels. Light, the videos first, one main action per screen; on a phone a tab bar */
+body.studio{--bg:#f3f2ee;--surface:#fff;--ink:#15141a;--muted:#5c5b63;--line:#e2e0da;--soft:#ecebe6;--accent:var(--act,#15141a);--on-accent:#fff;--on-act:#fff;--pop:#ffcf33;--on-pop:#15141a;--ok:#1f6b45;--warn:#8a4b00;--bad:#9b1c1c;--busy:#1e4fa0;--lift:0 18px 40px -22px rgba(21,20,26,.35);--display:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:light;background:var(--bg);color:var(--ink)}
+.sbar{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+.sbar .in{max-width:1240px;margin:0 auto;padding:10px clamp(16px,3vw,32px);display:flex;align-items:center;gap:12px;min-height:64px}
+.sbar .brand{font:700 18px/1 var(--display)}.sbar .sep{color:var(--line);font-size:20px}.sbar .grow,.hd .grow,.hd2 .grow{flex:1}
+.sbar form{display:flex}.sbar .who{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.switch{display:inline-flex;align-items:center;gap:8px;font:600 15px/1.2 var(--body);padding:9px 12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;min-width:0;max-width:260px}
+.switch span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.switch svg{width:14px;height:14px;flex:none}
+.stab{display:flex;gap:4px;margin-left:6px}
+.stab a{font:500 15px/1 var(--body);padding:11px 14px;border-radius:10px;text-decoration:none;color:var(--muted);white-space:nowrap}
+.stab a:hover{color:var(--ink);background:var(--soft)}.stab a[aria-current]{color:var(--ink);background:var(--soft);font-weight:600}
+.act{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15px/1 var(--body);padding:13px 18px;min-height:46px;border-radius:12px;border:0;background:var(--act,#15141a);color:var(--on-act);text-decoration:none;cursor:pointer;white-space:nowrap}
+.act svg{width:16px;height:16px;flex:none}.act:hover{filter:brightness(1.08)}
+.act.dark{background:var(--ink);color:#fff}.act.line{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px #cfcdc6}.act.line:hover{filter:none;background:var(--soft)}
+.act.sm{padding:10px 14px;min-height:40px;font-size:14.5px}.act[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.quiet{font:600 14.5px/1 var(--body);color:var(--muted);background:none;border:0;padding:10px 8px;min-height:40px;cursor:pointer}.quiet:hover{color:var(--ink)}
+.mtabs{display:none}
+.spage{max-width:1240px;margin:0 auto;padding:36px clamp(16px,3vw,32px) 88px;display:flex;flex-direction:column;gap:40px}
+.spage h1{font:700 clamp(30px,4.4vw,46px)/1.05 var(--display);letter-spacing:-.02em}
+.spage h2{font:700 26px/1.1 var(--display);letter-spacing:-.01em}.spage h2.h3,.panel h2{font-size:19px}
+.kicker{font:600 13px/1 var(--body)!important;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sec{display:flex;flex-direction:column;gap:16px}
+.hd,.hd2{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap}.hd2{align-items:center}
+.hd small{font-size:15px;color:var(--muted)}.hd a{font-size:15px;font-weight:600}
+.chead{display:flex;flex-wrap:wrap;align-items:center;gap:18px 20px}
+.chead .cover{width:84px;height:84px;border-radius:22px;object-fit:cover;flex:none;background:var(--soft)}
+.chead>div:not(.tags){flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:6px}.chead p{color:var(--muted);font-size:17px;max-width:62ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--body);padding:7px 11px;border-radius:99px;background:var(--surface);color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);white-space:nowrap}
+.tag i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.tag.ok{background:#e3f1e8;color:var(--ok);box-shadow:none}.tag.warn{background:#fbebd3;color:var(--warn);box-shadow:none}.tag.busy{background:#e4ecfa;color:var(--busy);box-shadow:none}.tag.bad{background:#f7e1e1;color:var(--bad);box-shadow:none}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;min-width:0}.panel>*{max-width:100%}.panel .hd2{align-self:stretch}
+.panel form.own,.icard form.own{align-items:flex-end}
+.needs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.need{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+.need>div{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.need b{font-size:17px;line-height:1.3}.need p{font-size:14.5px;color:var(--muted)}.need form{display:flex}.need .why{margin:0}
+.need .what-k{font:600 13.5px/1.2 var(--body)}.need.warn .what-k{color:var(--warn)}.need.busy .what-k{color:var(--busy)}.need.bad .what-k{color:var(--bad)}
+.need.wait .bar{align-self:stretch;width:auto}.need.wait .bar i{background:var(--busy)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:24px 20px}
+.vt{display:flex;flex-direction:column;gap:8px;text-decoration:none;min-width:0}
+.vt .pic{position:relative;display:block;border-radius:16px;overflow:hidden;background:#15141a;aspect-ratio:9/16}
+.vt .pic img,.vt .pic video{width:100%;height:100%;object-fit:cover;display:block}
+.vt .pic .tag{position:absolute;left:10px;top:10px}
+.vt .len{position:absolute;right:10px;bottom:10px;font:600 12px/1 var(--body);padding:5px 8px;border-radius:8px;background:rgba(21,20,26,.85);color:#fff}
+.vt b{font-size:16px;line-height:1.3}.vt small{font-size:14px;color:var(--muted);margin-top:-4px}.vt:hover b{text-decoration:underline}
+.vt.add .pic{background:none;border:2px dashed #cfcdc6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-weight:600}.vt.add svg{width:28px;height:28px}
+.icards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:14px}
+.icard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.icard>div:first-child{flex:1}.icard b{display:block;font-size:17px;line-height:1.3}.icard small{display:block;font-size:14.5px;color:var(--muted);line-height:1.5;margin-top:4px}
+.icard .do{display:flex;gap:4px;align-items:center}.icard .do form{display:flex}
+.icard.ask{background:var(--ink);color:#fff;border:0}.icard.ask label.f small,.icard.ask p{color:#c9c8cf}
+.icard.ask input[type=text]{background:#24232a;color:#fff;border-color:#3a3940}.icard.ask .act{background:#fff;color:var(--ink)}
+.back{display:inline-flex;align-items:center;gap:6px;font:600 15px/1 var(--body);text-decoration:none;color:var(--muted);align-self:flex-start;min-height:40px;margin-bottom:-20px}.back svg{width:18px;height:18px}
+.vpage{display:flex;flex-wrap:wrap;gap:40px 48px;align-items:flex-start}
+.vpage .player{flex:0 1 380px;min-width:260px;display:flex;flex-direction:column;gap:10px}
+.vpage video{width:100%;aspect-ratio:9/16;border-radius:22px;background:#000;display:block}.vpage .player small{text-align:center;color:var(--muted);font-size:14px}
+.vpage .side2{flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:26px}.vpage .side2>.sec{align-items:flex-start}
+.row2{display:flex;flex-wrap:wrap;gap:10px}
+.cap{align-self:stretch}.cap p{font-size:16px;line-height:1.55}.cap .hash{color:var(--busy);font-size:15px}
+.tips2{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;align-self:stretch}
+.tip{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:13px 15px;font-size:15px;line-height:1.5}.tip svg{width:19px;height:19px;flex:none;margin-top:2px;color:var(--warn)}
+details.more2{align-self:stretch}details.more2>summary{cursor:pointer;font:600 15px/1 var(--body);padding:10px 0;text-decoration:underline;text-underline-offset:3px}details.more2[open]>summary{margin-bottom:8px}
+.change{border-top:1px solid var(--line);padding-top:24px}
+.look{display:flex;flex-wrap:wrap;gap:32px 44px;align-items:flex-start}
+.look .prev{flex:0 1 300px;min-width:220px;border-radius:28px;overflow:hidden;border:8px solid var(--ink);background:#000;aspect-ratio:9/16;position:sticky;top:96px}
+.look .prev img,.look .prev video{width:100%;height:100%;object-fit:cover;display:block}
+.look .cols{flex:1 1 480px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.big-name{font:700 22px/1.2 var(--display)}
+.sws{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px;align-self:stretch}.sws div{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}.sws i{display:block;height:44px;border-radius:10px;box-shadow:inset 0 0 0 1px var(--line)}
+.chgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:18px}
+.ch{background:var(--surface);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;min-width:0}
+.ch .strip3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;background:var(--line);aspect-ratio:27/13}
+.ch .strip3 img{width:100%;height:100%;object-fit:cover;display:block}.ch .strip3 span{background:var(--soft)}
+.ch .empty{aspect-ratio:27/13;background:var(--soft);display:grid;place-items:center;color:var(--muted);font-size:14px}
+.ch .info{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px}
+.ch .t{display:flex;align-items:center;gap:8px}.ch .t b{flex:1;font-size:18px;line-height:1.25;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ch small{font-size:14px;color:var(--muted)}.ch:hover b{text-decoration:underline}
+body.studio .fl{margin:0 auto}body.studio .fl h1{font-size:clamp(30px,5vw,44px)}
+@media(max-width:760px){
+.stab,.sbar .new,.sbar .sep,.sbar .brand span,.sbar .who{display:none}
+.spage{padding-top:22px;gap:30px}.spage.tabbed{padding-bottom:116px}
+.mtabs{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);justify-content:space-around;align-items:center;padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+.mtabs a{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:58px;padding:4px;font:500 11px/1.2 var(--body);text-decoration:none;color:var(--muted)}
+.mtabs a[aria-current]{color:var(--ink);font-weight:600}.mtabs svg{width:24px;height:24px}
+.mtabs a.plus{min-width:0;width:56px;height:46px;border-radius:16px;background:var(--act,#15141a);color:var(--on-act);justify-content:center;padding:0}
+.vgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+.vpage{gap:22px}.vpage .player{flex-basis:100%}
+.look .prev{flex-basis:100%;aspect-ratio:16/10;border-width:0;border-radius:18px;position:static}
+.chead .cover{width:56px;height:56px;border-radius:16px}
+.back{margin-bottom:-10px}
+}
 `;
 
 type Page = "home" | "demo" | "create" | "app";
@@ -1014,43 +1107,84 @@ ${finishBar(order, canRevise)}
 </div></div>`;
 }
 
-/** What the channel is doing right now, on its dashboard. `newVideo`: the address of the New video flow. */
-function nowHtml(order: Order, dash: Dashboard, facts: Script | null, made: number, newVideo: string, settings: string): string {
+/** What needs the person on top of the channel's home: a video waiting for them, one under way, one that stopped, a pause. */
+function needsHtml(order: Order, dash: Dashboard, facts: Script | null, at: (v: ConsoleView) => string, boards: boolean): string {
   const v = order.video;
-  const title = (t: string) => `<section class="card" id="now">${t}</section>`;
-  if (v?.state === "facts") return title(`<h2>Your script is ready</h2><p class="muted">Read it and check its facts. Nothing is voiced or drawn until you approve it.</p><a class="btn sm" href="${newVideo}">Open the script</a>`);
-  if (v?.state === "writing") return title(`<h2>A video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "The script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p>`);
-  if (v?.state === "painting") return title(`<h2>Shots are being painted</h2><p class="muted">When they are ready you check them, and the captions, before anything is voiced.</p>`);
-  if (v?.state === "storyboard") return title(`<h2>Your storyboard is ready</h2><p class="muted">Every shot is painted. Look at them, change what you want, then approve to make the video.</p><a class="btn sm" href="${newVideo}">Open the storyboard</a>`);
-  if (v?.state === "making") return title(`<h2>A video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and it appears in Videos by itself.</p>`);
-  if (v?.state === "failed")
-    return title(`<h2>The last video did not finish</h2>${failureHtml(order)}<a href="${newVideo}">Or start a new video</a>`);
-  if (dash.paused) return title(`<h2>The channel is paused</h2><p class="muted">No new videos are made while it is paused.</p><a class="btn sm" href="${settings}">Resume it in Settings</a>`);
-  return title(`<h2>${made ? "Ready for the next video" : "Ready for your first video"}</h2><p class="muted">Pick an idea or give your own topic, and the script is written for you. You check its facts before anything is voiced or drawn.</p><a class="btn sm" href="${newVideo}">New video</a>`);
+  const steps = boards ? 4 : 3;
+  const card = (kind: "warn" | "busy" | "bad", what: string, title: string, text: string, action = "") =>
+    `<div class="need ${kind}${kind === "busy" ? " wait" : ""}"><div><span class="what-k">${what}</span>${title ? `<b>${esc(title)}</b>` : ""}${text}</div>${action}</div>`;
+  const working = (what: string, step: number, text: string) => card("busy", `${what} · step ${step} of ${steps}`, "", `<div class="bar"><i></i></div><p>${text}</p>`);
+  let cards = "";
+  let yours = false;
+  if (v?.state === "facts") {
+    yours = true;
+    cards = card("warn", "Check the facts", facts?.title ?? "", `<p>Nothing is voiced or drawn until you say the facts are right.</p>`, `<a class="act dark sm" href="${at("new")}">Check the facts</a>`);
+  } else if (v?.state === "storyboard") {
+    yours = true;
+    cards = card("warn", "Check the pictures", "", `<p>Every shot is painted. Change what you want, then make the video.</p>`, `<a class="act dark sm" href="${at("new")}">Check the pictures</a>`);
+  } else if (v?.state === "writing") cards = working("Writing the script", 2, `${v.rounds ? "It is being written again with your change." : "This takes several minutes."} You check its facts next.`);
+  else if (v?.state === "painting") cards = working("Painting the pictures", 3, "This takes a minute or two. You check them next.");
+  else if (v?.state === "making") cards = working("Making the video", steps, "Voicing, animating and checking it. It appears in Videos by itself.");
+  else if (v?.state === "failed") {
+    yours = true;
+    cards = card("bad", "The last video did not finish", "", failureHtml(order));
+  }
+  if (dash.paused) {
+    yours = true;
+    cards += card("warn", "The channel is paused", "", `<p>No new videos are made while it is paused. Nothing is lost.</p>`, `<form method="post" action="/w/${esc(order.token)}/channel"><input type="hidden" name="status" value="active"><button type="submit" class="act dark sm">Resume the channel</button></form>`);
+  }
+  return cards ? `<section class="sec" aria-labelledby="needs"><h2 id="needs" class="kicker">${yours ? "Needs you" : "Under way"}</h2><div class="needs">${cards}</div></section>` : "";
 }
 
-export type ConsoleView = "overview" | "new" | "videos" | "ideas" | "settings";
-export const CONSOLE_VIEWS: readonly ConsoleView[] = ["overview", "new", "videos", "ideas", "settings"];
-/** The areas in the console's menu ("new" is the button above them). */
-const RAIL_VIEWS = ["overview", "videos", "ideas", "settings"] as const;
+export type ConsoleView = "overview" | "new" | "videos" | "video" | "ideas" | "settings";
+export const CONSOLE_VIEWS: readonly ConsoleView[] = ["overview", "new", "videos", "video", "ideas", "settings"];
 
-const RAIL_ICONS: Record<(typeof RAIL_VIEWS)[number], string> = {
-  overview: `<path d="M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-3H4zM14 7h6V4h-6z"/>`,
-  videos: `<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/>`,
+const icon = (d: string) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const PLUS = icon(`<path d="M12 5v14M5 12h14"/>`);
+const TAB_ICONS = {
+  videos: `<rect x="5" y="3" width="14" height="18" rx="3"/><path d="m10 9 5 3-5 3z"/>`,
   ideas: `<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.8.6 1.1 1.4 1.1 2.2h5c0-.8.3-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>`,
-  settings: `<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>`,
+  look: `<circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><path d="M12 22a10 10 0 1 1 10-10c0 2.5-2 3-4 3h-2a2 2 0 0 0-1 3.7A2 2 0 0 1 12 22z"/>`,
+  channels: `<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>`,
 };
+
+function luminance(hex: string): number {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** The channel's main button colour: its primary colour when white lettering reads on it (4.5:1), otherwise ink. */
+function actColour(kit: BrandKit): string {
+  const hex = kit.colours.find((c) => c.name === "Primary")?.hex ?? "";
+  if (!/^#[0-9a-f]{6}$/i.test(hex)) return "#15141a";
+  return 1.05 / (luminance(hex) + 0.05) >= 4.5 ? hex : "#15141a";
+}
+
+/** A finished video's picture for its tile: a frame from the middle, or the video itself when no frames were kept. */
+function thumb(base: string, e: BrandKit["episodes"][number]): string {
+  return e.frames.length
+    ? `<img src="${base}/frame/${esc(e.id)}/${esc(e.frames[Math.min(1, e.frames.length - 1)])}" alt="" loading="lazy">`
+    : `<video muted playsinline preload="metadata" src="${base}/video/${esc(e.id)}#t=1"></video>`;
+}
+
+/** 0:36 */
+function clock(seconds: number): string {
+  const s = Math.round(seconds);
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+}
+
+/** Nov 21 */
+function day(date: string): string {
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+}
 
 /** A link to where an idea's fact can be checked; the address as plain text when it is not an https web address. */
 function factSource(source: string): string {
   if (!/^https:\/\/\S+$/.test(source) || !URL.canParse(source)) return `<span class="src">Source: ${esc(source)}</span>`;
   return `<a class="src" href="${esc(source)}" target="_blank" rel="noopener noreferrer nofollow">Check it at ${esc(new URL(source).hostname.replace(/^www\./, ""))}</a>`;
-}
-
-/** The QA review's notes on a finished video: shown, not blocking. */
-function reviewHtml(notes: string[]): string {
-  if (!notes.length) return "";
-  return `<details class="review"><summary>Review notes (${notes.length})</summary><p class="muted">Our automatic review would change these. The video is finished; they are for the next one.</p><ul>${notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></details>`;
 }
 
 /** An idea's title, angle and the fact it turns on, with where to check that fact. */
@@ -1062,45 +1196,47 @@ function ideaBody(i: Idea): string {
 }
 
 /**
- * An approved channel's own app, like a project in a cloud console: a bar with the channel's name and state,
- * a menu of its areas, and one area at a time. The order (brief, payment, kit review) is behind it now.
+ * An approved channel's own studio: its videos first, what needs the person on top, one main action.
+ * A bar with the channel and its three areas (Videos, Ideas, Look & voice); on a phone they move to a tab bar at the bottom.
+ * `episode`: the finished video the "video" view shows (the server checks it exists).
  */
-function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboard, facts: Script | null, view: ConsoleView, pick: boolean): string {
+function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboard, facts: Script | null, view: ConsoleView, pick: boolean, episode: string | null): string {
   const base = `/w/${esc(order.token)}`;
   const at = (v: ConsoleView) => (v === "overview" ? base : `${base}?view=${v}`);
+  const watch = (id: string) => `${base}?view=video&amp;e=${esc(id)}`;
   const busy = videoUnderWay(order);
   const made = kit.episodes.length;
   // Why a video can't be started now, if it can't.
   const blocked = busy ? "A video is under way" : dash.paused ? "The channel is paused" : dash.videosLeftToday === 0 ? "No more videos today" : "";
-  const blockedWhy = busy ? "Start the next video when this one is finished." : dash.paused ? "Resume the channel under Settings to make videos." : "You can start more tomorrow.";
+  const blockedWhy = busy ? "Start the next video when this one is finished." : dash.paused ? "Resume the channel under Look & voice to make videos." : "You can start more tomorrow.";
   const disabled = blocked ? ` disabled title="${esc(blocked)}"` : "";
   const suggesting = order.suggest?.state === "running";
-  const suggestBtn = (cls: string) =>
-    suggesting
-      ? `<button type="button" class="btn ${cls}" disabled>Writing new ideas…</button>`
-      : dash.suggestsLeftToday
-        ? `<form method="post" action="${base}/suggest"><button type="submit" class="btn ${cls}">Suggest new ideas</button></form>`
-        : `<button type="button" class="btn ${cls}" disabled title="Ask again tomorrow">No more suggestions today</button>`;
-  const makeBtn = (i: Idea) => `<form method="post" action="${base}/make"><input type="hidden" name="idea" value="${esc(i.id)}"><button type="submit" class="btn sm"${disabled}>Make this video</button></form>`;
-  const idea = (i: Idea) => `<li>${ideaBody(i)}${makeBtn(i)}<form method="post" action="${base}/idea"><input type="hidden" name="idea" value="${esc(i.id)}"><button type="submit" class="text">Not for me</button></form></li>`;
+  const boards = dash.hostOnScreen !== null;
+  const makeBtn = (i: Idea) => `<form method="post" action="${base}/make"><input type="hidden" name="idea" value="${esc(i.id)}"><button type="submit" class="act dark sm"${disabled}>Make it</button></form>`;
+  const skipBtn = (i: Idea) => `<form method="post" action="${base}/idea"><input type="hidden" name="idea" value="${esc(i.id)}"><button type="submit" class="quiet">Skip</button></form>`;
+  const ideaCard = (i: Idea) => `<li class="icard">${ideaBody(i)}<div class="do">${makeBtn(i)}${skipBtn(i)}</div></li>`;
   const decide = (draft: string, ideaId: string, d: "keep" | "skip" | "keep-all", label: string, cls: string) =>
     `<form method="post" action="${base}/proposal"><input type="hidden" name="draft" value="${esc(draft)}">${ideaId ? `<input type="hidden" name="idea" value="${esc(ideaId)}">` : ""}<input type="hidden" name="decision" value="${d}"><button type="submit" class="${cls}">${label}</button></form>`;
-  const proposal = (p: Dashboard["proposals"][number]) => `<li>${ideaBody(p.idea)}${decide(p.draft, p.idea.id, "keep", "Keep", "btn sm")}${decide(p.draft, p.idea.id, "skip", "Skip", "text")}</li>`;
-  const tiles = (eps: BrandKit["episodes"]) =>
-    `<div class="vids">${eps.map((e) => `<figure><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}?r=${e.versions.length}"></video><figcaption>${esc(e.title)}</figcaption><a href="${base}/video/${esc(e.id)}?download=1">Download</a>${reviseHtml(e)}${reviewHtml(e.review)}</figure>`).join("")}</div>`;
-  // Change a finished video's captions, on-screen text or shots; the versions it replaced stay to watch.
-  const reviseHtml = (e: BrandKit["episodes"][number]) =>
-    `${e.revisable ? `<form method="post" action="${base}/revise-video"><input type="hidden" name="episode" value="${esc(e.id)}"><button type="submit" class="btn ghost sm"${busy ? ' disabled title="A video is under way"' : ""}>Revise</button></form>` : ""}${e.versions.length ? `<small class="muted">Earlier: ${e.versions.map((n) => `<a href="${base}/video/${esc(e.id)}/v/${n}">v${n}</a>`).join(", ")}</small>` : ""}`;
+  const proposal = (p: Dashboard["proposals"][number]) => `<li class="icard">${ideaBody(p.idea)}<div class="do">${decide(p.draft, p.idea.id, "keep", "Keep", "act dark sm")}${decide(p.draft, p.idea.id, "skip", "Skip", "quiet")}</div></li>`;
+  const askIdeas = (label: string) =>
+    suggesting
+      ? `<p role="status">New ideas${order.suggest?.direction ? ` about “${esc(order.suggest.direction)}”` : ""} are being written for your channel. This takes a minute or two, and they appear here by themselves.</p>`
+      : dash.suggestsLeftToday
+        ? `<form class="own" method="post" action="${base}/suggest"><label class="f" for="direction">${label} <small>Optional: a theme, or leave it empty for ideas across the whole channel.</small><input type="text" id="direction" name="direction" maxlength="${TOPIC_MAX}" placeholder="The deep sea"></label><button type="submit" class="act sm">Suggest ideas</button></form>`
+        : `<p>No more suggestions today. Ask again tomorrow.</p>`;
+  const tile = (e: BrandKit["episodes"][number]) =>
+    `<a class="vt" href="${watch(e.id)}"><span class="pic">${thumb(base, e)}<span class="tag ok">Ready</span>${e.seconds === null ? "" : `<span class="len">${clock(e.seconds)}</span>`}</span><b>${esc(e.title)}</b><small>${esc(day(e.date))}</small></a>`;
   const newest = [...kit.episodes].reverse();
   const blockedNote = blocked && dash.ideas.length ? `<p class="muted" style="font-size:14.5px">${esc(blocked)}: ${esc(blockedWhy.charAt(0).toLowerCase() + blockedWhy.slice(1))}</p>` : "";
 
   let main: string;
+  let title: string;
   // What slides over the page (the flow's sheets), after everything else.
   let sheets = "";
   if (view === "new") {
+    title = "New video";
     const v = order.video;
     // Looks with a painted world stop at their pictures between the script and the video.
-    const boards = dash.hostOnScreen !== null;
     const names = boards ? ["Topic", "Script", "Pictures", "Video"] : ["Topic", "Script", "Video"];
     const flow = (i: number, step: FlowStep): [number, FlowStep] => [i, step];
     const [now, step] = ((): [number, FlowStep] => {
@@ -1115,13 +1251,13 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
     const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
     if (last && !pick) return flow(names.length - 1, readyStep(base, last, dash.ideas[0], `${at("new")}&amp;pick`, busy));
     const failed = v?.state === "failed" ? `<div class="card" role="alert"><h2>The last video did not finish</h2>${failureHtml(order)}</div>` : "";
-    const stop = blocked ? `<div class="card" role="status"><h2>${esc(blocked)}</h2><p class="sub">${esc(blockedWhy)}</p>${dash.paused ? `<a class="line-btn" href="${at("settings")}">Go to Settings</a>` : ""}</div>` : "";
+    const stop = blocked ? `<div class="card" role="status"><h2>${esc(blocked)}</h2><p class="sub">${esc(blockedWhy)}</p>${dash.paused ? `<a class="line-btn" href="${at("settings")}">Go to Look &amp; voice</a>` : ""}</div>` : "";
     const picks = dash.ideas.length
-      ? `<div class="or">or pick one of your ideas</div><div class="picks" role="radiogroup" aria-label="Your ideas">${dash.ideas.map((i) => `<label class="idea-pick"><input type="radio" name="idea" value="${esc(i.id)}" form="make"${blocked ? " disabled" : ""}>${ideaBody(i)}</label>`).join("")}</div><a class="more-ideas" href="${at("ideas")}">Get more ideas</a>`
+      ? `<div class="or">or start from one of your ideas</div><div class="picks" role="radiogroup" aria-label="Your ideas">${dash.ideas.map((i) => `<label class="idea-pick"><input type="radio" name="idea" value="${esc(i.id)}" form="make"${blocked ? " disabled" : ""}>${ideaBody(i)}</label>`).join("")}</div><a class="more-ideas" href="${at("ideas")}">Get more ideas</a>`
       : `<p class="sub">No ideas are waiting. <a href="${at("ideas")}">Get ideas for ${esc(kit.name)}</a></p>`;
     return flow(0, {
       meta: "",
-      head: `<div class="head"><h1>What’s the next video about?</h1><p class="sub">Type your own, or pick an idea.</p></div>`,
+      head: `<div class="head"><h1>What’s this one about?</h1><p class="sub">A myth, a habit, a wild true story: one line is enough. You check the facts it finds before anything is voiced or drawn.</p></div>`,
       body: `${failed}${stop}<form id="make" method="post" action="${base}/make"><label class="own-topic" for="topic">Your own topic<input type="text" id="topic" name="topic" minlength="4" maxlength="${TOPIC_MAX}" placeholder="Why the sea is salty"${blocked ? " disabled" : ""}></label></form>${picks}`,
       bar: `<button type="submit" form="make" class="go"${disabled}>Write the script</button><small>${blocked ? esc(blocked) : `${dash.videosLeftToday} video${dash.videosLeftToday === 1 ? "" : "s"} left today`}</small>`,
       sheets: "",
@@ -1129,68 +1265,81 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
     })();
     main = flowHtml(names, now, step);
     sheets = step.sheets;
-  } else if (view === "videos") {
-    main = `<div class="head"><h1>Videos</h1><a class="btn sm" href="${at("new")}">New video</a></div>${made ? tiles(newest) : `<div class="card"><p class="muted">Your finished videos appear here, ready to download.</p><a class="btn sm" href="${at("new")}">Make your first video</a></div>`}`;
+  } else if (view === "video") {
+    const e = kit.episodes.find((x) => x.id === episode);
+    if (!e) throw new Error(`consolePage: no finished video "${episode}" in ${kit.slug}`);
+    title = e.title;
+    const tip = (svg: string, text: string) => `<li class="tip">${svg}<span>${esc(text)}</span></li>`;
+    const note = (n: string) => tip(icon(`<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.8.6 1.1 1.4 1.1 2.2h5c0-.8.3-1.6 1.1-2.2A6 6 0 0 0 12 3z"/>`), n);
+    const shown = e.review.slice(0, 2);
+    const rest = e.review.slice(2);
+    const copy = e.caption ? [e.caption.text, e.caption.hashtags.join(" ")].filter(Boolean).join("\n\n") : "";
+    const versions = e.versions.length ? `<p class="muted" style="font-size:14.5px">Earlier versions: ${e.versions.map((n) => `<a href="${base}/video/${esc(e.id)}/v/${n}">v${n}</a>`).join(", ")}</p>` : "";
+    main = `<a class="back" href="${at("videos")}">${icon(`<path d="m15 18-6-6 6-6"/>`)}All videos</a>
+<div class="vpage"><div class="player"><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}?r=${e.versions.length}"${e.frames.length ? ` poster="${base}/frame/${esc(e.id)}/${esc(e.frames[0])}"` : ""}></video><small>${e.seconds === null ? "" : `${clock(e.seconds)} · `}vertical 1080 × 1920</small></div>
+<div class="side2">
+<div class="sec" style="gap:10px"><span class="tag ok">Ready to post</span><h1>${esc(e.title)}</h1><p class="muted">Made ${esc(day(e.date))}</p></div>
+<div class="row2"><a class="act" href="${base}/video/${esc(e.id)}?download=1">${icon(`<path d="M12 4v12M6 10l6 6 6-6M5 20h14"/>`)}Download video</a>${copy ? `<button type="button" class="act line" data-copy="${esc(copy)}">Copy caption &amp; hashtags</button>` : ""}</div>
+${e.caption ? `<div class="panel cap"><span class="kicker">Caption</span><p>${esc(e.caption.text)}</p>${e.caption.hashtags.length ? `<p class="hash">${esc(e.caption.hashtags.join(" "))}</p>` : ""}</div>` : ""}
+<div class="sec" style="gap:12px"><h2 class="h3">Before you post</h2><ul class="tips2">${tip(icon(`<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>`), "Turn on the platform’s AI label when you post: YouTube, TikTok and Instagram ask for it on AI-made videos.")}${shown.map(note).join("")}</ul>${rest.length ? `<details class="more2"><summary>Show ${rest.length} more note${rest.length === 1 ? "" : "s"}</summary><ul class="tips2">${rest.map(note).join("")}</ul></details>` : ""}${e.review.length ? `<p class="muted" style="font-size:14px">Notes from our automatic review. The video is finished: they are tips for the next one.</p>` : ""}</div>
+<div class="sec change" style="gap:12px"><h2 class="h3">Change something</h2>${e.revisable ? `<p class="muted">Opens this video’s storyboard: change a line, a picture, the captions or the speed. This version stays until the new one is ready.</p><form method="post" action="${base}/revise-video"><input type="hidden" name="episode" value="${esc(e.id)}"><button type="submit" class="act line"${busy ? ' disabled title="A video is under way"' : ""}>Change something</button></form>` : `<p class="muted">This video was made before storyboards were kept, so it can't be changed. New videos can.</p>`}${versions}</div>
+</div></div>`;
   } else if (view === "ideas") {
-    const suggestState =
-      order.suggest?.state === "running"
-        ? `<p class="muted" role="status">New ideas${order.suggest.direction ? ` about “${esc(order.suggest.direction)}”` : ""} are being written for your channel. This takes a minute or two, and they appear below by themselves.</p>`
-        : order.suggest?.state === "failed"
-          ? `<p class="error" role="alert">The last request for ideas did not finish. Nothing is lost: ask again.</p>`
-          : "";
-    const ask = suggesting
-      ? `<button type="button" class="btn sm" disabled>Writing new ideas…</button>`
-      : dash.suggestsLeftToday
-        ? `<form class="own" method="post" action="${base}/suggest"><label class="f" for="direction">About what? <small>Optional. Leave it empty for ideas across the whole channel.</small><input type="text" id="direction" name="direction" maxlength="${TOPIC_MAX}" placeholder="The deep sea"></label><button type="submit" class="btn sm">Suggest ideas</button></form>`
-        : `<button type="button" class="btn sm" disabled title="Ask again tomorrow">No more suggestions today</button>`;
+    title = "Ideas";
+    const failed = order.suggest?.state === "failed" ? `<p class="error" role="alert">The last request for ideas did not finish. Nothing is lost: ask again.</p>` : "";
     const batches = [...new Set(dash.proposals.map((p) => p.draft))].map((draft) => dash.proposals.filter((p) => p.draft === draft));
     const batch = (ps: Dashboard["proposals"]) =>
-      `<div class="card"><div class="top-line"><h2>Suggested for you</h2>${ps.length > 1 ? decide(ps[0].draft, "", "keep-all", `Keep all ${ps.length}`, "btn ghost sm") : ""}</div><p class="muted">Check each key fact at its source. Kept ideas join your ideas, ready to make. Skipped ones are never made.</p><ul class="ideas">${ps.map(proposal).join("")}</ul></div>`;
-    main = `<div class="head"><h1>Ideas</h1></div>
-<div class="card"><div class="top-line"><h2>Get new ideas</h2><small class="muted">${dash.suggestsLeftToday} of ${SUGGESTS_PER_DAY} left today</small></div>${suggestState}${ask}</div>
+      `<section class="sec"><div class="hd"><h2>Suggested for you</h2><span class="grow"></span>${ps.length > 1 ? decide(ps[0].draft, "", "keep-all", `Keep all ${ps.length}`, "act line sm") : ""}</div><p class="muted">Check each key fact at its source. Kept ideas join your ideas, ready to make. Skipped ones are never made.</p><ul class="icards">${ps.map(proposal).join("")}</ul></section>`;
+    main = `<h1>Ideas</h1>
+<div class="panel"><div class="hd2"><h2>Get new ideas</h2><span class="grow"></span><small class="muted">${dash.suggestsLeftToday} of ${SUGGESTS_PER_DAY} left today</small></div>${failed}${askIdeas("About what?")}</div>
 ${batches.map(batch).join("")}
-<div class="card"><div class="top-line"><h2>Waiting to be made</h2><a href="${at("new")}">New video</a></div>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.map(idea).join("")}</ul>${blockedNote}` : `<p class="muted">No ideas are waiting. Ask for new ones above.</p>`}</div>`;
+<section class="sec"><div class="hd"><h2>Waiting to be made</h2><small>${dash.ideas.length}</small><span class="grow"></span><a href="${at("new")}">Your own topic</a></div>${dash.ideas.length ? `<ul class="icards">${dash.ideas.map(ideaCard).join("")}</ul>${blockedNote}` : `<p class="muted">No ideas are waiting. Ask for new ones above.</p>`}</section>`;
   } else if (view === "settings") {
-    main = `<div class="head"><h1>Settings</h1></div>
-<div class="card"><h2>Channel</h2><p class="display" style="font-size:26px">${esc(kit.name)}</p><p class="muted">${esc(kit.promise)}</p></div>
-<div class="card"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${
+    title = "Look & voice";
+    const latest = kit.episodes.at(-1);
+    const off = busy ? ` disabled title="A video is under way"` : "";
+    const host =
       dash.hostOnScreen === null
         ? ""
-        : `<p class="muted">${dash.hostOnScreen ? "The host appears in the shots that call for it. Take it off screen and the voice narrates every video on its own." : "The host is off screen: the voice narrates every video. Put it back to have it appear in the shots that call for it."}</p><form method="post" action="${base}/host"><input type="hidden" name="on" value="${dash.hostOnScreen ? "0" : "1"}"><button type="submit" class="btn ghost sm"${busy ? ` disabled title="A video is under way"` : ""}>${dash.hostOnScreen ? "Take the host off screen" : "Put the host on screen"}</button></form>${
+        : `<p class="muted">${dash.hostOnScreen ? "The host appears in the shots that call for it." : "The host is off screen: the voice narrates every video."}</p><form method="post" action="${base}/host"><input type="hidden" name="on" value="${dash.hostOnScreen ? "0" : "1"}"><button type="submit" class="act line sm"${off}>${dash.hostOnScreen ? "Take the host off screen" : "Put the host on screen"}</button></form>${
             dash.hostOnScreen
-              ? `<p class="muted">${dash.hostLead ? "The host is the main character: every part of a new video shows it in at least one shot." : "Optional: make the host the main character, so every part of a new video shows it in at least one shot."} Videos already made stay as they are.</p><form method="post" action="${base}/host"><input type="hidden" name="lead" value="${dash.hostLead ? "0" : "1"}"><button type="submit" class="btn ghost sm"${busy ? ` disabled title="A video is under way"` : ""}>${dash.hostLead ? "Show the host only where a shot calls for it" : "Make the host the main character"}</button></form>`
+              ? `<p class="muted">${dash.hostLead ? "The host is the main character: every part of a new video shows it in at least one shot." : "Optional: make the host the main character, so every part of a new video shows it in at least one shot."} Videos already made stay as they are.</p><form method="post" action="${base}/host"><input type="hidden" name="lead" value="${dash.hostLead ? "0" : "1"}"><button type="submit" class="act line sm"${off}>${dash.hostLead ? "Show the host only where a shot calls for it" : "Make the host the main character"}</button></form>`
               : ""
-          }`
-    }</div>
-<div class="card"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
-<div class="card"><h2>Look</h2>${swatches(kit)}<p class="muted">${esc(kit.series.visual_style)}</p></div>
-<div class="card"><h2>Format</h2><p class="muted">${esc(kit.series.format)}</p></div>
-<div class="card"><h2>${dash.paused ? "Paused" : "Making videos"}</h2><p class="muted">${dash.paused ? "No new videos are made while the channel is paused. Nothing is lost." : "Pausing stops new videos. Nothing is lost, and you can resume at any time."}</p><form method="post" action="${base}/channel"><input type="hidden" name="status" value="${dash.paused ? "active" : "paused"}"><button type="submit" class="btn ${dash.paused ? "" : "ghost "}sm">${dash.paused ? "Resume the channel" : "Pause the channel"}</button></form></div>`;
+          }`;
+    main = `<h1>Look &amp; voice</h1>
+<div class="look">${latest ? `<div class="prev">${thumb(base, latest)}</div>` : ""}<div class="cols">
+<div class="panel"><h2>Name and promise</h2><b class="big-name">${esc(kit.name)}</b><p class="muted">${esc(kit.promise)}</p></div>
+<div class="panel"><h2>Look${order.design?.theme ? `: ${esc(order.design.theme.name)}` : ""}</h2><div class="sws">${kit.colours.map((c) => `<div><i style="background:${esc(c.hex)}"></i>${esc(c.name)}</div>`).join("")}</div></div>
+<div class="panel"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
+<div class="panel"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${host}</div>
+<div class="panel"><h2>Format</h2><p class="muted">${esc(kit.series.format)}</p></div>
+<div class="panel"><h2>${dash.paused ? "Paused" : "Making videos"}</h2><p class="muted">${dash.paused ? "No new videos are made while the channel is paused. Nothing is lost." : "Pausing stops new videos. Nothing is lost, and you can resume at any time."}</p><form method="post" action="${base}/channel"><input type="hidden" name="status" value="${dash.paused ? "active" : "paused"}"><button type="submit" class="act ${dash.paused ? "dark" : "line"} sm">${dash.paused ? "Resume the channel" : "Pause the channel"}</button></form></div>
+</div></div>`;
   } else {
-    main = `<div class="head"><div><p class="eyebrow">Overview</p><h1>${esc(kit.name)}</h1></div><div class="tools"><a class="btn sm" href="${at("new")}">New video</a>${suggestBtn("ghost sm")}</div></div>
-<dl class="stats"><div><dt>Videos made</dt><dd>${made}</dd></div><div><dt>Ideas waiting</dt><dd>${dash.ideas.length}</dd></div><div><dt>Videos left today</dt><dd>${dash.videosLeftToday}</dd></div></dl>
-${nowHtml(order, dash, facts, made, at("new"), at("settings"))}
-<div class="card"><div class="top-line"><h2>Latest videos</h2>${made > 3 ? `<a href="${at("videos")}">All ${made}</a>` : ""}</div>${made ? tiles(newest.slice(0, 3)) : `<p class="muted">Your finished videos appear here.</p>`}</div>
-<div class="card"><div class="top-line"><h2>Up next</h2><a href="${at("ideas")}">All ideas</a></div>${dash.ideas.length ? `<ul class="ideas">${dash.ideas.slice(0, 3).map(idea).join("")}</ul>${blockedNote}` : `<p class="muted">No ideas are waiting.</p>${suggestBtn("sm")}`}</div>`;
+    title = "Videos";
+    const latest = newest[0];
+    const state = dash.paused ? `<span class="tag"><i></i>Paused</span>` : busy ? `<span class="tag busy"><i></i>Making a video</span>` : `<span class="tag ok"><i></i>Active</span>`;
+    const add = blocked ? "" : `<a class="vt add" href="${at("new")}"><span class="pic">${PLUS}New video</span></a>`;
+    main = `<div class="chead">${latest?.frames.length ? `<img class="cover" src="${base}/frame/${esc(latest.id)}/${esc(latest.frames[0])}" alt="">` : ""}<div><h1>${esc(kit.name)}</h1><p>${esc(kit.promise)}</p></div><div class="tags">${state}<span class="tag">${dash.videosLeftToday} left today</span></div></div>
+${needsHtml(order, dash, facts, at, boards)}
+<section class="sec" aria-labelledby="vh"><div class="hd"><h2 id="vh">Videos</h2><small>${made ? `${made} made` : ""}</small></div>${made ? `<div class="vgrid">${newest.map(tile).join("")}${add}</div>` : `<div class="panel"><p class="muted">Your finished videos appear here, ready to download and post.</p>${blocked ? "" : `<a class="act sm" href="${at("new")}">Make your first video</a>`}</div>`}</section>
+<section class="sec" aria-labelledby="ih"><div class="hd"><h2 id="ih">Up next</h2><small>${dash.ideas.length} idea${dash.ideas.length === 1 ? "" : "s"} waiting</small><span class="grow"></span><a href="${at("ideas")}">All ideas</a></div><ul class="icards">${dash.ideas.slice(0, 2).map(ideaCard).join("")}<li class="icard ask">${askIdeas("Want ideas about something?")}</li></ul>${blockedNote}</section>`;
   }
-  const counts: Partial<Record<ConsoleView, number>> = { videos: made, ideas: dash.ideas.length + dash.proposals.length };
-  const names: Record<ConsoleView, string> = { overview: "Overview", new: "New video", videos: "Videos", ideas: "Ideas", settings: "Settings" };
-  const rail = `<nav class="rail" aria-label="${esc(kit.name)}"><a class="create" href="${at("new")}"${view === "new" ? ' aria-current="page"' : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>New video</a>${RAIL_VIEWS.map(
-    (v) =>
-      `<a href="${at(v)}"${v === view ? ' aria-current="page"' : ""}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RAIL_ICONS[v]}</svg>${names[v]}${counts[v] ? `<b>${counts[v]}</b>` : ""}</a>`,
-  ).join("")}</nav>`;
-  const state = dash.paused ? `<span class="state paused"><i></i>Paused</span>` : busy ? `<span class="state busy"><i></i>Working</span>` : `<span class="state"><i></i>Active</span>`;
+  const on = (tab: "videos" | "ideas" | "look") =>
+    (tab === "videos" ? view === "overview" || view === "videos" || view === "video" : tab === "ideas" ? view === "ideas" : view === "settings") ? ' aria-current="page"' : "";
+  const tabIcon = (k: keyof typeof TAB_ICONS) => icon(TAB_ICONS[k]);
+  const top = `<header class="sbar"><div class="in"><a class="brand" href="/"><i></i><span>${esc(product)}</span></a><span class="sep" aria-hidden="true">/</span>${order.user ? `<a class="switch" href="/account" title="Your channels"><span>${esc(kit.name)}</span>${icon(`<path d="m6 9 6 6 6-6"/>`)}</a>` : `<span class="switch"><span>${esc(kit.name)}</span></span>`}<nav class="stab" aria-label="${esc(kit.name)}"><a href="${base}"${on("videos")}>Videos</a><a href="${at("ideas")}"${on("ideas")}>Ideas</a><a href="${at("settings")}"${on("look")}>Look &amp; voice</a></nav><span class="grow"></span>${view === "new" ? `<a class="act line sm" href="${base}">Close</a>` : `<a class="act new" href="${at("new")}">${PLUS}New video</a>`}</div></header>`;
+  const tabs = view === "new" ? "" : `<nav class="mtabs" aria-label="${esc(kit.name)}"><a href="${base}"${on("videos")}>${tabIcon("videos")}Videos</a><a href="${at("ideas")}"${on("ideas")}>${tabIcon("ideas")}Ideas</a><a class="plus" href="${at("new")}" aria-label="New video">${PLUS}</a><a href="${at("settings")}"${on("look")}>${tabIcon("look")}Look</a>${order.user ? `<a href="/account">${tabIcon("channels")}Channels</a>` : ""}</nav>`;
   const waiting = isMakingVideo(order) || suggesting;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(names[view])} — ${esc(kit.name)}</title>${waiting ? `<meta http-equiv="refresh" content="20">` : ""}<style>${CSS}</style></head><body>
-<header class="cbar"><a class="brand" href="/"><i></i><span>${esc(product)}</span></a><span class="sep" aria-hidden="true">/</span><span class="chan">${esc(kit.name)}</span>${state}${order.user ? `<a class="mine" href="/account">My channels</a>` : ""}</header>
-<div class="shell">${rail}<main class="pane">${main}</main></div>
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} — ${esc(kit.name)}</title>${waiting ? `<meta http-equiv="refresh" content="20">` : ""}<style>${CSS}</style>${tag("console")}</head><body class="studio" style="--act:${actColour(kit)}">
+${top}<main class="spage${tabs ? " tabbed" : ""}">${main}</main>${tabs}
 ${sheets}</body></html>`;
 }
 
 /** `canRevise`: change requests are made automatically (automatic builds are on). `facts`: the script whose facts the customer is checking, if any. `dash`: the channel's dashboard, once it has one. */
-export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null, dash: Dashboard | null = null, view: ConsoleView = "overview", pick = false): string {
+export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null, dash: Dashboard | null = null, view: ConsoleView = "overview", pick = false, episode: string | null = null): string {
   // An approved channel built here is its own app from now on.
-  if (kit && dash) return consolePage(product, order, kit, dash, facts, view, pick);
+  if (kit && dash) return consolePage(product, order, kit, dash, facts, view, pick, episode);
   const d = order.design;
   const yours = d && (d.theme || d.model) ? `<div class="yours">${d.theme ? lookSwatch(d.theme) : ""}${d.model && HOST_RIGS[d.model.rig] ? `<img class="vis" src="${esc(hostPreviewUrl(hostFields(d.model)))}" alt="Your host">` : ""}<p class="muted" style="max-width:36ch">The look and host you designed. Your brand kit is built from these.</p></div>` : "";
   const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f] ?? "")}</dd></div>`).join("")}</dl></section>`;
@@ -1229,28 +1378,42 @@ ${body}${brief}`,
   );
 }
 
-/** Everything one account has: the design saved for later, and each channel with where it stands. */
-export function accountPage(product: string, user: User, orders: Order[], kitReady: ReadonlySet<string>, draft: Draft | undefined): string {
+/** Where a channel stands, as one short tag on its card. */
+function channelTag(o: Order, kit: BrandKit | undefined): string {
+  const v = o.video?.state;
+  if (v === "facts" || v === "storyboard") return `<span class="tag warn">Needs you</span>`;
+  if (v === "writing" || v === "painting" || v === "making") return `<span class="tag busy">Making a video</span>`;
+  if (v === "failed") return `<span class="tag bad">Video failed</span>`;
+  if (o.status === "awaiting-payment") return `<span class="tag warn">Payment due</span>`;
+  if (isBuilding(o)) return `<span class="tag busy">Being built</span>`;
+  if (kit && !o.kit_approved) return `<span class="tag warn">Needs you</span>`;
+  if (kit?.episodes.length) return `<span class="tag ok">${kit.episodes.length} ready</span>`;
+  return `<span class="tag">${esc(STATUS_TEXT[o.status])}</span>`;
+}
+
+/** Everything one account has: the design saved for later, and each channel as a card. `kits`: each order's channel, once it is built. */
+export function accountPage(product: string, user: User, orders: Order[], kits: ReadonlyMap<string, BrandKit>, draft: Draft | undefined): string {
   const saved = draft
-    ? `<section class="notice"><h2>Your saved design</h2><p class="muted">${draft.form.idea ? esc(draft.form.idea) : "Not described yet."} Saved ${esc(draft.saved.slice(0, 10))}.</p><a class="btn" href="/create">Continue designing</a></section>`
+    ? `<div class="panel"><h2>Your saved design</h2><p class="muted">${draft.form.idea ? esc(draft.form.idea) : "Not described yet."} Saved ${esc(draft.saved.slice(0, 10))}.</p><a class="act sm" href="/create">Continue designing</a></div>`
     : "";
-  const cards = orders
-    .slice()
-    .reverse()
-    .map(
-      (o) =>
-        `<article class="notice"><div class="row"><h3>${esc(o.intake.idea)}</h3><span class="pill">${esc(STATUS_TEXT[o.status])}</span></div><p class="muted" style="font-size:14.5px">Order ${esc(o.id)} · sent ${esc(o.created.slice(0, 10))}</p>${track(o, kitReady.has(o.id))}<a class="btn sm" href="/w/${esc(o.token)}">Open workspace</a></article>`,
-    )
-    .join("");
-  return layout(
-    product,
-    `My channels — ${product}`,
-    "app",
-    `<section><div class="row"><p class="eyebrow">Signed in as ${esc(user.email)}</p><form method="post" action="/signout"><button type="submit" class="btn sm ghost">Sign out</button></form></div>
-<h1>My channels</h1></section>
-${saved}
-<section>${cards || (draft ? "" : `<p class="muted">Nothing here yet. Design your first channel and it shows up on this page.</p>`)}<div><a class="btn accent" href="/create?new">Design a new channel</a></div></section>`,
-  );
+  const card = (o: Order) => {
+    const kit = kits.get(o.id);
+    const base = `/w/${esc(o.token)}`;
+    const shown = kit ? [...kit.episodes].reverse().filter((e) => e.frames.length).slice(0, 3) : [];
+    const cover = shown.length
+      ? `<span class="strip3">${shown.map((e) => `<img src="${base}/frame/${esc(e.id)}/${esc(e.frames[Math.min(1, e.frames.length - 1)])}" alt="" loading="lazy">`).join("")}${"<span></span>".repeat(3 - shown.length)}</span>`
+      : `<span class="empty">No video yet</span>`;
+    // Until the kit is built the channel has no name, so the first words of its brief stand in.
+    const name = kit?.name ?? o.intake.idea.split(/[.:!?\n]/)[0].slice(0, 60);
+    const n = kit?.episodes.length ?? 0;
+    const sub = [o.design?.theme ? `${o.design.theme.name} look` : "", kit ? `${n} video${n === 1 ? "" : "s"}` : `Sent ${day(o.created.slice(0, 10))}`].filter(Boolean).join(" · ");
+    return `<a class="ch" href="${base}">${cover}<span class="info"><span class="t"><b>${esc(name)}</b>${channelTag(o, kit)}</span><small>${esc(sub)}</small></span></a>`;
+  };
+  const cards = orders.slice().reverse().map(card).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My channels — ${esc(product)}</title><style>${CSS}</style></head><body class="studio">
+<header class="sbar"><div class="in"><a class="brand" href="/"><i></i><span>${esc(product)}</span></a><span class="grow"></span><span class="who">${esc(user.email)}</span><form method="post" action="/signout"><button type="submit" class="act line sm">Sign out</button></form></div></header>
+<main class="spage"><div class="hd2"><h1>Your channels</h1><span class="grow"></span><a class="act dark" href="/create?new">${PLUS}Design a channel</a></div>
+${saved}${cards ? `<div class="chgrid">${cards}</div>` : draft ? "" : `<p class="muted">Nothing here yet. Design your first channel and it shows up on this page.</p>`}</main></body></html>`;
 }
 
 export function adminPage(product: string, orders: Order[], channels: string[], publicBase: string, autoBuild: boolean): string {

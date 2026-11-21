@@ -449,7 +449,7 @@ describe("storefront: sign-in and accounts", () => {
     assert.equal(back.headers.get("location"), "/account");
     assert.ok(b.flags.every((c) => /; HttpOnly; SameSite=Lax;/.test(c)), "every cookie is hidden from scripts and kept to this site");
     const mine = await (await b.go("/account")).text();
-    assert.match(mine, /Signed in as sam@example\.com/);
+    assert.match(mine, /sam@example\.com[\s\S]*Sign out/);
     assert.match(mine, /Nothing here yet/);
     assert.match(await (await b.go("/")).text(), /href="\/account"><span class="long">My channels</);
     const session = b.jar.get("sid")!;
@@ -819,8 +819,8 @@ describe("storefront: automatic builds", () => {
       hold = new Promise<void>((r) => (release = r));
       assert.equal((await fetch(`${base}${link}/approve`, form({}))).status, 303);
       const writing = await page();
-      assert.match(writing, /A video is being written/);
-      assert.match(writing, /class="state busy"><i><\/i>Working/);
+      assert.match(writing, /Under way[\s\S]*Writing the script · step 2 of/);
+      assert.match(writing, /class="tag busy"><i><\/i>Making a video/);
       assert.match(writing, /http-equiv="refresh"/);
       const channel = loadChannel(built, id).doc.data;
       assert.deepEqual([channel.status, channel.approved_by], ["active", "Sam Example"], "the customer's approval of the kit makes the channel active");
@@ -829,10 +829,10 @@ describe("storefront: automatic builds", () => {
 
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.episode], ["facts", EPISODE]);
       const checking = await page();
-      assert.match(checking, /Your script is ready[\s\S]*Open the script/);
+      assert.match(checking, /Needs you[\s\S]*Check the facts[\s\S]*href="[^"]*view=new">Check the facts/);
       const step = async () => (await fetch(`${base}${link}?view=new`)).text();
       assert.match(await step(), /<span class="n">1<\/span>[\s\S]*On screen: Why no leaks\?[\s\S]*<span class="n">2<\/span>[\s\S]*A tiny ball sits in the tip[\s\S]*class="proof">A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*name="line" value="2"[\s\S]*Simpler words[\s\S]*Rewrite this line[\s\S]*Looks right · make the video[\s\S]*Rewrite 1 of 3/);
-      assert.match(checking, /class="state busy"><i><\/i>Working/, "a video waiting for its facts is still under way");
+      assert.match(checking, /class="tag busy"><i><\/i>Making a video/, "a video waiting for its facts is still under way");
       assert.doesNotMatch(checking, /http-equiv="refresh"|<video/);
       assert.equal(existsSync(videoPath(built, id, EPISODE)), false, "nothing is made before the facts are approved");
 
@@ -853,8 +853,11 @@ describe("storefront: automatic builds", () => {
       const check = readFactcheck(dir);
       assert.deepEqual([check?.status, check?.approvedBy], ["approved", "Sam Example"]);
       const done = await page();
-      assert.match(done, new RegExp(`Latest videos[\\s\\S]*<video[^>]*/video/${EPISODE}`));
-      assert.match(done, /class="state"><i><\/i>Active/);
+      assert.match(done, new RegExp(`Videos[\\s\\S]*class="vt" href="[^"]*view=video&amp;e=${EPISODE}"`));
+      const watch = await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text();
+      assert.match(watch, new RegExp(`<video controls[^>]*/video/${EPISODE}[\\s\\S]*Download video[\\s\\S]*Before you post[\\s\\S]*AI label`));
+      assert.equal((await fetch(`${base}${link}?view=video&e=no-such-video`)).status, 404, "only this channel’s finished videos have a page");
+      assert.match(done, /class="tag ok"><i><\/i>Active/);
       assert.doesNotMatch(done, /Check the facts|http-equiv="refresh"/);
       assert.equal(await (await fetch(`${base}${link}/video/${EPISODE}`)).text(), "0123456789");
       assert.equal((await facts({ decision: "approve" })).status, 409);
@@ -931,8 +934,8 @@ describe("storefront: automatic builds", () => {
 
       // The approved channel is its own app now: no order greeting, steps, brief or privacy note.
       const home = await page();
-      assert.match(home, /class="cbar"[\s\S]*Active[\s\S]*class="rail"[\s\S]*Overview[\s\S]*Videos[\s\S]*Ideas[\s\S]*Settings/);
-      assert.match(home, /New video[\s\S]*Suggest new ideas[\s\S]*Ready for the next video[\s\S]*Latest videos[\s\S]*<video[\s\S]*Up next[\s\S]*A zipper[\s\S]*Make this video/);
+      assert.match(home, /class="sbar"[\s\S]*>Videos<[\s\S]*>Ideas<[\s\S]*Look &amp; voice<[\s\S]*New video[\s\S]*class="tag ok"><i><\/i>Active[\s\S]*class="mtabs"/);
+      assert.match(home, /Videos[\s\S]*1 made[\s\S]*class="vt" href=[\s\S]*class="vt add"[\s\S]*Up next[\s\S]*A zipper[\s\S]*>Make it<[\s\S]*Suggest ideas/);
       assert.doesNotMatch(home, /Hello,|class="track"|Your brief|private to you|In production/);
       assert.match(await page("settings"), /Pause the channel/);
       assert.equal((await fetch(`${base}${link}?view=nope`)).status, 404);
@@ -945,15 +948,15 @@ describe("storefront: automatic builds", () => {
       assert.match(await page("new"), /<li class="done">Topic<\/li><li aria-current="step">Script<\/li><li>Video<\/li>[\s\S]*<span class="n">1<\/span>[\s\S]*class="proof">[\s\S]*Looks right · make the video[\s\S]*Rewrite 1 of 3/);
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.idea, store.byId(id)?.video?.episode], ["facts", "a-zipper", "2026-01-02-a-zipper"]);
       const checking = await page();
-      assert.match(checking, /Your script is ready[\s\S]*Open the script/);
-      assert.match(checking, /disabled title="A video is under way">Make this video/);
+      assert.match(checking, /Needs you[\s\S]*Check the facts[\s\S]*href="[^"]*view=new">Check the facts/);
+      assert.match(checking, /disabled title="A video is under way">Make it/);
       assert.match((await (await post("make", { idea: "a-ballpoint-pen" })).text()), /already under way/);
       assert.equal((await post("facts", { decision: "approve" })).headers.get("location"), `${link}?view=new`);
       await builder.idle();
       assert.equal(store.byId(id)?.video?.state, "done");
       assert.match(await page("new"), /Your new video is ready[\s\S]*<video[\s\S]*Download the video[\s\S]*Pick a new topic[\s\S]*1 tip for the next video[\s\S]*Move the caption above the &lt;label&gt;[\s\S]*Up next[\s\S]*Make it next/);
-      assert.match(await page("new&pick"), /What’s the next video about\?[\s\S]*name="topic"[\s\S]*pick one of your ideas[\s\S]*type="radio" name="idea" value="a-ballpoint-pen" form="make"[\s\S]*form="make" class="go">Write the script/);
-      assert.equal((await page("videos")).match(/<video /g)?.length, 2, "both videos are in Videos");
+      assert.match(await page("new&pick"), /What’s this one about\?[\s\S]*name="topic"[\s\S]*start from one of your ideas[\s\S]*type="radio" name="idea" value="a-ballpoint-pen" form="make"[\s\S]*form="make" class="go">Write the script/);
+      assert.equal((await page("videos")).match(/class="vt" /g)?.length, 2, "both videos are in Videos");
 
       // Not wanted: the idea is marked rejected, never deleted.
       assert.equal((await post("idea", { idea: "a-ballpoint-pen" })).status, 303);
@@ -978,7 +981,7 @@ describe("storefront: automatic builds", () => {
       assert.doesNotMatch(after, /Why a zip never slips 1/);
       assert.match(readText(built.path(draft)), /## zips-1[\s\S]*?status: rejected/);
       assert.match(readText(loadChannel(built, id).ideasPath), /## glass-bottles-1[\s\S]*?fact: Glass is mostly sand[\s\S]*?fact_source: https:\/\/www\.britannica\.com/, "a kept idea keeps its fact");
-      assert.match(await page("new&pick"), /pick one of your ideas[\s\S]*How a glass bottle is blown 1[\s\S]*Key fact/);
+      assert.match(await page("new&pick"), /start from one of your ideas[\s\S]*How a glass bottle is blown 1[\s\S]*Key fact/);
       await post("suggest", {});
       await builder.idle();
       assert.equal((await post("proposal", { draft: `drafts/${id}/ideas/2026-01-02-batch.md`, decision: "keep-all" })).status, 303);
@@ -991,7 +994,7 @@ describe("storefront: automatic builds", () => {
       // Paused: no new videos until it is resumed.
       assert.equal((await post("channel", { status: "paused" })).status, 303);
       assert.equal(loadChannel(built, id).doc.data.status, "paused");
-      assert.match(await page(), /class="state paused"[\s\S]*The channel is paused[\s\S]*Resume it in Settings/);
+      assert.match(await page(), /class="tag"><i><\/i>Paused[\s\S]*The channel is paused[\s\S]*Resume the channel/);
       assert.match(await page("settings"), /Resume the channel/);
       assert.match(await (await post("make", { topic: " ", idea: "" })).text(), /Type a topic or pick one of your ideas/);
       assert.match(await (await post("make", { topic: "", idea: "glass-bottles-1" })).text(), /channel is paused/, "with no topic typed, the picked idea is made");
@@ -1043,7 +1046,7 @@ describe("storefront: automatic builds", () => {
       assert.match(board, /<li class="done">Topic<\/li><li class="done">Script<\/li><li aria-current="step">Pictures<\/li><li>Video<\/li>/);
       assert.match(board, /\d pictures<\/h1>[\s\S]*id="t-hook-1" href="#s-hook-1"[\s\S]*\/shot\/hook-1\?v=[0-9a-f]{12}[\s\S]*id="s-hook-1"[\s\S]*Shot 1 of [\s\S]*Why doesn&#39;t your pen leak\?[\s\S]*name="repaint" value="1"[\s\S]*name="host_1" checked[\s\S]*id="s-explain-1"[\s\S]*Cuts in on the word[\s\S]*Voice speed[\s\S]*value="normal" aria-pressed="true"[\s\S]*Captions[\s\S]*Make the video[\s\S]*id="captions"/);
       assert.match(board, /10 repaints left/);
-      assert.match(await page(), /Your storyboard is ready[\s\S]*Open the storyboard/);
+      assert.match(await page(), /Needs you[\s\S]*Check the pictures[\s\S]*href="[^"]*view=new">Check the pictures/);
       const picture = await fetch(`${base}${link}/shot/hook-1`);
       assert.deepEqual([picture.status, picture.headers.get("content-type"), await picture.text()], [200, "image/jpeg", "The host stares at a giant pen dripping blue ink | host: true"]);
       assert.equal((await fetch(`${base}${link}/shot/../../orders`)).status, 404);
@@ -1109,14 +1112,14 @@ describe("storefront: automatic builds", () => {
       // A finished video can be opened again at its storyboard. Left as it is, nothing is made and no version is kept.
       const now = () => [store.byId(id)?.video?.state, store.byId(id)?.video?.revising];
       const used = store.byId(id)!.video!.repaints;
-      assert.match(await page("videos"), /\/revise-video"><input type="hidden" name="episode" value="2026-01-01-first"><button type="submit" class="btn ghost sm">Revise/);
+      assert.match(await (await fetch(`${base}${link}?view=video&e=2026-01-01-first`)).text(), /\/revise-video"><input type="hidden" name="episode" value="2026-01-01-first"><button type="submit" class="act line">Change something/);
       assert.match(await (await post("revise-video", { episode: "2026-01-09-not-made" })).text(), /That video is not available/);
       assert.equal((await post("revise-video", { episode: EPISODE })).status, 303);
       assert.deepEqual(now(), ["storyboard", true]);
       assert.equal(store.byId(id)?.video?.repaints, used, "repaints are counted per video, across its revisions");
       assert.ok(readJson<{ repaints: number }>(join(dir, "repaints.json")).repaints > 0, "the video's repaints are recorded with it");
       assert.match(await page("new"), /is finished\. Change a picture[\s\S]*Nothing is changed yet\.[\s\S]*kept as an earlier version[\s\S]*Leave it as it is/);
-      assert.match(await page("videos"), /class="btn ghost sm" disabled title="A video is under way">Revise/);
+      assert.match(await (await fetch(`${base}${link}?view=video&e=2026-01-01-first`)).text(), /class="act line" disabled title="A video is under way">Change something/);
       const runs = made.length;
       assert.equal((await post("storyboard/cancel", {})).status, 303);
       assert.deepEqual(now(), ["done", undefined]);
@@ -1132,12 +1135,12 @@ describe("storefront: automatic builds", () => {
       assert.deepEqual(now(), ["done", undefined]);
       assert.deepEqual(readStoryboard(dir)?.captions, { show: true, size: "small", place: "bottom", case: "normal", hide_beats: [] });
       assert.deepEqual(videoVersions(built, id, EPISODE), [1]);
-      assert.match(await page("videos"), /video\/2026-01-01-first\?r=1"[\s\S]*Earlier: <a href="[^"]+\/video\/2026-01-01-first\/v\/1">v1<\/a>/);
+      assert.match(await (await fetch(`${base}${link}?view=video&e=2026-01-01-first`)).text(), /video\/2026-01-01-first\?r=1"[\s\S]*Earlier versions: <a href="[^"]+\/video\/2026-01-01-first\/v\/1">v1<\/a>/);
       assert.equal((await fetch(`${base}${link}/video/${EPISODE}/v/1`)).status, 200);
       assert.equal((await fetch(`${base}${link}/video/${EPISODE}/v/2`)).status, 404);
 
       // Settings: the channel's caption defaults, and the host off screen (then no shot may show it) and back.
-      assert.match(await page("settings"), /Take the host off screen[\s\S]*Save caption settings/);
+      assert.match(await page("settings"), /Save caption settings[\s\S]*Take the host off screen/);
       assert.equal((await post("captions", { case: "normal", size: "small", place: "bottom" })).status, 303);
       assert.deepEqual(store.byId(id)?.captions, { show: false, size: "small", place: "bottom", case: "normal", hide_beats: [] });
       assert.equal((await post("host", { on: "0" })).status, 303);
@@ -1167,12 +1170,12 @@ describe("storefront: automatic builds", () => {
 
       // A quality check the finished video missed (how fast the hook lands) is a note on it, shown before the review's.
       writeJson(join(dir, "qa", "automated.json"), { checks: [{ id: "format", label: "Format", pass: true, detail: "1080×1920" }, { id: "hook-line", label: "Hook: first line lands in 2 s", pass: false, detail: '"Rotten grapes, great wine." ends at 2.34s (limit 2s)' }] });
-      assert.match(await page("videos"), /Review notes \(\d+\)[\s\S]*Hook: first line lands in 2 s: &quot;Rotten grapes, great wine\.&quot; ends at 2\.34s \(limit 2s\)/);
+      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /Before you post[\s\S]*Hook: first line lands in 2 s: &quot;Rotten grapes, great wine\.&quot; ends at 2\.34s \(limit 2s\)/);
       rmSync(join(dir, "qa", "automated.json"));
 
       // The review's reading of banned topics is a note on the finished video (first), not a reason to stop it.
       writeJson(join(dir, "qa-review.json"), { render_hash: "x", tone: { pass: true, notes: "" }, banned_topics: { pass: false, notes: "A glass poured until it spills reads as excess." }, visuals: { pass: true, notes: "" }, character: { pass: true, notes: "" }, overall: "fail", fixes: ["Show a modest pour."], learnings: [] });
-      assert.match(await page("videos"), /Review notes \(2\)[\s\S]*Banned topics: A glass poured until it spills reads as excess\.[\s\S]*Show a modest pour\./);
+      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /Before you post[\s\S]*Banned topics: A glass poured until it spills reads as excess\.[\s\S]*Show a modest pour\./);
 
       // Videos that failed made nothing, so they don't use up the day; finished ones do.
       const today = (n: number, status: "in-progress" | "done") =>
