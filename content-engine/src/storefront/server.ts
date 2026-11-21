@@ -275,7 +275,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
           const dash = o.builder && slug && order.kit_approved && channelExists(o.builder.ws, slug) ? o.builder.dashboard(order) : null;
           const view = url.searchParams.get("view") ?? "overview";
           if (!(CONSOLE_VIEWS as readonly string[]).includes(view)) throw new HttpError(404, "There is no page at this address.");
-          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView));
+          return send(res, 200, workspacePage(o.product, order, slug ? brandKit(channelHome(o, slug), slug) : null, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView, url.searchParams.has("pick")));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");
@@ -326,7 +326,15 @@ export function createPublicServer(o: StorefrontOptions): Server {
             if (!note) throw new HttpError(400, "Say which fact is wrong and what should change.");
             if (note.length > 600) throw new HttpError(400, "Keep the note to 600 characters or fewer.");
             if (order.video.rounds >= MAX_ROUNDS) throw new HttpError(409, `This script has been rewritten ${MAX_ROUNDS} times. Further changes are made by hand.`);
-            o.builder.changeFacts(order.id, note);
+            // A change asked for under one line of the script names that line, so only it is rewritten.
+            let about = "";
+            if (form.line !== undefined) {
+              const beats = o.builder.facts(order).beats;
+              const n = Number(form.line);
+              if (!Number.isInteger(n) || n < 1 || n > beats.length) throw new HttpError(400, "Choose a line of the script.");
+              about = `Line ${n} (“${beats[n - 1]!.voiceover}”), change only this line: `;
+            }
+            o.builder.changeFacts(order.id, about + note);
           } else throw new HttpError(400, "Choose Approve the facts or Ask for a change.");
           return redirect(res, order.video.idea ? `/w/${order.token}?view=new` : `/w/${order.token}`);
         }
@@ -338,7 +346,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
             if (!SLUG.test(beat)) throw new HttpError(400, "Choose a part of the video.");
             const again = Number(form.repaint);
             o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen), Number.isInteger(again) && again >= 1 && again <= 3 ? again : undefined);
-            return redirect(res, `/w/${order.token}?view=new#shot-${beat}-1`);
+            return redirect(res, `/w/${order.token}?view=new#s-${beat}-1`);
           } else if (parts[3] === "captions") o.builder.setVideoCaptions(order.id, parseCaptionForm(form));
           else if (parts[3] === "speed") o.builder.setVideoPace(order.id, (form.pace ?? "").trim());
           else if (parts[3] === "approve") o.builder.approveStoryboard(order.id);
@@ -384,9 +392,11 @@ export function createPublicServer(o: StorefrontOptions): Server {
           const form = await readForm(req);
           const pick = (form.idea ?? "").trim();
           if (parts[2] === "make") {
-            if (form.topic !== undefined) o.builder.makeOwnVideo(order.id, form.topic);
-            else if (!SLUG.test(pick)) throw new HttpError(400, "Choose an idea to make.");
-            else o.builder.makeVideo(order.id, pick);
+            // The New video form sends a topic and maybe a picked idea: a typed topic wins.
+            const topic = (form.topic ?? "").trim();
+            if (topic) o.builder.makeOwnVideo(order.id, topic);
+            else if (SLUG.test(pick)) o.builder.makeVideo(order.id, pick);
+            else throw new HttpError(400, form.topic === undefined ? "Choose an idea to make." : "Type a topic or pick one of your ideas.");
             return redirect(res, `/w/${order.token}?view=new`);
           }
           if (parts[2] === "suggest") {
