@@ -612,11 +612,11 @@ export class Builder {
     this.queueVideo(id);
   }
 
-  /** The caption settings a new video's storyboard starts with: the channel's own, else on, medium, at the bottom, in the channel's case. */
+  /** The caption settings a new video's storyboard starts with: the channel's own, else not drawn into the video (they come as a file of their own), medium, at the bottom, in the channel's case. */
   channelCaptions(order: Order): CaptionSettings {
     if (order.captions) return order.captions;
     const brand = brandOf(loadChannel(this.ws, order.channel!).doc.data);
-    return { show: true, size: "medium", place: "bottom", case: brand.caption_case, hide_beats: [] };
+    return { show: false, size: "medium", place: "bottom", case: brand.caption_case, hide_beats: [] };
   }
 
   /** The storyboard the customer is checking: every beat's line, shots and on-screen text, and the captions. Throws when the order is not at that step. */

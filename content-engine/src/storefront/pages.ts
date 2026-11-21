@@ -897,7 +897,8 @@ function captionsForm(action: string, c: CaptionSettings, accent: string, beats:
     ? `<fieldset class="hide"><legend>No captions on these parts</legend>${beats.map((b, i) => `<label class="check"><input type="checkbox" name="hide_${esc(b.id)}"${c.hide_beats.includes(b.id) ? " checked" : ""}> Part ${i + 1}: “${esc(b.voiceover.split(/\s+/).slice(0, 6).join(" "))}…”</label>`).join("")}</fieldset>`
     : "";
   return `<form class="caps" method="post" action="${action}">
-<label class="check"><input type="checkbox" name="show"${c.show ? " checked" : ""}> Show captions</label>
+<label class="check"><input type="checkbox" name="show"${c.show ? " checked" : ""}> Draw captions into the video</label>
+<p class="muted" style="font-size:14px;margin:0">Either way, every video comes with its captions as a file (.srt) to lay over it yourself.</p>
 <div class="row3"><label class="f" for="cap-size">Size${select("size", c.size, Object.entries(CAPTION_SIZE_NAMES))}</label><label class="f" for="cap-place">Where${select("place", c.place, Object.entries(CAPTION_PLACE_NAMES))}</label><label class="f" for="cap-case">Letters${select("case", c.case, [["normal", "As written"], ["upper", "ALL CAPS"]])}</label></div>
 <div class="row3"><label class="check"><input type="checkbox" name="own_color"${c.color ? " checked" : ""}> My own highlight colour</label><label class="f" for="cap-color">Colour<input type="color" id="cap-color" name="color" value="${esc(c.color ?? accent)}"></label></div>
 ${hide}<button type="submit" class="btn ghost sm">${esc(submit)}</button></form>`;
@@ -1056,7 +1057,7 @@ function readyStep(base: string, e: BrandKit["episodes"][number], next: Idea | u
     meta: "",
     head: `<div class="head"><h1>Your new video is ready</h1></div>`,
     body: `<div class="done-vid"><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}?r=${e.versions.length}"></video><div class="head"><h2>${esc(e.title)}</h2></div></div>
-<div class="btns"><a class="go" href="${base}/video/${esc(e.id)}?download=1">Download the video</a><div class="two">${revise}<a class="line-btn" href="${pick}">Pick a new topic</a></div></div>${tips}${up}`,
+<div class="btns"><a class="go" href="${base}/video/${esc(e.id)}?download=1">Download the video</a>${e.captions_file ? `<a class="line-btn" href="${base}/captions/${esc(e.id)}">Download captions (.srt)</a>` : ""}<div class="two">${revise}<a class="line-btn" href="${pick}">Pick a new topic</a></div></div>${tips}${up}`,
     bar: "",
     sheets: "",
   };
@@ -1282,6 +1283,7 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
 <div class="side2">
 <div class="sec" style="gap:10px"><span class="tag ok">Ready to post</span><h1>${esc(e.title)}</h1><p class="muted">Made ${esc(day(e.date))}</p></div>
 <div class="row2"><a class="act" href="${base}/video/${esc(e.id)}?download=1">${icon(`<path d="M12 4v12M6 10l6 6 6-6M5 20h14"/>`)}Download video</a>${copy ? `<button type="button" class="act line" data-copy="${esc(copy)}">Copy caption &amp; hashtags</button>` : ""}</div>
+${e.captions_file ? `<div class="sec" style="gap:8px"><a class="act line" href="${base}/captions/${esc(e.id)}">Download captions (.srt)</a><p class="muted" style="font-size:14px">The spoken words with their timings, to lay over the video in CapCut, Premiere or YouTube Studio and style them as you like.</p></div>` : ""}
 ${e.caption ? `<div class="panel cap"><span class="kicker">Caption</span><p>${esc(e.caption.text)}</p>${e.caption.hashtags.length ? `<p class="hash">${esc(e.caption.hashtags.join(" "))}</p>` : ""}</div>` : ""}
 <div class="sec" style="gap:12px"><h2 class="h3">Before you post</h2><ul class="tips2">${tip(icon(`<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>`), "Turn on the platform’s AI label when you post: YouTube, TikTok and Instagram ask for it on AI-made videos.")}${shown.map(note).join("")}</ul>${rest.length ? `<details class="more2"><summary>Show ${rest.length} more note${rest.length === 1 ? "" : "s"}</summary><ul class="tips2">${rest.map(note).join("")}</ul></details>` : ""}${e.review.length ? `<p class="muted" style="font-size:14px">Notes from our automatic review. The video is finished: they are tips for the next one.</p>` : ""}</div>
 <div class="sec change" style="gap:12px"><h2 class="h3">Change something</h2>${e.revisable ? `<p class="muted">Opens this video’s storyboard: change a line, a picture, the captions or the speed. This version stays until the new one is ready.</p><form method="post" action="${base}/revise-video"><input type="hidden" name="episode" value="${esc(e.id)}"><button type="submit" class="act line"${busy ? ' disabled title="A video is under way"' : ""}>Change something</button></form>` : `<p class="muted">This video was made before storyboards were kept, so it can't be changed. New videos can.</p>`}${versions}</div>

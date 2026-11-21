@@ -3,7 +3,7 @@
  * The render package (props + mix.wav: the voice with music and effects under it) is staged in .cache/ so only
  * this episode's files are served.
  */
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { canonicalJson, nowIso, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
@@ -18,6 +18,7 @@ import type { Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 import { ensureMusic, hasOwnScore, mixEpisodeAudio, musicPrompt } from "../audio/bed.ts";
 import { languageOf } from "../core/languages.ts";
+import { captionsSrt } from "../skills/captions/srt.ts";
 import { QA_PREFIX, type ProbeRecord } from "./qa-probe.ts";
 import { safeRect } from "./timeline.ts";
 import type { Brand, EpisodeProps, Rect } from "./types.ts";
@@ -26,6 +27,11 @@ export const RENDER_VERSION = 1;
 
 export function outputPath(ws: Workspace, channel: string, episode: string): string {
   return ws.path("out", channel, `${episode}.mp4`);
+}
+
+/** The video's captions as a file of their own, beside the video, to lay over it instead of drawing them in. */
+export function captionsPath(ws: Workspace, channel: string, episode: string): string {
+  return ws.path("out", channel, `${episode}.srt`);
 }
 
 export function brandOf(channelData: Record<string, unknown>): Brand {
@@ -183,6 +189,8 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
   for (const c of clipFiles) if (!existsSync(c.src)) throw new EngineError(`${ws.rel(c.src)} is missing, so the episode can't be rendered.`, "Run the episode again: its footage or paint step makes it.");
   const inputsHash = sha256(canonicalJson({ v: RENDER_VERSION, props: { ...props, envelope: sha256(JSON.stringify(props.envelope)) }, wav: sha256(readFileSync(wav)), clips: clipFiles.map((c) => sha256(readFileSync(c.src))), code: codeHash() }));
   const output = outputPath(ws, ep.channel.slug, ep.state.id);
+  mkdirSync(dirname(output), { recursive: true });
+  writeFileSync(captionsPath(ws, ep.channel.slug, ep.state.id), captionsSrt(props.words, ws.config.captions.max_chars_per_line, ws.config.captions.max_lines));
   const manifestPath = join(ep.dir, "render.json");
   if (!opts.force && existsSync(manifestPath) && existsSync(output) && readJson<{ inputs_hash: string }>(manifestPath).inputs_hash === inputsHash) {
     return { output, regenerated: false };

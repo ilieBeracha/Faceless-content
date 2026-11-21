@@ -84,7 +84,7 @@ Run it again after each stop; it continues from the first unfinished step.
 |---|---|
 | `⏸ Waiting for the agent` | The agent opens the task file it names (e.g. `…/tasks/script.md`), writes the output, re-runs the command. |
 | `✋ STOP — human approval needed` | Read `…/factcheck.md` (every claim + source + the full transcript), then `./engine approve factcheck --channel <slug> --episode <id> --by "Your Name"`, or `./engine reject factcheck … --reason "…"`. Realistic series stop once more after the stills: read `…/footage/storyboard.md`, then `./engine approve footage … --by "Your Name"`. |
-| `✔ done` | Watch `out/<channel>/<episode>.mp4`; read `qa-report.md` and `publish.json` in the episode folder. |
+| `✔ done` | Watch `out/<channel>/<episode>.mp4` (its captions as a file: `<episode>.srt`); read `qa-report.md` and `publish.json` in the episode folder. |
 
 Options: `--idea <id>` (pick the idea), `--new` (another episode while one is open), `--episode <id>`,
 `--redo footage,voice,render,qa`.

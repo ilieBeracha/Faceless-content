@@ -27,8 +27,8 @@ export interface BrandKit {
   series: { name: string; format: string; visual_style: string; beats: { id: string; purpose: string }[] };
   /** `review`: what the QA agent review asked to change, when it didn't pass (shown as notes; it doesn't block storefront videos). */
   /** `revisable`: it has a storyboard, so it can be opened again and changed. `versions`: the earlier versions kept from revisions. */
-  /** `seconds`: its length, from the voice's timings. `date`: when it was last made (YYYY-MM-DD). `caption`: the post text written with it, when there is one. */
-  episodes: { id: string; title: string; frames: string[]; review: string[]; revisable: boolean; versions: number[]; seconds: number | null; date: string; caption: { text: string; hashtags: string[] } | null }[];
+  /** `seconds`: its length, from the voice's timings. `date`: when it was last made (YYYY-MM-DD). `caption`: the post text written with it, when there is one. `captions_file`: whether its captions were written as a file of their own (videos rendered before that have none). */
+  episodes: { id: string; title: string; frames: string[]; review: string[]; revisable: boolean; versions: number[]; seconds: number | null; date: string; caption: { text: string; hashtags: string[] } | null; captions_file: boolean }[];
 }
 
 const str = (v: unknown): string => (typeof v === "string" ? v : v === undefined || v === null ? "" : String(v));
@@ -46,6 +46,11 @@ function section(body: string, heading: string): string {
 /** Where the engine writes an episode's video (same path as render-episode.ts's outputPath, without loading the renderer). */
 export function videoPath(ws: Workspace, slug: string, episode: string): string {
   return ws.path("out", slug, `${episode}.mp4`);
+}
+
+/** Where the engine writes an episode's captions as a file of their own (render-episode.ts's captionsPath). */
+export function captionsFilePath(ws: Workspace, slug: string, episode: string): string {
+  return ws.path("out", slug, `${episode}.srt`);
 }
 
 /** An earlier version of an episode's video, kept when the video is revised. */
@@ -104,6 +109,7 @@ export function brandKit(ws: Workspace, slug: string): BrandKit {
         seconds: existsSync(timings) ? Number(readJson<{ duration: number }>(timings).duration) : null,
         date: e.updated.slice(0, 10),
         caption: post && str(post.description) ? { text: str(post.description), hashtags: list(post.hashtags) } : null,
+        captions_file: existsSync(captionsFilePath(ws, slug, e.id)),
       };
     });
   return {

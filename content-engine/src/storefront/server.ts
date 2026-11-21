@@ -12,7 +12,7 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { join } from "node:path";
 import { channelExists, listChannelSlugs } from "../core/channels.ts";
 import { ENGINE_DIR, type Workspace } from "../core/workspace.ts";
-import { brandKit, framesDir, versionPath, videoPath } from "./brand-kit.ts";
+import { brandKit, captionsFilePath, framesDir, versionPath, videoPath } from "./brand-kit.ts";
 import { CustomerError, parseBeatForm, parseCaptionForm, type Builder } from "./builder.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
@@ -50,7 +50,7 @@ const FONTS: Record<string, string> = {
   "montserrat-800.woff2": "montserrat/files/montserrat-latin-800-normal.woff2",
   "baloo-700.woff2": "baloo-2/files/baloo-2-latin-700-normal.woff2",
 };
-const MEDIA: Record<string, string> = { ".jpg": "image/jpeg", ".mp4": "video/mp4", ".js": "text/javascript; charset=utf-8" };
+const MEDIA: Record<string, string> = { ".jpg": "image/jpeg", ".mp4": "video/mp4", ".srt": "application/x-subrip; charset=utf-8", ".js": "text/javascript; charset=utf-8" };
 
 function sendAsset(req: IncomingMessage, res: ServerResponse, parts: string[], libraryDir: string): void {
   if (req.method !== "GET") throw new HttpError(404, "There is no page at this address.");
@@ -428,6 +428,12 @@ export function createPublicServer(o: StorefrontOptions): Server {
           const path = slug ? videoPath(channelHome(o, slug), slug, parts[3]) : null;
           if (!path || !existsSync(path)) throw new HttpError(404, "That video is not available.");
           return sendFile(req, res, path, "video/mp4", url.searchParams.has("download") ? `${parts[3]}.mp4` : null);
+        }
+        if (req.method === "GET" && parts.length === 4 && parts[2] === "captions" && SLUG.test(parts[3])) {
+          const slug = linkedChannel(order);
+          const path = slug ? captionsFilePath(channelHome(o, slug), slug, parts[3]) : null;
+          if (!path || !existsSync(path)) throw new HttpError(404, "Those captions are not available.");
+          return sendFile(req, res, path, MEDIA[".srt"], `${parts[3]}.srt`);
         }
         if (req.method === "GET" && parts.length === 5 && parts[2] === "frame" && SLUG.test(parts[3]) && FRAME.test(parts[4])) {
           const slug = linkedChannel(order);
