@@ -246,7 +246,7 @@ export function orderSeed(order: Order): string {
   if (lang.code !== "en")
     lines.push(
       "",
-      `The videos are in ${lang.name} (${lang.native}). Write everything a viewer sees or hears in ${lang.name}: the channel's name and promise, the character's catchphrases, the series' name and format, and every idea's title and angle. Keep YAML keys, enum values, slugs and ids in English. Set \`language: ${lang.code}\` in channel.md. The engine gives the host its ${lang.name} voice after you finish.`,
+      `The videos are in ${lang.name} (${lang.native}). Write everything a viewer sees or hears in ${lang.name}: the channel's name and promise, the character's catchphrases, the series' name and format, and every idea's title and angle. ${lang.style ?? ""} Keep YAML keys, enum values, slugs and ids in English. Set \`language: ${lang.code}\` in channel.md. The engine gives the host its ${lang.name} voice after you finish.`,
     );
   if (theme) {
     lines.push(

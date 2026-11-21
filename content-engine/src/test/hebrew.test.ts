@@ -29,6 +29,15 @@ describe("Hebrew channels", () => {
     assert.ok(Math.abs(speechSeconds(ws, george, line) / 13.76 - 1) < 0.08, `estimated ${speechSeconds(ws, george, line)} s`);
   });
 
+  it("limits a hook for Erez, the native Hebrew voice, by his own measured rate", () => {
+    const ws = tempWorkspace();
+    const erez = { voice: { provider: "elevenlabs-direct", voice_id: "AZzja2JCoYeMe9vDQBll", language: "he" } };
+    assert.deepEqual(hookLimit(ws, erez), { unit: "letters", max: 15 }, "1.9 s of room at 0.12 s a letter");
+    // His hook "עש אמיתי תקע מחשב." (14 letters) ended at 1.71 s: the estimate may not be earlier than that.
+    assert.ok(hookTiming(ws, erez, "עש אמיתי תקע מחשב.").seconds >= 1.71);
+    assert.equal(languageOf("he").voice?.voice_id, "AZzja2JCoYeMe9vDQBll", "Hebrew channels get Erez");
+  });
+
   it("refuses to estimate a language whose speaking rate was never measured", () => {
     const ws = tempWorkspace();
     assert.throws(() => hookLimit(ws, { voice: { provider: "elevenlabs", voice_id: "George", language: "fr" } }), /no measured speaking rate for the language "fr"/);

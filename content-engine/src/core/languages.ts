@@ -11,13 +11,24 @@ export interface Language {
   /** Its own name, for people choosing it. */
   native: string;
   rtl: boolean;
+  /** How the language is written for the ear: the register every script and channel text in it keeps. */
+  style?: string;
   /** The voice a new channel's host gets in this language (English hosts keep the voice their channel was drafted with). */
   voice?: { provider: string; voice_id: string };
 }
 
 export const LANGUAGES: readonly Language[] = [
   { code: "en", name: "English", native: "English", rtl: false },
-  { code: "he", name: "Hebrew", native: "עברית", rtl: true, voice: { provider: "elevenlabs", voice_id: "George" } },
+  {
+    code: "he",
+    name: "Hebrew",
+    native: "עברית",
+    rtl: true,
+    style:
+      "Everyday spoken Israeli Hebrew, said nonchalantly: calm and a little dry, like mentioning something mildly surprising to a friend without making a big deal of it. Short sentences and plain words people actually say (ככה, בעצם, די, סתם, אז). Don't try to sound young or cool: no piled-up slang, no hype, no exclamation marks. Never written or formal Hebrew: no אשר, כיצד, על כן, הנה, אולם, כמו כן, לא יאמן. No vowel marks. Numbers and years the way people say them.",
+    // Erez, a native Israeli voice from ElevenLabs' voice library (chosen by ear, 2026-11-21), on the person's own ElevenLabs plan.
+    voice: { provider: "elevenlabs-direct", voice_id: "AZzja2JCoYeMe9vDQBll" },
+  },
 ];
 
 /** A channel's language by its code; an unknown code is an error, not English. */

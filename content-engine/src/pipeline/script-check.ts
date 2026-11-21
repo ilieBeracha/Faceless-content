@@ -118,7 +118,10 @@ function ownPace(ws: Workspace, voice: CharacterVoice | undefined): { words_per_
     if (!rates) throw new EngineError(`The ${voice!.provider} voice has no measured speaking rate for the language "${lang}", so a script's length can't be estimated.`, `Add voice.providers.${voice!.provider}.languages.${lang} to engine.config.json (words a second and seconds a letter, measured on a recording). Languages other than English need an elevenlabs voice.`);
     return { words_per_second: rates.words_per_second, unit: "letters", seconds_per_unit: rates.hook_seconds_per_letter, seconds_per_letter: rates.seconds_per_letter };
   }
-  return p?.words_per_second && p.seconds_per_syllable ? { words_per_second: p.words_per_second, unit: "syllables", seconds_per_unit: p.seconds_per_syllable } : null;
+  if (p?.words_per_second && p.seconds_per_syllable) return { words_per_second: p.words_per_second, unit: "syllables", seconds_per_unit: p.seconds_per_syllable };
+  // A hosted voice sets its own pace: without measured English rates its length can't be estimated (Kokoro's would be wrong).
+  if (p?.kind === "api") throw new EngineError(`The ${voice!.provider} voice has no measured English speaking rate, so a script's length can't be estimated.`, `Add words_per_second and seconds_per_syllable to voice.providers.${voice!.provider} in engine.config.json, measured on a recording.`);
+  return null;
 }
 
 /** How long a hook may be for a character: in syllables (letters for Hebrew) for voices, in words for the video model. */
@@ -169,7 +172,8 @@ export function pauseSeconds(ws: Workspace, characterData: Record<string, unknow
 /** How long a character takes to say `text`, pauses included (estimated before the voice exists). */
 export function speechSeconds(ws: Workspace, characterData: Record<string, unknown> | undefined, text: string): number {
   // A language counted in letters (Hebrew): its measured seconds a letter, pauses included.
-  const own = ownPace(ws, characterData?.voice as CharacterVoice | undefined);
+  const voice = characterData?.voice as CharacterVoice | undefined;
+  const own = voice?.provider === "veo" ? null : ownPace(ws, voice);
   if (own?.seconds_per_letter) return letters(text) * own.seconds_per_letter;
   return voiceTokens(text).length / speechRate(ws, characterData) + pauseSeconds(ws, characterData, text);
 }

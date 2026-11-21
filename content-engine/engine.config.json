@@ -61,6 +61,17 @@
         },
         "$comment": "A hosted voice with natural phrasing; voice_id is an ElevenLabs voice name (George, Daniel, …). It sets its own pace and pauses: a character's speed and pause settings are not used. The two English rates were measured on one 42 s recording (2026-11-19): words a second with its pauses, and its slowest sentence per syllable, for the hook. A voice that speaks another language (the character's voice.language) uses that language's rates; Hebrew's were fitted to two George recordings (2026-11-21, 13.8 s and 37.3 s): a script's length is counted in letters, pauses included (a digit counts as 5 letters, as years are said in long words), within 4% on both; words a second is only for the word budget the writer is given; the hook uses the slowest sentence per letter (Hebrew is written without most vowels, so letters stand in for syllables)."
       },
+      "elevenlabs-direct": {
+        "kind": "api",
+        "cost": "paid: your own ElevenLabs plan (Creator: about 125,000 characters a month, about 400 a video); needs ELEVENLABS_API_KEY",
+        "license": "ElevenLabs terms (a paid plan includes commercial use)",
+        "endpoint": "https://api.elevenlabs.io/v1",
+        "model": "eleven_v4",
+        "languages": {
+          "he": { "words_per_second": 2.0, "seconds_per_letter": 0.113, "hook_seconds_per_letter": 0.12 }
+        },
+        "$comment": "ElevenLabs on the person's own account, for voices fal can't reach: any voice in ElevenLabs' voice library by its voice_id (a paid plan is needed for library voices). Hebrew channels use Erez (AZzja2JCoYeMe9vDQBll), a native Israeli voice. Its Hebrew rates were fitted to two Erez recordings (2026-11-21, 8.9 s and a 31.2 s episode): a script's length in letters with its pauses (within 2% on both), and the hook at 0.12 s a letter (his first sentence took 0.115 s a letter, so the estimate stays on the safe side)."
+      },
       "veo": {
         "kind": "api",
         "cost": "included in the Veo clip price",

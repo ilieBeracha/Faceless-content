@@ -17,7 +17,7 @@ import type { EpisodeRef } from "../pipeline/episode.ts";
 import { episodePace } from "../pipeline/storyboard.ts";
 import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, speakerTurns, type CharacterVoice, type SeriesData } from "../pipeline/script-check.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
-import { runElevenLabs } from "./elevenlabs.ts";
+import { runElevenLabs, runElevenLabsDirect } from "./elevenlabs.ts";
 import { loudnessEnvelope, readWav, writeWavFloat } from "./wav.ts";
 
 export const VOICE_PIPELINE_VERSION = 4;
@@ -113,7 +113,7 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
     // A voice speaks the channel's language, or the captions and the voice disagree.
     if ((v.language ?? "en") !== language) throw new EngineError(`${name}'s voice speaks "${v.language ?? "en"}", but the channel is in "${language}".`, `Set voice.language: ${language} in ${name}'s character file (an elevenlabs voice for anything but English).`);
     if (v.provider === "kokoro" && language !== "en") throw new EngineError(`${name} uses the Kokoro voice, which has no "${language}" voice.`, "Use an elevenlabs voice (e.g. voice_id: George) for this language.");
-    if (v.provider !== "kokoro" && v.provider !== "elevenlabs") {
+    if (v.provider !== "kokoro" && v.provider !== "elevenlabs" && v.provider !== "elevenlabs-direct") {
       throw new EngineError(`${name} uses voice provider "${v.provider}", which isn't wired up yet.`, v.provider === "veo" ? "A Veo voice only works when every speaker of the series uses it (the video model speaks inside the clips)." : "The voices that work are kokoro (free, local) and elevenlabs (paid, through fal.ai).");
     }
   }
@@ -146,10 +146,13 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
     };
   });
   // Each turn goes to its speaker's voice: Kokoro on this machine (free), or ElevenLabs through fal (paid).
-  const hosted = chunks.filter((_, n) => voices[script.beats[turns[n][0]].speaker].provider === "elevenlabs");
-  const local = chunks.filter((c) => !hosted.includes(c));
+  const providerOf = (c: KokoroChunk) => voices[script.beats[turns[chunks.indexOf(c)][0]].speaker].provider;
+  const hosted = chunks.filter((c) => providerOf(c) === "elevenlabs");
+  const direct = chunks.filter((c) => providerOf(c) === "elevenlabs-direct");
+  const local = chunks.filter((c) => providerOf(c) === "kokoro");
+  const toHosted = (cs: KokoroChunk[]) => cs.map((c) => ({ id: c.id, voice: c.voice, say: c.say, tempo: pace, ...(language !== "en" ? { language } : {}) }));
   if (local.length) log(`  ↳ synthesizing ${local.length === chunks.length ? `${script.beats.length} beats in ${turns.length} pass${turns.length === 1 ? "" : "es"}` : `${local.length} pass${local.length === 1 ? "" : "es"}`} with Kokoro (local, free)…`);
-  const made = [...(local.length ? runKokoro(ws, local, paths.chunks).chunks : []), ...(hosted.length ? (await runElevenLabs(ws, hosted.map((c) => ({ id: c.id, voice: c.voice, say: c.say, tempo: pace, ...(language !== "en" ? { language } : {}) })), paths.chunks, log)).chunks : [])];
+  const made = [...(local.length ? runKokoro(ws, local, paths.chunks).chunks : []), ...(hosted.length ? (await runElevenLabs(ws, toHosted(hosted), paths.chunks, log)).chunks : []), ...(direct.length ? (await runElevenLabsDirect(ws, toHosted(direct), paths.chunks, log)).chunks : [])];
   const out: KokoroResult = { sample_rate: 24000, chunks: chunks.map((c) => made.find((m) => m.id === c.id)!) };
 
   // Place each speaker turn on the timeline, applying the speaker's pitch.

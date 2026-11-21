@@ -355,7 +355,7 @@ Write the script for the idea **"${idea.title}"** (\`${idea.id}\`) as an episode
 
 Follow \`skills/${series.skills.script}/SKILL.md\` exactly. In particular:
 ${lang.code === "en" ? "" : `
-0. **Language: ${lang.name}.** Write everything the viewer hears or reads in ${lang.name} (${lang.native}): every voiceover line, \`on_screen_text\`, any words in a visual, and \`publish\` (title, description, hashtags). Write it the way people speak it today, without vowel marks. Claims are written in ${lang.name} too; their sources may be in any language. The house rules about contractions and English examples apply in spirit: short spoken sentences, everyday words.
+0. **Language: ${lang.name}.** Write everything the viewer hears or reads in ${lang.name} (${lang.native}): every voiceover line, \`on_screen_text\`, any words in a visual, and \`publish\` (title, description, hashtags). ${lang.style ?? ""} Claims are written in ${lang.name} too; their sources may be in any language. The house rules about contractions and English examples apply in spirit: short spoken sentences, everyday words.
 `}
 1. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
 2. **Length.** The series runs ${min}–${max}s. ${lengthNote}

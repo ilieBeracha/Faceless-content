@@ -98,15 +98,47 @@ export async function runElevenLabs(ws: Workspace, chunks: HostedChunk[], outDir
     }
     const out = await call<{ audio?: { url?: string }; timestamps?: CharTimings[] | null }>("GET", job.response_url);
     if (!out.audio?.url || !out.timestamps?.length) throw new EngineError("The ElevenLabs voice returned no audio or no timings.");
-    // The API has no speed setting, so the audio is played faster or slower (same pitch) and the words move with it.
-    const words = wordTimings(chunk.say, out.timestamps).map((w) => ({ i: w.i, start: round(w.start / chunk.tempo), end: round(w.end / chunk.tempo) }));
     const audio = await fetch(out.audio.url);
     if (!audio.ok) throw new EngineError(`Downloading the ElevenLabs audio failed (${audio.status}).`);
-    const mp3 = join(outDir, `${chunk.id}.mp3`);
-    writeFileSync(mp3, Buffer.from(await audio.arrayBuffer()));
-    const file = join(outDir, `${chunk.id}.wav`);
-    runFfmpeg(["-y", "-i", mp3, ...(chunk.tempo === 1 ? [] : ["-filter:a", `atempo=${chunk.tempo}`]), "-ar", String(SAMPLE_RATE), "-ac", "1", "-c:a", "pcm_f32le", file], "converting the voice");
-    result.chunks.push({ id: chunk.id, file, duration: readWav(file).samples.length / SAMPLE_RATE, words });
+    result.chunks.push(finishChunk(chunk, Buffer.from(await audio.arrayBuffer()), out.timestamps, outDir));
+  }
+  return result;
+}
+
+/** A voiced chunk's MP3 and character timings → its WAV at the chunk's tempo, with each caption word's time. */
+function finishChunk(chunk: HostedChunk, mp3Bytes: Buffer, runs: CharTimings[], outDir: string): HostedResult["chunks"][number] {
+  // The API has no speed setting, so the audio is played faster or slower (same pitch) and the words move with it.
+  const words = wordTimings(chunk.say, runs).map((w) => ({ i: w.i, start: round(w.start / chunk.tempo), end: round(w.end / chunk.tempo) }));
+  const mp3 = join(outDir, `${chunk.id}.mp3`);
+  writeFileSync(mp3, mp3Bytes);
+  const file = join(outDir, `${chunk.id}.wav`);
+  runFfmpeg(["-y", "-i", mp3, ...(chunk.tempo === 1 ? [] : ["-filter:a", `atempo=${chunk.tempo}`]), "-ar", String(SAMPLE_RATE), "-ac", "1", "-c:a", "pcm_f32le", file], "converting the voice");
+  return { id: chunk.id, file, duration: readWav(file).samples.length / SAMPLE_RATE, words };
+}
+
+/**
+ * Voice each chunk with ElevenLabs on the person's own account (paid by their plan; needs ELEVENLABS_API_KEY):
+ * any voice in their library or ElevenLabs' voice library by its voice id, e.g. a native Hebrew voice.
+ */
+export async function runElevenLabsDirect(ws: Workspace, chunks: HostedChunk[], outDir: string, log: (l: string) => void = () => {}): Promise<HostedResult> {
+  const cfg = ws.config.voice.providers["elevenlabs-direct"];
+  if (!cfg?.endpoint || !cfg.model) throw new EngineError('engine.config.json has no voice.providers["elevenlabs-direct"] endpoint and model, so that voice can\'t be used.');
+  const key = process.env.ELEVENLABS_API_KEY;
+  if (!key) throw new EngineError("The ElevenLabs voice needs ELEVENLABS_API_KEY in .env.", "It is your own ElevenLabs account (a paid plan: library voices can't be used on the free one). Add the key to .env, and to the server's secrets for the storefront.");
+  const result: HostedResult = { sample_rate: SAMPLE_RATE, chunks: [] };
+  for (const chunk of chunks) {
+    const text = spokenText(chunk.say);
+    log(`  ↳ ElevenLabs (your plan): ${text.length} characters in the voice ${chunk.voice}`);
+    const res = await fetch(`${cfg.endpoint}/text-to-speech/${encodeURIComponent(chunk.voice)}/with-timestamps?output_format=mp3_44100_128`, {
+      method: "POST",
+      headers: { "xi-api-key": key, "Content-Type": "application/json" },
+      body: JSON.stringify({ text, model_id: cfg.model, ...(chunk.language ? { language_code: chunk.language } : {}) }),
+    });
+    const body = await res.text();
+    if (!res.ok) throw new EngineError(`The ElevenLabs voice failed (${res.status}): ${body.slice(0, 400)}`, res.status === 401 || res.status === 402 || res.status === 403 ? "Check that ELEVENLABS_API_KEY is valid and its plan allows this voice (library voices need a paid plan)." : undefined);
+    const out = JSON.parse(body) as { audio_base64?: string; alignment?: CharTimings | null };
+    if (!out.audio_base64 || !out.alignment) throw new EngineError("The ElevenLabs voice returned no audio or no timings.");
+    result.chunks.push(finishChunk(chunk, Buffer.from(out.audio_base64, "base64"), [out.alignment], outDir));
   }
   return result;
 }
