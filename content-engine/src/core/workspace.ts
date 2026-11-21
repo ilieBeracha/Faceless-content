@@ -33,6 +33,16 @@ export interface EngineConfig {
   fonts: string[];
   platforms: Record<string, { max_seconds: number; ai_disclosure: string }>;
   paint: { budget_per_episode_usd: number };
+  music: {
+    endpoint: string;
+    usd_per_second: number;
+    min_billed_seconds: number;
+    /** The music's loudness under the voice's, in LU, before ducking lowers it further while someone speaks. */
+    under_voice_lu: number;
+    sfx_endpoint: string;
+    sfx_usd_per_second: number;
+    sfx_under_voice_lu: number;
+  };
   ai_video: {
     provider: "gemini";
     image_model: string;

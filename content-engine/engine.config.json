@@ -116,6 +116,16 @@
     "$comment": "render-themed worlds: every place an episode needs is painted with ai_video.image_model (Google, paid; needs GEMINI_API_KEY) at ai_video.rates_usd.image each. Spending stops before an episode would pass its budget.",
     "budget_per_episode_usd": 2
   },
+  "music": {
+    "$comment": "Every video gets a music bed made for it (fal, paid; needs FAL_KEY) and the engine's sound effects (src/audio/sfx/, made once with `./engine sfx`). Both are mixed under the voice at render time; voice.wav and the caption timings never change. The music is kept in the episode's audio/ folder, so a re-render does not pay again.",
+    "endpoint": "sonilo/v1.1/text-to-music",
+    "usd_per_second": 0.0025,
+    "min_billed_seconds": 10,
+    "under_voice_lu": 15,
+    "sfx_endpoint": "elevenlabs/sound-effects/v3",
+    "sfx_usd_per_second": 0.002,
+    "sfx_under_voice_lu": 14
+  },
   "ai_video": {
     "$comment": "render-ai-video: realistic footage from Google's Gemini API (paid; needs GEMINI_API_KEY and your OK). Model ids change: `./engine ai-video models` lists the ones your key can use.",
     "provider": "gemini",

@@ -13,7 +13,7 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 | 3 | **Fact-check** | engine lists, **person approves** | `factcheck.md` | **STOP until approved**; bound to the script's words and numbers |
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
 | 4 | **Voice** | engine (Kokoro, local; or cut from the Veo clips) | `audio/voice.wav`, `audio/timings.json`, `audio/envelope.json` | — |
-| 5 | **Render** | engine (Remotion) | `out/<slug>/<episode>.mp4`, `render.json`, `qa/layout.json` | — |
+| 5 | **Render** | engine (fal music, paid; then Remotion) | `audio/music.m4a` + `music.json` (made once), `audio/mix.wav` (voice + music + effects), `out/<slug>/<episode>.mp4`, `render.json`, `qa/layout.json` | needs FAL_KEY and the effects (`./engine sfx`, once) |
 | 6 | **QA** | engine checks + agent review | `qa-report.md`, `qa-review.json`, `publish.json`, learnings entry | must pass `workflows/qa.md` |
 | 7 | Post | — | not built yet | — |
 

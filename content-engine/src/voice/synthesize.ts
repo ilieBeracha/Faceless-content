@@ -265,10 +265,10 @@ function pitchShift(file: string, semitones: number, sr: number): string {
 }
 
 /** Two-pass EBU R128 normalisation to the platform target (≈ -14 LUFS, true peak ≤ -1.5 dBTP). */
-export function normalizeLoudness(input: string, output: string, targetLufs: number, truePeak: number, sampleRate: number): void {
+export function normalizeLoudness(input: string, output: string, targetLufs: number, truePeak: number, sampleRate: number, channels = 1): void {
   const m = measureLoudness(input);
   const filter = `loudnorm=I=${targetLufs}:TP=${truePeak}:LRA=11:measured_I=${m.integratedLufs}:measured_TP=${m.truePeakDb}:measured_LRA=${m.lra}:measured_thresh=${m.threshold}:linear=true`;
-  runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", output], "normalising loudness");
+  runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", String(channels), "-c:a", "pcm_s16le", output], "normalising loudness");
   // loudnorm falls back to its dynamic mode when the input's loudness range is wide (speech with pauses and
   // ambient sound) and can land a dB or two under target. Close the gap with plain gain, never past the peak cap.
   // When the peaks are already at the cap, a gentle limiter (1 dB under the cap, for true-peak overshoot) makes room.
@@ -277,7 +277,7 @@ export function normalizeLoudness(input: string, output: string, targetLufs: num
   if (gain > 0.3) {
     const limit = Math.pow(10, (truePeak - 1) / 20).toFixed(4);
     const tmp = output.replace(/\.wav$/, "") + ".gain.wav";
-    runFfmpeg(["-y", "-i", output, "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=${limit}:attack=5:release=50:level=false`, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", tmp], "correcting loudness");
+    runFfmpeg(["-y", "-i", output, "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=${limit}:attack=5:release=50:level=false`, "-ar", String(sampleRate), "-ac", String(channels), "-c:a", "pcm_s16le", tmp], "correcting loudness");
     renameSync(tmp, output);
   }
 }

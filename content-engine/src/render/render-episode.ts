@@ -1,6 +1,7 @@
 /**
  * Render step: episode folder → props → Remotion → out/<channel>/<episode>.mp4
- * The render package (props + voice.wav) is staged in .cache/ so only this episode's files are served.
+ * The render package (props + mix.wav: the voice with music and effects under it) is staged in .cache/ so only
+ * this episode's files are served.
  */
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -15,6 +16,7 @@ import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schem
 import { EngineError } from "../core/errors.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
+import { ensureMusic, hasOwnScore, mixEpisodeAudio, musicPrompt } from "../audio/bed.ts";
 import { QA_PREFIX, type ProbeRecord } from "./qa-probe.ts";
 import { safeRect } from "./timeline.ts";
 import type { Brand, EpisodeProps, Rect } from "./types.ts";
@@ -82,7 +84,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     renderSkills: series.skills.render,
     captionsSkill: captions?.show === false ? null : (series.skills.captions ?? null),
     captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
-    audioFile: "voice.wav",
+    audioFile: "mix.wav",
     ...(series.skills.render.includes("render-themed") ? themedProps(ep, script) : {}),
     ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,
@@ -167,7 +169,11 @@ export function browserOptions(ws: Workspace) {
 export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Script, opts: { force?: boolean; log?: (l: string) => void } = {}): Promise<{ output: string; regenerated: boolean }> {
   const log = opts.log ?? (() => {});
   const props = buildProps(ws, ep, script);
-  const wav = voicePaths(ep.dir).wav;
+  // What is heard: the voice with the video's music (made once, paid) and the engine's effects under it.
+  const tone = ep.channel.doc.data.tone as string[];
+  const seconds = props.durationInFrames / props.fps;
+  const music = hasOwnScore(script) ? null : await ensureMusic(ws, ep.dir, musicPrompt(tone, script.title), seconds, log);
+  const wav = mixEpisodeAudio(ws, ep.dir, voicePaths(ep.dir).wav, music, props.beats, seconds);
   const clipFiles = [
     ...(props.clips ?? []).map((c) => ({ src: join(ep.dir, "footage", c.file), dest: c.file })),
     ...Object.values(props.shots ?? {}).map((file) => ({ src: join(ep.dir, file), dest: file })),
@@ -182,7 +188,7 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
 
   const stage = ws.path(".cache", "render", ep.channel.slug, ep.state.id, "public");
   mkdirSync(stage, { recursive: true });
-  copyFileSync(wav, join(stage, "voice.wav"));
+  copyFileSync(wav, join(stage, "mix.wav"));
   for (const c of clipFiles) {
     mkdirSync(dirname(join(stage, c.dest)), { recursive: true });
     copyFileSync(c.src, join(stage, c.dest));

@@ -55,7 +55,7 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   "world": "Rome, 216 AD, the Baths of Caracalla on a hot summer afternoon",   // era, place, season, light
   "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field",  // optional
   "grade": "natural",     // optional: "cinematic" adds a film grade, vignette, grain and a slow push-in per shot
-  "score": "none",        // optional: "space-drone" lays a generated ambient music bed under the voice (free)
+  "score": "none",        // optional: "space-drone" lays a generated ambient music bed under the voice (free) instead of the video's made-for-it music
   "direction": "vlog",    // optional: "documentary" = calm, natural acting and strictly photoreal, unstylised visuals
   "wardrobe": "…"         // optional: this episode's outfit (e.g. a pressure suit); the face stays the same
 }
