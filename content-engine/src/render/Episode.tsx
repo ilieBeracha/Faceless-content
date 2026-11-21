@@ -104,7 +104,7 @@ export const Episode: React.FC<EpisodeProps> = (props) => {
   const runs = useMemo(() => sceneRuns(spans, props.fps, props.durationInFrames), [spans, props.fps, props.durationInFrames]);
   const [top, bottom] = props.brand.background;
   return (
-    <AbsoluteFill style={{ background: `linear-gradient(180deg, ${top}, ${bottom})` }}>
+    <AbsoluteFill style={{ background: `linear-gradient(180deg, ${top}, ${bottom})`, direction: props.direction }}>
       {runs.map((run) => {
         const Scene = SCENE_SKILLS[run.skill];
         return (

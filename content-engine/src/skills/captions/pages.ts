@@ -16,6 +16,9 @@ export function estimateWidth(text: string, fontSize: number, upper: boolean): n
   for (const ch of upper ? text.toUpperCase() : text) {
     if (/[A-Z0-9]/.test(ch)) em += /[MW]/.test(ch) ? 0.95 : 0.74;
     else if (/[a-z]/.test(ch)) em += /[mw]/.test(ch) ? 0.9 : /[iljtf]/.test(ch) ? 0.36 : 0.62;
+    // Hebrew letters (Fredoka's, drawn for every font) are about as wide as Latin lower case; vowel points take no room.
+    else if (/[\u05D0-\u05EA\uFB1D-\uFB4F]/.test(ch)) em += /[ויןך]/.test(ch) ? 0.34 : 0.64;
+    else if (/[\u0591-\u05C7]/.test(ch)) em += 0;
     else em += 0.34;
   }
   return em * fontSize;

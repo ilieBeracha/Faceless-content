@@ -62,6 +62,8 @@ export interface EpisodeProps {
   /** A storyboard's caption choices: size, where they sit, and beats shown without them. Absent = the defaults. */
   captionLayout?: { size: "small" | "medium" | "large"; place: "bottom" | "middle"; hide_beats: string[] };
   audioFile: string | null;
+  /** The channel's writing direction: right-to-left languages (Hebrew) flip every line of text, captions included. */
+  direction: "ltr" | "rtl";
   /** render-ai-video: footage clips on the timeline (files are staged next to voice.wav). */
   clips?: { id: string; beat: string; file: string; start: number; duration: number; trim: number }[];
   /** render-themed: the channel's look (its theme.json). */

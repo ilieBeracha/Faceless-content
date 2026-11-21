@@ -20,6 +20,7 @@ import { channelExists, channelStatus, loadChannel, validateChannel, type Channe
 import { approveDraft, draftInfo, listDrafts, rejectDraft } from "../core/drafts.ts";
 import { appendIdeaBlocks, parseIdeas, renderIdeas, updateIdea, type Idea } from "../core/ideas.ts";
 import { PipelinePause } from "../core/errors.ts";
+import { languageOf } from "../core/languages.ts";
 import { updateFrontmatter } from "../core/markdown.ts";
 import { createChannelSkeleton } from "../core/scaffold.ts";
 import { runTask } from "../core/tasks.ts";
@@ -241,6 +242,12 @@ export function orderSeed(order: Order): string {
     "",
     "Write exactly one character and exactly one series.",
   ];
+  const lang = languageOf(i.language ?? "en");
+  if (lang.code !== "en")
+    lines.push(
+      "",
+      `The videos are in ${lang.name} (${lang.native}). Write everything a viewer sees or hears in ${lang.name}: the channel's name and promise, the character's catchphrases, the series' name and format, and every idea's title and angle. Keep YAML keys, enum values, slugs and ids in English. Set \`language: ${lang.code}\` in channel.md. The engine gives the host its ${lang.name} voice after you finish.`,
+    );
   if (theme) {
     lines.push(
       "",
@@ -264,14 +271,18 @@ export function orderSeed(order: Order): string {
   return lines.join("\n");
 }
 
-/** Where the host's model.json is: the first character of the channel's series. */
-function hostModelPath(ws: Workspace, slug: string): string {
-  const channel = loadChannel(ws, slug);
+/** The host: the first character of the channel's series. */
+function hostDoc(channel: Channel, slug: string) {
   const series = [...channel.series.values()].find((s) => s.data.status === "active") ?? [...channel.series.values()][0];
   const hostName = series && Array.isArray(series.data.characters) ? String(series.data.characters[0]) : "";
   const host = channel.characters.get(hostName);
   if (!host) throw new Error(`The channel "${slug}" has no host character to put the customer's design on.`);
-  return host.modelPath;
+  return host;
+}
+
+/** Where the host's model.json is. */
+function hostModelPath(ws: Workspace, slug: string): string {
+  return hostDoc(loadChannel(ws, slug), slug).modelPath;
 }
 
 /** Put the customer's look and host on the channel, then check it. Throws if it is not a valid channel. */
@@ -280,6 +291,14 @@ function finishChannel(ws: Workspace, order: Order, slug: string): void {
   const model = order.design?.model ?? null;
   if (theme) writeJson(join(ws.channelDir(slug), "theme.json"), theme);
   if (model) writeJson(hostModelPath(ws, slug), model);
+  // A channel in another language is in it whatever the draft wrote, and its host speaks it with that language's voice.
+  const lang = languageOf(order.intake.language ?? "en");
+  if (lang.voice) {
+    const channel = loadChannel(ws, slug);
+    writeText(channel.doc.abs, updateFrontmatter(readText(channel.doc.abs), { language: lang.code }, channel.doc.rel));
+    const host = hostDoc(channel, slug);
+    writeText(host.abs, updateFrontmatter(readText(host.abs), { "voice.provider": lang.voice.provider, "voice.voice_id": lang.voice.voice_id, "voice.language": lang.code }, host.rel));
+  }
   const errors = validateChannel(ws, loadChannel(ws, slug)).filter((x) => x.level === "error");
   if (errors.length) throw new Error(`The channel "${slug}" is not valid: ${errors.map((e) => `${e.file}: ${e.message}`).join("; ")}`);
 }

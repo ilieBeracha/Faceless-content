@@ -4,6 +4,7 @@ import { checkFrames, checkShots, parseTheme } from "../skills/render-themed/sch
 import { seriesDoc, type Channel } from "../core/channels.ts";
 import { canonicalJson, readJson, sha256 } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
+import { EngineError } from "../core/errors.ts";
 import { RENDER_SKILLS } from "../skills/registry.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
 import { firstSentence, scriptSchema, voiceTokens, type Script } from "../skills/write-script/schema.ts";
@@ -26,6 +27,8 @@ export interface CharacterVoice {
   pitch_semitones?: number;
   sentence_pause?: number;
   clause_pause?: number;
+  /** The language the voice speaks (ISO 639-1); English when not set. Must be the channel's language. */
+  language?: string;
 }
 
 export interface ScriptCheck {
@@ -96,27 +99,40 @@ export function syllables(text: string): number {
   return text.split(/[\s-]+/).reduce((n, w) => n + wordSyllables(w), 0);
 }
 
-/**
- * A hosted voice that sets its own pace and pauses (its provider's entry in engine.config.json says how fast it
- * speaks): the character's speed and pause settings don't apply to it. Null for Kokoro and the video model.
- */
-function ownPace(ws: Workspace, voice: CharacterVoice | undefined): { words_per_second: number; seconds_per_syllable: number } | null {
-  const p = voice ? ws.config.voice.providers[voice.provider] : undefined;
-  return p?.words_per_second && p.seconds_per_syllable ? { words_per_second: p.words_per_second, seconds_per_syllable: p.seconds_per_syllable } : null;
+/** Letters spoken, for a language written without most vowels (Hebrew); a digit counts as five letters (a year is said in long words). */
+export function letters(text: string): number {
+  return (text.match(/\p{L}/gu) ?? []).length + (text.match(/\p{N}/gu) ?? []).length * 5;
 }
 
-/** How long a hook may be for a character: in syllables for Kokoro voices, in words for the video model. */
-export function hookLimit(ws: Workspace, characterData: Record<string, unknown> | undefined): { unit: "syllables" | "words"; max: number } {
+/**
+ * A hosted voice that sets its own pace and pauses (its provider's entry in engine.config.json says how fast it
+ * speaks): the character's speed and pause settings don't apply to it. Null for Kokoro (English) and the video model.
+ * A voice speaking another language uses that language's measured rates, counted in letters (Hebrew is written without
+ * most vowels, so syllables can't be counted from the text). A language with no measured rates is an error.
+ */
+function ownPace(ws: Workspace, voice: CharacterVoice | undefined): { words_per_second: number; unit: "syllables" | "letters"; seconds_per_unit: number; seconds_per_letter?: number } | null {
+  const p = voice ? ws.config.voice.providers[voice.provider] : undefined;
+  const lang = voice?.language ?? "en";
+  if (lang !== "en") {
+    const rates = p?.languages?.[lang];
+    if (!rates) throw new EngineError(`The ${voice!.provider} voice has no measured speaking rate for the language "${lang}", so a script's length can't be estimated.`, `Add voice.providers.${voice!.provider}.languages.${lang} to engine.config.json (words a second and seconds a letter, measured on a recording). Languages other than English need an elevenlabs voice.`);
+    return { words_per_second: rates.words_per_second, unit: "letters", seconds_per_unit: rates.hook_seconds_per_letter, seconds_per_letter: rates.seconds_per_letter };
+  }
+  return p?.words_per_second && p.seconds_per_syllable ? { words_per_second: p.words_per_second, unit: "syllables", seconds_per_unit: p.seconds_per_syllable } : null;
+}
+
+/** How long a hook may be for a character: in syllables (letters for Hebrew) for voices, in words for the video model. */
+export function hookLimit(ws: Workspace, characterData: Record<string, unknown> | undefined): { unit: "syllables" | "letters" | "words"; max: number } {
   const voice = characterData?.voice as CharacterVoice | undefined;
   const room = ws.config.hook.hook_line_ends_by_seconds - ws.config.audio.lead_in_seconds;
   if (voice?.provider === "veo") return { unit: "words", max: Math.floor(room * ws.config.ai_video.words_per_second) };
   const own = ownPace(ws, voice);
-  if (own) return { unit: "syllables", max: Math.floor(room / own.seconds_per_syllable) };
+  if (own) return { unit: own.unit, max: Math.floor(room / own.seconds_per_unit) };
   return { unit: "syllables", max: Math.floor((room * Number(voice?.speed ?? 1)) / SECONDS_PER_SYLLABLE) };
 }
 
 /** When a first sentence will have been spoken, estimated before the voice exists, and the latest it may end. */
-export function hookTiming(ws: Workspace, characterData: Record<string, unknown> | undefined, sentence: string): { count: number; unit: "syllables" | "words"; seconds: number; limit: number } {
+export function hookTiming(ws: Workspace, characterData: Record<string, unknown> | undefined, sentence: string): { count: number; unit: "syllables" | "letters" | "words"; seconds: number; limit: number } {
   const voice = characterData?.voice as CharacterVoice | undefined;
   const lead = ws.config.audio.lead_in_seconds;
   const limit = ws.config.hook.hook_line_ends_by_seconds;
@@ -125,9 +141,12 @@ export function hookTiming(ws: Workspace, characterData: Record<string, unknown>
     // The video model's speech is not measured per syllable; its estimate keeps the margin it always had.
     return { count, unit: "words", seconds: lead + count / ws.config.ai_video.words_per_second, limit: limit + 0.25 };
   }
-  const count = syllables(sentence);
   const own = ownPace(ws, voice);
-  if (own) return { count, unit: "syllables", seconds: lead + count * own.seconds_per_syllable, limit };
+  if (own) {
+    const count = own.unit === "letters" ? letters(sentence) : syllables(sentence);
+    return { count, unit: own.unit, seconds: lead + count * own.seconds_per_unit, limit };
+  }
+  const count = syllables(sentence);
   return { count, unit: "syllables", seconds: lead + (count * SECONDS_PER_SYLLABLE) / Number(voice?.speed ?? 1), limit };
 }
 
@@ -149,6 +168,9 @@ export function pauseSeconds(ws: Workspace, characterData: Record<string, unknow
 
 /** How long a character takes to say `text`, pauses included (estimated before the voice exists). */
 export function speechSeconds(ws: Workspace, characterData: Record<string, unknown> | undefined, text: string): number {
+  // A language counted in letters (Hebrew): its measured seconds a letter, pauses included.
+  const own = ownPace(ws, characterData?.voice as CharacterVoice | undefined);
+  if (own?.seconds_per_letter) return letters(text) * own.seconds_per_letter;
   return voiceTokens(text).length / speechRate(ws, characterData) + pauseSeconds(ws, characterData, text);
 }
 
@@ -323,15 +345,18 @@ export function bannedTopicHits(channel: Channel, texts: string[]): BannedHit[] 
   const hits: BannedHit[] = [];
   const sentences = texts.flatMap((t) => t.split(/(?<=[.!?…])\s+/));
   for (const topic of topics) {
+    // Latin words are matched by their stem at the start; Hebrew words carry prefixes (ו, ה, ב, ל…) at the start
+    // and endings at the end, so a Hebrew key is the word less its last letter, found anywhere in a word.
+    const latin = (w: string) => /^[a-z0-9]+$/.test(w);
     const keys = topic
       .toLowerCase()
-      .split(/[^a-z0-9]+/)
-      .filter((w) => w.length > 3 && !STOPWORDS.has(w))
-      .map((w) => w.slice(0, Math.max(4, Math.min(6, w.length - 1))));
+      .split(/[^\p{L}\p{N}]+/u)
+      .filter((w) => (latin(w) ? w.length > 3 && !STOPWORDS.has(w) : w.length > 2))
+      .map((w) => (latin(w) ? w.slice(0, Math.max(4, Math.min(6, w.length - 1))) : w.length > 3 ? w.slice(0, -1) : w));
     if (!keys.length) continue;
     for (const sentence of sentences) {
-      const words = sentence.toLowerCase().split(/[^a-z0-9]+/);
-      const matched = keys.map((k) => words.find((w) => w.startsWith(k)));
+      const words = sentence.toLowerCase().split(/[^\p{L}\p{N}]+/u);
+      const matched = keys.map((k) => words.find((w) => (latin(k) ? w.startsWith(k) : w.includes(k))));
       if (matched.every(Boolean)) {
         hits.push({ topic, match: matched.join(" ") });
         break;

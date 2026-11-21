@@ -6,6 +6,7 @@
 import { randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
+import { LANGUAGES } from "../core/languages.ts";
 import { nowIso } from "../core/util.ts";
 import type { CharacterModel } from "../skills/render-talking-character/rigs.ts";
 import type { Theme } from "../skills/render-themed/schema.ts";
@@ -42,6 +43,8 @@ export interface Intake {
   avatar: string;
   host: string;
   avoid: string;
+  /** The language the videos are made in (a code from core/languages.ts). Orders from before there was a choice have none: they are English. */
+  language?: string;
 }
 
 /** What the customer designed, ready to become a channel's theme.json and its character's model.json. Null = described in words only. */
@@ -152,6 +155,7 @@ const LIMITS: Record<keyof Intake, { label: string; max: number; required: boole
   avatar: { label: "The host", max: 40, required: true },
   host: { label: "Host notes", max: 300, required: false },
   avoid: { label: "Topics to avoid", max: 300, required: false },
+  language: { label: "Language", max: 5, required: false },
 };
 
 export const INTAKE_FIELDS = Object.keys(LIMITS) as (keyof Intake)[];
@@ -190,6 +194,9 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
     else if (value.length > max) errors[field] = `${label} must be ${max} characters or fewer.`;
   }
   if (!errors.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errors.email = "Enter an email address like name@example.com.";
+  // The form always sends a language; an order posted without one is in English, the form's first choice.
+  const language = (form.language ?? "en").trim();
+  if (!LANGUAGES.some((l) => l.code === language)) errors.language = "Pick a language from the list.";
   const design: Design = { theme: null, model: null };
 
   const readyLook = catalog.looks.find((l) => l.name === values.look);
@@ -221,7 +228,7 @@ export function validateIntake(form: Record<string, string>, catalog: Catalog): 
   } else if (!errors.avatar && readyHost) design.model = readyHost.model;
 
   if (Object.keys(errors).length) return { intake: null, design: null, errors };
-  return { intake: values, design, errors: null };
+  return { intake: { ...values, language }, design, errors: null };
 }
 
 /** The most times one order's kit is revised automatically; after that, changes are made by hand. */

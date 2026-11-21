@@ -8,6 +8,10 @@ import montserrat800 from "@fontsource/montserrat/files/montserrat-latin-800-nor
 import montserrat900 from "@fontsource/montserrat/files/montserrat-latin-900-normal.woff2";
 import grotesk500 from "@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2";
 import grotesk700 from "@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2";
+import fredokaHebrew400 from "@fontsource/fredoka/files/fredoka-hebrew-400-normal.woff2";
+import fredokaHebrew500 from "@fontsource/fredoka/files/fredoka-hebrew-500-normal.woff2";
+import fredokaHebrew600 from "@fontsource/fredoka/files/fredoka-hebrew-600-normal.woff2";
+import fredokaHebrew700 from "@fontsource/fredoka/files/fredoka-hebrew-700-normal.woff2";
 
 /** Fonts bundled with the engine (all SIL Open Font License). Channel brand.font picks one key. */
 export const FONTS: Record<string, { family: string; files: { url: string; weight: string }[]; heavy: number; regular: number }> = {
@@ -29,7 +33,16 @@ export function loadEngineFonts(): void {
     for (const file of font.files) void loadFont({ family: font.family, url: file.url, weight: file.weight });
   }
   for (const f of EXTRA_FONTS) void loadFont({ family: f.family, url: f.url, weight: f.weight });
+  // Hebrew letters for every font, under its own name: none of the brand fonts has them, so a Hebrew character in
+  // any font is drawn with Fredoka's Hebrew letters (the nearest weight it has), and Latin text keeps the brand font.
+  for (const font of Object.values(FONTS)) {
+    for (const file of font.files) void loadFont({ family: font.family, url: HEBREW[Math.min(700, Math.max(400, Math.round(Number(file.weight) / 100) * 100))], weight: file.weight, unicodeRange: HEBREW_RANGE });
+  }
 }
+
+/** Fredoka's Hebrew letters by weight, and the characters they cover (letters, points, punctuation, the shekel sign). */
+const HEBREW: Record<number, string> = { 400: fredokaHebrew400, 500: fredokaHebrew500, 600: fredokaHebrew600, 700: fredokaHebrew700 };
+const HEBREW_RANGE = "U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F";
 
 export function fontFor(key: string) {
   return FONTS[key] ?? FONTS.montserrat;

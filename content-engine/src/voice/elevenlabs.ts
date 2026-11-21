@@ -25,6 +25,8 @@ export interface HostedChunk {
   say: string[];
   /** How much faster than the voice's own pace it is played (1 = as spoken). The pitch stays. */
   tempo: number;
+  /** The language it speaks (ISO 639-1), sent so the voice reads the text in it; not set for English. */
+  language?: string;
 }
 
 export interface HostedResult {
@@ -86,7 +88,7 @@ export async function runElevenLabs(ws: Workspace, chunks: HostedChunk[], outDir
   for (const chunk of chunks) {
     const text = spokenText(chunk.say);
     log(`  ↳ ElevenLabs via fal (paid): ${text.length} characters in the voice "${chunk.voice}"`);
-    const job = await call<{ status_url: string; response_url: string }>("POST", `${QUEUE}/${cfg.endpoint}`, { text, voice: chunk.voice, timestamps: true, output_format: "mp3_44100_128" });
+    const job = await call<{ status_url: string; response_url: string }>("POST", `${QUEUE}/${cfg.endpoint}`, { text, voice: chunk.voice, timestamps: true, output_format: "mp3_44100_128", ...(chunk.language ? { language_code: chunk.language } : {}) });
     let status = "IN_QUEUE";
     for (let waited = 0; status !== "COMPLETED"; waited += 2) {
       if (waited > 300) throw new EngineError(`The ElevenLabs voice did not finish in 5 minutes (last status: ${status}).`);

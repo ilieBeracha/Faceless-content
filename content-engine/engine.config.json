@@ -56,7 +56,10 @@
         "endpoint": "elevenlabs/tts/eleven-v4",
         "words_per_second": 2.65,
         "seconds_per_syllable": 0.32,
-        "$comment": "A hosted voice with natural phrasing; voice_id is an ElevenLabs voice name (George, Daniel, …). It sets its own pace and pauses: a character's speed and pause settings are not used. The two rates were measured on one 42 s recording (2026-11-19): words a second with its pauses, and its slowest sentence per syllable, for the hook."
+        "languages": {
+          "he": { "words_per_second": 1.78, "seconds_per_letter": 0.122, "hook_seconds_per_letter": 0.135 }
+        },
+        "$comment": "A hosted voice with natural phrasing; voice_id is an ElevenLabs voice name (George, Daniel, …). It sets its own pace and pauses: a character's speed and pause settings are not used. The two English rates were measured on one 42 s recording (2026-11-19): words a second with its pauses, and its slowest sentence per syllable, for the hook. A voice that speaks another language (the character's voice.language) uses that language's rates; Hebrew's were fitted to two George recordings (2026-11-21, 13.8 s and 37.3 s): a script's length is counted in letters, pauses included (a digit counts as 5 letters, as years are said in long words), within 4% on both; words a second is only for the word budget the writer is given; the hook uses the slowest sentence per letter (Hebrew is written without most vowels, so letters stand in for syllables)."
       },
       "veo": {
         "kind": "api",

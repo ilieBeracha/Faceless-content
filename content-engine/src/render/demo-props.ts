@@ -98,6 +98,7 @@ export const demoProps: EpisodeProps = {
   captionsSkill: "captions",
   captionStyle: "pages",
   audioFile: null,
+  direction: "ltr",
   showSafeAreas: false,
   qaProbe: false,
 };

@@ -19,6 +19,7 @@ import { parseIdeas, updateIdea, type Idea } from "../core/ideas.ts";
 import { listSkills } from "../core/skills.ts";
 import { runTask, type LlmProviderName, type Task } from "../core/tasks.ts";
 import { nowIso, readJson, readText, today, writeJson, writeText } from "../core/util.ts";
+import { languageOf } from "../core/languages.ts";
 import { formatIssues, hasErrors } from "../core/validate.ts";
 import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
@@ -343,12 +344,19 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
     ? `In ${speaker.name}'s voice, with its natural pauses, that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s). The check after you write measures this exactly.`
     : `At ${speaker.name}'s voice speed, with its pauses, that is **${lo}–${hi} spoken words in total** (≈${wps.toFixed(1)} words/s). Every sentence end adds a ${(voice.sentence_pause ?? DEFAULT_SENTENCE_PAUSE).toFixed(2)}s pause and every comma or dash ${(voice.clause_pause ?? DEFAULT_CLAUSE_PAUSE).toFixed(2)}s, so many short sentences fit fewer words. The check after you write measures this exactly.`;
   const banned = ((ch.doc.data.banned_topics as string[]) ?? []).join("; ");
+  const lang = languageOf(String(ch.doc.data.language ?? "en"));
+  // Right-to-left text is laid out by the painted look (and its talking host) only; the other drawing skills would show it backwards.
+  const rtlReady = new Set(["render-themed", "render-talking-character"]);
+  const notRtl = series.skills.render.filter((s) => !rtlReady.has(s));
+  if (lang.rtl && notRtl.length) throw new EngineError(`${lang.name} is written right to left, which ${notRtl.join(", ")} can't lay out yet.`, "Make this series with render-themed (the painted look).");
 
   const instructions = `
 Write the script for the idea **"${idea.title}"** (\`${idea.id}\`) as an episode of the series **${series.name}** on channel **${String(ch.doc.data.name)}**.
 
 Follow \`skills/${series.skills.script}/SKILL.md\` exactly. In particular:
-
+${lang.code === "en" ? "" : `
+0. **Language: ${lang.name}.** Write everything the viewer hears or reads in ${lang.name} (${lang.native}): every voiceover line, \`on_screen_text\`, any words in a visual, and \`publish\` (title, description, hashtags). Write it the way people speak it today, without vowel marks. Claims are written in ${lang.name} too; their sources may be in any language. The house rules about contractions and English examples apply in spirit: short spoken sentences, everyday words.
+`}
 1. **Structure.** Use the series beats in this exact order: ${series.beats.map((b) => `\`${b.id}\``).join(" → ")}. Each beat's purpose is in the series file.
 2. **Length.** The series runs ${min}–${max}s. ${lengthNote}
 3. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s, and the first beat needs \`on_screen_text\`.

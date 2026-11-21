@@ -19,6 +19,7 @@ import { activeWordIndex } from "../skills/captions/pages.ts";
 import { readStoryboard } from "../pipeline/storyboard.ts";
 import { footagePaths, readLedger, spent, type FootageState } from "../skills/render-ai-video/footage.ts";
 import { firstSentence, voiceTokens, type Script } from "../skills/write-script/schema.ts";
+import { languageOf } from "../core/languages.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 
 export interface Check {
@@ -212,13 +213,14 @@ function reviewTask(ws: Workspace, ep: EpisodeRef, script: Script, checks: Check
   ctx.addFile(ws.rel(join(ep.dir, "script.json")), "channel");
   ctx.addInline("automated QA results", checks.map((c) => `- [${c.pass ? "x" : " "}] ${c.label}: ${c.detail}`).join("\n"));
   const reviewPath = join(ep.dir, "qa-review.json");
+  const lang = languageOf(String(ep.channel.doc.data.language ?? "en"));
   const instructions = `
 Review the rendered episode **${ep.state.id}** against \`workflows/qa.md\` and this channel's definition.
 
 1. Look at every sampled frame (open the images):
 ${frames.map((f) => `   - \`${ws.rel(f)}\``).join("\n")}
    The full video is \`${ws.rel(outputPath(ws, ep.channel.slug, ep.state.id))}\`.
-${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
+${lang.rtl ? `   The video is in **${lang.name}**, read right to left: check that every caption and on-screen text runs right to left (words in order, punctuation at the left end), and that no letter shows as an empty box or a different alphabet.\n` : ""}${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
 3. Write \`${ws.rel(reviewPath)}\` as JSON:
 
 \`\`\`json

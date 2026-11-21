@@ -17,6 +17,7 @@ import { EngineError } from "../core/errors.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 import { ensureMusic, hasOwnScore, mixEpisodeAudio, musicPrompt } from "../audio/bed.ts";
+import { languageOf } from "../core/languages.ts";
 import { QA_PREFIX, type ProbeRecord } from "./qa-probe.ts";
 import { safeRect } from "./timeline.ts";
 import type { Brand, EpisodeProps, Rect } from "./types.ts";
@@ -85,6 +86,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     captionsSkill: captions?.show === false ? null : (series.skills.captions ?? null),
     captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
     audioFile: "mix.wav",
+    direction: languageOf(String(ep.channel.doc.data.language ?? "en")).rtl ? "rtl" : "ltr",
     ...(series.skills.render.includes("render-themed") ? themedProps(ep, script) : {}),
     ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,

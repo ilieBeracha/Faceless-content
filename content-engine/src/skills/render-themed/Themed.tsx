@@ -18,6 +18,8 @@ interface Ctx {
   th: Theme;
   probe: boolean;
   id: string;
+  /** The channel writes right to left: a timeline runs from the right. */
+  rtl: boolean;
 }
 
 const step = (now: number) => Math.floor(now * 12) / 12;
@@ -277,12 +279,13 @@ function Marks({ el, ctx, w }: { el: Extract<ThElement, { type: "marks" }>; ctx:
   const display = fontFor(th.display[0]);
   const body = fontFor(th.body);
   const lineK = enter(th, ctx.t, 0.6);
-  const xs = el.items.map((_, i) => (i / (el.items.length - 1)) * (width - 280) + 140);
+  // Earlier marks come first in reading order: from the left, or from the right for a right-to-left channel.
+  const xs = el.items.map((_, i) => ((ctx.rtl ? el.items.length - 1 - i : i) / (el.items.length - 1)) * (width - 280) + 140);
   const mx = xs[0] + (xs[xs.length - 1] - xs[0]) * (0.5 - 0.5 * Math.cos(ctx.clock * 1.3));
   return (
     <div style={{ position: "relative", width, height: 290, margin: "0 auto" }}>
       <svg width={width} height={290} style={{ position: "absolute", inset: 0 }}>
-        <path d={`M20 118 H${20 + (width - 40) * clamp(lineK)}`} stroke={th.text} strokeWidth={th.surface === "torn" ? 10 : 4} strokeLinecap="round" />
+        <path d={ctx.rtl ? `M${width - 20} 118 H${width - 20 - (width - 40) * clamp(lineK)}` : `M20 118 H${20 + (width - 40) * clamp(lineK)}`} stroke={th.text} strokeWidth={th.surface === "torn" ? 10 : 4} strokeLinecap="round" />
         {!onCard && <path d={`M20 128 H${20 + (width - 40) * clamp(lineK)}`} stroke={th.text} strokeWidth={2} strokeDasharray="6 10" strokeDashoffset={-ctx.now * 26} opacity={0.6} />}
         {ctx.t > 1.2 && <path d={`M${mx} 102 l14 16 l-14 16 l-14 -16 z`} fill={th.accent} stroke={onCard ? th.text : "none"} strokeWidth={3} />}
       </svg>
@@ -567,14 +570,14 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
   const total = items.reduce((a, b) => a + b.h, 0) + GAP * Math.max(0, items.length - 1);
   const probe = props.qaProbe && span.end - now > 0.2;
   const startOf = (i: number) => (i === 0 ? span.start + 0.05 : span.voiceStart) + i * 0.35;
-  const ctxFor = (i: number): Ctx => ({ t: now - startOf(i), now, clock, th, probe, id: `th:${span.id}:${i}` });
+  const ctxFor = (i: number): Ctx => ({ t: now - startOf(i), now, clock, th, probe, id: `th:${span.id}:${i}`, rtl: props.direction === "rtl" });
   const spare = area.h - total * scale;
   let y = area.y + (align === "top" ? 0 : align === "bottom" ? spare : spare / 2);
 
   return (
     <AbsoluteFill style={{ background: th.paper, overflow: "hidden" }}>
       {story ? <World shots={shotTimeline(props, spans)} th={th} now={now} clock={clock} width={width} height={height} headline={Boolean(headline)} /> : <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />}
-      {headline && <Headline ctx={{ t: now - span.start, now, clock, th, probe, id: `th:${span.id}:headline` }} text={headline} region={r.headline} spanId={span.id} />}
+      {headline && <Headline ctx={{ t: now - span.start, now, clock, th, probe, id: `th:${span.id}:headline`, rtl: props.direction === "rtl" }} text={headline} region={r.headline} spanId={span.id} />}
       {flow.map(({ el, i }, n) => {
         const topPx = y;
         y += (items[n].h + GAP) * scale;

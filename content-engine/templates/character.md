@@ -17,6 +17,7 @@ voice:                          # required object — text-to-speech settings
   pitch_semitones: 0            # optional number min=-6 max=6 — pitch shift after synthesis (sounds processed; pick a voice with the right pitch instead)
   sentence_pause: 0.25          # optional number min=0 max=1 — seconds of pause after . ! ? (much over 0.3 chops the speech)
   clause_pause: 0.1             # optional number min=0 max=1 — seconds of pause after , ; :
+  language: en                  # optional string — the language this voice speaks (ISO 639-1: en, he); the same as the channel's language. Anything but en needs an elevenlabs voice
 pronunciations: {}              # optional map — how the voice says tricky words, e.g. {"GIF": "jif"}
 original: true                  # required boolean — confirms this is an original character, not someone else's IP
 ---

@@ -51,7 +51,7 @@ export const scriptSchema = z
       .object({
         title: z.string().min(3).max(100),
         description: z.string().max(2200),
-        hashtags: z.array(z.string().regex(/^#\w+$/)).max(8),
+        hashtags: z.array(z.string().regex(/^#[\p{L}\p{N}_]+$/u)).max(8),
       })
       .strict(),
   })

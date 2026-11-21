@@ -6,6 +6,7 @@ import { PACES, type CaptionSettings, type Pace } from "../pipeline/storyboard.t
 import type { Idea } from "../core/ideas.ts";
 import { FRAME_PRESET_NAMES, FRAME_PRESETS, showsHost, type Frame, type Shot, type ThBeatVisual, type Theme } from "../skills/render-themed/schema.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
+import { LANGUAGES } from "../core/languages.ts";
 import { NO_HOST, OWN_HOST, OWN_LOOK, type Catalog } from "./catalog.ts";
 import { HOST_FIELDS, HOST_RIGS, LOOK_CHOICES, MOODS, READY_RIG, hasHost, hasLook, hostFields, lookFields } from "./designer.ts";
 import { INTAKE_FIELDS, MAX_ROUNDS, ORDER_STATUSES, OWN_DESIGN, SECTIONS, changeRequests, intakeLabel, intakeMax, intakeRequired, isBuilding, isMakingVideo, videoUnderWay, SUGGESTS_PER_DAY, TOPIC_MAX, type Intake, type Order, type SectionId } from "./store.ts";
@@ -731,7 +732,8 @@ export function createPage(product: string, catalog: Catalog, values: Fields = {
 <div class="progress"><p class="label" data-count>Step 1 of 4</p><div class="bar"><i></i></div></div>${any}
 <fieldset class="step"><legend>What is it about?</legend>
 ${field("idea", values, errors, "area", "One or two sentences. What is every video about?", "Surprising facts about the technology we use every day")}
-${field("audience", values, errors, "text", "Who watches, and roughly how old they are.", "Curious teens and adults")}</fieldset>
+${field("audience", values, errors, "text", "Who watches, and roughly how old they are.", "Curious teens and adults")}
+<label class="f" for="language">Language of the videos <small>What the voice speaks and the captions say. Hebrew is read right to left.</small><select id="language" name="language">${LANGUAGES.map((l) => `<option value="${l.code}"${(values.language ?? "en") === l.code ? " selected" : ""}>${esc(l.native === l.name ? l.name : `${l.name} · ${l.native}`)}</option>`).join("")}</select></label>${errors.language ? `<p class="error" role="alert">${esc(errors.language)}</p>` : ""}</fieldset>
 <fieldset class="step"><legend>Build the look</legend>
 ${field("tone", values, errors, "text", "How it should feel, in a few words. Tap a suggestion or write your own.", "playful, honest")}
 <div class="chips">${FEELS.map((f) => `<button type="button" class="chip" data-add="${f}">${f}</button>`).join("")}</div>
