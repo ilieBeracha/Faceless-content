@@ -15,18 +15,34 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
    `angle` first:
    - `point`: the one sentence this video argues. It is the channel's **Belief** (channel.md), proved again by this
      story. "The French judges didn't lose to California, they lost to their own labels" — not "a 1976 tasting".
-   - `stakes`: who in the story has something to lose, and what (pride, money, a name, a life's work). Tell the
-     story through them, never as a list of events.
+   - `stakes`: who in the story has something to lose, and exactly what, in plain words a stranger can feel ("her
+     name rested on French wine being the best", not "an important editor"). Tell the story through them, never
+     as a list of events.
    - `turn`: the moment the facts change meaning. Build the middle so the viewer walks into it.
    - `takeaway`: what the viewer leaves with and can use in their own life (**What the viewer gets** in channel.md):
      a way of seeing, a line to say at dinner, permission to trust themselves. The last beat lands it in plain
      words, in the character's voice; a catchphrase can close it but never replaces it.
    Every beat serves the point: a fact that doesn't move the story toward the turn or the takeaway is cut, however
    true. The angle is opinion and framing; anything factual inside it is a claim like any other.
+
+   **The spine test.** Before writing lines, say the whole story to yourself as one chain joined only by "but",
+   "therefore" and "because": "Everyone expected France to win. But she judged blind, therefore her top red was
+   California's. But California won, therefore she demanded her sheet back, because it showed she'd picked it."
+   If two beats only join with "and then", the second doesn't follow from the first: rewrite until it does.
+
+   **Say the motive.** Whenever someone in the story acts, say why in the same or the next sentence. The viewer
+   never has to work out the cause the turn depends on ("she asked for her sheet back" means nothing; "she asked
+   for her sheet back, to hide that she'd picked California" is the story). You know the story; the viewer
+   doesn't. Read every line as a stranger who has never heard it: every person, thing and place is introduced
+   before it is referred to.
 1. **Follow the series.** Use its beats, in order, with the same ids. Each beat's `purpose` says what it must do;
    `seconds` is a target — the voice decides the real timing.
 2. **Hook first.** The first sentence of the first beat is ~5 words and lands within 2 seconds. Put the hook on
    screen too (`on_screen_text`, ≤ 30 characters works best). Questions and surprising claims work; greetings don't.
+   The hook is the strangest true fact, complete on its own, that a stranger understands with no context: no "the
+   sheet" or "he" for something not yet introduced, and the word that makes it odd is in it ("asked for her score
+   sheet back", not "asked for the sheet"). It raises one question the viewer could say out loud, and the turn
+   answers it.
 3. **Write for the ear.** Short sentences. Contractions. One idea per sentence. Numbers the way people say them.
    Read it out loud in your head at the character's speed. Total words are given in the task — stay inside them.
    **A full stop ends a thought.** The voice drops its pitch and pauses at every `.` `!` `?`, so never cut one
