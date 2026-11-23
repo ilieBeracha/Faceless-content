@@ -2,7 +2,7 @@ import React from "react";
 import { Composition } from "remotion";
 import { HOST_STILL_SIZE, HostStill } from "../skills/render-talking-character/HostStill.tsx";
 import type { CharacterModel } from "../skills/render-talking-character/rigs.ts";
-import { Captioned } from "./Captioned.tsx";
+import { CaptionLayer } from "./CaptionLayer.tsx";
 import { Episode } from "./Episode.tsx";
 import { demoProps } from "./demo-props.ts";
 import type { EpisodeProps } from "./types.ts";
@@ -28,10 +28,10 @@ export const Root: React.FC = () => (
       fps: props.fps,
     })}
   />
-  {/* The clean Episode render with the captions drawn over it: the finished video. */}
+  {/* The captions alone on a transparent background, laid over the clean Episode render: the finished video. */}
   <Composition
-    id="Captioned"
-    component={Captioned}
+    id="CaptionLayer"
+    component={CaptionLayer}
     width={1080}
     height={1920}
     fps={30}

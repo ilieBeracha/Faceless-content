@@ -92,6 +92,3 @@ export interface Rect {
   w: number;
   h: number;
 }
-
-/** The file the clean render (everything but the captions) is staged as for the Captioned composition. */
-export const CLEAN_VIDEO_FILE = "clean.mp4";

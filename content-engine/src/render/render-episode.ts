@@ -3,7 +3,7 @@
  * The render package (props + mix.wav: the voice with music and effects under it) is staged in .cache/ so only
  * this episode's files are served.
  */
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { canonicalJson, nowIso, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
@@ -14,6 +14,7 @@ import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
 import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schema.ts";
 import { EngineError } from "../core/errors.ts";
+import { runFfmpeg } from "../core/ffmpeg.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 import { ensureMusic, hasOwnScore, mixEpisodeAudio, musicPrompt } from "../audio/bed.ts";
@@ -21,7 +22,7 @@ import { languageOf } from "../core/languages.ts";
 import { captionsSrt } from "../skills/captions/srt.ts";
 import { QA_PREFIX, type ProbeRecord } from "./qa-probe.ts";
 import { safeRect } from "./timeline.ts";
-import { CLEAN_VIDEO_FILE, type Brand, type EpisodeProps, type Rect } from "./types.ts";
+import { type Brand, type EpisodeProps, type Rect } from "./types.ts";
 
 export const RENDER_VERSION = 1;
 
@@ -305,14 +306,20 @@ export async function bakeCaptions(ws: Workspace, ep: EpisodeRef, script: Script
   const started = Date.now();
   const tmp = `${output}.part.mp4`;
   if (props.captionsSkill) {
-    const stage = ws.path(".cache", "render", ep.channel.slug, ep.state.id, "captions");
-    mkdirSync(stage, { recursive: true });
-    copyFileSync(cleanFile, join(stage, CLEAN_VIDEO_FILE));
-    const serveUrl = await bundleFor(stage, log);
-    const { renderMedia, selectComposition } = await import("@remotion/renderer");
+    // The captions alone, as transparent PNG frames, laid over the clean render by ffmpeg: the pictures are never
+    // decoded in the browser (that was what made this pass slow on a small server).
+    const frames = ws.path(".cache", "render", ep.channel.slug, ep.state.id, "caption-frames");
+    rmSync(frames, { recursive: true, force: true });
+    mkdirSync(frames, { recursive: true });
+    const serveUrl = await bundleFor(null, log);
+    const { renderFrames, selectComposition } = await import("@remotion/renderer");
     const browser = browserOptions(ws);
-    const composition = await selectComposition({ serveUrl, id: "Captioned", inputProps: props, ...browser, logLevel: "error" });
-    await renderMedia({ composition, serveUrl, outputLocation: tmp, inputProps: props, ...browser, ...mediaOptions(ws, ws.config.video.crf), onBrowserLog: (l) => collector.consume(l.text), onProgress: progress(log, "drawing the captions").onProgress });
+    const composition = await selectComposition({ serveUrl, id: "CaptionLayer", inputProps: props, ...browser, logLevel: "error" });
+    const p = progress(log, "drawing the captions");
+    await renderFrames({ composition, serveUrl, inputProps: props, outputDir: frames, imageFormat: "png", imageSequencePattern: "frame-[frame].[ext]", ...browser, timeoutInMilliseconds: 180_000, logLevel: "error", concurrency: ws.config.render.concurrency ?? null, onStart: () => undefined, onFrameUpdate: (done) => p.onProgress({ progress: done / props.durationInFrames }), onBrowserLog: (l) => collector.consume(l.text) });
+    log("  ↳ laying the captions over the video");
+    runFfmpeg(["-y", "-i", cleanFile, "-framerate", String(props.fps), "-pattern_type", "glob", "-i", join(frames, "frame-*.png"), "-filter_complex", "[0:v][1:v]overlay=0:0:format=auto,format=yuv420p[v]", "-map", "[v]", "-map", "0:a", "-c:v", "libx264", "-crf", String(ws.config.video.crf), "-c:a", "copy", "-movflags", "+faststart", tmp], "laying the captions over the video");
+    rmSync(frames, { recursive: true, force: true });
   } else copyFileSync(cleanFile, tmp); // no captions in this video: the clean render is the video
   renameSync(tmp, output);
   writeJson(join(ep.dir, "qa", "layout.json"), mergeLayouts(scene, collector.summary));
