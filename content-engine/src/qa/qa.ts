@@ -116,9 +116,11 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
   const hookEnd = timings.words[hookWords - 1]?.end ?? Infinity;
   add("hook-speech", "Hook: speech starts immediately", timings.speech_start <= cfg.hook.speech_starts_by_seconds, `first word at ${timings.speech_start.toFixed(2)}s (limit ${cfg.hook.speech_starts_by_seconds}s)`);
   add("hook-line", "Hook: first line lands in 2 s", hookEnd <= cfg.hook.hook_line_ends_by_seconds, `"${firstSentence(script.beats[0].voiceover)}" ends at ${hookEnd.toFixed(2)}s (limit ${cfg.hook.hook_line_ends_by_seconds}s)`);
-  if (script.beats[0].on_screen_text) {
-    const f = layout.firstHeadlineFrame;
-    add("hook-text", "Hook: on-screen text", f !== null && f / cfg.video.fps <= cfg.hook.on_screen_by_seconds, f === null ? "headline never seen by the layout probe" : `visible from ${(f / cfg.video.fps).toFixed(2)}s`);
+  // The captions are the video's only words on screen: unless switched off for the first beat, they are up from the start.
+  const board = readStoryboard(ep.dir)?.captions;
+  if (series.skills.captions && (!board || (board.show && !board.hide_beats.includes(script.beats[0].id)))) {
+    const f = layout.firstCaptionFrame;
+    add("hook-text", "Hook: captions on screen", f !== null && f / cfg.video.fps <= cfg.hook.on_screen_by_seconds, f === null ? "captions never seen by the layout probe" : `visible from ${(f / cfg.video.fps).toFixed(2)}s`);
   }
 
   const outside = Object.entries(layout.violationCounts).filter(([k]) => k.endsWith(":outside-safe-area"));

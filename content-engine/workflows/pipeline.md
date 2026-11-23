@@ -45,7 +45,7 @@ envelope is saved to drive the character's mouth.
 ## 5. Render
 One Remotion composition renders every channel: the beat's scene skill fills the frame
 (`render-3d-explainer`, `render-motion-graphics`, …), overlays sit on top (`render-talking-character`), then
-the on-screen headline and the captions skill. 1080×1920, 30 fps, H.264 + AAC. While rendering, every text
+the captions skill (the only words on screen: there is no headline). 1080×1920, 30 fps, H.264 + AAC. While rendering, every text
 element reports its box, which QA uses for the safe-area and cut-off checks.
 
 ## 6. QA

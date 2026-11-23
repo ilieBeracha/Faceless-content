@@ -126,7 +126,7 @@ export interface Order {
   video?: Video;
   /** The customer's latest request for new video ideas (written by the Claude API into the channel's drafts). */
   suggest?: Suggest;
-  /** The caption settings each new video's storyboard starts with. Absent = captions not drawn into the video (they come as a file of their own), medium, at the bottom, in the channel's case. */
+  /** The caption settings each new video's storyboard starts with. Absent = captions drawn into the video (they are its only words on screen), medium, at the bottom, in the channel's case. */
   captions?: CaptionSettings;
   decisions: Partial<Record<SectionId, Decision>>;
 }

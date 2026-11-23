@@ -122,14 +122,14 @@ export interface LayoutSummary {
   violations: { f: number; id: string; kind: string; problem: "outside-safe-area" | "cut-off" | "text-overflow"; box: [number, number, number, number] }[];
   violationCounts: Record<string, number>;
   captionWord: Record<number, number>;
-  firstHeadlineFrame: number | null;
+  firstCaptionFrame: number | null;
   probes: number;
 }
 
 export class LayoutCollector {
   readonly summary: LayoutSummary;
   constructor(width: number, height: number, safe: Rect) {
-    this.summary = { frame: { w: width, h: height }, safe, elements: {}, violations: [], violationCounts: {}, captionWord: {}, firstHeadlineFrame: null, probes: 0 };
+    this.summary = { frame: { w: width, h: height }, safe, elements: {}, violations: [], violationCounts: {}, captionWord: {}, firstCaptionFrame: null, probes: 0 };
   }
   consume(text: string): void {
     if (!text.startsWith(QA_PREFIX)) return;
@@ -159,7 +159,7 @@ export class LayoutCollector {
     else if (r.x < s.safe.x - tol || r.y < s.safe.y - tol || r.x + r.w > s.safe.x + s.safe.w + tol || r.y + r.h > s.safe.y + s.safe.h + tol) flag("outside-safe-area");
     if (r.overflow) flag("text-overflow");
     if (r.kind === "caption" && typeof r.word === "number") s.captionWord[r.f] = r.word;
-    if (r.kind === "headline" && (s.firstHeadlineFrame === null || r.f < s.firstHeadlineFrame)) s.firstHeadlineFrame = r.f;
+    if (r.kind === "caption" && (s.firstCaptionFrame === null || r.f < s.firstCaptionFrame)) s.firstCaptionFrame = r.f;
   }
 }
 

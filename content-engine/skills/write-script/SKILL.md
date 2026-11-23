@@ -35,8 +35,9 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
    plain words ("she asked for her sheet back, so no one would see she'd picked California").
 1. **Follow the series.** Use its beats, in order, with the same ids. Each beat's `purpose` says what it must do;
    `seconds` is a target — the voice decides the real timing.
-2. **Hook first.** The first sentence of the first beat is ~5 words and lands within 2 seconds. Put the hook on
-   screen too (`on_screen_text`, ≤ 30 characters works best). Questions and surprising claims work; greetings don't.
+2. **Hook first.** The first sentence of the first beat is ~5 words and lands within 2 seconds. The captions put it
+   on screen from the first frame; there is no headline, so don't write `on_screen_text`. Surprising claims work;
+   greetings don't.
    The hook is a plain true statement of what happened that is surprising on its own ("France lost at wine."),
    complete for a stranger: no "the sheet" or "he" for something not yet introduced. It is not a tease; the rest
    of the video tells how it happened, in order.
@@ -79,7 +80,6 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
       "id": "hook",
       "speaker": "<character name>",       // one of the series' characters
       "voiceover": "What's inside a bike bell?",
-      "on_screen_text": "Inside a bike bell",   // optional, ≤ 48 chars, shown at the top
       "visual": { "skill": "render-3d-explainer", "shot": "establish" },  // a scene skill of the series, or {"skill": "none"}
       "character": { "placement": "full", "expression": "curious" }      // full | corner | hidden; expression from model.json
     }

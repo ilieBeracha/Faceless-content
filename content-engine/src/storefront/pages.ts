@@ -863,7 +863,7 @@ function factsHtml(order: Order, script: Script, first = true): string {
   const loose = script.claims.filter((c) => !ids.has(c.beat));
   const part = (b: Script["beats"][number], i: number) => {
     const mine = script.claims.filter((c) => c.beat === b.id);
-    return `<li class="line"><span class="num">Part ${i + 1}</span><p>${esc(b.voiceover)}</p>${b.on_screen_text ? `<small class="ost">On screen: ${esc(b.on_screen_text)}</small>` : ""}${mine.length ? `<ul class="claims">${mine.map(fact).join("")}</ul>` : `<small class="nofact">No fact is listed for this part</small>`}</li>`;
+    return `<li class="line"><span class="num">Part ${i + 1}</span><p>${esc(b.voiceover)}</p>${mine.length ? `<ul class="claims">${mine.map(fact).join("")}</ul>` : `<small class="nofact">No fact is listed for this part</small>`}</li>`;
   };
   const n = script.claims.length;
   const left = MAX_ROUNDS - (order.video?.rounds ?? 0);
@@ -978,7 +978,7 @@ function scriptStep(order: Order, script: Script, boards: boolean): FlowStep {
       ? `<div class="fix"><div class="chips">${LINE_FIXES.map(([label, note]) => send(n, `<input type="hidden" name="note" value="${esc(note)}"><button type="submit" class="chip">${esc(label)}</button>`)).join("")}</div>${send(n, `<label class="f" for="line-${n}">Or say what to change<textarea id="line-${n}" name="note" maxlength="600" required></textarea></label><button type="submit" class="send">Rewrite this line</button>`)}</div>`
       : "";
   const line = (b: Script["beats"][number], i: number) =>
-    `<li><details class="ln"><summary><span class="n">${i + 1}</span><div><p class="say">${esc(b.voiceover)}</p>${b.on_screen_text ? `<small class="ost">On screen: ${esc(b.on_screen_text)}</small>` : ""}${script.claims
+    `<li><details class="ln"><summary><span class="n">${i + 1}</span><div><p class="say">${esc(b.voiceover)}</p>${script.claims
       .filter((c) => c.beat === b.id)
       .map(fact)
       .join("")}</div></summary>${fix(i + 1)}</details></li>`;
@@ -1029,8 +1029,8 @@ function picturesStep(order: Order, sb: StoryboardView, accent: string): FlowSte
     const prev = all[at - 1];
     const after = all[at + 1];
     return `<form class="slide" id="s-${esc(id)}" method="post" action="${base}/storyboard/beat"><input type="hidden" name="beat" value="${esc(b.id)}"><button type="submit" class="vh" tabindex="-1" aria-hidden="true"></button>${others}
-<div class="shot"><div class="big"><img src="${src(id)}" alt="${esc(s.show)}"><span class="pos">Shot ${at + 1} of ${all.length}</span></div><div class="said"><p class="k">Said over it</p><p>“${esc(b.voiceover)}”</p><p class="k">We see</p><p class="see">${s.at ? `From “${esc(s.at)}”: ` : ""}${esc(s.show)}</p>${b.on_screen_text ? `<p class="k">On screen</p><p class="see">${esc(b.on_screen_text)}</p>` : ""}<div class="step-nav">${prev ? `<a href="#s-${esc(prev.id)}" aria-label="Previous shot">‹</a>` : `<span></span>`}${after ? `<a href="#s-${esc(after.id)}" aria-label="Next shot">›</a>` : ""}</div></div></div>
-<div class="acts"><button type="submit" name="repaint" value="${n}"${sb.repaintsLeft ? "" : ' disabled title="No repaints left for this video"'}>Repaint</button><details><summary>Describe</summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${n > 1 ? cut(n, s.at) : ""}<button type="submit" class="send">Paint from this</button></div></details><details><summary>Text</summary><div class="inner"><label class="f" for="text-${esc(id)}">On-screen text for part ${i + 1} <small>Leave it empty for none. Changing it sends the script back to you to approve.</small><input type="text" id="text-${esc(id)}" name="text" maxlength="48" value="${esc(b.on_screen_text ?? "")}"></label><button type="submit" class="send">Save text</button></div></details>${more}</div></form>`;
+<div class="shot"><div class="big"><img src="${src(id)}" alt="${esc(s.show)}"><span class="pos">Shot ${at + 1} of ${all.length}</span></div><div class="said"><p class="k">Said over it</p><p>“${esc(b.voiceover)}”</p><p class="k">We see</p><p class="see">${s.at ? `From “${esc(s.at)}”: ` : ""}${esc(s.show)}</p><div class="step-nav">${prev ? `<a href="#s-${esc(prev.id)}" aria-label="Previous shot">‹</a>` : `<span></span>`}${after ? `<a href="#s-${esc(after.id)}" aria-label="Next shot">›</a>` : ""}</div></div></div>
+<div class="acts"><button type="submit" name="repaint" value="${n}"${sb.repaintsLeft ? "" : ' disabled title="No repaints left for this video"'}>Repaint</button><details><summary>Describe</summary><div class="inner"><label class="f" for="show-${esc(id)}">What we see<textarea id="show-${esc(id)}" name="show_${n}" minlength="10" maxlength="500" required>${esc(s.show)}</textarea></label>${host(n, showsHost(s))}${n > 1 ? cut(n, s.at) : ""}<button type="submit" class="send">Paint from this</button></div></details>${more}</div></form>`;
   };
   // The shot shown is marked in the strip (the first when none is chosen).
   const mark = `<style>${all.map((x) => `.fl:has(#s-${x.id}:target) #t-${x.id}`).join(",")}${all.length ? `,.fl:not(:has(.slide:target)) #t-${all[0]!.id}` : ""}{box-shadow:0 0 0 3px var(--accent);background:var(--surface)}</style>`;

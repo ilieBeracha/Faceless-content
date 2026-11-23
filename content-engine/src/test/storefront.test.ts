@@ -831,7 +831,7 @@ describe("storefront: automatic builds", () => {
       const checking = await page();
       assert.match(checking, /Needs you[\s\S]*Check the facts[\s\S]*href="[^"]*view=new">Check the facts/);
       const step = async () => (await fetch(`${base}${link}?view=new`)).text();
-      assert.match(await step(), /<span class="n">1<\/span>[\s\S]*On screen: Why no leaks\?[\s\S]*<span class="n">2<\/span>[\s\S]*A tiny ball sits in the tip[\s\S]*class="proof">A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*name="line" value="2"[\s\S]*Simpler words[\s\S]*Rewrite this line[\s\S]*Looks right · make the video[\s\S]*Rewrite 1 of 3/);
+      assert.match(await step(), /<span class="n">1<\/span>[\s\S]*<span class="n">2<\/span>[\s\S]*A tiny ball sits in the tip[\s\S]*class="proof">A ballpoint pen&#39;s tip holds a small metal ball\.[\s\S]*href="https:\/\/example\.org\/ballpoint"[\s\S]*name="line" value="2"[\s\S]*Simpler words[\s\S]*Rewrite this line[\s\S]*Looks right · make the video[\s\S]*Rewrite 1 of 3/);
       assert.match(checking, /class="tag busy"><i><\/i>Making a video/, "a video waiting for its facts is still under way");
       assert.doesNotMatch(checking, /http-equiv="refresh"|<video/);
       assert.equal(existsSync(videoPath(built, id, EPISODE)), false, "nothing is made before the facts are approved");
@@ -1014,7 +1014,7 @@ describe("storefront: automatic builds", () => {
     }
   });
 
-  it("stops a painted video at its storyboard: the customer changes shots, the host, on-screen text and captions, then approves", async () => {
+  it("stops a painted video at its storyboard: the customer changes shots, the host and captions, then approves", async () => {
     const { store, builder, options } = setup("storyboard", 20, null);
     const site = createPublicServer(options);
     boards = true;
@@ -1053,7 +1053,7 @@ describe("storefront: automatic builds", () => {
 
       // One part: the first shot shows something else without the host, the second is removed. Only the changed shot is repainted.
       hold = new Promise<void>((r) => (release = r));
-      const edit = await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", show_2: "Thick blue ink waits behind the ball", at_2: "ink", remove_2: "on", text: "" });
+      const edit = await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", show_2: "Thick blue ink waits behind the ball", at_2: "ink", remove_2: "on" });
       assert.deepEqual([edit.status, edit.headers.get("location")], [303, `${link}?view=new#s-explain-1`]);
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.repaints], ["painting", 1]);
       release();
@@ -1065,31 +1065,21 @@ describe("storefront: automatic builds", () => {
       assert.match(await page("new"), /9 repaints left/);
 
       // "New picture": the same shot, painted once more. It counts as a repaint.
-      assert.equal((await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", text: "", repaint: "1" })).status, 303);
+      assert.equal((await post("storyboard/beat", { beat: "explain", show_1: "A tiny steel ball rolls inside the tip of a pen", repaint: "1" })).status, 303);
       await builder.idle();
       assert.deepEqual([store.byId(id)?.video?.state, store.byId(id)?.video?.repaints], ["storyboard", 2]);
       assert.match(await page("new"), /8 repaints left/);
 
       // Refused, with the reason, and nothing changes: the host left out of a shot whose words still say "the host"; an added shot with no word to cut in on.
-      assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", text: "Why no leaks?" })).text(), /leaves the host out, but its words say &quot;the host&quot;/);
-      assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", show_2: "A puddle of ink on a desk", text: "Why no leaks?" })).text(), /Pick the word shot 2 cuts in on/);
+      assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink" })).text(), /leaves the host out, but its words say &quot;the host&quot;/);
+      assert.match(await (await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", show_2: "A puddle of ink on a desk" })).text(), /Pick the word shot 2 cuts in on/);
       assert.equal(store.byId(id)?.video?.repaints, 2);
-
-      // New on-screen text changes what is shown, so the facts come back to be approved; then the storyboard again.
-      assert.equal((await post("storyboard/beat", { beat: "hook", show_1: "The host stares at a giant pen dripping blue ink", host_1: "on", text: "Why no drips?" })).status, 303);
-      assert.equal(store.byId(id)?.video?.repaints, 2, "the same picture is not painted again");
-      await builder.idle();
-      assert.equal(store.byId(id)?.video?.state, "facts");
-      assert.match(await page("new"), /aria-current="step">Script[\s\S]*On screen: Why no drips\?[\s\S]*Looks right · paint the pictures/);
-      await post("facts", { decision: "approve" });
-      await builder.idle();
-      assert.equal(store.byId(id)?.video?.state, "storyboard");
 
       // Repaints are paid: past the limit, a change that needs one is refused.
       store.update(id, (o) => {
         o.video = { ...o.video!, repaints: 10 };
       });
-      assert.match(await (await post("storyboard/beat", { beat: "payoff", show_1: "A round pen cap rolls across a desk", text: "" })).text(), /0 repaints left/);
+      assert.match(await (await post("storyboard/beat", { beat: "payoff", show_1: "A round pen cap rolls across a desk" })).text(), /0 repaints left/);
 
       // Captions: bigger, in the middle, all caps, own colour, and off on the last part.
       assert.match(await (await post("storyboard/captions", { show: "on", size: "huge", place: "bottom", case: "normal" })).text(), /caption settings are not valid/);

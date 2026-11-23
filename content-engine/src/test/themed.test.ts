@@ -173,14 +173,14 @@ describe("render-themed: each beat gets a frame its content fits", () => {
 
   it("skips a frame too narrow for a timeline, and keeps a frame the beat names even so", () => {
     const p = props(["columns", "title-card"]);
-    assert.ok(frameFit(FRAME_PRESETS.columns, [marks] as never, p.theme!, 1080, 1920, safe, true) < 0.75);
+    assert.ok(frameFit(FRAME_PRESETS.columns, [marks] as never, p.theme!, 1080, 1920, safe) < 0.75);
     assert.equal(beatFrame(p, span(0, [marks]))!.name, "title-card");
     assert.equal(beatFrame(p, span(0, [marks], "columns"))!.name, "columns");
   });
 
   it("falls back to the best fit when no frame fits well", () => {
     const p = props(["columns", "picture-in-picture"]);
-    const fits = [FRAME_PRESETS.columns, FRAME_PRESETS["picture-in-picture"]].map((f) => frameFit(f, [heading, marks, art] as never, p.theme!, 1080, 1920, safe, true));
+    const fits = [FRAME_PRESETS.columns, FRAME_PRESETS["picture-in-picture"]].map((f) => frameFit(f, [heading, marks, art] as never, p.theme!, 1080, 1920, safe));
     assert.ok(fits.every((f) => f < 0.75));
     assert.equal(beatFrame(p, span(0, [heading, marks, art]))!.name, fits[0] >= fits[1] ? "columns" : "picture-in-picture");
   });

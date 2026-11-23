@@ -44,11 +44,11 @@ export function frameHostRect(frame: Frame, placement: "full" | "corner", width:
   return { x: b.x + (b.w - size) / 2, y: b.y + b.h - size, w: size, h: size };
 }
 
-/** The lettering's box in a frame; with no headline on the beat, a box at the top of the stage also takes the headline's space. */
-export function frameTextRect(frame: Frame, width: number, height: number, safe: SafeArea, hasHeadline: boolean): Rect {
+/** The lettering's box in a frame; a box at the top of the stage also takes the space above it (videos have no headline). */
+export function frameTextRect(frame: Frame, width: number, height: number, safe: SafeArea): Rect {
   const r = regions(width, height, safe);
   const area = onStage(frame.text, r.stage);
-  return !hasHeadline && frame.text.y === 0 ? { ...area, y: r.headline.y, h: area.h + (r.stage.y - r.headline.y) } : area;
+  return frame.text.y === 0 ? { ...area, y: r.headline.y, h: area.h + (r.stage.y - r.headline.y) } : area;
 }
 
 export function noteHeight(el: Extract<ThElement, { type: "note" }>, w: number): number {
@@ -106,11 +106,11 @@ export function stackLayout(elements: ThElement[], th: Theme, box: Rect, widen: 
 }
 
 /** How big a beat's lettering comes out in a frame (1 = full size), or 0 when the frame suits the beat badly (an empty picture box). */
-export function frameFit(frame: Frame, elements: ThElement[], th: Theme, width: number, height: number, safe: SafeArea, hasHeadline: boolean): number {
+export function frameFit(frame: Frame, elements: ThElement[], th: Theme, width: number, height: number, safe: SafeArea): number {
   const hasArt = elements.some((el) => el.type === "art");
   if (frame.picture && !hasArt) return 0;
   const flow = frame.picture ? elements.filter((el) => el.type !== "art") : elements;
-  const box = frameTextRect(frame, width, height, safe, hasHeadline);
+  const box = frameTextRect(frame, width, height, safe);
   const { scale } = stackLayout(flow, th, box, true);
   return scale * Math.min(1, ...flow.map((el) => box.w / Math.max(box.w, elementMinWidth(el, th))));
 }
@@ -127,11 +127,10 @@ export function beatFrame(props: EpisodeProps, span: BeatSpan): Frame | null {
   const visual = span.beat.visual as ThBeatVisual;
   if (visual.frame) return frameFor(frames, { index: span.index, id: span.id, frame: visual.frame });
   const elements = visual.elements ?? [];
-  const hasHeadline = Boolean(span.beat.on_screen_text);
   let best: { frame: Frame; fit: number } | null = null;
   for (let i = 0; i < frames.length; i++) {
     const frame = frames[(span.index + i) % frames.length];
-    const fit = frameFit(frame, elements, th, props.width, props.height, props.safeArea, hasHeadline);
+    const fit = frameFit(frame, elements, th, props.width, props.height, props.safeArea);
     if (fit >= MIN_FIT) return frame;
     if (!best || fit > best.fit) best = { frame, fit };
   }

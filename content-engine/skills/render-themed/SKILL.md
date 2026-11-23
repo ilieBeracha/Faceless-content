@@ -27,7 +27,7 @@ A scene skill with no fixed look and no fixed set of pictures.
 - **The pictures are yours.** Each episode draws the artwork its story needs, as vector shapes in the script.
   The theme decides how they are shown (paper stickers, line drawings, flat shapes) and colours them.
 
-The skill draws the beat's `on_screen_text` itself in the headline area — the engine's headline box stays off.
+There is no headline: the captions are the video's only words on screen besides the lettering this skill draws.
 Without frames, lettering stacks above the character and an `art` element sits beside it; with frames, each goes in
 its frame's box. Either way, use at most one `art` element per beat.
 Nothing holds still: backdrops drift, plates hop, notes sway, markers travel, artwork hovers.
@@ -98,8 +98,8 @@ With a world, every beat tells its words in 1–3 shots, and takes no `elements`
   the picture changes on the word it shows. Pick the word that names the new thing ("goose").
 - One clear moment per shot: one action, few objects. Follow the story: a shot per new place, thing or turn.
 - Pictures carry **no words**: never ask for text, signs, labels or numbers. No real people, logos, brand mascots
-  or copyrighted characters. The beat's `on_screen_text` is still drawn as the headline (keep it short).
-- Keep the top fifth and the bottom third calm (sky, floor): the headline and the captions go there.
+  or copyrighted characters.
+- Keep the bottom third calm (floor, table): the captions go there.
 
 `camera` on a shot moves over it: `push-in`, `pull-out`, `pan-left`, `pan-right`, `rise`, `sink` or `drift`.
 Leave it out and shots take turns, so consecutive shots never move the same way. Shots dissolve into each other.

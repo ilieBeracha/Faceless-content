@@ -301,7 +301,6 @@ export function checkScript(ws: Workspace, raw: unknown, ctx: { channel: Channel
     const room = hookLimit(ws, hookSpeaker);
     errors.push(`the first sentence has ${hook.count} ${hook.unit} (≈${hook.seconds.toFixed(2)}s) — the hook must land within ${ws.config.hook.hook_line_ends_by_seconds}s, keep it to ${room.max} ${room.unit} or fewer`);
   }
-  if (!script.beats[0].on_screen_text) warnings.push("the first beat has no on_screen_text — a visible hook in the first frames helps retention");
 
   const banned = bannedTopicHits(ctx.channel, allText(script));
   for (const hit of banned) warnings.push(`possible banned topic "${hit.topic}" — matched "${hit.match}" (the QA review must confirm it's a false positive)`);

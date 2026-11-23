@@ -50,17 +50,26 @@ export function buildPages(words: TimedWord[], measure: (text: string) => number
     if (/[.!?]["”')]?$/.test(word.text) && i < words.length - 1) flush();
   });
   flush();
-  // Each page stays up until the next one starts (or briefly after its last word).
+  // Each page stays up until the next one starts, through any pause (the last one briefly after its last word).
   for (let i = 0; i < pages.length; i++) {
     const next = pages[i + 1];
-    pages[i].end = next ? Math.min(next.start, pages[i].end + 1.2) : pages[i].end + hold;
+    pages[i].end = next ? next.start : pages[i].end + hold;
   }
   return pages;
 }
 
-export function pageAt(pages: CaptionPage[], t: number): CaptionPage | null {
+/**
+ * The page on screen at time t, out of pages built from `wordCount` words (some may be left out for hidden beats).
+ * Captions are always visible: the page with the first word shows from the very first frame, and the page with the
+ * last word stays to the end. Only a hidden beat shows nothing.
+ */
+export function pageAt(pages: CaptionPage[], t: number, wordCount: number): CaptionPage | null {
+  if (!pages.length) return null;
+  const first = pages[0];
+  const last = pages[pages.length - 1];
+  if (t < first.start) return first.lines[0].words[0].i === 0 ? first : null;
   for (const p of pages) if (t >= p.start - 0.05 && t < p.end) return p;
-  return null;
+  return t >= last.end && last.lines.at(-1)!.words.at(-1)!.i === wordCount - 1 ? last : null;
 }
 
 /** Index of the word being spoken at time t (the last one that has started), or -1. */

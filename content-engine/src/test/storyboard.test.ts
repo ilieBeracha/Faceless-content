@@ -106,13 +106,12 @@ describe("storyboard: approved as it was seen", () => {
 
 describe("storefront: storyboard forms", () => {
   it("reads a part's shots in order, drops removed and empty ones, and asks for the word a later shot cuts in on", () => {
-    const edit = parseBeatForm({ show_1: "A goose at the front desk", host_1: "on", show_2: "  A duck   in the lobby ", remove_2: "on", show_3: "A swan by the lift doors", at_3: "swan", text: " Geese! " }, true);
-    assert.deepEqual(edit, { shots: [{ show: "A goose at the front desk", host: true }, { show: "A swan by the lift doors", host: false, at: "swan" }], on_screen_text: " Geese! " });
-    assert.equal(parseBeatForm({ show_1: "A goose at the front desk", host_1: "on", text: "" }, false).shots[0].host, false, "no host on screen: no shot gets one");
-    assert.throws(() => parseBeatForm({ show_1: "A goose at the front desk", show_2: "A duck in the lobby", text: "" }, true), (e: Error) => e instanceof CustomerError && /shot 2 cuts in on/.test(e.message));
-    assert.throws(() => parseBeatForm({ show_1: "Goose", text: "" }, true), /10 to 500 characters/);
-    assert.throws(() => parseBeatForm({ show_1: "A goose at the front desk", remove_1: "on", text: "" }, true), /at least one shot/);
-    assert.throws(() => parseBeatForm({ show_1: "A goose at the front desk", text: "x".repeat(49) }, true), /48 characters/);
+    const edit = parseBeatForm({ show_1: "A goose at the front desk", host_1: "on", show_2: "  A duck   in the lobby ", remove_2: "on", show_3: "A swan by the lift doors", at_3: "swan" }, true);
+    assert.deepEqual(edit, { shots: [{ show: "A goose at the front desk", host: true }, { show: "A swan by the lift doors", host: false, at: "swan" }] });
+    assert.equal(parseBeatForm({ show_1: "A goose at the front desk", host_1: "on" }, false).shots[0].host, false, "no host on screen: no shot gets one");
+    assert.throws(() => parseBeatForm({ show_1: "A goose at the front desk", show_2: "A duck in the lobby" }, true), (e: Error) => e instanceof CustomerError && /shot 2 cuts in on/.test(e.message));
+    assert.throws(() => parseBeatForm({ show_1: "Goose" }, true), /10 to 500 characters/);
+    assert.throws(() => parseBeatForm({ show_1: "A goose at the front desk", remove_1: "on" }, true), /at least one shot/);
   });
 
   it("reads caption settings, the own colour only when asked for, and parts without captions", () => {

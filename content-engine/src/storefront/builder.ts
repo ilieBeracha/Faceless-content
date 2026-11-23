@@ -82,16 +82,14 @@ export interface StoryboardView {
   pictures: Record<string, string>;
 }
 
-/** One beat as the customer left it on the storyboard: its shots in order, and its on-screen text ("" = none). */
+/** One beat as the customer left it on the storyboard: its shots in order. */
 export interface BeatEdit {
   shots: { show: string; host: boolean; at?: string }[];
-  on_screen_text: string;
 }
 
 /**
  * A beat's storyboard form: slots 1–3, each `show_<n>` (empty or `remove_<n>` = no shot), `host_<n>` ("on"),
- * `at_<n>` (the word a later shot cuts in on), and `text` (the on-screen text). Throws (for the customer) when it
- * is not filled in right.
+ * `at_<n>` (the word a later shot cuts in on). Throws (for the customer) when it is not filled in right.
  */
 export function parseBeatForm(form: Record<string, string>, hostOnScreen: boolean): BeatEdit {
   const shots: BeatEdit["shots"] = [];
@@ -104,9 +102,7 @@ export function parseBeatForm(form: Record<string, string>, hostOnScreen: boolea
     shots.push({ show, host: hostOnScreen && form[`host_${n}`] === "on", ...(shots.length > 0 ? { at } : {}) });
   }
   if (!shots.length) throw new CustomerError("Each part needs at least one shot.");
-  const text = form.text ?? "";
-  if (text.trim().length > 48) throw new CustomerError("Keep the on-screen text to 48 characters or fewer.");
-  return { shots, on_screen_text: text };
+  return { shots };
 }
 
 /** The captions form: `show`, `size`, `place`, `case`, `color` (used when `own_color` is "on"; else the channel's accent) and `hide_<beat id>` ("on"). */
@@ -612,11 +608,11 @@ export class Builder {
     this.queueVideo(id);
   }
 
-  /** The caption settings a new video's storyboard starts with: the channel's own, else not drawn into the video (they come as a file of their own), medium, at the bottom, in the channel's case. */
+  /** The caption settings a new video's storyboard starts with: the channel's own, else drawn into the video (they are its only words on screen), medium, at the bottom, in the channel's case. */
   channelCaptions(order: Order): CaptionSettings {
     if (order.captions) return order.captions;
     const brand = brandOf(loadChannel(this.ws, order.channel!).doc.data);
-    return { show: false, size: "medium", place: "bottom", case: brand.caption_case, hide_beats: [] };
+    return { show: true, size: "medium", place: "bottom", case: brand.caption_case, hide_beats: [] };
   }
 
   /** The storyboard the customer is checking: every beat's line, shots and on-screen text, and the captions. Throws when the order is not at that step. */
@@ -684,9 +680,8 @@ export class Builder {
 
   /**
    * The customer changed one beat on the storyboard: its shots (what each shows, whether the host is in it, the word
-   * it cuts in on) and its on-screen text; `again` asks for one unchanged shot (1-based) to be painted once more. Shots whose picture changes are painted again (each counts against the
-   * video's repaints); changed on-screen text sends the facts back for approval. Throws (for the customer) when the
-   * change is not valid.
+   * it cuts in on); `again` asks for one unchanged shot (1-based) to be painted once more. Shots whose picture changes
+   * are painted again (each counts against the video's repaints). Throws (for the customer) when the change is not valid.
    */
   editBeat(id: string, beatId: string, edit: BeatEdit, again?: number): void {
     const order = this.store.byId(id);
@@ -704,13 +699,11 @@ export class Builder {
       ...(old[n]?.camera ? { camera: old[n].camera } : {}),
       host: s.host,
     }));
-    const text = edit.on_screen_text.replace(/\s+/g, " ").trim();
     const next: Script = {
       ...script,
       beats: script.beats.map((b) => {
         if (b.id !== beatId) return b;
-        const { on_screen_text: _was, ...rest } = b;
-        return { ...rest, visual: { ...b.visual, shots }, ...(text ? { on_screen_text: text } : {}) };
+        return { ...b, visual: { ...b.visual, shots } };
       }),
     };
     const check = checkScript(this.ws, next, { channel, series: script.series, idea: script.idea });
@@ -721,9 +714,8 @@ export class Builder {
     // "New picture": the same shot painted once more. Only when that shot is not being painted again anyway.
     const fresh = again !== undefined && shots.length === old.length && shots[again - 1] && !changed(again - 1) ? again : undefined;
     const repaints = shots.filter((_, n) => changed(n)).length + (fresh ? 1 : 0);
-    const textChanged = (beat.on_screen_text ?? "") !== text;
     const shotsChanged = JSON.stringify(old) !== JSON.stringify(shots);
-    if (!textChanged && !shotsChanged && !fresh) return;
+    if (!shotsChanged && !fresh) return;
     const left = REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0);
     if (repaints > left) throw new CustomerError(`That would paint ${repaints} shot${repaints === 1 ? "" : "s"} again, and this video has ${left} repaint${left === 1 ? "" : "s"} left.`);
     writeJson(join(dir, "script.json"), next);

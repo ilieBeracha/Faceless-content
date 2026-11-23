@@ -146,47 +146,6 @@ const Dimension: React.FC<{ ctx: Ctx; width: number }> = ({ ctx, width }) => {
   );
 };
 
-/** The beat's on-screen text. It has to be readable within half a second, whatever the theme. */
-const Headline: React.FC<{ ctx: Ctx; text: string; region: Rect; spanId: string }> = ({ ctx, text, region, spanId }) => {
-  const { th } = ctx;
-  const words = text.split(" ");
-  const box: React.CSSProperties = { position: "absolute", left: region.x, top: region.y, width: region.w, height: region.h, display: "flex", alignItems: "center", justifyContent: "center" };
-  if (th.surface === "torn") {
-    const size = text.length > 26 ? 66 : text.length > 18 ? 76 : 90;
-    return (
-      <div style={box}>
-        <Probe ctx={ctx} id={`headline:${spanId}`} kind="headline" on={ctx.t > (words.length - 1) * 0.03 + 0.17} style={{ maxWidth: region.w, display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "6px 10px" }}>
-          {words.map((w, i) => (
-            <Plate key={i} ctx={ctx} text={w} seed={i + 1 + text.length} size={size} maxWidth={region.w * 0.9} delay={i * 0.03} />
-          ))}
-        </Probe>
-      </div>
-    );
-  }
-  const font = fontFor(th.display[0]);
-  const size = (text.length > 26 ? 56 : text.length > 18 ? 66 : 80) * FACE[th.display[0]].scale;
-  const k = enter(th, ctx.t, 0.25);
-  const look: React.CSSProperties =
-    th.surface === "ruled"
-      ? { border: `4px solid ${th.text}`, outline: `2px solid ${th.text}`, outlineOffset: 6, background: th.paper, color: th.text }
-      : th.surface === "plain"
-        ? { background: th.card, color: th.ink, borderRadius: 26, boxShadow: SOFT }
-        : { color: th.text, textShadow: `0 0 26px ${th.accent}`, borderBottom: `5px solid ${th.accent}` };
-  return (
-    <div style={box}>
-      <Probe
-        ctx={ctx}
-        id={`headline:${spanId}`}
-        kind="headline"
-        on={ctx.t > 0.3}
-        style={{ maxWidth: region.w - 12, boxSizing: "border-box", padding: "8px 26px", fontFamily: font.family, fontWeight: font.heavy, fontSize: size, lineHeight: 1.1, textAlign: "center", ...cased(th), ...look, ...(th.motion === "draw-on" ? {} : { opacity: clamp(k * 3), transform: `scale(${0.8 + 0.2 * k})` }) }}
-      >
-        <Typed text={text} t={ctx.t} rate={0.25 / text.length} on={th.motion === "draw-on"} />
-      </Probe>
-    </div>
-  );
-};
-
 function Heading({ el, ctx, w }: { el: Extract<ThElement, { type: "heading" }>; ctx: Ctx; w: number }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
@@ -485,7 +444,7 @@ function cameraAt(move: CameraMove, p: number, clock: number): { scale: number; 
 }
 
 /** The painted story: the shot on screen, filmed with its camera move; the shot before dissolves out under it. */
-const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number; width: number; height: number; headline: boolean }> = ({ shots, th, now, clock, width, height, headline }) => {
+const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number; width: number; height: number }> = ({ shots, th, now, clock, width, height }) => {
   const at = shots.reduce((cur, s, i) => (now >= s.start ? i : cur), 0);
   const draw = (s: ShotSpan, opacity: number) => {
     const p = clamp((now - s.start) / Math.max(0.1, s.end - s.start));
@@ -501,15 +460,14 @@ const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number
   const cur = shots[at];
   const before = at > 0 ? shots[at - 1] : null;
   const fadeIn = before ? clamp((now - cur.start) / FADE) : 1;
-  // A light wash in the look's paper colour, only under the lettering: behind the captions, and behind the headline when there is one.
+  // A light wash in the look's paper colour, only under the lettering: behind the captions.
   const paper = th.paper.length === 4 ? `#${th.paper[1]}${th.paper[1]}${th.paper[2]}${th.paper[2]}${th.paper[3]}${th.paper[3]}` : th.paper;
   const wash = (a: number) => `${paper}${Math.round(a * 255).toString(16).padStart(2, "0")}`;
-  const top = headline ? `${wash(0.4)} 0%, ${wash(0)} 18%` : `${wash(0)} 0%`;
   return (
     <>
       {before && fadeIn < 1 && draw(before, 1)}
       {draw(cur, fadeIn)}
-      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${top}, ${wash(0)} 64%, ${wash(0.42)} 100%)` }} />
+      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${wash(0)} 0%, ${wash(0)} 64%, ${wash(0.42)} 100%)` }} />
     </>
   );
 };
@@ -539,7 +497,6 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
   // A look with a world tells the story in painted shots: no lettering over them, and the host is drawn inside them.
   const story = Boolean(th.world);
   const elements = visual.skill === "render-themed" && !story ? (visual.elements ?? []) : [];
-  const headline = span.beat.on_screen_text;
   const hostShown = !story && props.renderSkills.includes("render-talking-character") && span.beat.character.placement !== "hidden";
   const fr = story ? null : beatFrame(props, span);
   let area: Rect;
@@ -548,7 +505,7 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
   let align: "top" | "middle" | "bottom";
   if (fr) {
     // The look's frames say where everything goes (see frames.ts for how a beat gets its frame).
-    area = frameTextRect(fr, width, height, props.safeArea, Boolean(headline));
+    area = frameTextRect(fr, width, height, props.safeArea);
     side = fr.picture ? onStage(fr.picture, r.stage) : null;
     const host = hostShown ? frameHostRect(fr, span.beat.character.placement === "full" ? "full" : "corner", width, height, props.safeArea) : null;
     lane = !host ? [0, width] : host.x > width - (host.x + host.w) ? [0, host.x - 60] : [host.x + host.w + 60, width];
@@ -556,7 +513,7 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
   } else {
     const ch = hostShown ? characterRect(span.beat.character.placement as "full" | "corner", width, height, props.safeArea, th.layout) : null;
     // Lettering stacks above the character; the artwork takes the spot beside it, unless the look stacks it with the lettering.
-    const top = headline ? r.stage.y : r.headline.y;
+    const top = r.headline.y;
     area = { x: r.stage.x, y: top, w: r.stage.w, h: (ch ? ch.y - 16 : r.stage.y + r.stage.h) - top };
     const beside: Rect | null = !ch ? null : th.layout.host === "left" ? { x: ch.x + ch.w + 20, y: ch.y, w: r.stage.x + r.stage.w - (ch.x + ch.w + 20), h: ch.h } : { x: r.stage.x, y: ch.y, w: ch.x - 20 - r.stage.x, h: ch.h };
     // A big host leaves too little room above it to stack a picture with the lettering, so there the picture stays beside it.
@@ -576,8 +533,7 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
 
   return (
     <AbsoluteFill style={{ background: th.paper, overflow: "hidden" }}>
-      {story ? <World shots={shotTimeline(props, spans)} th={th} now={now} clock={clock} width={width} height={height} headline={Boolean(headline)} /> : <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />}
-      {headline && <Headline ctx={{ t: now - span.start, now, clock, th, probe, id: `th:${span.id}:headline`, rtl: props.direction === "rtl" }} text={headline} region={r.headline} spanId={span.id} />}
+      {story ? <World shots={shotTimeline(props, spans)} th={th} now={now} clock={clock} width={width} height={height} /> : <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />}
       {flow.map(({ el, i }, n) => {
         const topPx = y;
         y += (items[n].h + GAP) * scale;

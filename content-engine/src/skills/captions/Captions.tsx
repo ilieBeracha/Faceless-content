@@ -83,14 +83,15 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
     const hidden = new Set(hideKey.split(" ").filter(Boolean));
     return buildPages(props.words, (text) => estimateWidth(text, FONT_SIZE, upper), region.w - 80, 2, GAP).filter((p) => !hidden.has(p.lines[0].words[0].beat));
   }, [props.words, upper, region.w, FONT_SIZE, hideKey]);
-  const page = pageAt(pages, t);
+  const page = pageAt(pages, t, props.words.length);
   const active = activeWordIndex(props.words, t);
   const ref = useRef<HTMLDivElement>(null);
   const onPage = page ? page.lines.flatMap((l) => l.words).some((w) => w.i === active) : false;
   useQaProbe(props.qaProbe && Boolean(page), ref, "captions", "caption", { word: onPage ? active : -1 });
   if (!page) return null;
 
-  const appear = easeOut((t - page.start + 0.05) / 0.12);
+  // The first page is already up on the first frame; later pages ease in.
+  const appear = page.lines[0].words[0].i === 0 ? 1 : easeOut((t - page.start + 0.05) / 0.12);
   const activeText = luminance(props.brand.accent_color) > 0.45 ? "#121418" : props.brand.text_color;
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>

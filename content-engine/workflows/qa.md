@@ -8,8 +8,8 @@ script (`qa-review.json`). Results are written to the episode's `qa-report.md`.
 
 - [ ] **Format** — 1080×1920, 30 fps, H.264 video + AAC audio, MP4.
 - [ ] **Length** — inside the series' `length.min_seconds`–`max_seconds`.
-- [ ] **Hook in the first 2 s** — speech starts by 0.5 s; the first sentence ends by 2.0 s; the first beat's
-      on-screen text is visible by 0.5 s.
+- [ ] **Hook in the first 2 s** — speech starts by 0.5 s; the first sentence ends by 2.0 s; the captions are on
+      screen by 0.5 s (they are the only words on screen, and stay up from the first frame to the last).
 - [ ] **Safe areas** — every caption, headline, label and graphic text stays inside the platform-safe area
       (top 250 px, bottom 440 px, left 60 px, right 150 px of the 1080×1920 frame) on every frame.
 - [ ] **Nothing cut off** — no text leaves the frame or overflows its box on any frame.
