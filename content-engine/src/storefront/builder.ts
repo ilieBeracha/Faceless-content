@@ -27,16 +27,17 @@ import { runTask } from "../core/tasks.ts";
 import { nowIso, readJson, readText, today, writeJson, writeText } from "../core/util.ts";
 import { Workspace } from "../core/workspace.ts";
 import { draftChannelTask } from "../pipeline/draft-channel.ts";
-import { episodesDir, listEpisodes, makeEpisode } from "../pipeline/episode.ts";
+import { episodesDir, listEpisodes, loadEpisode, makeEpisode, readScript } from "../pipeline/episode.ts";
 import { approveFactcheck, readFactcheck, rejectFactcheck } from "../pipeline/factcheck.ts";
 import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
-import { PACES, approveStoryboard, captionSettingsSchema, readStoryboard, setCaptions, setPace, storyboardApproved, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
+import { PACES, approveStoryboard, captionSettingsSchema, readStoryboard, setPace, setVideoCaptions, storyboardApproved, videoCaptions, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
 import { checkScript } from "../pipeline/script-check.ts";
-import { brandOf, loadChannelTheme } from "../render/render-episode.ts";
+import { bakeCaptions, brandOf, buildProps, loadChannelTheme } from "../render/render-episode.ts";
+import { liveCaptions, type LiveCaptions } from "../skills/captions/live.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
 import { checkShots, shotsUsed, showsHost, type Shot, type ThBeatVisual } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
-import { versionPath, videoPath, videoVersions } from "./brand-kit.ts";
+import { cleanVideoPath, versionPath, videoPath, videoVersions } from "./brand-kit.ts";
 import { MAX_ROUNDS, REPAINTS_PER_VIDEO, SUGGESTS_PER_DAY, TOPIC_MAX, VIDEOS_PER_DAY, changeRequests, countToday, isBuilding, isMakingVideo, videoUnderWay, type Order, type OrderStore } from "./store.ts";
 
 /** What a channel's dashboard shows: ideas to make, suggestions to decide on, and what can be started today. */
@@ -105,7 +106,7 @@ export function parseBeatForm(form: Record<string, string>, hostOnScreen: boolea
   return { shots };
 }
 
-/** The captions form: `show`, `size`, `place`, `case`, `color` (used when `own_color` is "on"; else the channel's accent) and `hide_<beat id>` ("on"). */
+/** The captions form: `show`, `size`, `place`, `case`, `font`, `text_color`, `color` (used when `own_color` is "on"; else the channel's accent) and `hide_<beat id>` ("on"). */
 export function parseCaptionForm(form: Record<string, string>): CaptionSettings {
   const r = captionSettingsSchema.safeParse({
     show: form.show === "on",
@@ -113,6 +114,8 @@ export function parseCaptionForm(form: Record<string, string>): CaptionSettings 
     place: form.place,
     case: form.case,
     ...(form.own_color === "on" ? { color: form.color ?? "" } : {}),
+    ...(form.text_color ? { text_color: form.text_color } : {}),
+    ...(form.font ? { font: form.font } : {}),
     hide_beats: Object.keys(form)
       .filter((k) => k.startsWith("hide_") && form[k] === "on")
       .map((k) => k.slice("hide_".length)),
@@ -144,11 +147,24 @@ export interface VideoPick {
 /** `direction`: what the customer asked the ideas to be about, in their own words, if they said. */
 export type Suggester = (ws: Workspace, slug: string, series: string, direction?: string) => Promise<void>;
 
+/** Draws a finished video's captions into it again, as its caption settings now say (nothing else is made again). */
+export type CaptionBaker = (ws: Workspace, slug: string, episode: string) => Promise<void>;
+
 export interface Writer {
   draft: Drafter;
   revise: Reviser;
   video: VideoMaker;
   suggest: Suggester;
+  captions: CaptionBaker;
+}
+
+/** What a finished video's captions step shows: how its captions look now, and what the browser draws them live from. */
+export interface CaptionsView {
+  settings: CaptionSettings;
+  live: LiveCaptions;
+  beats: Script["beats"];
+  /** Its changed captions being drawn into the video, or stopped. */
+  restyle: { state: "working" | "failed"; error?: string } | null;
 }
 
 /** The engine's own episode pipeline, with the Claude API (paid) writing the script and reviewing the frames. */
@@ -200,6 +216,10 @@ export const claudeWriter: Writer = {
   revise: (ws, slug, requests, skills, keep) => runTask(ws, reviseChannelTask(ws, slug, requests, skills, keep), "anthropic"),
   video: claudeVideo,
   suggest: claudeSuggest,
+  captions: async (ws, slug, episode) => {
+    const ep = loadEpisode(ws, slug, episode);
+    await bakeCaptions(ws, ep, readScript(ep), { log: (line) => console.log(line) });
+  },
 };
 
 /** How many times a build that was cut off (the server stopped mid-way) is started again by itself. */
@@ -382,6 +402,8 @@ export class Builder {
       if (order.build?.kind === "revise") {
         if (isBuilding(order) && !this.waiting.has(order.id)) this.fail(order.id, "The server stopped while the changes were being made.");
       } else this.consider(order.id);
+      // Captions that were being drawn when the server stopped are drawn again.
+      if (order.restyle?.state === "working") this.queueRestyle(order.id);
       if (this.waiting.has(order.id)) continue;
       if (!order.video) this.startVideo(order.id);
       else if (isMakingVideo(order)) {
@@ -732,12 +754,68 @@ export class Builder {
     this.queueVideo(id);
   }
 
-  /** The customer changed this video's captions. The storyboard then waits for their approval again. */
-  setVideoCaptions(id: string, captions: CaptionSettings): void {
+  /**
+   * A finished video's captions step: how its captions look now (its own settings, else the channel's) and the data to
+   * draw them live over its clean render. Null for a video rendered before clean renders were kept (its captions are
+   * part of the picture). Throws (for the customer) when there is no such finished video.
+   */
+  captionsView(order: Order, episode: string): CaptionsView | null {
+    const { channel } = this.dashboardChannel(order);
+    if (!listEpisodes(channel).some((e) => e.id === episode && e.status === "done")) throw new CustomerError("That video is not available.");
+    if (!existsSync(cleanVideoPath(this.ws, channel.slug, episode))) return null;
+    const ep = loadEpisode(this.ws, channel.slug, episode);
+    const script = readScript(ep);
+    const props = buildProps(this.ws, ep, script);
+    const r = order.restyle?.episode === episode ? order.restyle : null;
+    return {
+      settings: videoCaptions(ep.dir) ?? this.channelCaptions(order),
+      // The channel's own colours, not the ones the video's settings put on top: the form says when its own are used.
+      live: liveCaptions({ ...props, brand: brandOf(channel.doc.data) }),
+      beats: script.beats,
+      restyle: r ? { state: r.state, ...(r.error ? { error: r.error } : {}) } : null,
+    };
+  }
+
+  /**
+   * The customer changed how a finished video's captions look: keep the settings and draw them into the video again.
+   * Nothing else is made again; the video they have stays until the new one is drawn. Throws (for the customer) when
+   * the video has no clean render to draw on, or the settings hide a part it doesn't have.
+   */
+  restyleCaptions(id: string, episode: string, captions: CaptionSettings): void {
     const order = this.store.byId(id);
     if (!order) throw new Error(`No order "${id}".`);
-    const { dir, script } = this.storyboardEpisode(order);
-    setCaptions(dir, script, captions);
+    if (!this.captionsView(order, episode)) throw new CustomerError("This video was made before captions could be changed, so its captions are part of the picture.");
+    if (order.restyle?.state === "working") throw new CustomerError("The captions you saved last are still being put into a video. Try again in a minute.");
+    const ep = loadEpisode(this.ws, order.channel!, episode);
+    const script = readScript(ep);
+    if (captions.hide_beats.some((b) => !script.beats.some((x) => x.id === b))) throw new CustomerError("Those parts are not in this video.");
+    setVideoCaptions(ep.dir, script, captions);
+    this.store.update(id, (o) => {
+      o.restyle = { episode, state: "working", at: nowIso() };
+    });
+    this.queueRestyle(id);
+  }
+
+  private queueRestyle(id: string): void {
+    this.tail = this.tail.then(() => this.runRestyle(id));
+  }
+
+  private async runRestyle(id: string): Promise<void> {
+    const order = this.store.byId(id)!;
+    const r = order.restyle!;
+    try {
+      await this.writer.captions(this.ws, order.channel!, r.episode);
+      this.store.update(id, (o) => {
+        delete o.restyle;
+      });
+      console.log(`Order ${id}: captions of ${r.episode} drawn again.`);
+    } catch (err) {
+      const error = err instanceof Error ? err.message : String(err);
+      console.error(`Order ${id}: drawing the captions of ${r.episode} failed. ${error}`);
+      this.store.update(id, (o) => {
+        o.restyle = { ...r, state: "failed", at: nowIso(), error };
+      });
+    }
   }
 
   /** The customer chose how fast the voice speaks in this video. The storyboard then waits for their approval again. */

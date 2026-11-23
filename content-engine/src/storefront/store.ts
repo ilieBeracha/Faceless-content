@@ -128,7 +128,17 @@ export interface Order {
   suggest?: Suggest;
   /** The caption settings each new video's storyboard starts with. Absent = captions drawn into the video (they are its only words on screen), medium, at the bottom, in the channel's case. */
   captions?: CaptionSettings;
+  /** A finished video's captions being drawn into it again after the customer changed how they look (absent once drawn). */
+  restyle?: Restyle;
   decisions: Partial<Record<SectionId, Decision>>;
+}
+
+/** Drawing a finished video's changed captions into it: under way, or stopped (`error`). The video they had stays until it is done. */
+export interface Restyle {
+  episode: string;
+  state: "working" | "failed";
+  at: string;
+  error?: string;
 }
 
 export interface Suggest {

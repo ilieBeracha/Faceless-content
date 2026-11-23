@@ -4,11 +4,7 @@ import { fontFor } from "../../render/fonts.ts";
 import { useQaProbe } from "../../render/qa-probe.ts";
 import { clamp, easeOut, regions } from "../../render/timeline.ts";
 import type { EpisodeProps } from "../../render/types.ts";
-import { activeWordIndex, buildPages, estimateWidth, pageAt } from "./pages.ts";
-
-const FONT_SIZES = { small: 58, medium: 74, large: 88 } as const;
-const SINGLE_SIZES = { small: 48, medium: 60, large: 72 } as const;
-const GAP = 30;
+import { activeWordIndex, buildPages, estimateWidth, FONT_SIZES, GAP, pageAt, SINGLE_SIZES, SINGLE_WORD_Y } from "./pages.ts";
 
 /** The beats a storyboard shows without captions. */
 function hiddenBeats(props: EpisodeProps): Set<string> {
@@ -20,9 +16,6 @@ function hiddenBeats(props: EpisodeProps): Set<string> {
  * Timing comes straight from audio/timings.json, so captions can't drift from the voice.
  */
 export const Captions: React.FC<{ props: EpisodeProps }> = ({ props }) => (props.captionStyle === "single-word" ? <SingleWord props={props} /> : <Pages props={props} />);
-
-/** Where single-word captions sit: the upper middle of the frame, above where faces usually are. */
-export const SINGLE_WORD_Y = 0.42;
 
 /** One word at a time, small and centred on the picture (storybook style). */
 const SingleWord: React.FC<{ props: EpisodeProps }> = ({ props }) => {
@@ -36,7 +29,7 @@ const SingleWord: React.FC<{ props: EpisodeProps }> = ({ props }) => {
   const ref = useRef<HTMLDivElement>(null);
   useQaProbe(props.qaProbe && visible, ref, "captions", "caption", { word: visible ? active : -1 });
   if (!word || !visible) return null;
-  const font = fontFor(props.brand.font);
+  const font = fontFor(props.captionLayout?.font ?? props.brand.font);
   const pop = easeOut((t - word.start) / 0.08);
   const upper = props.brand.caption_case === "upper";
   const r = regions(width, height, props.safeArea);
@@ -71,7 +64,7 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const t = frame / fps;
-  const font = fontFor(props.brand.font);
+  const font = fontFor(props.captionLayout?.font ?? props.brand.font);
   const low = regions(width, height, props.safeArea).captions;
   // "middle": the same band, centred on the picture instead of above the platform's buttons.
   const region = props.captionLayout?.place === "middle" ? { ...low, y: Math.round(height / 2 - low.h / 2) } : low;
@@ -92,7 +85,10 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
 
   // The first page is already up on the first frame; later pages ease in.
   const appear = page.lines[0].words[0].i === 0 ? 1 : easeOut((t - page.start + 0.05) / 0.12);
-  const activeText = luminance(props.brand.accent_color) > 0.45 ? "#121418" : props.brand.text_color;
+  // The words are white unless the person chose a colour; the spoken one sits on the highlight, in dark or white to stay readable.
+  const text = props.captionLayout?.text_color ?? "#ffffff";
+  const highlight = props.captionLayout?.highlight ?? props.brand.accent_color;
+  const activeText = luminance(highlight) > 0.45 ? "#121418" : "#ffffff";
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       <div
@@ -136,8 +132,8 @@ const Pages: React.FC<{ props: EpisodeProps }> = ({ props }) => {
                       letterSpacing: upper ? 0.5 : -0.5,
                       textTransform: upper ? "uppercase" : "none",
                       whiteSpace: "nowrap",
-                      color: isActive ? activeText : spoken ? props.brand.text_color : withAlpha(props.brand.text_color, 0.82),
-                      background: isActive ? props.brand.accent_color : "transparent",
+                      color: isActive ? activeText : spoken ? text : withAlpha(text, 0.82),
+                      background: isActive ? highlight : "transparent",
                       borderRadius: 18,
                       padding: "2px 10px",
                       margin: "0 -10px",

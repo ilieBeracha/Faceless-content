@@ -12,7 +12,8 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { join } from "node:path";
 import { channelExists, listChannelSlugs } from "../core/channels.ts";
 import { ENGINE_DIR, type Workspace } from "../core/workspace.ts";
-import { brandKit, captionsFilePath, framesDir, versionPath, videoPath } from "./brand-kit.ts";
+import { brandKit, captionsFilePath, cleanVideoPath, framesDir, versionPath, videoPath } from "./brand-kit.ts";
+import { FONT_FACES, hebrewFile } from "../render/font-faces.ts";
 import { CustomerError, parseBeatForm, parseCaptionForm, type Builder } from "./builder.ts";
 import { hostPicture, loadCatalog } from "./catalog.ts";
 import { buildHost } from "./designer.ts";
@@ -54,6 +55,12 @@ const MEDIA: Record<string, string> = { ".jpg": "image/jpeg", ".mp4": "video/mp4
 
 function sendAsset(req: IncomingMessage, res: ServerResponse, parts: string[], libraryDir: string): void {
   if (req.method !== "GET") throw new HttpError(404, "There is no page at this address.");
+  // Caption fonts, for drawing captions live: /assets/font/cap/<key>.woff2 and <key>-he.woff2 (its Hebrew letters).
+  if (parts.length === 4 && parts[1] === "font" && parts[2] === "cap") {
+    const m = /^([a-z0-9-]+?)(-he)?\.woff2$/.exec(parts[3]);
+    if (!m || !FONT_FACES[m[1]]) throw new HttpError(404, "There is no page at this address.");
+    return sendFile(req, res, join(ENGINE_DIR, "node_modules", "@fontsource", m[2] ? hebrewFile(m[1]) : FONT_FACES[m[1]].latin), "font/woff2", null, true);
+  }
   if (parts.length === 3 && parts[1] === "font" && FONTS[parts[2]]) return sendFile(req, res, join(ENGINE_DIR, "node_modules", "@fontsource", FONTS[parts[2]]), "font/woff2", null, true);
   if (parts.length === 3 && parts[1] === "host" && parts[2].endsWith(".jpg") && SLUG.test(parts[2].slice(0, -4)) && existsSync(hostPicture(libraryDir, parts[2].slice(0, -4)))) return sendFile(req, res, hostPicture(libraryDir, parts[2].slice(0, -4)), "image/jpeg", null, true);
   const type = parts.length === 2 && /^[a-z0-9-]+\.(jpg|mp4|js)$/.test(parts[1]) ? MEDIA[parts[1].slice(parts[1].lastIndexOf("."))] : undefined;
@@ -280,7 +287,8 @@ export function createPublicServer(o: StorefrontOptions): Server {
           // One finished video's own page: it has to be one of this channel's.
           const episode = view === "video" ? url.searchParams.get("e") : null;
           if (view === "video" && !(dash && kit?.episodes.some((e) => e.id === episode))) throw new HttpError(404, "That video is not available.");
-          return send(res, 200, workspacePage(o.product, order, kit, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView, url.searchParams.has("pick"), episode));
+          const caps = view === "video" && o.builder && episode ? o.builder.captionsView(order, episode) : null;
+          return send(res, 200, workspacePage(o.product, order, kit, o.paymentUrl, o.builder !== null, facts, dash, view as ConsoleView, url.searchParams.has("pick"), episode, caps));
         }
         if (req.method === "POST" && parts.length === 3 && parts[2] === "decision") {
           if (!linkedChannel(order)) throw new HttpError(409, "There is nothing to decide on yet.");
@@ -343,7 +351,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
           } else throw new HttpError(400, "Choose Approve the facts or Ask for a change.");
           return redirect(res, order.video.idea ? `/w/${order.token}?view=new` : `/w/${order.token}`);
         }
-        // The storyboard of the video under way: change a part, set its captions or its speaking speed, or approve it.
+        // The storyboard of the video under way: change a part or its speaking speed, or approve it.
         if (req.method === "POST" && parts.length === 4 && parts[2] === "storyboard" && o.builder) {
           const form = await readForm(req);
           if (parts[3] === "beat") {
@@ -352,8 +360,7 @@ export function createPublicServer(o: StorefrontOptions): Server {
             const again = Number(form.repaint);
             o.builder.editBeat(order.id, beat, parseBeatForm(form, o.builder.storyboard(order).hostOnScreen), Number.isInteger(again) && again >= 1 && again <= 3 ? again : undefined);
             return redirect(res, `/w/${order.token}?view=new#s-${beat}-1`);
-          } else if (parts[3] === "captions") o.builder.setVideoCaptions(order.id, parseCaptionForm(form));
-          else if (parts[3] === "speed") o.builder.setVideoPace(order.id, (form.pace ?? "").trim());
+          } else if (parts[3] === "speed") o.builder.setVideoPace(order.id, (form.pace ?? "").trim());
           else if (parts[3] === "approve") o.builder.approveStoryboard(order.id);
           else if (parts[3] === "cancel") {
             o.builder.cancelRevision(order.id);
@@ -422,6 +429,17 @@ export function createPublicServer(o: StorefrontOptions): Server {
           if (form.status !== "paused" && form.status !== "active") throw new HttpError(400, "Choose Pause or Resume.");
           o.builder.setPaused(order.id, form.status === "paused");
           return redirect(res, `/w/${order.token}?view=settings`);
+        }
+        // A finished video's captions step: its clean render to draw the captions over live, and saving how they look.
+        if (req.method === "GET" && parts.length === 5 && parts[2] === "video" && SLUG.test(parts[3]) && parts[4] === "clean") {
+          const slug = linkedChannel(order);
+          const path = slug ? cleanVideoPath(channelHome(o, slug), slug, parts[3]) : null;
+          if (!path || !existsSync(path)) throw new HttpError(404, "That video is not available.");
+          return sendFile(req, res, path, "video/mp4", null);
+        }
+        if (req.method === "POST" && parts.length === 5 && parts[2] === "video" && SLUG.test(parts[3]) && parts[4] === "captions" && o.builder) {
+          o.builder.restyleCaptions(order.id, parts[3], parseCaptionForm(await readForm(req)));
+          return redirect(res, `/w/${order.token}?view=video&e=${parts[3]}`);
         }
         if (req.method === "GET" && parts.length === 4 && parts[2] === "video" && SLUG.test(parts[3])) {
           const slug = linkedChannel(order);

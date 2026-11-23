@@ -228,7 +228,7 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
   const render = await renderEpisode(ws, ep, script, { force: redo.has("render") || voice.regenerated, log });
   if (!done("render") || render.regenerated) {
     mark(ep, "render", "done", ws.rel(render.output));
-    commitPaths(ws, [join(ep.dir, "render.json"), join(ep.dir, "qa"), join(ep.dir, "episode.json")], `${channel.slug}: render for ${ep.state.id}`);
+    commitPaths(ws, [join(ep.dir, "render.json"), join(ep.dir, "captions-render.json"), join(ep.dir, "qa"), join(ep.dir, "episode.json")], `${channel.slug}: render for ${ep.state.id}`);
   }
   log(`• render: ${ws.rel(render.output)}${render.regenerated ? "" : " (cached)"}`);
 

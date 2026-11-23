@@ -1,5 +1,13 @@
 import type { TimedWord } from "../../render/types.ts";
 
+/** Caption type sizes (px on the 1080-wide frame) for "pages" captions and for one word at a time. */
+export const FONT_SIZES = { small: 58, medium: 74, large: 88 } as const;
+export const SINGLE_SIZES = { small: 48, medium: 60, large: 72 } as const;
+/** The space between words on a caption line (px). */
+export const GAP = 30;
+/** Where single-word captions sit: the upper middle of the frame, above where faces usually are. */
+export const SINGLE_WORD_Y = 0.42;
+
 export interface CaptionLine {
   words: TimedWord[];
 }

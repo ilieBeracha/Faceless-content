@@ -16,7 +16,7 @@ import { allText, bannedTopicHits, factualHash, type SeriesData } from "../pipel
 import type { LayoutSummary } from "../render/render-episode.ts";
 import { outputPath } from "../render/render-episode.ts";
 import { activeWordIndex } from "../skills/captions/pages.ts";
-import { readStoryboard } from "../pipeline/storyboard.ts";
+import { videoCaptions } from "../pipeline/storyboard.ts";
 import { footagePaths, readLedger, spent, type FootageState } from "../skills/render-ai-video/footage.ts";
 import { firstSentence, voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import { languageOf } from "../core/languages.ts";
@@ -57,7 +57,8 @@ export const QUALITY_CHECKS = ["length", "hook-speech", "hook-line", "hook-text"
 export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts: { llm: LlmProviderName; log: (l: string) => void; fresh: boolean; reviewBlocks?: boolean }): Promise<{ passed: boolean; summary: string; failures: string[]; notes: string[] }> {
   const log = opts.log;
   const checks = automatedChecks(ws, ep, script);
-  const renderHash = readJson<{ inputs_hash: string }>(join(ep.dir, "render.json")).inputs_hash;
+  // The finished video's hash (the clean render with its captions drawn over it): a review is of exactly that video.
+  const renderHash = readJson<{ inputs_hash: string }>(join(ep.dir, "captions-render.json")).inputs_hash;
   const frames = sampleFrames(ws, ep, Math.max(4, ws.config.qa.frames_to_sample), opts.fresh);
   writeJson(join(ep.dir, "qa", "automated.json"), { checked_at: nowIso(), render_hash: renderHash, checks });
   const failedAuto = checks.filter((c) => !c.pass);
@@ -117,7 +118,7 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
   add("hook-speech", "Hook: speech starts immediately", timings.speech_start <= cfg.hook.speech_starts_by_seconds, `first word at ${timings.speech_start.toFixed(2)}s (limit ${cfg.hook.speech_starts_by_seconds}s)`);
   add("hook-line", "Hook: first line lands in 2 s", hookEnd <= cfg.hook.hook_line_ends_by_seconds, `"${firstSentence(script.beats[0].voiceover)}" ends at ${hookEnd.toFixed(2)}s (limit ${cfg.hook.hook_line_ends_by_seconds}s)`);
   // The captions are the video's only words on screen: unless switched off for the first beat, they are up from the start.
-  const board = readStoryboard(ep.dir)?.captions;
+  const board = videoCaptions(ep.dir);
   if (series.skills.captions && (!board || (board.show && !board.hide_beats.includes(script.beats[0].id)))) {
     const f = layout.firstCaptionFrame;
     add("hook-text", "Hook: captions on screen", f !== null && f / cfg.video.fps <= cfg.hook.on_screen_by_seconds, f === null ? "captions never seen by the layout probe" : `visible from ${(f / cfg.video.fps).toFixed(2)}s`);
@@ -149,7 +150,7 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
     return vals.reduce((s, v) => s + v, 0) / Math.max(1, vals.length) < 0.12;
   });
   // A person can switch captions off for the video or for some beats (storyboard.json); then fewer or no frames show them.
-  const chosen = readStoryboard(ep.dir)?.captions;
+  const chosen = videoCaptions(ep.dir);
   const shown = chosen ? chosen.show && script.beats.some((b) => !chosen.hide_beats.includes(b.id)) : true;
   const highlightOk = shown ? probed > 0 && mismatched / probed <= cfg.qa.caption_sync_max_bad_ratio : probed === 0;
   const syncOk = sameWords && highlightOk && quiet.length <= Math.ceil(voiced.length * 0.03);

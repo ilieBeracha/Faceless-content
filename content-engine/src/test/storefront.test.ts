@@ -7,8 +7,8 @@ import { cpSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { after, before, describe, it } from "node:test";
 import { AccountStore } from "../storefront/accounts.ts";
-import { brandKit, videoPath, videoVersions } from "../storefront/brand-kit.ts";
-import { Builder, buildWorkspace, orderSeed, type Drafter, type Reviser, type Suggester, type VideoMaker } from "../storefront/builder.ts";
+import { brandKit, cleanVideoPath, videoPath, videoVersions } from "../storefront/brand-kit.ts";
+import { Builder, buildWorkspace, orderSeed, type CaptionBaker, type Drafter, type Reviser, type Suggester, type VideoMaker } from "../storefront/builder.ts";
 import { episodesDir } from "../pipeline/episode.ts";
 import { readFactcheck, writeFactcheck } from "../pipeline/factcheck.ts";
 import { channelExists, loadChannel } from "../core/channels.ts";
@@ -23,7 +23,7 @@ import { createAdminServer, createPublicServer } from "../storefront/server.ts";
 import { OrderStore, validateIntake } from "../storefront/store.ts";
 import { makeChannel, sampleScript, tempWorkspace } from "./helpers.ts";
 import { factualHash } from "../pipeline/script-check.ts";
-import { newStoryboard, readStoryboard, storyboardApproved, writeStoryboard } from "../pipeline/storyboard.ts";
+import { newStoryboard, readStoryboard, storyboardApproved, videoCaptions, writeStoryboard } from "../pipeline/storyboard.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
 import { showsHost, shotsUsed, type Shot } from "../skills/render-themed/schema.ts";
 import type { Script } from "../skills/write-script/schema.ts";
@@ -586,6 +586,18 @@ describe("storefront: automatic builds", () => {
     const file = videoPath(to, slug, id);
     mkdirSync(dirname(file), { recursive: true });
     writeFileSync(file, Buffer.from("0123456789"));
+    if (boards) {
+      // Its voice's timings and its clean render (the video without captions), as the real pipeline leaves them.
+      const words = written.beats.flatMap((b) => b.voiceover.split(/\s+/).map((text) => ({ beat: b.id, text })));
+      const timed = words.map((w, i) => ({ i, ...w, start: i * 0.3, end: i * 0.3 + 0.25 }));
+      const audio = join(dir, "audio");
+      mkdirSync(audio, { recursive: true });
+      writeJson(join(audio, "timings.json"), { frames: Math.ceil(words.length * 0.3 * 30) + 30, words: timed, beats: written.beats.map((b) => ({ id: b.id, speaker: "narrator", start: timed.find((w) => w.beat === b.id)!.start, end: timed.findLast((w) => w.beat === b.id)!.end })) });
+      writeJson(join(audio, "envelope.json"), { values: [] });
+      const clean = cleanVideoPath(to, slug, id);
+      mkdirSync(dirname(clean), { recursive: true });
+      writeFileSync(clean, Buffer.from("clean"));
+    }
     // The video of a chosen idea passes with review notes that don't block it (as the real pipeline does for the storefront).
     if (pick.idea) writeJson(join(dir, "qa-review.json"), { render_hash: "x", tone: { pass: true, notes: "" }, banned_topics: { pass: true, notes: "" }, visuals: { pass: false, notes: "" }, character: { pass: true, notes: "" }, overall: "fail", fixes: ["Move the caption above the <label>"], learnings: [] });
     state("done");
@@ -603,9 +615,14 @@ describe("storefront: automatic builds", () => {
       `---\ndraft: {kind: ideas, channel: ${slug}, status: proposed, created: 2026-01-0${n}}\n---\n\n## glass-bottles-${n}\n- title: How a glass bottle is blown ${n}\n- series: ${series}\n- status: proposed\n- angle: Sand turns into a bottle in seconds\n- fact: Glass is mostly sand melted at about 1,700 °C.\n- fact_source: https://www.britannica.com/technology/glass\n\n## zips-${n}\n- title: Why a zip never slips ${n}\n- series: ${series}\n- status: proposed\n`,
     );
   };
+  // Drawing captions into a video needs the renderer: the test only records which videos were asked for.
+  const baked: string[] = [];
+  const captions: CaptionBaker = async (_ws, slug, episode) => {
+    baked.push(`${slug}/${episode}`);
+  };
   const setup = (name: string, perDay: number, paymentUrl: string | null) => {
     const store = new OrderStore(ws.path("storefront", `${name}.json`));
-    const builder = new Builder(store, built, { draft, revise, video, suggest }, perDay);
+    const builder = new Builder(store, built, { draft, revise, video, suggest, captions }, perDay);
     return { store, builder, options: { ws, store, product: "Test Studio", paymentUrl, demoChannel: "kit-demo", libraryDir: ENGINE_DIR, publicBase: "http://example.test", accounts: null, builder } };
   };
   const serve = async (server: Server) => {
@@ -1044,7 +1061,8 @@ describe("storefront: automatic builds", () => {
 
       const board = await page("new");
       assert.match(board, /<li class="done">Topic<\/li><li class="done">Script<\/li><li aria-current="step">Pictures<\/li><li>Video<\/li>/);
-      assert.match(board, /\d pictures<\/h1>[\s\S]*id="t-hook-1" href="#s-hook-1"[\s\S]*\/shot\/hook-1\?v=[0-9a-f]{12}[\s\S]*id="s-hook-1"[\s\S]*Shot 1 of [\s\S]*Why doesn&#39;t your pen leak\?[\s\S]*name="repaint" value="1"[\s\S]*name="host_1" checked[\s\S]*id="s-explain-1"[\s\S]*Cuts in on the word[\s\S]*Voice speed[\s\S]*value="normal" aria-pressed="true"[\s\S]*Captions[\s\S]*Make the video[\s\S]*id="captions"/);
+      assert.match(board, /\d pictures<\/h1>[\s\S]*id="t-hook-1" href="#s-hook-1"[\s\S]*\/shot\/hook-1\?v=[0-9a-f]{12}[\s\S]*id="s-hook-1"[\s\S]*Shot 1 of [\s\S]*Why doesn&#39;t your pen leak\?[\s\S]*name="repaint" value="1"[\s\S]*name="host_1" checked[\s\S]*id="s-explain-1"[\s\S]*Cuts in on the word[\s\S]*Voice speed[\s\S]*value="normal" aria-pressed="true"[\s\S]*Make the video/);
+      assert.doesNotMatch(board, /id="captions"|storyboard\/captions/, "captions are set on the finished video, not on the storyboard");
       assert.match(board, /10 repaints left/);
       assert.match(await page(), /Needs you[\s\S]*Check the pictures[\s\S]*href="[^"]*view=new">Check the pictures/);
       const picture = await fetch(`${base}${link}/shot/hook-1`);
@@ -1081,12 +1099,6 @@ describe("storefront: automatic builds", () => {
       });
       assert.match(await (await post("storyboard/beat", { beat: "payoff", show_1: "A round pen cap rolls across a desk" })).text(), /0 repaints left/);
 
-      // Captions: bigger, in the middle, all caps, own colour, and off on the last part.
-      assert.match(await (await post("storyboard/captions", { show: "on", size: "huge", place: "bottom", case: "normal" })).text(), /caption settings are not valid/);
-      assert.equal((await post("storyboard/captions", { show: "on", size: "large", place: "middle", case: "upper", own_color: "on", color: "#ff0055", hide_payoff: "on" })).status, 303);
-      assert.deepEqual(readStoryboard(dir)?.captions, { show: true, size: "large", place: "middle", case: "upper", color: "#ff0055", hide_beats: ["payoff"] });
-      assert.match(await page("new"), /name="hide_payoff" checked/);
-
       // Speed: one of the four, shown as chosen.
       assert.match(await page("new"), /value="normal" aria-pressed="true"/);
       assert.match(await (await post("storyboard/speed", { pace: "warp" })).text(), /Choose one of the speeds/);
@@ -1115,19 +1127,48 @@ describe("storefront: automatic builds", () => {
       assert.deepEqual(now(), ["done", undefined]);
       assert.deepEqual([videoVersions(built, id, EPISODE), made.length], [[], runs]);
 
-      // With its captions changed, a new version is made (the facts and the storyboard's shots stay) and the old video is kept.
+      // With its speed changed, a new version is made (the facts and the storyboard's shots stay) and the old video is kept.
       await post("revise-video", { episode: EPISODE });
-      assert.equal((await post("storyboard/captions", { show: "on", size: "small", place: "bottom", case: "normal" })).status, 303);
+      assert.equal((await post("storyboard/speed", { pace: "normal" })).status, 303);
       assert.match(await page("new"), /Make the new version/);
       assert.match(await (await post("storyboard/cancel", {})).text(), /You changed this video/);
       assert.equal((await post("storyboard/approve", {})).status, 303);
       await builder.idle();
       assert.deepEqual(now(), ["done", undefined]);
-      assert.deepEqual(readStoryboard(dir)?.captions, { show: true, size: "small", place: "bottom", case: "normal", hide_beats: [] });
+      assert.equal(readStoryboard(dir)?.pace, undefined);
       assert.deepEqual(videoVersions(built, id, EPISODE), [1]);
-      assert.match(await (await fetch(`${base}${link}?view=video&e=2026-01-01-first`)).text(), /video\/2026-01-01-first\?r=1"[\s\S]*Earlier versions: <a href="[^"]+\/video\/2026-01-01-first\/v\/1">v1<\/a>/);
+      assert.match(await (await fetch(`${base}${link}?view=video&e=2026-01-01-first`)).text(), /video\/2026-01-01-first\/clean\?r=1"[\s\S]*Earlier versions: <a href="[^"]+\/video\/2026-01-01-first\/v\/1">v1<\/a>/);
       assert.equal((await fetch(`${base}${link}/video/${EPISODE}/v/1`)).status, 200);
       assert.equal((await fetch(`${base}${link}/video/${EPISODE}/v/2`)).status, 404);
+
+      // The finished video's captions step: its clean render plays with the captions drawn over it live, and saving
+      // puts them into the video to download without making anything else again.
+      const watch = await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text();
+      assert.match(watch, /id="cap-video"[^>]*src="[^"]+\/video\/2026-01-01-first\/clean\?r=1"[\s\S]*id="cap-layer"[\s\S]*id="cap-form"[\s\S]*name="font"[\s\S]*name="text_color" value="#ffffff"[\s\S]*name="hide_payoff"[\s\S]*Save captions[\s\S]*id="cap-data">\{"width":1080[\s\S]*"words":\[\{"t":"Why"[\s\S]*captions-live\.js/);
+      assert.equal((await fetch(`${base}${link}/video/${EPISODE}/clean`)).status, 200);
+      assert.equal((await fetch(`${base}/assets/font/cap/heebo-he.woff2`)).status, 200);
+      assert.equal((await fetch(`${base}/assets/font/cap/comic-sans.woff2`)).status, 404);
+      assert.match(await (await post(`video/${EPISODE}/captions`, { show: "on", size: "huge", place: "bottom", case: "normal" })).text(), /caption settings are not valid/);
+      assert.match(await (await post(`video/${EPISODE}/captions`, { show: "on", size: "large", place: "bottom", case: "normal", font: "comic-sans" })).text(), /caption settings are not valid/);
+      const runsBefore = made.length;
+      assert.equal((await post(`video/${EPISODE}/captions`, { show: "on", size: "large", place: "middle", case: "upper", font: "heebo", text_color: "#ffee00", own_color: "on", color: "#ff0055", hide_payoff: "on" })).status, 303);
+      assert.deepEqual(videoCaptions(dir), { show: true, size: "large", place: "middle", case: "upper", font: "heebo", text_color: "#ffee00", color: "#ff0055", hide_beats: ["payoff"] });
+      await builder.idle();
+      assert.deepEqual([store.byId(id)?.restyle, baked.at(-1), made.length], [undefined, `${id}/${EPISODE}`, runsBefore], "only the captions are drawn again");
+      assert.ok(storyboardApproved(dir, readJson<Script>(join(dir, "script.json"))), "changing the captions leaves the storyboard's approval as it was");
+      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /name="font" id="cap-font"><option[\s\S]*value="heebo" selected[\s\S]*value="#ffee00"[\s\S]*name="hide_payoff" checked/);
+      // While they are drawn, and when that stopped, the page says so; another save waits for the one under way.
+      const restyle = (state: "working" | "failed") => store.update(id, (o) => {
+        o.restyle = { episode: EPISODE, state, at: "2026-01-01T00:00:00.000Z", ...(state === "failed" ? { error: "the renderer is down" } : {}) };
+      });
+      restyle("working");
+      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /Putting your saved captions into the video/);
+      assert.match(await (await post(`video/${EPISODE}/captions`, { show: "on", size: "small", place: "bottom", case: "normal" })).text(), /still being put into a video/);
+      restyle("failed");
+      assert.match(await (await fetch(`${base}${link}?view=video&e=${EPISODE}`)).text(), /could not be put into the video \(the renderer is down\)/);
+      store.update(id, (o) => {
+        delete o.restyle;
+      });
 
       // Settings: the channel's caption defaults, and the host off screen (then no shot may show it) and back.
       assert.match(await page("settings"), /Save caption settings[\s\S]*Take the host off screen/);

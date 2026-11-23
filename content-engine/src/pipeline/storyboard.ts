@@ -18,6 +18,9 @@ export const CAPTION_SIZES = ["small", "medium", "large"] as const;
 export const CAPTION_PLACES = ["bottom", "middle"] as const;
 export type CaptionSize = (typeof CAPTION_SIZES)[number];
 export type CaptionPlace = (typeof CAPTION_PLACES)[number];
+/** The fonts captions can be drawn in (keys of render/fonts.ts FONTS), with the name a person sees. The first three have their own Hebrew letters. */
+export const CAPTION_FONTS = { rubik: "Rubik", heebo: "Heebo", "secular-one": "Secular One", fredoka: "Fredoka", montserrat: "Montserrat", anton: "Anton", "baloo-2": "Baloo 2", "space-grotesk": "Space Grotesk" } as const;
+export type CaptionFont = keyof typeof CAPTION_FONTS;
 
 /** How fast the voice speaks in one video, against the voice's own pace. */
 export const PACES = ["slower", "normal", "faster", "fastest"] as const;
@@ -40,6 +43,15 @@ export const captionSettingsSchema = z
       .regex(/^#[0-9a-f]{6}$/i, 'must be a hex colour like "#ff8800"')
       .optional()
       .describe("the spoken word's highlight; leave out for the channel's accent colour"),
+    text_color: z
+      .string()
+      .regex(/^#[0-9a-f]{6}$/i, 'must be a hex colour like "#ffffff"')
+      .optional()
+      .describe("the other words' colour; leave out for white"),
+    font: z
+      .enum(Object.keys(CAPTION_FONTS) as [CaptionFont, ...CaptionFont[]])
+      .optional()
+      .describe("leave out for the channel's font"),
     hide_beats: z.array(z.string()).describe("beats shown without captions"),
   })
   .strict();
@@ -78,6 +90,34 @@ export function writeStoryboard(episodeDir: string, board: Storyboard): void {
 /** A fresh storyboard waiting for approval, with these caption settings. */
 export function newStoryboard(captions: CaptionSettings): Storyboard {
   return { schema: "storyboard/v1", captions: captionSettingsSchema.parse(captions), status: "pending" };
+}
+
+/**
+ * captions.json — how a finished video's captions look, changed after it is made (the storefront's captions step).
+ * It overrides the storyboard's caption settings, and is not part of the storyboard's approval: changing it only
+ * draws the captions onto the video again (render-episode.ts bakeCaptions), nothing else is made again.
+ */
+export function videoCaptionsPath(episodeDir: string): string {
+  return join(episodeDir, "captions.json");
+}
+
+/** The caption settings a video is drawn with: its captions.json, else its storyboard's, else null (the channel's). */
+export function videoCaptions(episodeDir: string): CaptionSettings | null {
+  const path = videoCaptionsPath(episodeDir);
+  if (existsSync(path)) {
+    const r = captionSettingsSchema.safeParse(readJson(path));
+    if (!r.success) throw new EngineError(`${path} is not valid caption settings:\n${r.error.issues.map((i) => `  ${i.path.join(".") || "(root)"}: ${i.message}`).join("\n")}`);
+    return r.data;
+  }
+  return readStoryboard(episodeDir)?.captions ?? null;
+}
+
+/** Set how a video's captions look (captions.json). Throws when they hide a beat the script doesn't have. */
+export function setVideoCaptions(episodeDir: string, script: Script, captions: CaptionSettings): void {
+  const parsed = captionSettingsSchema.parse(captions);
+  const problems = checkCaptions(parsed, script);
+  if (problems.length) throw new EngineError(problems.join("\n"));
+  writeJson(videoCaptionsPath(episodeDir), parsed);
 }
 
 /** Problems with caption settings against a script: beats it hides that the script doesn't have. */

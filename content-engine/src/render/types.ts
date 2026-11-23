@@ -60,7 +60,7 @@ export interface EpisodeProps {
   /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time. */
   captionStyle: "pages" | "single-word";
   /** A storyboard's caption choices: size, where they sit, and beats shown without them. Absent = the defaults. */
-  captionLayout?: { size: "small" | "medium" | "large"; place: "bottom" | "middle"; hide_beats: string[] };
+  captionLayout?: { size: "small" | "medium" | "large"; place: "bottom" | "middle"; hide_beats: string[]; /** a FONTS key; absent = brand.font */ font?: string; /** the words' colour; absent = white */ text_color?: string; /** the spoken word's highlight; absent = brand.accent_color */ highlight?: string };
   audioFile: string | null;
   /** The channel's writing direction: right-to-left languages (Hebrew) flip every line of text, captions included. */
   direction: "ltr" | "rtl";
@@ -92,3 +92,6 @@ export interface Rect {
   w: number;
   h: number;
 }
+
+/** The file the clean render (everything but the captions) is staged as for the Captioned composition. */
+export const CLEAN_VIDEO_FILE = "clean.mp4";

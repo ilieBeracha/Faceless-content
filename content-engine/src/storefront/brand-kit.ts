@@ -44,6 +44,11 @@ export function videoPath(ws: Workspace, slug: string, episode: string): string 
   return ws.path("out", slug, `${episode}.mp4`);
 }
 
+/** Where the engine writes an episode's video without its captions (render-episode.ts's cleanPath). */
+export function cleanVideoPath(ws: Workspace, slug: string, episode: string): string {
+  return ws.path("out", slug, "clean", `${episode}.mp4`);
+}
+
 /** Where the engine writes an episode's captions as a file of their own (render-episode.ts's captionsPath). */
 export function captionsFilePath(ws: Workspace, slug: string, episode: string): string {
   return ws.path("out", slug, `${episode}.srt`);

@@ -13,7 +13,7 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 | 3 | **Fact-check** | engine lists, **person approves** | `factcheck.md` | **STOP until approved**; bound to the script's words and numbers |
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
 | 4 | **Voice** | engine (Kokoro, local; or cut from the Veo clips) | `audio/voice.wav`, `audio/timings.json`, `audio/envelope.json` | — |
-| 5 | **Render** | engine (fal music, paid; then Remotion) | `audio/music.m4a` + `music.json` (made once), `audio/mix.wav` (voice + music + effects), `out/<slug>/<episode>.mp4` and its captions as `out/<slug>/<episode>.srt`, `render.json`, `qa/layout.json` | needs FAL_KEY and the effects (`./engine sfx`, once) |
+| 5 | **Render** | engine (fal music, paid; then Remotion) | `audio/music.m4a` + `music.json` (made once), `audio/mix.wav` (voice + music + effects), `out/<slug>/<episode>.mp4` (and without captions, `out/<slug>/clean/<episode>.mp4`), its captions as `out/<slug>/<episode>.srt`, `render.json`, `captions-render.json`, `qa/layout.json` | needs FAL_KEY and the effects (`./engine sfx`, once) |
 | 6 | **QA** | engine checks + agent review | `qa-report.md`, `qa-review.json`, `publish.json`, learnings entry | must pass `workflows/qa.md` |
 | 7 | Post | — | not built yet | — |
 
@@ -45,8 +45,10 @@ envelope is saved to drive the character's mouth.
 ## 5. Render
 One Remotion composition renders every channel: the beat's scene skill fills the frame
 (`render-3d-explainer`, `render-motion-graphics`, …), overlays sit on top (`render-talking-character`), then
-the captions skill (the only words on screen: there is no headline). 1080×1920, 30 fps, H.264 + AAC. While rendering, every text
-element reports its box, which QA uses for the safe-area and cut-off checks.
+the captions skill (the only words on screen: there is no headline). 1080×1920, 30 fps, H.264 + AAC. It renders in
+two passes: everything but the captions (`out/<slug>/clean/<episode>.mp4`, `render.json`), then the captions drawn
+over that (`out/<slug>/<episode>.mp4`, `captions-render.json`), so a change to how the captions look redraws only
+them. While rendering, every text element reports its box, which QA uses for the safe-area and cut-off checks.
 
 ## 6. QA
 See `workflows/qa.md`. Automated checks run on the MP4 and the layout data; the agent reviews tone, banned

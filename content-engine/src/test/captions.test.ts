@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { activeWordIndex, buildPages, estimateWidth, pageAt } from "../skills/captions/pages.ts";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { captionSettingsSchema, newStoryboard, setVideoCaptions, videoCaptions, writeStoryboard } from "../pipeline/storyboard.ts";
+import { mergeLayouts, type LayoutSummary } from "../render/render-episode.ts";
+import type { EpisodeProps } from "../render/types.ts";
+import { regions } from "../render/timeline.ts";
+import { liveCaptions } from "../skills/captions/live.ts";
+import { activeWordIndex, buildPages, estimateWidth, FONT_SIZES, GAP, pageAt } from "../skills/captions/pages.ts";
 import { voiceTokens } from "../skills/write-script/schema.ts";
 import { sayFor } from "../voice/synthesize.ts";
 
@@ -44,5 +52,42 @@ describe("captions", () => {
     assert.equal(sayFor("1938,", { "1938": "nineteen thirty-eight" }), "nineteen thirty-eight,");
     assert.equal(sayFor("(LED)", { LED: "L E D" }), "(L E D)");
     assert.equal(sayFor("pen.", {}), "pen.");
+  });
+
+  it("live: the browser gets the same pages and place the video draws, for every size and letter case", () => {
+    const safeArea = { top: 250, bottom: 440, left: 60, right: 150 };
+    const props = { width: 1080, height: 1920, safeArea, words, direction: "rtl", captionStyle: "pages", brand: { font: "fredoka", accent_color: "#8b2f3e", caption_color: "#e1a73e" } } as unknown as EpisodeProps;
+    const live = liveCaptions(props);
+    const band = regions(1080, 1920, safeArea).captions;
+    assert.deepEqual(Object.keys(live.pages).sort(), ["large:normal", "large:upper", "medium:normal", "medium:upper", "small:normal", "small:upper"]);
+    const drawn = buildPages(words, (t) => estimateWidth(t, FONT_SIZES.medium, false), band.w - 80, 2, GAP);
+    assert.deepEqual(live.pages["medium:normal"], drawn.map((p) => ({ s: p.start, e: p.end, l: p.lines.map((l) => l.words.map((w) => w.i)) })));
+    assert.deepEqual([live.regions.bottom, live.regions.middle.y, live.rtl, live.accent, live.singleColor], [band, Math.round(960 - band.h / 2), true, "#8b2f3e", "#e1a73e"]);
+    assert.deepEqual(live.words[0], { t: "Okay", s: 0, e: 0.25, b: "hook" });
+    assert.deepEqual(live.fonts.heebo, { family: "Heebo", weight: 900 });
+  });
+
+  it("a video's own caption settings (captions.json) win over its storyboard's, and must name a real font and parts", () => {
+    const dir = mkdtempSync(join(tmpdir(), "caps-"));
+    const script = { beats: [{ id: "hook" }, { id: "body" }] } as never;
+    assert.equal(videoCaptions(dir), null);
+    writeStoryboard(dir, newStoryboard({ show: true, size: "medium", place: "bottom", case: "normal", hide_beats: [] }));
+    assert.equal(videoCaptions(dir)?.size, "medium");
+    setVideoCaptions(dir, script, { show: true, size: "large", place: "middle", case: "upper", font: "heebo", text_color: "#ffee00", hide_beats: ["body"] });
+    assert.deepEqual(videoCaptions(dir), { show: true, size: "large", place: "middle", case: "upper", font: "heebo", text_color: "#ffee00", hide_beats: ["body"] });
+    assert.throws(() => setVideoCaptions(dir, script, { show: true, size: "large", place: "middle", case: "upper", hide_beats: ["outro"] }), /"outro", which is not a beat/);
+    assert.equal(captionSettingsSchema.safeParse({ show: true, size: "large", place: "middle", case: "upper", font: "comic-sans", hide_beats: [] }).success, false);
+    writeFileSync(join(dir, "captions.json"), "{}");
+    assert.throws(() => videoCaptions(dir), /is not valid caption settings/);
+  });
+
+  it("the finished video's layout: the pictures' text from the clean render, the captions from the captions pass", () => {
+    const empty = (): LayoutSummary => ({ frame: { w: 1080, h: 1920 }, safe: { x: 0, y: 0, w: 1080, h: 1920 }, elements: {}, violations: [], violationCounts: {}, captionWord: {}, firstCaptionFrame: null, probes: 0 });
+    const scene = { ...empty(), elements: { label: { kind: "label", frames: 3, minX: 0, minY: 0, maxX: 1, maxY: 1 } }, violationCounts: { "label:cut-off": 2 }, probes: 3 };
+    const caps = { ...empty(), elements: { captions: { kind: "caption", frames: 9, minX: 0, minY: 0, maxX: 1, maxY: 1 } }, violationCounts: { "label:cut-off": 1, "captions:outside-safe-area": 4 }, captionWord: { 0: 0, 5: 1 }, firstCaptionFrame: 0, probes: 9 };
+    const merged = mergeLayouts(scene, caps);
+    assert.deepEqual(Object.keys(merged.elements), ["label", "captions"]);
+    assert.deepEqual(merged.violationCounts, { "label:cut-off": 3, "captions:outside-safe-area": 4 });
+    assert.deepEqual([merged.captionWord, merged.firstCaptionFrame, merged.probes], [{ 0: 0, 5: 1 }, 0, 12]);
   });
 });

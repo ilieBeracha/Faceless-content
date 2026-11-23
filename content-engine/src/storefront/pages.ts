@@ -1,8 +1,9 @@
 /** Server-rendered pages. Every value that came from a person or a file goes through esc(). */
 import type { Draft, User } from "./accounts.ts";
 import type { BrandKit } from "./brand-kit.ts";
-import type { Dashboard, StoryboardView } from "./builder.ts";
-import { PACES, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
+import type { CaptionsView, Dashboard, StoryboardView } from "./builder.ts";
+import { HEBREW_RANGE } from "../render/font-faces.ts";
+import { CAPTION_FONTS, PACES, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
 import type { Idea } from "../core/ideas.ts";
 import { FRAME_PRESET_NAMES, FRAME_PRESETS, showsHost, type Frame, type Shot, type ThBeatVisual, type Theme } from "../skills/render-themed/schema.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
@@ -462,7 +463,7 @@ body.studio{--bg:#f3f2ee;--surface:#fff;--ink:#15141a;--muted:#5c5b63;--line:#e2
 .back{display:inline-flex;align-items:center;gap:6px;font:600 15px/1 var(--body);text-decoration:none;color:var(--muted);align-self:flex-start;min-height:40px;margin-bottom:-20px}.back svg{width:18px;height:18px}
 .vpage{display:flex;flex-wrap:wrap;gap:40px 48px;align-items:flex-start}
 .vpage .player{flex:0 1 380px;min-width:260px;display:flex;flex-direction:column;gap:10px}
-.vpage video{width:100%;aspect-ratio:9/16;border-radius:22px;background:#000;display:block}.vpage .player small{text-align:center;color:var(--muted);font-size:14px}
+.vpage video{width:100%;aspect-ratio:9/16;border-radius:22px;background:#000;display:block}.vpage .live{position:relative;border-radius:22px;overflow:hidden}#cap-layer{position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none}.vpage .player small{text-align:center;color:var(--muted);font-size:14px}
 .vpage .side2{flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:26px}.vpage .side2>.sec{align-items:flex-start}
 .row2{display:flex;flex-wrap:wrap;gap:10px}
 .cap{align-self:stretch}.cap p{font-size:16px;line-height:1.55}.cap .hash{color:var(--busy);font-size:15px}
@@ -894,19 +895,42 @@ const CAPTION_SIZE_NAMES: Record<CaptionSettings["size"], string> = { small: "Sm
 const PACE_NAMES: Record<Pace, string> = { slower: "Slower", normal: "Normal", faster: "Faster", fastest: "Fastest" };
 const CAPTION_PLACE_NAMES: Record<CaptionSettings["place"], string> = { bottom: "Bottom", middle: "Middle" };
 
-/** The caption settings form. `beats`: the video's parts, to switch captions off on some (absent for the channel's defaults). */
-function captionsForm(action: string, c: CaptionSettings, accent: string, beats: Script["beats"] | null, submit: string): string {
+/**
+ * The caption settings form. `accent` and `font`: the channel's, used when the settings choose none. `beats`: the video's
+ * parts, to switch captions off on some (absent for the channel's defaults). `id`: for the live captions script.
+ */
+function captionsForm(action: string, c: CaptionSettings, accent: string, font: string, beats: Script["beats"] | null, submit: string, id = ""): string {
   const select = (name: string, value: string, options: [string, string][]) =>
     `<select name="${name}" id="cap-${name}">${options.map(([v, l]) => `<option value="${esc(v)}"${v === value ? " selected" : ""}>${esc(l)}</option>`).join("")}</select>`;
   const hide = beats
     ? `<fieldset class="hide"><legend>No captions on these parts</legend>${beats.map((b, i) => `<label class="check"><input type="checkbox" name="hide_${esc(b.id)}"${c.hide_beats.includes(b.id) ? " checked" : ""}> Part ${i + 1}: “${esc(b.voiceover.split(/\s+/).slice(0, 6).join(" "))}…”</label>`).join("")}</fieldset>`
     : "";
-  return `<form class="caps" method="post" action="${action}">
+  return `<form class="caps" method="post" action="${action}"${id ? ` id="${id}"` : ""}>
 <label class="check"><input type="checkbox" name="show"${c.show ? " checked" : ""}> Draw captions into the video</label>
 <p class="muted" style="font-size:14px;margin:0">Either way, every video comes with its captions as a file (.srt) to lay over it yourself.</p>
 <div class="row3"><label class="f" for="cap-size">Size${select("size", c.size, Object.entries(CAPTION_SIZE_NAMES))}</label><label class="f" for="cap-place">Where${select("place", c.place, Object.entries(CAPTION_PLACE_NAMES))}</label><label class="f" for="cap-case">Letters${select("case", c.case, [["normal", "As written"], ["upper", "ALL CAPS"]])}</label></div>
-<div class="row3"><label class="check"><input type="checkbox" name="own_color"${c.color ? " checked" : ""}> My own highlight colour</label><label class="f" for="cap-color">Colour<input type="color" id="cap-color" name="color" value="${esc(c.color ?? accent)}"></label></div>
+<div class="row3"><label class="f" for="cap-font">Font${select("font", c.font ?? font, Object.entries(CAPTION_FONTS))}</label><label class="f" for="cap-text">Words<input type="color" id="cap-text" name="text_color" value="${esc(c.text_color ?? "#ffffff")}"></label></div>
+<div class="row3"><label class="check"><input type="checkbox" name="own_color"${c.color ? " checked" : ""}> My own highlight colour</label><label class="f" for="cap-color">Highlight<input type="color" id="cap-color" name="color" value="${esc(c.color ?? accent)}"></label></div>
 ${hide}<button type="submit" class="btn ghost sm">${esc(submit)}</button></form>`;
+}
+
+/**
+ * A finished video's captions step: its clean render plays with the captions drawn over it live (captions-live.js)
+ * as the form is changed; Save draws them into the video to download.
+ */
+function captionsStep(base: string, episode: string, caps: CaptionsView, kit: BrandKit): string {
+  const status =
+    caps.restyle?.state === "working"
+      ? `<p class="notice" role="status">Putting your saved captions into the video. It takes about a minute: refresh the page to download it. Until then the download has the captions it had.</p>`
+      : caps.restyle?.state === "failed"
+        ? `<p class="error" role="alert">Your saved captions could not be put into the video (${esc(caps.restyle.error ?? "")}). The download has the captions it had. Save again to try once more.</p>`
+        : "";
+  const faces = Object.keys(caps.live.fonts)
+    .map((k) => `@font-face{font-family:"cap-${k}";font-weight:${caps.live.fonts[k].weight};src:url(/assets/font/cap/${k}.woff2) format("woff2");font-display:block}@font-face{font-family:"cap-${k}";font-weight:${caps.live.fonts[k].weight};src:url(/assets/font/cap/${k}-he.woff2) format("woff2");unicode-range:${HEBREW_RANGE};font-display:block}`)
+    .join("");
+  return `<section class="panel" id="captions" style="gap:12px"><h2 class="h3">Captions</h2><p class="muted">Change how they look and watch it on the video as it plays. Save puts them into the video you download: about a minute, and nothing else is made again.</p>${status}
+${captionsForm(`${base}/video/${esc(episode)}/captions`, caps.settings, caps.live.accent, kit.font, caps.beats, "Save captions", "cap-form")}
+<style>${faces}</style><script type="application/json" id="cap-data">${JSON.stringify(caps.live).replace(/</g, "\\u003c")}</script>${tag("captions-live")}</section>`;
 }
 
 /** Why a stopped video stopped, in a sentence the customer can act on; the engine's own words when no plainer ones fit. */
@@ -1004,7 +1028,7 @@ ${left > 0 ? "" : `<p class="sub">This script has been rewritten ${MAX_ROUNDS} t
   };
 }
 
-/** The pictures step (the storyboard): one shot at a time at the size it is watched, its line beside it and its changes under it; every shot in a strip to jump to. Speed and captions for the whole video below. No script: the shot shown is the address's target. */
+/** The pictures step (the storyboard): one shot at a time at the size it is watched, its line beside it and its changes under it; every shot in a strip to jump to. Speed for the whole video below. No script: the shot shown is the address's target. */
 function picturesStep(order: Order, sb: StoryboardView, accent: string): FlowStep {
   const base = `/w/${esc(order.token)}`;
   const shotsOf = (b: Script["beats"][number]) => ((b.visual as ThBeatVisual).shots ?? []) as Shot[];
@@ -1034,23 +1058,22 @@ function picturesStep(order: Order, sb: StoryboardView, accent: string): FlowSte
   };
   // The shot shown is marked in the strip (the first when none is chosen).
   const mark = `<style>${all.map((x) => `.fl:has(#s-${x.id}:target) #t-${x.id}`).join(",")}${all.length ? `,.fl:not(:has(.slide:target)) #t-${all[0]!.id}` : ""}{box-shadow:0 0 0 3px var(--accent);background:var(--surface)}</style>`;
-  const c = sb.captions;
-  const caps = sheet("captions", "set", "Captions", `<h2>Captions</h2><div class="inner"><p class="muted">The words always match what is said. Choose how they look, or switch them off.</p>${captionsForm(`${base}/storyboard/captions`, c, accent, sb.script.beats, "Save captions")}</div>`);
-  const settings = `<section class="card set" id="set"><div class="row"><span>Voice speed</span><form class="speed" method="post" action="${base}/storyboard/speed" role="group" aria-label="Voice speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}" aria-pressed="${p === sb.pace}">${PACE_NAMES[p]}</button>`).join("")}</form></div><div class="row"><span>Captions</span><a href="#captions">${c.show ? `On · ${CAPTION_SIZE_NAMES[c.size]} · ${CAPTION_PLACE_NAMES[c.place]}` : "Off"} ›</a></div></section>`;
+  // Captions are set on the finished video, where they are seen live over it.
+  const settings = `<section class="card set" id="set"><div class="row"><span>Voice speed</span><form class="speed" method="post" action="${base}/storyboard/speed" role="group" aria-label="Voice speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}" aria-pressed="${p === sb.pace}">${PACE_NAMES[p]}</button>`).join("")}</form></div></section>`;
   const bar = sb.revising
     ? sb.changed
       ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the new version</button></form><small>Keeps the same words and does not use up one of today's videos</small>`
       : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="go quiet">Leave it as it is</button></form>`
     : `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the video</button></form>`;
   const sub = sb.revising
-    ? `“${esc(sb.script.title)}” is finished. Change a picture, the speed or the captions. ${sb.changed ? "The new version takes a few minutes." : "Nothing is changed yet."} The video you have now is kept as an earlier version.`
+    ? `“${esc(sb.script.title)}” is finished. Change a picture or the speed (captions are changed on the video itself). ${sb.changed ? "The new version takes a few minutes." : "Nothing is changed yet."} The video you have now is kept as an earlier version.`
     : "";
   return {
     meta: `${sb.repaintsLeft} repaint${sb.repaintsLeft === 1 ? "" : "s"} left`,
     head: `<div class="head"><h1>${all.length} picture${all.length === 1 ? "" : "s"}</h1>${sub ? `<p class="sub">${sub}</p>` : ""}</div>`,
     body: `${mark}<nav class="strip" aria-label="Shots in order">${all.map((x, k) => `<a class="th" id="t-${esc(x.id)}" href="#s-${esc(x.id)}"><img src="${src(x.id)}" alt="" loading="lazy"><span><b>${k + 1}</b><small>${esc(x.b.voiceover)}</small></span></a>`).join("")}</nav><div class="right"><div class="slides">${all.map(slide).join("")}</div>${settings}</div>`,
     bar,
-    sheets: caps,
+    sheets: "",
     wide: true,
   };
 }
@@ -1087,7 +1110,7 @@ function videoNotice(order: Order, facts: Script | null): string {
   if (v?.state === "facts" && facts) return factsHtml(order, facts);
   if (v?.state === "writing")
     return `<section class="notice" id="next"><h2>Your first video is being written</h2><p class="muted">${v.rounds ? "The script is being written again with your change." : "Your brand kit is approved and the script is being written."} This takes several minutes. Its facts appear here for you to check before anything is voiced or drawn.</p></section>`;
-  if (v?.state === "painting") return `<section class="notice" id="next"><h2>The shots of your first video are being painted</h2><p class="muted">Its facts are approved. When the pictures are ready you check them, and the captions, before anything is voiced.</p></section>`;
+  if (v?.state === "painting") return `<section class="notice" id="next"><h2>The shots of your first video are being painted</h2><p class="muted">Its facts are approved. When the pictures are ready you check them before anything is voiced.</p></section>`;
   if (v?.state === "storyboard") return `<section class="notice" id="next"><h2>Check your storyboard</h2><p class="muted">Every shot of your first video is painted. Look at them, change what you want, then approve the storyboard to make the video.</p><a class="btn sm" href="/w/${esc(order.token)}?view=new">Open the storyboard</a></section>`;
   if (v?.state === "making") return `<section class="notice" id="next"><h2>Your first video is being made</h2><p class="muted">It is being voiced, drawn and checked. This takes several minutes, and the video appears here by itself.</p></section>`;
   if (v?.state === "failed")
@@ -1214,7 +1237,7 @@ function ideaBody(i: Idea): string {
  * A bar with the channel and its three areas (Videos, Ideas, Look & voice); on a phone they move to a tab bar at the bottom.
  * `episode`: the finished video the "video" view shows (the server checks it exists).
  */
-function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboard, facts: Script | null, view: ConsoleView, pick: boolean, episode: string | null): string {
+function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboard, facts: Script | null, view: ConsoleView, pick: boolean, episode: string | null, caps: CaptionsView | null): string {
   const base = `/w/${esc(order.token)}`;
   const at = (v: ConsoleView) => (v === "overview" ? base : `${base}?view=${v}`);
   const watch = (id: string) => `${base}?view=video&amp;e=${esc(id)}`;
@@ -1259,7 +1282,7 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
       return flow(1, waitStep("The script is being written", `${v.rounds ? "It is being written again with your change." : "This takes several minutes."} You can leave this page: it keeps going, and this page updates by itself.`, ["Writing the lines and finding a source for every fact", "You read the script here and check its facts", boards ? "Then the pictures, then the video" : "Then the video"]));
     if (v?.state === "storyboard" && dash.storyboard) return flow(2, picturesStep(order, dash.storyboard, accentOf(kit)));
     if (v?.state === "painting" || v?.state === "storyboard")
-      return flow(2, waitStep("The pictures are being painted", "This takes a minute or two. This page updates by itself.", ["Painting every shot", "You check the pictures, the speed and the captions here", "Then the video is made"]));
+      return flow(2, waitStep("The pictures are being painted", "This takes a minute or two. This page updates by itself.", ["Painting every shot", "You check the pictures and the speed here", "Then the video is made"]));
     if (v?.state === "making")
       return flow(names.length - 1, waitStep("Your video is being made", "It takes several minutes. Nothing more is needed from you: it appears in Videos by itself.", ["Voicing it, putting the pictures in motion and adding the captions", "Checking it", "It appears here and in Videos, ready to download"]));
     const last = v?.state === "done" && v.idea && v.episode ? kit.episodes.find((e) => e.id === v.episode) : undefined;
@@ -1290,14 +1313,19 @@ function consolePage(product: string, order: Order, kit: BrandKit, dash: Dashboa
     const copy = e.caption ? [e.caption.text, e.caption.hashtags.join(" ")].filter(Boolean).join("\n\n") : "";
     const versions = e.versions.length ? `<p class="muted" style="font-size:14.5px">Earlier versions: ${e.versions.map((n) => `<a href="${base}/video/${esc(e.id)}/v/${n}">v${n}</a>`).join(", ")}</p>` : "";
     main = `<a class="back" href="${at("videos")}">${icon(`<path d="m15 18-6-6 6-6"/>`)}All videos</a>
-<div class="vpage"><div class="player"><video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}?r=${e.versions.length}"${e.frames.length ? ` poster="${base}/frame/${esc(e.id)}/${esc(e.frames[0])}"` : ""}></video><small>${e.seconds === null ? "" : `${clock(e.seconds)} · `}vertical 1080 × 1920</small></div>
+<div class="vpage"><div class="player">${
+      caps
+        ? `<div class="live"><video id="cap-video" controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}/clean?r=${e.versions.length}"${e.frames.length ? ` poster="${base}/frame/${esc(e.id)}/${esc(e.frames[0])}"` : ""}></video><div id="cap-layer" aria-hidden="true"></div></div>`
+        : `<video controls playsinline preload="metadata" src="${base}/video/${esc(e.id)}?r=${e.versions.length}"${e.frames.length ? ` poster="${base}/frame/${esc(e.id)}/${esc(e.frames[0])}"` : ""}></video>`
+    }<small>${e.seconds === null ? "" : `${clock(e.seconds)} · `}vertical 1080 × 1920</small></div>
 <div class="side2">
 <div class="sec" style="gap:10px"><span class="tag ok">Ready to post</span><h1>${esc(e.title)}</h1><p class="muted">Made ${esc(day(e.date))}</p></div>
 <div class="row2"><a class="act" href="${base}/video/${esc(e.id)}?download=1">${icon(`<path d="M12 4v12M6 10l6 6 6-6M5 20h14"/>`)}Download video</a>${copy ? `<button type="button" class="act line" data-copy="${esc(copy)}">Copy caption &amp; hashtags</button>` : ""}</div>
+${caps ? captionsStep(base, e.id, caps, kit) : ""}
 ${e.captions_file ? `<div class="sec" style="gap:8px"><a class="act line" href="${base}/captions/${esc(e.id)}">Download captions (.srt)</a><p class="muted" style="font-size:14px">The spoken words with their timings, to lay over the video in CapCut, Premiere or YouTube Studio and style them as you like.</p></div>` : ""}
 ${e.caption ? `<div class="panel cap"><span class="kicker">Caption</span><p>${esc(e.caption.text)}</p>${e.caption.hashtags.length ? `<p class="hash">${esc(e.caption.hashtags.join(" "))}</p>` : ""}</div>` : ""}
 <div class="sec" style="gap:12px"><h2 class="h3">Before you post</h2><ul class="tips2">${tip(icon(`<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>`), "Turn on the platform’s AI label when you post: YouTube, TikTok and Instagram ask for it on AI-made videos.")}${shown.map(note).join("")}</ul>${rest.length ? `<details class="more2"><summary>Show ${rest.length} more note${rest.length === 1 ? "" : "s"}</summary><ul class="tips2">${rest.map(note).join("")}</ul></details>` : ""}${e.review.length ? `<p class="muted" style="font-size:14px">Notes from our automatic review. The video is finished: they are tips for the next one.</p>` : ""}</div>
-<div class="sec change" style="gap:12px"><h2 class="h3">Change something</h2>${e.revisable ? `<p class="muted">Opens this video’s storyboard: change a line, a picture, the captions or the speed. This version stays until the new one is ready.</p><form method="post" action="${base}/revise-video"><input type="hidden" name="episode" value="${esc(e.id)}"><button type="submit" class="act line"${busy ? ' disabled title="A video is under way"' : ""}>Change something</button></form>` : `<p class="muted">This video was made before storyboards were kept, so it can't be changed. New videos can.</p>`}${versions}</div>
+<div class="sec change" style="gap:12px"><h2 class="h3">Change something</h2>${e.revisable ? `<p class="muted">Opens this video’s storyboard: change a picture or the speed. This version stays until the new one is ready.</p><form method="post" action="${base}/revise-video"><input type="hidden" name="episode" value="${esc(e.id)}"><button type="submit" class="act line"${busy ? ' disabled title="A video is under way"' : ""}>Change something</button></form>` : `<p class="muted">This video was made before storyboards were kept, so it can't be changed. New videos can.</p>`}${versions}</div>
 </div></div>`;
   } else if (view === "ideas") {
     title = "Ideas";
@@ -1325,7 +1353,7 @@ ${batches.map(batch).join("")}
 <div class="look">${latest ? `<div class="prev">${thumb(base, latest)}</div>` : ""}<div class="cols">
 <div class="panel"><h2>Name, promise and point</h2><b class="big-name">${esc(kit.name)}</b><p class="muted">${esc(kit.promise)}</p>${pointHtml(kit)}</div>
 <div class="panel"><h2>${order.design?.theme ? esc(lookName(order.design.theme)) : "Look"}</h2><div class="sws">${kit.colours.map((c) => `<div><i style="background:${esc(c.hex)}"></i>${esc(c.name)}</div>`).join("")}</div></div>
-<div class="panel"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each video's storyboard.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), null, "Save caption settings")}</div>
+<div class="panel"><h2>Captions</h2><p class="muted">How captions look in every new video. You can still change them on each finished video, and see them live.</p>${captionsForm(`${base}/captions`, dash.captions, accentOf(kit), kit.font, null, "Save caption settings")}</div>
 <div class="panel"><h2>Host</h2><p><b>${esc(kit.host.name)}.</b> ${esc(kit.host.concept)}</p>${host}</div>
 <div class="panel"><h2>Format</h2><p class="muted">${esc(kit.series.format)}</p></div>
 <div class="panel"><h2>${dash.paused ? "Paused" : "Making videos"}</h2><p class="muted">${dash.paused ? "No new videos are made while the channel is paused. Nothing is lost." : "Pausing stops new videos. Nothing is lost, and you can resume at any time."}</p><form method="post" action="${base}/channel"><input type="hidden" name="status" value="${dash.paused ? "active" : "paused"}"><button type="submit" class="act ${dash.paused ? "dark" : "line"} sm">${dash.paused ? "Resume the channel" : "Pause the channel"}</button></form></div>
@@ -1352,9 +1380,10 @@ ${sheets}</body></html>`;
 }
 
 /** `canRevise`: change requests are made automatically (automatic builds are on). `facts`: the script whose facts the customer is checking, if any. `dash`: the channel's dashboard, once it has one. */
-export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null, dash: Dashboard | null = null, view: ConsoleView = "overview", pick = false, episode: string | null = null): string {
+/** `caps`: the open video's captions step, when it has one (videos rendered before clean renders were kept don't). */
+export function workspacePage(product: string, order: Order, kit: BrandKit | null, paymentUrl: string | null, canRevise: boolean, facts: Script | null = null, dash: Dashboard | null = null, view: ConsoleView = "overview", pick = false, episode: string | null = null, caps: CaptionsView | null = null): string {
   // An approved channel built here is its own app from now on.
-  if (kit && dash) return consolePage(product, order, kit, dash, facts, view, pick, episode);
+  if (kit && dash) return consolePage(product, order, kit, dash, facts, view, pick, episode, caps);
   const d = order.design;
   const yours = d && (d.theme || d.model) ? `<div class="yours">${d.theme ? lookSwatch(d.theme) : ""}${d.model && HOST_RIGS[d.model.rig] ? `<img class="vis" src="${esc(hostPreviewUrl(hostFields(d.model)))}" alt="Your host">` : ""}<p class="muted" style="max-width:36ch">The look and host you designed. Your brand kit is built from these.</p></div>` : "";
   const brief = `<section><h2>Your brief</h2>${yours}<dl class="kv notice" style="display:grid">${INTAKE_FIELDS.filter((f) => f !== "email" && order.intake[f]).map((f) => `<div><dt>${esc(intakeLabel(f))}</dt><dd>${esc(order.intake[f] ?? "")}</dd></div>`).join("")}</dl></section>`;
