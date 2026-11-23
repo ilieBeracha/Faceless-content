@@ -20,7 +20,7 @@ never overwritten.
    `ideas.md`, `learnings.md`, and the agent task `channels/<slug>/tasks/draft-channel.md`. It commits.
 2. **Agent** reads only that task file and writes, inside `channels/<slug>/`:
    - `channel.md` — every field, plus the Promise, **Belief** (the one idea every video argues) and **What the
-     viewer gets** (what a viewer can use from every video) sections. A topic is not a belief.
+     viewer gets** (what a viewer understands from every video, shown by the story, never preached) sections. A topic is not a belief.
    - `characters/<name>.md` + `characters/<name>/model.json` — an original character; the rig and
      parameters come from `skills/render-talking-character/SKILL.md`. Expressions: at least `neutral`,
      `curious`, `excited`.

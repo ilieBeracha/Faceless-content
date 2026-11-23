@@ -40,7 +40,7 @@ approved_by: ""                 # optional string — who approved it
 
 ## What the viewer gets <!-- required -->
 
-<!-- What a viewer leaves every video with that they can use in their own life: a way of seeing, a line to say at dinner, permission to trust themselves. Not "they learn facts". -->
+<!-- What a viewer understands from every video, shown by the story and never said to them as advice: a way of seeing, a line they'd repeat at dinner. Not "they learn facts". -->
 
 ## Style notes
 

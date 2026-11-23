@@ -19,11 +19,11 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
      name rested on French wine being the best", not "an important editor"). Tell the story through them, never
      as a list of events.
    - `turn`: the moment the facts change meaning. Build the middle so the viewer walks into it.
-   - `takeaway`: what the viewer leaves with and can use in their own life (**What the viewer gets** in channel.md):
-     a way of seeing, a line to say at dinner, permission to trust themselves. The last beat lands it in plain
-     words, in the character's voice, as one concrete thing the viewer can do or notice next time ("taste first,
-     look at the bottle after"), not an abstract line about what it all means; a catchphrase can close it but
-     never replaces it.
+   - `takeaway`: what the viewer understands once the story is told (**What the viewer gets** in channel.md). It is
+     for you, not a line to say: the story makes it plain on its own. The last beat ends on what happened, the
+     result or the one fact that settles it ("they all described the white wine as red"), in plain words. Never
+     tell the viewer what to do, feel or believe: no advice, no "next time…", no "trust yourself", no "your taste
+     is enough", no moral or summary of what it all means.
    Every beat serves the point: a fact that doesn't move the story toward the turn or the takeaway is cut, however
    true. The angle is opinion and framing; anything factual inside it is a claim like any other.
 
@@ -72,7 +72,7 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
     "point": "The one sentence this video argues (the channel's belief, from this story)",
     "stakes": "Who has something to lose, and what",
     "turn": "The moment the facts change meaning",
-    "takeaway": "What the viewer leaves with and can use"
+    "takeaway": "What the viewer understands once the story is told"
   },
   "language": "en",
   "beats": [                               // the series' beats, same ids, same order

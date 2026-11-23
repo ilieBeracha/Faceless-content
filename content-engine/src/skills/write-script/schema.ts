@@ -45,7 +45,7 @@ export const angleSchema = z
     point: z.string().min(10).describe("the one sentence this video argues: the channel's belief, proved again from this story"),
     stakes: z.string().min(10).describe("who in the story has something to lose, and what"),
     turn: z.string().min(10).describe("the moment the facts change meaning"),
-    takeaway: z.string().min(10).describe("what the viewer leaves with and can use in their own life"),
+    takeaway: z.string().min(10).describe("what the viewer understands once the story is told, shown by the story, never said as advice"),
   })
   .strict();
 

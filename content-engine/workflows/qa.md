@@ -22,10 +22,11 @@ script (`qa-review.json`). Results are written to the episode's `qa-report.md`.
 
 ## Review (agent, from the frames and the script)
 
-- [ ] **Point** — argues the point in the script's `angle` (the channel's Belief), told through someone with something at stake, with a turn, and the last beat leaves the viewer with the takeaway. True facts with no point fail. It explains plainly, in the order things
+- [ ] **Point** — argues the point in the script's `angle` (the channel's Belief), told through someone with something at stake, with a turn, and the story itself makes the takeaway plain. True facts with no point fail. It explains plainly, in the order things
   happened (no opening on the ending, teasing, flashbacks or clever dramatic lines), introduces every person and
-  thing before referring to them, says why when someone does something surprising, and ends on one concrete thing
-  the viewer can do. A viewer who can't follow what happened and why fails.
+  thing before referring to them, says why when someone does something surprising, and ends on what happened. A
+  viewer who can't follow what happened and why fails, and so does an ending that preaches: advice, "next time…",
+  "trust yourself", a pep talk or a moral addressed to the viewer.
 - [ ] **Tone** — sounds like this channel (tone adjectives, audience age, the character's way of talking).
 - [ ] **Banned topics** — nothing touches them, even indirectly.
 - [ ] **Visuals** — readable at phone size, nothing overlapping, the object/graphics are clear, the visual

@@ -38,8 +38,8 @@ Keep \`slug: ${slug}\` and \`status: draft\`. Everything goes inside \`channels/
 
 1. \`channel.md\` — fill every field of the template (it's already there, with the annotations) and write the Promise,
    Belief and What the viewer gets sections. The Belief is the channel's point of view: one idea about the world that
-   every video argues from a new angle (a topic is not a belief). What the viewer gets is what they can use from every
-   video in their own life. These are why anyone follows the channel; make them specific and a little opinionated.
+   every video argues from a new angle (a topic is not a belief). What the viewer gets is what they understand from every
+   video, shown by the story, never preached at them. These are why anyone follows the channel; make them specific and a little opinionated.
 2. One original character (two at most): \`characters/<name>.md\` from templates/character.md, plus
    \`characters/<name>/model.json\` (a rig from skills/render-talking-character — pick the one that fits the
    visual style, choose colours and expressions: at least neutral, curious, excited). Pick a voice from the list.
