@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-11-24-the-radio-signal-from-the-kitchen-b",
+  "purpose": "script",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "created": "2026-11-24T19:26:12Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "d660cd21b0d0a6474281ac131b0f62fa378f9c829a2a89cf32545d10819bcdc6",
+      "bytes": 4054
+    },
+    {
+      "path": "channels/cosmic-footnotes/series/tiny-clue-big-deal.md",
+      "role": "channel",
+      "sha256": "f19eb2fb58e0c1068bdee6bcbfaab6224a29a937fcd78ff4ac4a0787a539090f",
+      "bytes": 3531
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori.md",
+      "role": "channel",
+      "sha256": "3acc2d0a23f93766152fdaf925e7f82e8b7127cc9238be083a9915a091b4b0d2",
+      "bytes": 2855
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori/model.json",
+      "role": "channel",
+      "sha256": "98a16681a12345133a2a3f62eaeeeaf414e5c744bc4c3eb4e614aad7fbc13683",
+      "bytes": 967
+    },
+    {
+      "path": "channels/cosmic-footnotes/learnings.md",
+      "role": "channel",
+      "sha256": "04e8bcf345792eca6f8fca13a271f23f674150193824b70cd8049c5264111793",
+      "bytes": 728
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "079c1089d5ff684557efccf6ce2423a5d8d1417e5890abe10237bc958faded53",
+      "bytes": 7669
+    },
+    {
+      "path": "skills/render-storybook/SKILL.md",
+      "role": "skill",
+      "sha256": "f361ee44295bf2c87b897dfd79a5b4a4ffedf51cfaebdc18b3840bb2e94e7854",
+      "bytes": 9041
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "dcd4f71fab322043bdb8e874877fc297c25667040cce9dbe45c13da75f1de7e5",
+      "bytes": 2207
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "49e6627cde4430c61d8af30bd5bc31f2c2ec1f1525cd5b3c5c131425231f3f52",
+      "bytes": 244
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-11-24-the-radio-signal-from-the-kitchen-b/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel cosmic-footnotes --series tiny-clue-big-deal"
+}

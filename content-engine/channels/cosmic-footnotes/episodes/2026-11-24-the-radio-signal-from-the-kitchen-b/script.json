@@ -1,0 +1,470 @@
+{
+  "schema": "script/v1",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "idea": "the-radio-signal-from-the-kitchen-b",
+  "title": "Lunch fooled a telescope",
+  "angle": {
+    "point": "A tiny blip on a new monitor, which a young astronomer refused to wave away, turned seventeen years of fake space signals into a kitchen microwave, and that is how fast radio bursts were shown to be real.",
+    "stakes": "Emily Petroff was a PhD student hunting fast radio bursts from deep space; the look-alike 'perytons' at Parkes had made people doubt whether those bursts were real at all, so the thing she was chasing could have turned out to be local noise.",
+    "turn": "The new interference monitor showed every peryton came with a blip on the same band microwave ovens use, and opening the staff kitchen microwave before the timer finished made a peryton on cue.",
+    "takeaway": "One true story where a strange little detail (a lunchtime blip) turned out to matter, and how people actually worked it out: by checking it, in the kitchen, with a mug of water."
+  },
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "ori",
+      "voiceover": "Lunch fooled a telescope.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "plain",
+            "time": "day",
+            "camera": "push-in",
+            "character": {
+              "pose": "facepalm",
+              "x": 0.28,
+              "scale": 1,
+              "facing": "right",
+              "expression": "amused"
+            },
+            "props": [
+              {
+                "type": "dish",
+                "x": 0.7,
+                "scale": 1.6
+              },
+              {
+                "type": "clock",
+                "x": 0.7,
+                "y": 0.18,
+                "scale": 0.8
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "amused"
+      }
+    },
+    {
+      "id": "clue",
+      "speaker": "ori",
+      "voiceover": "Since 1998, the Parkes radio dish in Australia kept catching quick, strange bursts called perytons. They looked a lot like fast radio bursts from deep space, but they showed up in office hours, mostly around lunchtime.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "hills",
+            "time": "dusk",
+            "camera": "pan-right",
+            "character": {
+              "pose": "look-up",
+              "x": 0.25,
+              "scale": 0.9,
+              "facing": "right",
+              "expression": "curious"
+            },
+            "props": [
+              {
+                "type": "dish",
+                "x": 0.68,
+                "scale": 1.8
+              },
+              {
+                "type": "sign",
+                "x": 0.9,
+                "text": "1998"
+              }
+            ]
+          },
+          {
+            "setting": "room",
+            "time": "day",
+            "camera": "push-in",
+            "character": {
+              "pose": "think",
+              "x": 0.3,
+              "scale": 1,
+              "facing": "right",
+              "expression": "pondering"
+            },
+            "props": [
+              {
+                "type": "clock",
+                "x": 0.7,
+                "y": 0.3,
+                "scale": 1.3
+              },
+              {
+                "type": "table",
+                "x": 0.68
+              },
+              {
+                "type": "thought",
+                "x": 0.35,
+                "y": 0.15,
+                "content": "planet"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "story",
+      "speaker": "ori",
+      "voiceover": "Emily Petroff, a PhD student hunting the real bursts, needed to know if they were just local noise too. In January 2015, a new radio monitor caught three perytons, and each one came with a blip on the band microwave ovens use. So her team ran the staff kitchen microwave and opened the door before the timer finished. The dish caught a peryton, right on cue.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "night",
+            "time": "night",
+            "camera": "still",
+            "character": {
+              "pose": "look-up",
+              "x": 0.3,
+              "scale": 1,
+              "facing": "right",
+              "expression": "pondering"
+            },
+            "props": [
+              {
+                "type": "telescope",
+                "x": 0.62
+              },
+              {
+                "type": "stars",
+                "x": 0.7,
+                "y": 0.18,
+                "count": 12
+              },
+              {
+                "type": "question",
+                "x": 0.3,
+                "y": 0.15
+              }
+            ]
+          },
+          {
+            "setting": "plain",
+            "time": "day",
+            "camera": "push-in",
+            "character": {
+              "pose": "point",
+              "x": 0.28,
+              "scale": 1,
+              "facing": "right",
+              "expression": "surprised"
+            },
+            "props": [
+              {
+                "type": "dish",
+                "x": 0.72,
+                "scale": 1.4
+              },
+              {
+                "type": "arrow",
+                "x": 0.35,
+                "y": 0.2,
+                "x2": 0.7,
+                "y2": 0.25
+              }
+            ]
+          },
+          {
+            "setting": "room",
+            "time": "day",
+            "camera": "push-in",
+            "character": {
+              "pose": "hold",
+              "hold": "clock",
+              "x": 0.3,
+              "scale": 1,
+              "facing": "right",
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "table",
+                "x": 0.68
+              },
+              {
+                "type": "box",
+                "x": 0.68,
+                "y": 0.68,
+                "scale": 1.2
+              }
+            ]
+          },
+          {
+            "setting": "hills",
+            "time": "day",
+            "camera": "pull-out",
+            "character": {
+              "pose": "cheer",
+              "x": 0.25,
+              "scale": 0.9,
+              "facing": "right",
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "house",
+                "x": 0.45,
+                "scale": 0.8
+              },
+              {
+                "type": "dish",
+                "x": 0.75,
+                "scale": 1.8
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "point",
+      "speaker": "ori",
+      "voiceover": "Here's the footnote. A microwave couldn't have made the very first fast radio burst, so those bursts were real, and today they're traced to other galaxies.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "space",
+            "time": "night",
+            "camera": "pull-out",
+            "character": {
+              "pose": "point",
+              "x": 0.25,
+              "scale": 0.9,
+              "facing": "right",
+              "expression": "excited"
+            },
+            "props": [
+              {
+                "type": "stars",
+                "x": 0.7,
+                "y": 0.2,
+                "count": 30
+              },
+              {
+                "type": "planet",
+                "x": 0.72,
+                "y": 0.5,
+                "scale": 1.2
+              }
+            ]
+          },
+          {
+            "setting": "space",
+            "time": "night",
+            "camera": "pull-out",
+            "character": {
+              "pose": "look-up",
+              "x": 0.2,
+              "scale": 0.8,
+              "facing": "right",
+              "expression": "surprised"
+            },
+            "props": [
+              {
+                "type": "stars",
+                "x": 0.45,
+                "y": 0.15,
+                "count": 60
+              },
+              {
+                "type": "stars",
+                "x": 0.8,
+                "y": 0.25,
+                "count": 40
+              },
+              {
+                "type": "arrow",
+                "x": 0.85,
+                "y": 0.2,
+                "x2": 0.35,
+                "y2": 0.55
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "kicker",
+      "speaker": "ori",
+      "voiceover": "Seventeen years of strange bursts, and the answer was a microwave door opened too soon.",
+      "visual": {
+        "skill": "render-storybook",
+        "scenes": [
+          {
+            "setting": "room",
+            "time": "dusk",
+            "camera": "push-in",
+            "character": {
+              "pose": "shrug",
+              "x": 0.3,
+              "scale": 1,
+              "facing": "right",
+              "expression": "amused"
+            },
+            "props": [
+              {
+                "type": "table",
+                "x": 0.68
+              },
+              {
+                "type": "box",
+                "x": 0.68,
+                "y": 0.68,
+                "scale": 1.2
+              },
+              {
+                "type": "calendar",
+                "x": 0.75,
+                "y": 0.25,
+                "text": "17 years"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "amused"
+      }
+    }
+  ],
+  "visuals": {
+    "render-storybook": {
+      "title": "Lunch fooled a telescope",
+      "highlight": [
+        "Lunch"
+      ]
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Perytons at the Parkes radio telescope were caused by on-site microwave ovens, and they clustered around lunchtime (hook: 'Lunch fooled a telescope'; also the title bar).",
+      "beat": "hook",
+      "source": "Petroff et al. 2015, 'Identifying the source of perytons at the Parkes radio telescope', MNRAS 451, 3933; arXiv:1504.02165 (https://arxiv.org/abs/1504.02165), section on relevance to FRBs: 'the clustering around the lunchtime hour'",
+      "confidence": "high",
+      "note": "'Fooled' = the signals mimicked an astrophysical pulse closely enough to cast doubt on the first FRB."
+    },
+    {
+      "id": "c2",
+      "claim": "Perytons have been detected at Parkes since 1998 (46 of them by 2015, 16 on 23 June 1998).",
+      "beat": "clue",
+      "source": "Petroff et al. 2015, arXiv:1504.02165, section 'The Peryton Cluster of 23rd June 1998': 'Of the 46 perytons detected at Parkes since 1998…'",
+      "confidence": "high",
+      "note": "The '1998' sign repeats this year."
+    },
+    {
+      "id": "c3",
+      "claim": "Parkes is a radio dish (radio telescope) in Australia.",
+      "beat": "clue",
+      "source": "Petroff et al. 2015, arXiv:1504.02165 (Parkes radio telescope, with the Australia Telescope Compact Array 400 km north of Parkes); Swinburne University news, May 2015 ('The Dish')",
+      "confidence": "high"
+    },
+    {
+      "id": "c4",
+      "claim": "Perytons are millisecond-long bursts whose frequency sweep mimics an astrophysical pulse, and their similarity to the first fast radio burst (FRB 010724) cast doubt on FRBs being from deep space.",
+      "beat": "clue",
+      "source": "Petroff et al. 2015, arXiv:1504.02165, abstract: 'their similarity to FRB 010724 had cast doubt on the interpretation of FRBs as extragalactic'",
+      "confidence": "high"
+    },
+    {
+      "id": "c5",
+      "claim": "Perytons occurred during office hours, clustered around lunchtime.",
+      "beat": "clue",
+      "source": "Petroff et al. 2015, arXiv:1504.02165 (time-of-day distribution, Figure 7: clustered in office hours, 'particularly around lunch time'); Swinburne University, 'How we found the source of the mystery signals at The Dish' (May 2015), https://www.swinburne.edu.au/news/2015/05/how-we-found-the-source-of-the-mystery-signals-at-the-dish",
+      "confidence": "high"
+    },
+    {
+      "id": "c6",
+      "claim": "Emily Petroff was a PhD student (Swinburne University of Technology) working on fast radio bursts, and led the peryton study.",
+      "beat": "story",
+      "source": "Swinburne University news, May 2015 (byline: 'PhD candidate in Astro Physics at Swinburne University of Technology'), https://www.swinburne.edu.au/news/2015/05/how-we-found-the-source-of-the-mystery-signals-at-the-dish ; Petroff et al. 2015 (lead author; SUPERB survey searching for pulsars and FRBs)",
+      "confidence": "high",
+      "note": "'Needed to know if they were just local noise too' paraphrases the paper's stated aim: to address whether perytons and FRBs could have a common origin."
+    },
+    {
+      "id": "c7",
+      "claim": "In January 2015 (the week of 19 January) three perytons were detected, and a newly installed RFI monitor (December 2014) showed each came with emission at 2.3–2.5 GHz, the band microwave ovens emit in.",
+      "beat": "story",
+      "source": "Petroff et al. 2015, arXiv:1504.02165, sections 2–3 and Conclusions: 'In December 2014 an RFI monitoring system was installed on the Parkes site'; 'Three peryton detections… during the week of 19 January, 2015'; 'As microwave ovens are known to emit in this frequency range'",
+      "confidence": "high",
+      "note": "Spoken as 'a new radio monitor'. Microwave ovens operate at about 2.45 GHz."
+    },
+    {
+      "id": "c8",
+      "claim": "On 17 March 2015 the team ran the staff kitchen microwave and stopped it by opening the door before the cycle finished, producing perytons at the exact times the door was opened.",
+      "beat": "story",
+      "source": "Petroff et al. 2015, arXiv:1504.02165, section 3: 'The decisive test occurred on 17 March, 2015… instead of waiting for the microwave cycle to finish the microwave was stopped by opening the door. This test produced 3 bright perytons from the staff kitchen microwave all at the exact times of opening the microwave oven door'",
+      "confidence": "high",
+      "note": "'Right on cue' = at the exact time of the door opening; the paper notes about a 50% success rate overall."
+    },
+    {
+      "id": "c9",
+      "claim": "On-site microwaves could not have produced the first fast radio burst (FRB 010724), and FRBs remained strong candidates for genuine extragalactic signals.",
+      "beat": "point",
+      "source": "Petroff et al. 2015, arXiv:1504.02165, abstract: 'microwaves on site could not have caused FRB 010724… FRBs are strong candidates for genuine extragalactic transients'",
+      "confidence": "high"
+    },
+    {
+      "id": "c10",
+      "claim": "Fast radio bursts have since been traced (localised) to host galaxies beyond the Milky Way.",
+      "beat": "point",
+      "source": "Chatterjee et al. 2017, 'A direct localization of a fast radio burst and its host', Nature 541, 58–61, doi:10.1038/nature20797",
+      "confidence": "high"
+    },
+    {
+      "id": "c11",
+      "claim": "About seventeen years passed from the 1998 peryton detections to the 2015 microwave explanation (the '17 years' calendar).",
+      "beat": "kicker",
+      "source": "Petroff et al. 2015, arXiv:1504.02165 (perytons detected since 1998; source identified March 2015)",
+      "confidence": "high",
+      "note": "1998 → 2015 = 17 years (arithmetic)."
+    }
+  ],
+  "pronunciations": {
+    "1998": "nineteen ninety-eight",
+    "2015": "twenty fifteen",
+    "perytons": "perry-tons",
+    "peryton": "perry-ton",
+    "Petroff": "peh-troff",
+    "PhD": "P H D"
+  },
+  "publish": {
+    "title": "Lunch fooled a telescope",
+    "description": "For seventeen years, Australia's Parkes radio dish caught strange bursts that looked like they came from deep space. In 2015 the answer turned up in the staff kitchen.",
+    "hashtags": [
+      "#space",
+      "#astronomy",
+      "#science",
+      "#radiotelescope",
+      "#shorts"
+    ]
+  }
+}
