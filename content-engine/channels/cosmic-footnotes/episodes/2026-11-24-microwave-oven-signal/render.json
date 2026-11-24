@@ -1,0 +1,14 @@
+{
+  "output": "out/cosmic-footnotes/clean/2026-11-24-microwave-oven-signal.mp4",
+  "rendered_at": "2026-11-24T22:53:53Z",
+  "seconds_to_render": 143,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "frames": 1526,
+  "render_skills": [
+    "render-storybook"
+  ],
+  "gl": "angle",
+  "inputs_hash": "04fa094f5d9249d4273be255778b95d35d72418be26b3b927d8de071294f47d9"
+}

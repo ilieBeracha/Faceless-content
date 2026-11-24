@@ -1,0 +1,27 @@
+{
+  "frame": {
+    "w": 1080,
+    "h": 1920
+  },
+  "safe": {
+    "x": 60,
+    "y": 250,
+    "w": 870,
+    "h": 1230
+  },
+  "elements": {
+    "storybook:title": {
+      "kind": "headline",
+      "frames": 1521,
+      "minX": 164,
+      "minY": 301,
+      "maxX": 915,
+      "maxY": 410
+    }
+  },
+  "violations": [],
+  "violationCounts": {},
+  "captionWord": {},
+  "firstCaptionFrame": null,
+  "probes": 1521
+}
