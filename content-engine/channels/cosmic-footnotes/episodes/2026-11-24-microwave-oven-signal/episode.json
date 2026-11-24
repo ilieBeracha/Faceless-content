@@ -5,7 +5,7 @@
   "idea": "microwave-oven-signal",
   "title": "Lunch fooled a telescope",
   "created": "2026-11-24T19:24:35Z",
-  "updated": "2026-11-24T19:27:23Z",
+  "updated": "2026-11-24T22:51:09Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,14 @@
       "at": "2026-11-24T19:27:23Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-11-24T19:27:23Z"
+      "status": "done",
+      "at": "2026-11-24T22:50:52Z",
+      "note": "approved by ilieBeracha"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-24T22:51:09Z",
+      "note": "50.87s"
     }
   }
 }
