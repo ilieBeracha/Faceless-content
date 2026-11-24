@@ -3,15 +3,19 @@
   "channel": "cosmic-footnotes",
   "series": "tiny-clue-big-deal",
   "idea": "microwave-oven-signal",
-  "title": "The radio signal from the kitchen",
+  "title": "Lunch fooled a telescope",
   "created": "2026-11-24T19:24:35Z",
-  "updated": "2026-11-24T19:24:35Z",
+  "updated": "2026-11-24T19:27:23Z",
   "status": "in-progress",
   "steps": {
     "idea": {
       "status": "done",
       "at": "2026-11-24T19:24:35Z",
       "note": "The radio signal from the kitchen"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-11-24T19:27:23Z"
     }
   }
 }
