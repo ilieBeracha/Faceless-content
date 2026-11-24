@@ -1,11 +1,11 @@
 ---
 episode: 2026-11-24-the-radio-signal-from-the-kitchen-b
 channel: cosmic-footnotes
-status: pending
+status: approved
 script_hash: 222e481e655fde8ac5cd18ef11817c2d956df1d0e39de67e1dc7b8e6e43be1e8
 generated_at: 2026-11-24T19:28:54Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha
+approved_at: 2026-11-24T22:50:46Z
 notes: null
 ---
 
