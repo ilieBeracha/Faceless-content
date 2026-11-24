@@ -1,11 +1,11 @@
 ---
 episode: 2026-11-24-microwave-oven-signal
 channel: cosmic-footnotes
-status: pending
+status: approved
 script_hash: bd8e5400df366d628264054e960671df61bb7163df3abbbb91bbc76293889c0b
 generated_at: 2026-11-24T19:27:23Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha
+approved_at: 2026-11-24T22:50:46Z
 notes: null
 ---
 
