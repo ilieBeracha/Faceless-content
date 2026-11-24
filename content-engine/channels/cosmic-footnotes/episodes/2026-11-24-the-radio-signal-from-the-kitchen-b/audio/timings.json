@@ -1,0 +1,1087 @@
+{
+  "version": 4,
+  "hash": "04f05a4fecef76380041dbbfd3a5ff526bb3837d8e769afec47004b0494e8813",
+  "fps": 30,
+  "frames": 1472,
+  "duration": 49.067,
+  "speech_start": 0.1,
+  "speech_end": 48.055,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Lunch",
+      "start": 0.1,
+      "end": 0.375
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "fooled",
+      "start": 0.45,
+      "end": 0.675
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "a",
+      "start": 0.7,
+      "end": 0.725
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "telescope.",
+      "start": 0.775,
+      "end": 1.825
+    },
+    {
+      "i": 4,
+      "beat": "clue",
+      "text": "Since",
+      "start": 1.975,
+      "end": 2.15
+    },
+    {
+      "i": 5,
+      "beat": "clue",
+      "text": "1998,",
+      "start": 2.2,
+      "end": 3.05
+    },
+    {
+      "i": 6,
+      "beat": "clue",
+      "text": "the",
+      "start": 3.195,
+      "end": 3.245
+    },
+    {
+      "i": 7,
+      "beat": "clue",
+      "text": "Parkes",
+      "start": 3.295,
+      "end": 3.62
+    },
+    {
+      "i": 8,
+      "beat": "clue",
+      "text": "radio",
+      "start": 3.67,
+      "end": 3.97
+    },
+    {
+      "i": 9,
+      "beat": "clue",
+      "text": "dish",
+      "start": 4.02,
+      "end": 4.195
+    },
+    {
+      "i": 10,
+      "beat": "clue",
+      "text": "in",
+      "start": 4.22,
+      "end": 4.27
+    },
+    {
+      "i": 11,
+      "beat": "clue",
+      "text": "Australia",
+      "start": 4.32,
+      "end": 4.82
+    },
+    {
+      "i": 12,
+      "beat": "clue",
+      "text": "kept",
+      "start": 4.87,
+      "end": 5.045
+    },
+    {
+      "i": 13,
+      "beat": "clue",
+      "text": "catching",
+      "start": 5.095,
+      "end": 5.42
+    },
+    {
+      "i": 14,
+      "beat": "clue",
+      "text": "quick,",
+      "start": 5.47,
+      "end": 5.67
+    },
+    {
+      "i": 15,
+      "beat": "clue",
+      "text": "strange",
+      "start": 5.855,
+      "end": 6.23
+    },
+    {
+      "i": 16,
+      "beat": "clue",
+      "text": "bursts",
+      "start": 6.28,
+      "end": 6.63
+    },
+    {
+      "i": 17,
+      "beat": "clue",
+      "text": "called",
+      "start": 6.68,
+      "end": 6.83
+    },
+    {
+      "i": 18,
+      "beat": "clue",
+      "text": "perytons.",
+      "start": 6.88,
+      "end": 7.955
+    },
+    {
+      "i": 19,
+      "beat": "clue",
+      "text": "They",
+      "start": 8.08,
+      "end": 8.155
+    },
+    {
+      "i": 20,
+      "beat": "clue",
+      "text": "looked",
+      "start": 8.18,
+      "end": 8.33
+    },
+    {
+      "i": 21,
+      "beat": "clue",
+      "text": "a",
+      "start": 8.355,
+      "end": 8.38
+    },
+    {
+      "i": 22,
+      "beat": "clue",
+      "text": "lot",
+      "start": 8.43,
+      "end": 8.605
+    },
+    {
+      "i": 23,
+      "beat": "clue",
+      "text": "like",
+      "start": 8.63,
+      "end": 8.805
+    },
+    {
+      "i": 24,
+      "beat": "clue",
+      "text": "fast",
+      "start": 8.855,
+      "end": 9.13
+    },
+    {
+      "i": 25,
+      "beat": "clue",
+      "text": "radio",
+      "start": 9.18,
+      "end": 9.48
+    },
+    {
+      "i": 26,
+      "beat": "clue",
+      "text": "bursts",
+      "start": 9.53,
+      "end": 9.755
+    },
+    {
+      "i": 27,
+      "beat": "clue",
+      "text": "from",
+      "start": 9.805,
+      "end": 9.93
+    },
+    {
+      "i": 28,
+      "beat": "clue",
+      "text": "deep",
+      "start": 9.98,
+      "end": 10.18
+    },
+    {
+      "i": 29,
+      "beat": "clue",
+      "text": "space,",
+      "start": 10.23,
+      "end": 10.855
+    },
+    {
+      "i": 30,
+      "beat": "clue",
+      "text": "but",
+      "start": 10.955,
+      "end": 11.055
+    },
+    {
+      "i": 31,
+      "beat": "clue",
+      "text": "they",
+      "start": 11.08,
+      "end": 11.18
+    },
+    {
+      "i": 32,
+      "beat": "clue",
+      "text": "showed",
+      "start": 11.255,
+      "end": 11.455
+    },
+    {
+      "i": 33,
+      "beat": "clue",
+      "text": "up",
+      "start": 11.48,
+      "end": 11.58
+    },
+    {
+      "i": 34,
+      "beat": "clue",
+      "text": "in",
+      "start": 11.605,
+      "end": 11.655
+    },
+    {
+      "i": 35,
+      "beat": "clue",
+      "text": "office",
+      "start": 11.68,
+      "end": 11.93
+    },
+    {
+      "i": 36,
+      "beat": "clue",
+      "text": "hours,",
+      "start": 11.98,
+      "end": 12.305
+    },
+    {
+      "i": 37,
+      "beat": "clue",
+      "text": "mostly",
+      "start": 12.49,
+      "end": 12.74
+    },
+    {
+      "i": 38,
+      "beat": "clue",
+      "text": "around",
+      "start": 12.79,
+      "end": 13.015
+    },
+    {
+      "i": 39,
+      "beat": "clue",
+      "text": "lunchtime.",
+      "start": 13.065,
+      "end": 14.14
+    },
+    {
+      "i": 40,
+      "beat": "story",
+      "text": "Emily",
+      "start": 14.29,
+      "end": 14.59
+    },
+    {
+      "i": 41,
+      "beat": "story",
+      "text": "Petroff,",
+      "start": 14.64,
+      "end": 15.265
+    },
+    {
+      "i": 42,
+      "beat": "story",
+      "text": "a",
+      "start": 15.395,
+      "end": 15.42
+    },
+    {
+      "i": 43,
+      "beat": "story",
+      "text": "PhD",
+      "start": 15.47,
+      "end": 16.195
+    },
+    {
+      "i": 44,
+      "beat": "story",
+      "text": "student",
+      "start": 16.245,
+      "end": 16.645
+    },
+    {
+      "i": 45,
+      "beat": "story",
+      "text": "hunting",
+      "start": 16.695,
+      "end": 16.945
+    },
+    {
+      "i": 46,
+      "beat": "story",
+      "text": "the",
+      "start": 16.97,
+      "end": 17.02
+    },
+    {
+      "i": 47,
+      "beat": "story",
+      "text": "real",
+      "start": 17.07,
+      "end": 17.27
+    },
+    {
+      "i": 48,
+      "beat": "story",
+      "text": "bursts,",
+      "start": 17.32,
+      "end": 17.97
+    },
+    {
+      "i": 49,
+      "beat": "story",
+      "text": "needed",
+      "start": 18.07,
+      "end": 18.27
+    },
+    {
+      "i": 50,
+      "beat": "story",
+      "text": "to",
+      "start": 18.32,
+      "end": 18.37
+    },
+    {
+      "i": 51,
+      "beat": "story",
+      "text": "know",
+      "start": 18.42,
+      "end": 18.57
+    },
+    {
+      "i": 52,
+      "beat": "story",
+      "text": "if",
+      "start": 18.595,
+      "end": 18.67
+    },
+    {
+      "i": 53,
+      "beat": "story",
+      "text": "they",
+      "start": 18.695,
+      "end": 18.77
+    },
+    {
+      "i": 54,
+      "beat": "story",
+      "text": "were",
+      "start": 18.795,
+      "end": 18.87
+    },
+    {
+      "i": 55,
+      "beat": "story",
+      "text": "just",
+      "start": 18.895,
+      "end": 19.07
+    },
+    {
+      "i": 56,
+      "beat": "story",
+      "text": "local",
+      "start": 19.12,
+      "end": 19.395
+    },
+    {
+      "i": 57,
+      "beat": "story",
+      "text": "noise",
+      "start": 19.445,
+      "end": 19.72
+    },
+    {
+      "i": 58,
+      "beat": "story",
+      "text": "too.",
+      "start": 19.795,
+      "end": 20.47
+    },
+    {
+      "i": 59,
+      "beat": "story",
+      "text": "In",
+      "start": 20.62,
+      "end": 20.695
+    },
+    {
+      "i": 60,
+      "beat": "story",
+      "text": "January",
+      "start": 20.745,
+      "end": 21.045
+    },
+    {
+      "i": 61,
+      "beat": "story",
+      "text": "2015,",
+      "start": 21.095,
+      "end": 21.895
+    },
+    {
+      "i": 62,
+      "beat": "story",
+      "text": "a",
+      "start": 22.08,
+      "end": 22.105
+    },
+    {
+      "i": 63,
+      "beat": "story",
+      "text": "new",
+      "start": 22.155,
+      "end": 22.305
+    },
+    {
+      "i": 64,
+      "beat": "story",
+      "text": "radio",
+      "start": 22.355,
+      "end": 22.68
+    },
+    {
+      "i": 65,
+      "beat": "story",
+      "text": "monitor",
+      "start": 22.73,
+      "end": 23.08
+    },
+    {
+      "i": 66,
+      "beat": "story",
+      "text": "caught",
+      "start": 23.13,
+      "end": 23.33
+    },
+    {
+      "i": 67,
+      "beat": "story",
+      "text": "three",
+      "start": 23.405,
+      "end": 23.58
+    },
+    {
+      "i": 68,
+      "beat": "story",
+      "text": "perytons,",
+      "start": 23.63,
+      "end": 24.555
+    },
+    {
+      "i": 69,
+      "beat": "story",
+      "text": "and",
+      "start": 24.68,
+      "end": 24.755
+    },
+    {
+      "i": 70,
+      "beat": "story",
+      "text": "each",
+      "start": 24.805,
+      "end": 24.955
+    },
+    {
+      "i": 71,
+      "beat": "story",
+      "text": "one",
+      "start": 24.98,
+      "end": 25.08
+    },
+    {
+      "i": 72,
+      "beat": "story",
+      "text": "came",
+      "start": 25.13,
+      "end": 25.28
+    },
+    {
+      "i": 73,
+      "beat": "story",
+      "text": "with",
+      "start": 25.305,
+      "end": 25.38
+    },
+    {
+      "i": 74,
+      "beat": "story",
+      "text": "a",
+      "start": 25.405,
+      "end": 25.43
+    },
+    {
+      "i": 75,
+      "beat": "story",
+      "text": "blip",
+      "start": 25.48,
+      "end": 25.73
+    },
+    {
+      "i": 76,
+      "beat": "story",
+      "text": "on",
+      "start": 25.73,
+      "end": 25.73
+    },
+    {
+      "i": 77,
+      "beat": "story",
+      "text": "the",
+      "start": 25.78,
+      "end": 25.93
+    },
+    {
+      "i": 78,
+      "beat": "story",
+      "text": "band",
+      "start": 25.98,
+      "end": 26.23
+    },
+    {
+      "i": 79,
+      "beat": "story",
+      "text": "microwave",
+      "start": 26.28,
+      "end": 26.83
+    },
+    {
+      "i": 80,
+      "beat": "story",
+      "text": "ovens",
+      "start": 26.855,
+      "end": 27.13
+    },
+    {
+      "i": 81,
+      "beat": "story",
+      "text": "use.",
+      "start": 27.18,
+      "end": 27.905
+    },
+    {
+      "i": 82,
+      "beat": "story",
+      "text": "So",
+      "start": 28.03,
+      "end": 28.13
+    },
+    {
+      "i": 83,
+      "beat": "story",
+      "text": "her",
+      "start": 28.155,
+      "end": 28.23
+    },
+    {
+      "i": 84,
+      "beat": "story",
+      "text": "team",
+      "start": 28.28,
+      "end": 28.48
+    },
+    {
+      "i": 85,
+      "beat": "story",
+      "text": "ran",
+      "start": 28.53,
+      "end": 28.68
+    },
+    {
+      "i": 86,
+      "beat": "story",
+      "text": "the",
+      "start": 28.705,
+      "end": 28.755
+    },
+    {
+      "i": 87,
+      "beat": "story",
+      "text": "staff",
+      "start": 28.805,
+      "end": 29.08
+    },
+    {
+      "i": 88,
+      "beat": "story",
+      "text": "kitchen",
+      "start": 29.13,
+      "end": 29.405
+    },
+    {
+      "i": 89,
+      "beat": "story",
+      "text": "microwave",
+      "start": 29.455,
+      "end": 30.005
+    },
+    {
+      "i": 90,
+      "beat": "story",
+      "text": "and",
+      "start": 30.03,
+      "end": 30.105
+    },
+    {
+      "i": 91,
+      "beat": "story",
+      "text": "opened",
+      "start": 30.155,
+      "end": 30.405
+    },
+    {
+      "i": 92,
+      "beat": "story",
+      "text": "the",
+      "start": 30.43,
+      "end": 30.48
+    },
+    {
+      "i": 93,
+      "beat": "story",
+      "text": "door",
+      "start": 30.53,
+      "end": 30.705
+    },
+    {
+      "i": 94,
+      "beat": "story",
+      "text": "before",
+      "start": 30.755,
+      "end": 30.955
+    },
+    {
+      "i": 95,
+      "beat": "story",
+      "text": "the",
+      "start": 30.98,
+      "end": 31.03
+    },
+    {
+      "i": 96,
+      "beat": "story",
+      "text": "timer",
+      "start": 31.08,
+      "end": 31.38
+    },
+    {
+      "i": 97,
+      "beat": "story",
+      "text": "finished.",
+      "start": 31.43,
+      "end": 32.255
+    },
+    {
+      "i": 98,
+      "beat": "story",
+      "text": "The",
+      "start": 32.38,
+      "end": 32.43
+    },
+    {
+      "i": 99,
+      "beat": "story",
+      "text": "dish",
+      "start": 32.48,
+      "end": 32.68
+    },
+    {
+      "i": 100,
+      "beat": "story",
+      "text": "caught",
+      "start": 32.73,
+      "end": 32.905
+    },
+    {
+      "i": 101,
+      "beat": "story",
+      "text": "a",
+      "start": 32.93,
+      "end": 32.955
+    },
+    {
+      "i": 102,
+      "beat": "story",
+      "text": "peryton,",
+      "start": 33.005,
+      "end": 33.505
+    },
+    {
+      "i": 103,
+      "beat": "story",
+      "text": "right",
+      "start": 33.58,
+      "end": 33.755
+    },
+    {
+      "i": 104,
+      "beat": "story",
+      "text": "on",
+      "start": 33.78,
+      "end": 33.905
+    },
+    {
+      "i": 105,
+      "beat": "story",
+      "text": "cue.",
+      "start": 33.955,
+      "end": 34.405
+    },
+    {
+      "i": 106,
+      "beat": "point",
+      "text": "Here's",
+      "start": 34.545,
+      "end": 34.795
+    },
+    {
+      "i": 107,
+      "beat": "point",
+      "text": "the",
+      "start": 34.82,
+      "end": 34.87
+    },
+    {
+      "i": 108,
+      "beat": "point",
+      "text": "footnote.",
+      "start": 34.92,
+      "end": 35.695
+    },
+    {
+      "i": 109,
+      "beat": "point",
+      "text": "A",
+      "start": 35.845,
+      "end": 35.87
+    },
+    {
+      "i": 110,
+      "beat": "point",
+      "text": "microwave",
+      "start": 35.92,
+      "end": 36.345
+    },
+    {
+      "i": 111,
+      "beat": "point",
+      "text": "couldn't",
+      "start": 36.395,
+      "end": 36.695
+    },
+    {
+      "i": 112,
+      "beat": "point",
+      "text": "have",
+      "start": 36.695,
+      "end": 36.695
+    },
+    {
+      "i": 113,
+      "beat": "point",
+      "text": "made",
+      "start": 36.72,
+      "end": 36.845
+    },
+    {
+      "i": 114,
+      "beat": "point",
+      "text": "the",
+      "start": 36.87,
+      "end": 36.92
+    },
+    {
+      "i": 115,
+      "beat": "point",
+      "text": "very",
+      "start": 36.97,
+      "end": 37.195
+    },
+    {
+      "i": 116,
+      "beat": "point",
+      "text": "first",
+      "start": 37.27,
+      "end": 37.545
+    },
+    {
+      "i": 117,
+      "beat": "point",
+      "text": "fast",
+      "start": 37.595,
+      "end": 37.87
+    },
+    {
+      "i": 118,
+      "beat": "point",
+      "text": "radio",
+      "start": 37.92,
+      "end": 38.22
+    },
+    {
+      "i": 119,
+      "beat": "point",
+      "text": "burst,",
+      "start": 38.27,
+      "end": 38.695
+    },
+    {
+      "i": 120,
+      "beat": "point",
+      "text": "so",
+      "start": 38.845,
+      "end": 38.945
+    },
+    {
+      "i": 121,
+      "beat": "point",
+      "text": "those",
+      "start": 38.97,
+      "end": 39.17
+    },
+    {
+      "i": 122,
+      "beat": "point",
+      "text": "bursts",
+      "start": 39.22,
+      "end": 39.52
+    },
+    {
+      "i": 123,
+      "beat": "point",
+      "text": "were",
+      "start": 39.545,
+      "end": 39.62
+    },
+    {
+      "i": 124,
+      "beat": "point",
+      "text": "real,",
+      "start": 39.67,
+      "end": 40.07
+    },
+    {
+      "i": 125,
+      "beat": "point",
+      "text": "and",
+      "start": 40.17,
+      "end": 40.245
+    },
+    {
+      "i": 126,
+      "beat": "point",
+      "text": "today",
+      "start": 40.295,
+      "end": 40.57
+    },
+    {
+      "i": 127,
+      "beat": "point",
+      "text": "they're",
+      "start": 40.595,
+      "end": 40.695
+    },
+    {
+      "i": 128,
+      "beat": "point",
+      "text": "traced",
+      "start": 40.745,
+      "end": 40.995
+    },
+    {
+      "i": 129,
+      "beat": "point",
+      "text": "to",
+      "start": 41.02,
+      "end": 41.07
+    },
+    {
+      "i": 130,
+      "beat": "point",
+      "text": "other",
+      "start": 41.12,
+      "end": 41.295
+    },
+    {
+      "i": 131,
+      "beat": "point",
+      "text": "galaxies.",
+      "start": 41.345,
+      "end": 42.545
+    },
+    {
+      "i": 132,
+      "beat": "kicker",
+      "text": "Seventeen",
+      "start": 42.72,
+      "end": 43.22
+    },
+    {
+      "i": 133,
+      "beat": "kicker",
+      "text": "years",
+      "start": 43.27,
+      "end": 43.52
+    },
+    {
+      "i": 134,
+      "beat": "kicker",
+      "text": "of",
+      "start": 43.545,
+      "end": 43.595
+    },
+    {
+      "i": 135,
+      "beat": "kicker",
+      "text": "strange",
+      "start": 43.645,
+      "end": 44.02
+    },
+    {
+      "i": 136,
+      "beat": "kicker",
+      "text": "bursts,",
+      "start": 44.07,
+      "end": 44.57
+    },
+    {
+      "i": 137,
+      "beat": "kicker",
+      "text": "and",
+      "start": 44.73,
+      "end": 44.805
+    },
+    {
+      "i": 138,
+      "beat": "kicker",
+      "text": "the",
+      "start": 44.83,
+      "end": 44.88
+    },
+    {
+      "i": 139,
+      "beat": "kicker",
+      "text": "answer",
+      "start": 44.93,
+      "end": 45.255
+    },
+    {
+      "i": 140,
+      "beat": "kicker",
+      "text": "was",
+      "start": 45.305,
+      "end": 45.48
+    },
+    {
+      "i": 141,
+      "beat": "kicker",
+      "text": "a",
+      "start": 45.48,
+      "end": 45.48
+    },
+    {
+      "i": 142,
+      "beat": "kicker",
+      "text": "microwave",
+      "start": 45.53,
+      "end": 46.105
+    },
+    {
+      "i": 143,
+      "beat": "kicker",
+      "text": "door",
+      "start": 46.155,
+      "end": 46.38
+    },
+    {
+      "i": 144,
+      "beat": "kicker",
+      "text": "opened",
+      "start": 46.43,
+      "end": 46.78
+    },
+    {
+      "i": 145,
+      "beat": "kicker",
+      "text": "too",
+      "start": 46.83,
+      "end": 46.98
+    },
+    {
+      "i": 146,
+      "beat": "kicker",
+      "text": "soon.",
+      "start": 47.055,
+      "end": 47.88
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "ori",
+      "start": 0.1,
+      "end": 1.9
+    },
+    {
+      "id": "clue",
+      "speaker": "ori",
+      "start": 1.9,
+      "end": 14.215
+    },
+    {
+      "id": "story",
+      "speaker": "ori",
+      "start": 14.215,
+      "end": 34.475
+    },
+    {
+      "id": "point",
+      "speaker": "ori",
+      "start": 34.475,
+      "end": 42.633
+    },
+    {
+      "id": "kicker",
+      "speaker": "ori",
+      "start": 42.633,
+      "end": 48.055
+    }
+  ],
+  "voices": {
+    "ori": {
+      "provider": "kokoro",
+      "voice_id": "bf_emma",
+      "speed": 1,
+      "pitch_semitones": 0,
+      "sentence_pause": 0.3,
+      "clause_pause": 0.12
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -14.69,
+    "true_peak_db": -1.96
+  }
+}

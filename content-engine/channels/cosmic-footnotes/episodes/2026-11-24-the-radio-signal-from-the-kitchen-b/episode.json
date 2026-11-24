@@ -5,7 +5,7 @@
   "idea": "the-radio-signal-from-the-kitchen-b",
   "title": "Lunch fooled a telescope",
   "created": "2026-11-24T19:26:12Z",
-  "updated": "2026-11-24T19:28:54Z",
+  "updated": "2026-11-24T22:55:41Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -18,8 +18,14 @@
       "at": "2026-11-24T19:28:54Z"
     },
     "factcheck": {
-      "status": "waiting",
-      "at": "2026-11-24T19:28:54Z"
+      "status": "done",
+      "at": "2026-11-24T22:55:26Z",
+      "note": "approved by ilieBeracha"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-24T22:55:41Z",
+      "note": "49.07s"
     }
   }
 }
