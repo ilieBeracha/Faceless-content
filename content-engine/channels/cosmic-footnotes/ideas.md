@@ -82,6 +82,7 @@ The engine marks an idea "used" when an episode is made from it.
 ## the-radio-signal-from-the-kitchen-b
 - title: The radio signal from the kitchen (B)
 - series: tiny-clue-big-deal
-- status: new
+- status: used
 - angle: Mysterious bursts at a famous radio telescope turned out to be someone opening the microwave too early — and solving it helped real astronomy.
 - added: 2026-11-24
+- used_in: episodes/2026-11-24-the-radio-signal-from-the-kitchen-b
