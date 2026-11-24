@@ -78,3 +78,10 @@ The engine marks an idea "used" when an episode is made from it.
 - status: new
 - angle: Uranus wobbled off its path; working out why pointed telescopes straight at Neptune.
 - added: 2026-10-15
+
+## the-radio-signal-from-the-kitchen-b
+- title: The radio signal from the kitchen (B)
+- series: tiny-clue-big-deal
+- status: new
+- angle: Mysterious bursts at a famous radio telescope turned out to be someone opening the microwave too early — and solving it helped real astronomy.
+- added: 2026-11-24
