@@ -1,0 +1,716 @@
+{
+  "version": 4,
+  "hash": "8f7a4f7d0f2b61778a5059fcf1d8187d7db9f838fb7f53000f064fe689d7045b",
+  "fps": 30,
+  "frames": 1010,
+  "duration": 33.667,
+  "speech_start": 0.1,
+  "speech_end": 32.64,
+  "outro_padding": 0,
+  "words": [
+    {
+      "i": 0,
+      "beat": "hook",
+      "text": "Red",
+      "start": 0.1,
+      "end": 0.275
+    },
+    {
+      "i": 1,
+      "beat": "hook",
+      "text": "dye",
+      "start": 0.325,
+      "end": 0.6
+    },
+    {
+      "i": 2,
+      "beat": "hook",
+      "text": "changed",
+      "start": 0.65,
+      "end": 1.025
+    },
+    {
+      "i": 3,
+      "beat": "hook",
+      "text": "wine",
+      "start": 1.1,
+      "end": 1.375
+    },
+    {
+      "i": 4,
+      "beat": "hook",
+      "text": "students'",
+      "start": 1.425,
+      "end": 1.75
+    },
+    {
+      "i": 5,
+      "beat": "hook",
+      "text": "smell",
+      "start": 1.8,
+      "end": 2.05
+    },
+    {
+      "i": 6,
+      "beat": "hook",
+      "text": "words.",
+      "start": 2.1,
+      "end": 2.8
+    },
+    {
+      "i": 7,
+      "beat": "setup",
+      "text": "Frédéric",
+      "start": 2.975,
+      "end": 3.65
+    },
+    {
+      "i": 8,
+      "beat": "setup",
+      "text": "Brochet,",
+      "start": 3.7,
+      "end": 4.25
+    },
+    {
+      "i": 9,
+      "beat": "setup",
+      "text": "working",
+      "start": 4.415,
+      "end": 4.665
+    },
+    {
+      "i": 10,
+      "beat": "setup",
+      "text": "on",
+      "start": 4.69,
+      "end": 4.765
+    },
+    {
+      "i": 11,
+      "beat": "setup",
+      "text": "his",
+      "start": 4.79,
+      "end": 4.915
+    },
+    {
+      "i": 12,
+      "beat": "setup",
+      "text": "doctorate,",
+      "start": 4.965,
+      "end": 5.64
+    },
+    {
+      "i": 13,
+      "beat": "setup",
+      "text": "noticed",
+      "start": 5.765,
+      "end": 6.065
+    },
+    {
+      "i": 14,
+      "beat": "setup",
+      "text": "experts",
+      "start": 6.115,
+      "end": 6.59
+    },
+    {
+      "i": 15,
+      "beat": "setup",
+      "text": "describe",
+      "start": 6.64,
+      "end": 7.065
+    },
+    {
+      "i": 16,
+      "beat": "setup",
+      "text": "smells",
+      "start": 7.14,
+      "end": 7.54
+    },
+    {
+      "i": 17,
+      "beat": "setup",
+      "text": "with",
+      "start": 7.565,
+      "end": 7.69
+    },
+    {
+      "i": 18,
+      "beat": "setup",
+      "text": "things",
+      "start": 7.74,
+      "end": 7.965
+    },
+    {
+      "i": 19,
+      "beat": "setup",
+      "text": "coloured",
+      "start": 8.015,
+      "end": 8.315
+    },
+    {
+      "i": 20,
+      "beat": "setup",
+      "text": "like",
+      "start": 8.34,
+      "end": 8.465
+    },
+    {
+      "i": 21,
+      "beat": "setup",
+      "text": "the",
+      "start": 8.49,
+      "end": 8.54
+    },
+    {
+      "i": 22,
+      "beat": "setup",
+      "text": "wine,",
+      "start": 8.59,
+      "end": 9.19
+    },
+    {
+      "i": 23,
+      "beat": "setup",
+      "text": "and",
+      "start": 9.315,
+      "end": 9.39
+    },
+    {
+      "i": 24,
+      "beat": "setup",
+      "text": "suspected",
+      "start": 9.44,
+      "end": 9.915
+    },
+    {
+      "i": 25,
+      "beat": "setup",
+      "text": "colour",
+      "start": 9.965,
+      "end": 10.29
+    },
+    {
+      "i": 26,
+      "beat": "setup",
+      "text": "chose",
+      "start": 10.34,
+      "end": 10.615
+    },
+    {
+      "i": 27,
+      "beat": "setup",
+      "text": "their",
+      "start": 10.665,
+      "end": 10.815
+    },
+    {
+      "i": 28,
+      "beat": "setup",
+      "text": "words.",
+      "start": 10.865,
+      "end": 11.615
+    },
+    {
+      "i": 29,
+      "beat": "turn",
+      "text": "He",
+      "start": 11.765,
+      "end": 11.84
+    },
+    {
+      "i": 30,
+      "beat": "turn",
+      "text": "dyed",
+      "start": 11.89,
+      "end": 12.14
+    },
+    {
+      "i": 31,
+      "beat": "turn",
+      "text": "white",
+      "start": 12.215,
+      "end": 12.44
+    },
+    {
+      "i": 32,
+      "beat": "turn",
+      "text": "wine",
+      "start": 12.49,
+      "end": 12.79
+    },
+    {
+      "i": 33,
+      "beat": "turn",
+      "text": "red",
+      "start": 12.84,
+      "end": 13.015
+    },
+    {
+      "i": 34,
+      "beat": "turn",
+      "text": "with",
+      "start": 13.04,
+      "end": 13.165
+    },
+    {
+      "i": 35,
+      "beat": "turn",
+      "text": "grape",
+      "start": 13.215,
+      "end": 13.415
+    },
+    {
+      "i": 36,
+      "beat": "turn",
+      "text": "pigment,",
+      "start": 13.465,
+      "end": 14.04
+    },
+    {
+      "i": 37,
+      "beat": "turn",
+      "text": "and",
+      "start": 14.14,
+      "end": 14.215
+    },
+    {
+      "i": 38,
+      "beat": "turn",
+      "text": "fifty",
+      "start": 14.29,
+      "end": 14.54
+    },
+    {
+      "i": 39,
+      "beat": "turn",
+      "text": "people",
+      "start": 14.59,
+      "end": 14.89
+    },
+    {
+      "i": 40,
+      "beat": "turn",
+      "text": "sniffing",
+      "start": 14.965,
+      "end": 15.29
+    },
+    {
+      "i": 41,
+      "beat": "turn",
+      "text": "both",
+      "start": 15.34,
+      "end": 15.565
+    },
+    {
+      "i": 42,
+      "beat": "turn",
+      "text": "from",
+      "start": 15.615,
+      "end": 15.715
+    },
+    {
+      "i": 43,
+      "beat": "turn",
+      "text": "black",
+      "start": 15.765,
+      "end": 16.015
+    },
+    {
+      "i": 44,
+      "beat": "turn",
+      "text": "glasses",
+      "start": 16.065,
+      "end": 16.54
+    },
+    {
+      "i": 45,
+      "beat": "turn",
+      "text": "smelled",
+      "start": 16.615,
+      "end": 16.89
+    },
+    {
+      "i": 46,
+      "beat": "turn",
+      "text": "no",
+      "start": 16.94,
+      "end": 17.115
+    },
+    {
+      "i": 47,
+      "beat": "turn",
+      "text": "difference.",
+      "start": 17.165,
+      "end": 17.965
+    },
+    {
+      "i": 48,
+      "beat": "turn",
+      "text": "Then",
+      "start": 18.09,
+      "end": 18.265
+    },
+    {
+      "i": 49,
+      "beat": "turn",
+      "text": "he",
+      "start": 18.315,
+      "end": 18.39
+    },
+    {
+      "i": 50,
+      "beat": "turn",
+      "text": "had",
+      "start": 18.415,
+      "end": 18.565
+    },
+    {
+      "i": 51,
+      "beat": "turn",
+      "text": "wine",
+      "start": 18.615,
+      "end": 18.84
+    },
+    {
+      "i": 52,
+      "beat": "turn",
+      "text": "students",
+      "start": 18.89,
+      "end": 19.24
+    },
+    {
+      "i": 53,
+      "beat": "turn",
+      "text": "describe",
+      "start": 19.29,
+      "end": 19.69
+    },
+    {
+      "i": 54,
+      "beat": "turn",
+      "text": "the",
+      "start": 19.715,
+      "end": 19.765
+    },
+    {
+      "i": 55,
+      "beat": "turn",
+      "text": "smell",
+      "start": 19.84,
+      "end": 20.165
+    },
+    {
+      "i": 56,
+      "beat": "turn",
+      "text": "of",
+      "start": 20.215,
+      "end": 20.39
+    },
+    {
+      "i": 57,
+      "beat": "turn",
+      "text": "a",
+      "start": 20.39,
+      "end": 20.39
+    },
+    {
+      "i": 58,
+      "beat": "turn",
+      "text": "red",
+      "start": 20.465,
+      "end": 20.815
+    },
+    {
+      "i": 59,
+      "beat": "turn",
+      "text": "and",
+      "start": 20.89,
+      "end": 20.965
+    },
+    {
+      "i": 60,
+      "beat": "turn",
+      "text": "a",
+      "start": 20.99,
+      "end": 21.015
+    },
+    {
+      "i": 61,
+      "beat": "turn",
+      "text": "white.",
+      "start": 21.065,
+      "end": 21.74
+    },
+    {
+      "i": 62,
+      "beat": "twist",
+      "text": "A",
+      "start": 21.94,
+      "end": 21.99
+    },
+    {
+      "i": 63,
+      "beat": "twist",
+      "text": "week",
+      "start": 22.04,
+      "end": 22.24
+    },
+    {
+      "i": 64,
+      "beat": "twist",
+      "text": "later,",
+      "start": 22.265,
+      "end": 22.69
+    },
+    {
+      "i": 65,
+      "beat": "twist",
+      "text": "he",
+      "start": 22.815,
+      "end": 22.89
+    },
+    {
+      "i": 66,
+      "beat": "twist",
+      "text": "served",
+      "start": 22.965,
+      "end": 23.215
+    },
+    {
+      "i": 67,
+      "beat": "twist",
+      "text": "that",
+      "start": 23.265,
+      "end": 23.44
+    },
+    {
+      "i": 68,
+      "beat": "twist",
+      "text": "same",
+      "start": 23.515,
+      "end": 23.74
+    },
+    {
+      "i": 69,
+      "beat": "twist",
+      "text": "white",
+      "start": 23.79,
+      "end": 24.015
+    },
+    {
+      "i": 70,
+      "beat": "twist",
+      "text": "twice,",
+      "start": 24.065,
+      "end": 24.69
+    },
+    {
+      "i": 71,
+      "beat": "twist",
+      "text": "one",
+      "start": 24.84,
+      "end": 25.015
+    },
+    {
+      "i": 72,
+      "beat": "twist",
+      "text": "glass",
+      "start": 25.065,
+      "end": 25.34
+    },
+    {
+      "i": 73,
+      "beat": "twist",
+      "text": "dyed,",
+      "start": 25.39,
+      "end": 25.965
+    },
+    {
+      "i": 74,
+      "beat": "twist",
+      "text": "so",
+      "start": 26.09,
+      "end": 26.215
+    },
+    {
+      "i": 75,
+      "beat": "twist",
+      "text": "only",
+      "start": 26.265,
+      "end": 26.515
+    },
+    {
+      "i": 76,
+      "beat": "twist",
+      "text": "colour",
+      "start": 26.59,
+      "end": 26.89
+    },
+    {
+      "i": 77,
+      "beat": "twist",
+      "text": "differed.",
+      "start": 26.94,
+      "end": 27.69
+    },
+    {
+      "i": 78,
+      "beat": "ending",
+      "text": "The",
+      "start": 27.865,
+      "end": 27.915
+    },
+    {
+      "i": 79,
+      "beat": "ending",
+      "text": "students",
+      "start": 27.965,
+      "end": 28.34
+    },
+    {
+      "i": 80,
+      "beat": "ending",
+      "text": "generally",
+      "start": 28.415,
+      "end": 28.79
+    },
+    {
+      "i": 81,
+      "beat": "ending",
+      "text": "described",
+      "start": 28.84,
+      "end": 29.315
+    },
+    {
+      "i": 82,
+      "beat": "ending",
+      "text": "the",
+      "start": 29.34,
+      "end": 29.39
+    },
+    {
+      "i": 83,
+      "beat": "ending",
+      "text": "dyed",
+      "start": 29.465,
+      "end": 29.74
+    },
+    {
+      "i": 84,
+      "beat": "ending",
+      "text": "glass",
+      "start": 29.79,
+      "end": 30.19
+    },
+    {
+      "i": 85,
+      "beat": "ending",
+      "text": "with",
+      "start": 30.24,
+      "end": 30.44
+    },
+    {
+      "i": 86,
+      "beat": "ending",
+      "text": "the",
+      "start": 30.44,
+      "end": 30.44
+    },
+    {
+      "i": 87,
+      "beat": "ending",
+      "text": "smell",
+      "start": 30.54,
+      "end": 30.815
+    },
+    {
+      "i": 88,
+      "beat": "ending",
+      "text": "words",
+      "start": 30.865,
+      "end": 31.19
+    },
+    {
+      "i": 89,
+      "beat": "ending",
+      "text": "they'd",
+      "start": 31.24,
+      "end": 31.415
+    },
+    {
+      "i": 90,
+      "beat": "ending",
+      "text": "used",
+      "start": 31.465,
+      "end": 31.715
+    },
+    {
+      "i": 91,
+      "beat": "ending",
+      "text": "for",
+      "start": 31.715,
+      "end": 31.715
+    },
+    {
+      "i": 92,
+      "beat": "ending",
+      "text": "the",
+      "start": 31.765,
+      "end": 31.94
+    },
+    {
+      "i": 93,
+      "beat": "ending",
+      "text": "red.",
+      "start": 31.99,
+      "end": 32.49
+    }
+  ],
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "blink",
+      "start": 0.1,
+      "end": 2.888
+    },
+    {
+      "id": "setup",
+      "speaker": "blink",
+      "start": 2.888,
+      "end": 11.69
+    },
+    {
+      "id": "turn",
+      "speaker": "blink",
+      "start": 11.69,
+      "end": 21.84
+    },
+    {
+      "id": "twist",
+      "speaker": "blink",
+      "start": 21.84,
+      "end": 27.778
+    },
+    {
+      "id": "ending",
+      "speaker": "blink",
+      "start": 27.778,
+      "end": 32.64
+    }
+  ],
+  "voices": {
+    "blink": {
+      "provider": "kokoro",
+      "voice_id": "af_heart",
+      "speed": 1.06,
+      "pitch_semitones": 0,
+      "sentence_pause": 0.3,
+      "clause_pause": 0.1
+    }
+  },
+  "loudness": {
+    "integrated_lufs": -14.49,
+    "true_peak_db": -1.31
+  }
+}
