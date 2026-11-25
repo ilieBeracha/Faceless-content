@@ -1,15 +1,15 @@
 {
   "output": "out/no-way-really/clean/2026-11-25-wine-experts-fooled-by-dye.mp4",
-  "rendered_at": "2026-11-25T21:29:11Z",
-  "seconds_to_render": 96,
+  "rendered_at": "2026-11-25T21:33:40Z",
+  "seconds_to_render": 94,
   "width": 1080,
   "height": 1920,
   "fps": 30,
-  "frames": 1010,
+  "frames": 997,
   "render_skills": [
     "render-themed",
     "render-talking-character"
   ],
   "gl": "angle",
-  "inputs_hash": "cc33f328786425501803aac1453f8e2ca1aeb64da02b4f2d549a0d0721332e31"
+  "inputs_hash": "a2f7fc03ffd8d7324cc219b6dc8b2fddbf5576d51f726be1316e271988aa6004"
 }

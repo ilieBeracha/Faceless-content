@@ -5,7 +5,7 @@
   "idea": "wine-experts-fooled-by-dye",
   "title": "White wine, dyed red, got red-wine words",
   "created": "2026-11-25T20:21:46Z",
-  "updated": "2026-11-25T21:31:50Z",
+  "updated": "2026-11-25T21:34:39Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -38,7 +38,7 @@
     },
     "render": {
       "status": "done",
-      "at": "2026-11-25T21:30:13Z",
+      "at": "2026-11-25T21:34:39Z",
       "note": "out/no-way-really/2026-11-25-wine-experts-fooled-by-dye.mp4"
     }
   }
