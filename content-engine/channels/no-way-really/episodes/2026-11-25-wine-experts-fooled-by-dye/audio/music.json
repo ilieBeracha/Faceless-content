@@ -1,0 +1,7 @@
+{
+  "prompt": "Instrumental background music for a short vertical video with a narrator speaking over it. Feel: surprised, playful, curious, honest, quick. Topic: Red dye changed wine students' smell words. No vocals, no lyrics, no spoken words. Steady energy from the first second, no long silences or sudden drops, and a clean ending.",
+  "seconds": 34,
+  "endpoint": "sonilo/v1.1/text-to-music",
+  "usd": 0.085,
+  "made_at": "2026-11-25T21:27:30Z"
+}

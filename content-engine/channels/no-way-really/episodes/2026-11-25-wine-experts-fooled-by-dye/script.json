@@ -3,7 +3,7 @@
   "channel": "no-way-really",
   "series": "wait-what",
   "idea": "wine-experts-fooled-by-dye",
-  "title": "Red dye changed wine students' smell words",
+  "title": "Dye fooled wine students",
   "angle": {
     "point": "A glass of white wine isn't boring: dye it red and trained wine students describe its smell with the words they used for a real red, because what they see overrides what they smell.",
     "stakes": "Frédéric Brochet, working towards a doctorate at Bordeaux's Faculty of Oenology, suspected from experts' tasting notes that a wine's colour steers which smells tasters name; his doctoral work stood on testing it.",
@@ -15,7 +15,7 @@
     {
       "id": "hook",
       "speaker": "blink",
-      "voiceover": "Red dye changed wine students' smell words.",
+      "voiceover": "Dye fooled wine students.",
       "visual": {
         "skill": "render-themed",
         "elements": [
@@ -60,7 +60,7 @@
             "type": "marks",
             "items": [
               {
-                "value": "Dye check",
+                "value": "Dye",
                 "label": "50 sniffers: no smell"
               },
               {
@@ -178,7 +178,7 @@
       "beat": "hook",
       "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
       "confidence": "high",
-      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Red dye changed wine students' smell words\" = f25 (dyed white described with the red's smell words)."
+      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Dye fooled wine students\": \"fooled\" = the authors' finding that, because of what they saw, the tasters discounted what they smelled (f27), which they call a real perceptual illusion (f28)."
     },
     {
       "id": "c2",
@@ -250,7 +250,7 @@
     "Brochet": "Broh-shay"
   },
   "publish": {
-    "title": "Red dye changed wine students' smell words",
+    "title": "Dye fooled wine students",
     "description": "Bordeaux wine students described a real red and a real white. A week later they got the same white twice, one glass dyed red with a grape pigment that has no smell, and generally gave it their red-wine smell words. From \"The Color of Odors\" (Brain and Language, 2001).",
     "hashtags": [
       "#wine",

@@ -1,15 +1,15 @@
 ---
 episode: 2026-11-25-wine-experts-fooled-by-dye
 channel: no-way-really
-status: approved
-script_hash: 2e94b92c9dabf4456537fb72e6e89c493fe35d8f8395434651e34198babc0777
-generated_at: 2026-11-25T21:26:41Z
-approved_by: ilieBeracha (told Claude in chat not to wait for approval; not read before approving)
-approved_at: 2026-11-25T21:26:53Z
+status: pending
+script_hash: 89080df7bd0778342fe0a1121af1fc27d26f04a03b3f2eadf0f59692168d7117
+generated_at: 2026-11-25T21:31:40Z
+approved_by: null
+approved_at: null
 notes: null
 ---
 
-# Fact-check: Red dye changed wine students' smell words
+# Fact-check: Dye fooled wine students
 
 **Nothing renders until a person approves this list.** Check each claim against its source, and read the
 full transcript below for anything the list missed.
@@ -50,7 +50,7 @@ full transcript below for anything the list missed.
   - "Moreover, in their olfactory description of wine RW, they eliminated the descriptors they had used for wine W."
   - "Hence, because of the visual information, the tasters discounted the olfactory information."
   - "The observed phenomenon is a real perceptual illusion."
-- **Note:** Dossier f14, f25, f27. "Fooled" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook "Red dye changed wine students' smell words" = f25 (dyed white described with the red's smell words).
+- **Note:** Dossier f14, f25, f27. "Fooled" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook "Dye fooled wine students": "fooled" = the authors' finding that, because of what they saw, the tasters discounted what they smelled (f27), which they call a real perceptual illusion (f28).
 
 ### c2 · high confidence · beat `setup`
 > Frédéric Brochet did the work towards a doctorate at the Faculty of Oenology in Bordeaux.
@@ -295,7 +295,7 @@ full transcript below for anything the list missed.
 
 | Beat | Voiceover | On screen |
 |---|---|---|
-| `hook` | Red dye changed wine students' smell words. |  |
+| `hook` | Dye fooled wine students. |  |
 | `setup` | Frédéric Brochet, working on his doctorate, noticed experts describe smells with things coloured like the wine, and suspected colour chose their words. |  |
 | `turn` | He dyed white wine red with grape pigment, and fifty people sniffing both from black glasses smelled no difference. Then he had wine students describe the smell of a red and a white. |  |
 | `twist` | A week later, he served that same white twice, one glass dyed, so only colour differed. |  |
@@ -303,11 +303,11 @@ full transcript below for anything the list missed.
 
 ## Other text shown on screen
 
-- Red dye changed wine students' smell words
+- Dye fooled wine students
 - Bordeaux wine students described a real red and a real white. A week later they got the same white twice, one glass dyed red with a grape pigment that has no smell, and generally gave it their red-wine smell words. From "The Color of Odors" (Brain and Language, 2001).
 - Experts' notes
 - Smells described with things the colour of the wine
-- Dye check 50 sniffers: no smell
+- Dye 50 sniffers: no smell
 - Session 1 A red and a white
 - A week later
 - Same white twice: plain, and dyed red

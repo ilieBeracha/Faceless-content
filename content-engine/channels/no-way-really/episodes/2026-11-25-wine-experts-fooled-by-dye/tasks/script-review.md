@@ -28,7 +28,7 @@ else outside them is not a fail.
 Don't judge facts, sources, visuals or anything the engine checks; a person approves the facts next. Each fix
 says exactly what to change in the voiceover, in plain words. A fix may only use facts in `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/research.json`; if the one it needs isn't there, the fix says how to say less instead.
 
-**Length.** The script must stay within **62–94 spoken words**; it has 94 now. Every fix must keep it inside:
+**Length.** The script must stay within **62–94 spoken words**; it has 91 now. Every fix must keep it inside:
 when a fix adds words, it says which words to cut to make room. Never ask for something that can't fit.
 
 **Earlier reviews.** 2 earlier review(s) of this episode are in the context. Don't ask to undo a fix one of them
@@ -42,7 +42,7 @@ Write `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/scr
 
 ```json
 {
-  "script_hash": "0213e6674d2fddb4bb9a69d472ac0c70fa9fe66d3a5e8e53e9e3fc3efc8e5dd2",
+  "script_hash": "24aca6099aab0ebb8168cb59fea9a5c8ee0a5be5cc9f5fe18b07ea8a920c6668",
   "verdict": "pass",
   "issues": [{ "beat": "<beat id>", "problem": "…", "fix": "…" }]
 }
@@ -436,7 +436,7 @@ series uses. You write **one file: `script.json`**. Nothing else.
   "channel": "no-way-really",
   "series": "wait-what",
   "idea": "wine-experts-fooled-by-dye",
-  "title": "Red dye changed wine students' smell words",
+  "title": "Dye fooled wine students",
   "angle": {
     "point": "A glass of white wine isn't boring: dye it red and trained wine students describe its smell with the words they used for a real red, because what they see overrides what they smell.",
     "stakes": "Frédéric Brochet, working towards a doctorate at Bordeaux's Faculty of Oenology, suspected from experts' tasting notes that a wine's colour steers which smells tasters name; his doctoral work stood on testing it.",
@@ -448,7 +448,7 @@ series uses. You write **one file: `script.json`**. Nothing else.
     {
       "id": "hook",
       "speaker": "blink",
-      "voiceover": "Red dye changed wine students' smell words.",
+      "voiceover": "Dye fooled wine students.",
       "visual": {
         "skill": "render-themed",
         "elements": [
@@ -493,7 +493,7 @@ series uses. You write **one file: `script.json`**. Nothing else.
             "type": "marks",
             "items": [
               {
-                "value": "Dye check",
+                "value": "Dye",
                 "label": "50 sniffers: no smell"
               },
               {
@@ -611,7 +611,7 @@ series uses. You write **one file: `script.json`**. Nothing else.
       "beat": "hook",
       "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
       "confidence": "high",
-      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Red dye changed wine students' smell words\" = f25 (dyed white described with the red's smell words)."
+      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Dye fooled wine students\": \"fooled\" = the authors' finding that, because of what they saw, the tasters discounted what they smelled (f27), which they call a real perceptual illusion (f28)."
     },
     {
       "id": "c2",
@@ -683,7 +683,7 @@ series uses. You write **one file: `script.json`**. Nothing else.
     "Brochet": "Broh-shay"
   },
   "publish": {
-    "title": "Red dye changed wine students' smell words",
+    "title": "Dye fooled wine students",
     "description": "Bordeaux wine students described a real red and a real white. A week later they got the same white twice, one glass dyed red with a grape pigment that has no smell, and generally gave it their red-wine smell words. From \"The Color of Odors\" (Brain and Language, 2001).",
     "hashtags": [
       "#wine",
