@@ -9,11 +9,11 @@ characters: [dot]               # required list(ref(character)) min=1 — charac
 length:                         # required object — overrides the engine default (20–60 s)
   min_seconds: 40               # required number min=5 max=180 — shortest acceptable video
   max_seconds: 55               # required number min=5 max=180 — longest acceptable video
-hook_pattern: "The number itself as a short question or claim (about five words), e.g. \"How long is a billion seconds?\" — the first scene shows the number on a sign or in big lettering while Dot reacts, and the title bar names it."  # required text — how the first 2 seconds grab attention
+hook_pattern: "The number itself as a short plain claim within the task's hook limit, e.g. \"A billion seconds is decades.\" — the first scene shows the number on a sign or in big lettering while Dot reacts, and the title bar names it."  # required text — how the first 2 seconds grab attention
 beats:                          # required list(object) min=2 max=8 — the structure every episode follows, in order
   - id: hook                    # required slug — beat name used in scripts
     seconds: 3                  # required number min=1 max=60 — target duration
-    purpose: "Say the number as a surprising question or claim. One sentence."
+    purpose: "Say the number as a surprising plain claim. One sentence."
   - id: setup
     seconds: 8
     purpose: "Why our gut gets it wrong: compare it with a smaller number that sounds similar, or give the plain maths in one line."

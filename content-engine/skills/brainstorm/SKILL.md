@@ -86,8 +86,8 @@ exists. Ideas come from the second, not the first.
    every day, a belief the viewer holds that turns out wrong, a number that changes meaning, an insider's trick.
 6. **The title is a hook, not a label.** Specific (a name, a number, a place) and something the viewer wants
    answered: "The wine that beat France in a blind test", not "The 1976 Paris tasting".
-7. **The point lands on the viewer.** It finishes the sentence "after this video, you'll…": a way of seeing, a line
-   to say, a thing to try or to trust.
+7. **The story makes the point.** It finishes the sentence "after this video, you'll know…": what happened and why
+   it mattered, a new way of seeing something. Never advice, a line to say, or a thing to try.
 
 Work it as a funnel: think of about three times as many candidates as you're asked for, cut every one that fails
 the other-channel test or repeats a shape, and write only the strongest.

@@ -28,7 +28,7 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
    true. The angle is opinion and framing; anything factual inside it is a claim like any other.
 
    **Tell it plainly, in the order it happened.** You are explaining something simply to a friend, not
-   performing. Say what was going on, what everyone expected, what happened, and what it means, in that order.
+   performing. Say what was going on, what everyone expected, what happened, and what came of it, in that order.
    Don't open on the ending, tease, flash back, or add dramatic lines ("so here's the thing", "and then?",
    questions to the viewer mid-story). If a line sounds clever, say the plain thing instead. Every person, thing
    and place is introduced before it is referred to, and when someone does something surprising, say why in
@@ -57,7 +57,7 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
    `claims` with a real source you have checked. Unverifiable → cut it. Confidence `low` → find a better source.
 7. **Pronunciations.** If the voice may stumble (years, acronyms, names, symbols), add
    `"pronunciations": {"1938": "nineteen thirty-eight", "LED": "L E D"}`. Captions still show the original word.
-8. **No AI-label text, no links, no "subscribe" unless the series' `cta` asks for it.**
+8. **No AI-label text, no links, no "subscribe", no call to action.** A series' `cta` is a fixed closing line, never advice.
 
 ## script.json (schema `script/v1`)
 
@@ -79,7 +79,7 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
     {
       "id": "hook",
       "speaker": "<character name>",       // one of the series' characters
-      "voiceover": "What's inside a bike bell?",
+      "voiceover": "A bike bell is a tiny drum.",
       "visual": { "skill": "render-3d-explainer", "shot": "establish" },  // a scene skill of the series, or {"skill": "none"}
       "character": { "placement": "full", "expression": "curious" }      // full | corner | hidden; expression from model.json
     }
@@ -100,7 +100,7 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
   ],
   "pronunciations": {},
   "publish": {
-    "title": "What's inside a bike bell?",
+    "title": "A bike bell is a tiny drum",
     "description": "1–3 sentences. No AI label here — the engine adds disclosure fields.",
     "hashtags": ["#howitworks", "#shorts"] // up to 5 is best (max 8)
   }

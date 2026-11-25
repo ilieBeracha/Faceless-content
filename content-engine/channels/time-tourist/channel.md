@@ -55,4 +55,4 @@ What it would really have been like to stand there, the detail nobody tells you,
 - Every joke is about the experience of being there (no soap, weird food, the queue), never about the people
   who suffered. When the history is hard (slavery, disease, war), say it plainly and kindly, then move on.
 - Strictly true: names, dates, numbers and customs come from sources; when sources disagree, say "about".
-- Every episode ends with a rating (on a sign, like "5/5") and one line on what it tells us about life back then.
+- Every episode ends with a rating (on a sign, like "5/5") and the one detail that earned it.

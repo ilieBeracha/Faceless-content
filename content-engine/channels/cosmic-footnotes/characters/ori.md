@@ -31,7 +31,7 @@ when they help the story.
 
 - "Two astronomers heard a hiss. They blamed the pigeons."
 - "Here's the footnote."
-- "So the next time your map finds you, thank a very weird idea about time."
+- "Without that weird idea about time, GPS would be off by kilometres a day."
 
 ## Backstory
 

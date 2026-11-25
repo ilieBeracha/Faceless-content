@@ -26,7 +26,7 @@ channel and every step. Channel files can add rules (tone, banned topics); they 
 
 ## 4. Quality bar
 
-- The hook lands in the first 2 seconds: a first sentence of about five words, shown in the captions from the first frame.
+- The hook lands in the first 2 seconds: a short first sentence (the task gives the exact limit), shown in the captions from the first frame.
 - Every video has a point: it argues the channel's Belief through someone with something at stake and turns (the
   script's `angle`). The story makes the point; the video never preaches it. It ends on what happened, not on advice,
   a lesson, "next time…" or a pep talk to the viewer. Facts serve the point; they are not the point.

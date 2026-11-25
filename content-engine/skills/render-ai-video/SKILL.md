@@ -86,7 +86,7 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
 - **Lines:** the shots' `line`s, joined with spaces, must be exactly the beat's `voiceover` (the engine checks).
   One or two short sentences per shot, **≤ 18 words** (a clip lasts at most 8 s). No double quotes inside a
   line. Shorter lines get shorter, cheaper clips (4 s ≈ up to 7 words, 6 s ≈ 12, 8 s ≈ 18).
-- **Hook:** the first shot's line starts with the hook sentence (≤ 5 words). The captions show it from the
+- **Hook:** the first shot's line starts with the hook sentence (no longer than the word limit the task gives). The captions show it from the
   first frame; there is no headline.
 - **Show the thing, not just the face:** whenever a line is about something you can see (a room, an object,
   a view, a crowd), use `camera: "pov"`: the phone turns around and films it while the character narrates off

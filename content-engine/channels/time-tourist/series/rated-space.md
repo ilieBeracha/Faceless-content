@@ -25,7 +25,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
     purpose: "The extreme or unexplained part: what would happen to you there, or what scientists still cannot explain (said plainly)."
   - id: rating
     seconds: 7
-    purpose: "The rating, said out loud as 'N out of 5', and one line on what it says about our universe."
+    purpose: "The rating, said out loud as 'N out of 5', and the one detail that earned it."
 visual_style: "Photoreal documentary footage from inside the wonder: Tilly physically on location in a suit, first-person views through her own eyes, epic establishing shots, calm natural acting, film grade with grain and vignette, an ambient space score under her voice, word-by-word captions in the lower third."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON

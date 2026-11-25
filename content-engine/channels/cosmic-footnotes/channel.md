@@ -47,7 +47,7 @@ The universe gives up its biggest secrets through small things somebody refused 
 
 ## What the viewer gets <!-- required -->
 
-Permission to take a strange little detail seriously, in science and in their own life, and one true story that shows why it can matter.
+One true story where a strange little detail turned out to matter, and how people actually worked it out.
 
 ## Style notes
 

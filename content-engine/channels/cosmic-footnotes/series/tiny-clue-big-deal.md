@@ -22,7 +22,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
     purpose: "How it was worked out, in 3–4 short sentences, one picture each. The reveal lands at the end."
   - id: point
     seconds: 12
-    purpose: "Why it matters: what it changed, or what it means in the viewer's own life. This is the reason the video exists."
+    purpose: "Why it mattered: what it changed or made possible, told as what happened next (a concrete result, never a lesson or advice to the viewer). This is the reason the video exists."
   - id: kicker
     seconds: 4
     purpose: "One line that ties the point back to the hook."
@@ -40,7 +40,7 @@ created: 2026-10-15             # required date
 
 ## Notes
 
-- The point beat is mandatory and specific: "without this, your map would be wrong by kilometres a day" beats
+- The point beat is mandatory and specific: "without it, GPS would drift by kilometres a day" beats
   "this changed science forever".
 - Numbers only when they carry the story; round them and say them the way people talk.
 - Pictures from the render-storybook library; one per sentence. If a sentence can't be drawn, rewrite it.

@@ -25,7 +25,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
     purpose: "The thing nobody tells you: the weird, uncomfortable or surprising truth (told with care if it is hard)."
   - id: rating
     seconds: 7
-    purpose: "The rating, said out loud as 'N out of 5', and one line on what it says about life back then."
+    purpose: "The rating, said out loud as 'N out of 5', and the one detail that earned it."
 visual_style: "Live-action look: realistic handheld phone footage of a real-looking Tilly in period-accurate places, jump cuts between shots, natural sound, word-by-word captions in the lower third."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON

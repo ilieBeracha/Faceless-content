@@ -25,7 +25,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
     purpose: "The thing nobody tells you: the weird, uncomfortable or surprising truth (told with care if it is hard)."
   - id: rating
     seconds: 7
-    purpose: "The rating on a sign and one line on what it says about life back then."
+    purpose: "The rating on a sign and the one detail that earned it."
 visual_style: "Storybook: hand-drawn scenes under a two-tone title bar on near-black; Tilly holding her phone selfie-style in the hook and rating; one new picture per sentence; one-word yellow captions."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON

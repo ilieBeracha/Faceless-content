@@ -22,7 +22,7 @@ script (`qa-review.json`). Results are written to the episode's `qa-report.md`.
 
 ## Review (agent, from the frames and the script)
 
-- [ ] **Point** — argues the point in the script's `angle` (the channel's Belief), told through someone with something at stake, with a turn, and the story itself makes the takeaway plain. True facts with no point fail. It explains plainly, in the order things
+- [ ] **Point** — argues the point in the script's `angle` (the channel's Belief), told through someone with something at stake, with a turn, and the story itself makes the point plain, ending on what happened. True facts with no point fail. It explains plainly, in the order things
   happened (no opening on the ending, teasing, flashbacks or clever dramatic lines), introduces every person and
   thing before referring to them, says why when someone does something surprising, and ends on what happened. A
   viewer who can't follow what happened and why fails, and so does an ending that preaches: advice, "next time…",

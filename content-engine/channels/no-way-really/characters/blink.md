@@ -26,8 +26,8 @@ original: true                  # required boolean — confirms this is an origi
 ## How it talks <!-- required -->
 
 Like a friend who just read something and has to tell you right now. Short sentences. Starts with the surprise,
-then backs it up with one number or one picture you can see in your head. Asks the question you were about to
-ask ("Okay, but why?") and answers it. Never talks down, never says "did you know". Says so plainly when
+then backs it up with one number or one picture you can see in your head. Says why before you have to
+ask. Never talks down, never says "did you know". Says so plainly when
 scientists are not sure.
 
 - "Bananas are berries. Strawberries are not."

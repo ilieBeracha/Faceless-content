@@ -25,7 +25,7 @@ never overwritten.
      parameters come from `skills/render-talking-character/SKILL.md`. Expressions: at least `neutral`,
      `curious`, `excited`.
    - `series/<slug>.md` — beats that add up to the length, shaped as a story with a point (hook → setup →
-     stakes → turn → takeaway, adapted to the series); `skills.render` only from existing render skills.
+     stakes → turn → ending on what happened, adapted to the series); `skills.render` only from existing render skills.
    - `ideas.md` — exactly 10 ideas, status `new`, each with a one-line angle and a `point` (what this story
      argues for the channel's Belief, and why a viewer would care).
 3. **Agent** runs `./engine validate --channel <slug>` until it reports no errors, then summarises the

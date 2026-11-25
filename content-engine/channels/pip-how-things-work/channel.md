@@ -46,7 +46,7 @@ Every everyday object is a clever answer to a problem somebody once had. Nothing
 
 ## What the viewer gets <!-- required -->
 
-The one "why" behind something they use every day, and the habit of asking it about the next object they pick up.
+The one "why" behind something they use every day, seen from the inside.
 
 ## Style notes
 

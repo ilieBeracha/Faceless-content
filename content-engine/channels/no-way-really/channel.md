@@ -47,7 +47,7 @@ Nothing around you is boring; it only looks that way until you know the story be
 
 ## What the viewer gets <!-- required -->
 
-One true thing to say out loud today that makes something ordinary in their hands, pocket or screen interesting again, with the proof to back it up.
+One true, surprising story about something ordinary in their hands, pocket or screen, with the proof to back it up.
 
 ## Style notes
 

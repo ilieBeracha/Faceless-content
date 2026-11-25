@@ -48,7 +48,7 @@ Your gut is wrong about big numbers, and that's fine: every huge number becomes 
 
 ## What the viewer gets <!-- required -->
 
-A picture to carry instead of a number: the next time someone says "a billion" or "a million to one", you can see how big it really is, and spot when someone is using a number to impress you.
+A picture to carry instead of a number: how big "a billion" or "a million to one" really is, and how a number can be used to impress.
 
 ## Style notes
 

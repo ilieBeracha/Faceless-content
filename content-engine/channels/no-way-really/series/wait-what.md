@@ -22,10 +22,10 @@ beats:                          # required list(object) min=2 max=8 — the stru
     purpose: "The middle: what they do about it and the moment they find the surprising thing."
   - id: twist
     seconds: 10
-    purpose: "Why it is more than a coincidence: the detail that explains it, led in with a spoken turn such as \"Here's the funny part\"."
+    purpose: "Why it is more than a coincidence: the detail that explains it, said plainly, with no dramatic lead-in."
   - id: ending
     seconds: 6
-    purpose: "The end: where the thing is now, then one plain sentence that says the point of the story, then the catchphrase. No call to action."
+    purpose: "The end: where the thing is now, then the catchphrase. No moral or summary: what happened makes the point. No call to action."
 visual_style: "Paper collage on off-white paper: torn coloured sheets that change place on every beat, the hook pasted word by word in mixed cut-out lettering, taped notes, dated tags on a line and cut-out stickers. Blink sits in the lower-left corner and reacts; full-size on the hook. Word-by-word captions with the spoken word highlighted."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON

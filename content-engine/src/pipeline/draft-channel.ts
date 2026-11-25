@@ -46,7 +46,7 @@ Keep \`slug: ${slug}\` and \`status: draft\`. Everything goes inside \`channels/
 3. One series (two at most): \`series/<slug>.md\` from templates/series.md. Its \`skills.render\` must only
    use the render skills listed below; its beats must add up to its length. Shape the beats as a story with a point,
    not a list of facts: hook → setup → stakes (who has something to lose) → turn (the facts change meaning) →
-   takeaway (what the viewer leaves with), named and adapted to the series.
+   ending (what happened, which makes the point; never advice to the viewer), named and adapted to the series.
 4. \`ideas.md\` — append exactly 10 ideas in the ideas format (status \`new\`, one-line angle, series slug, added ${today()}),
    each with a \`- point:\` line: what this story argues for the channel's Belief, and why a viewer would care. A fact
    with no point is trivia: pick another story. Find them as skills/brainstorm/SKILL.md says under "Ideas only this
