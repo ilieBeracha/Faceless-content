@@ -1,0 +1,7 @@
+{
+  "prompt": "Instrumental background music for a short vertical video with a narrator speaking over it. Feel: curious, warm, witty, clear, awe-struck. Topic: Lunch fooled a telescope. No vocals, no lyrics, no spoken words. Steady energy from the first second, no long silences or sudden drops, and a clean ending.",
+  "seconds": 50,
+  "endpoint": "sonilo/v1.1/text-to-music",
+  "usd": 0.125,
+  "made_at": "2026-11-24T22:55:52Z"
+}

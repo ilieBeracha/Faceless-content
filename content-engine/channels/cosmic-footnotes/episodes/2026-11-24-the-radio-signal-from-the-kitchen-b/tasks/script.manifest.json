@@ -4,7 +4,7 @@
   "purpose": "script",
   "channel": "cosmic-footnotes",
   "series": "tiny-clue-big-deal",
-  "created": "2026-11-24T19:26:12Z",
+  "created": "2026-11-25T16:43:12Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -45,8 +45,8 @@
     {
       "path": "skills/write-script/SKILL.md",
       "role": "skill",
-      "sha256": "079c1089d5ff684557efccf6ce2423a5d8d1417e5890abe10237bc958faded53",
-      "bytes": 7669
+      "sha256": "de78647738e4550c69a2b5453217572b9607a5a6a43f955a8ba3ab865fcc4553",
+      "bytes": 8251
     },
     {
       "path": "skills/render-storybook/SKILL.md",
@@ -65,6 +65,12 @@
       "role": "input",
       "sha256": "49e6627cde4430c61d8af30bd5bc31f2c2ec1f1525cd5b3c5c131425231f3f52",
       "bytes": 244
+    },
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-11-24-the-radio-signal-from-the-kitchen-b/research.json",
+      "role": "channel",
+      "sha256": "0494239f71613801a18bbf32ad3e2eaca66edd7b24a8b80ff3b0be4defb54a44",
+      "bytes": 27160
     }
   ],
   "outputs": [

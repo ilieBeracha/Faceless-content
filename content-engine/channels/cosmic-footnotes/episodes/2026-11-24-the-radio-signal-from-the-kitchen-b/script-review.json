@@ -1,0 +1,31 @@
+{
+  "script_hash": "265a72ee5850bb2b5a9e6bb86eb52f4463e7048dd7af12792ad8376d92eb86fa",
+  "verdict": "fail",
+  "issues": [
+    {
+      "beat": "clue",
+      "problem": "Referred to before introduced, and the stakes are missing. 'Fast radio bursts from deep space' is used as if the viewer already knows what they are. The voiceover also never says why looking like them mattered: that perytons made people doubt fast radio bursts were real. Without that, nothing is at stake and the later 'real bursts' and 'so those bursts were real' have nothing to pay off.",
+      "fix": "After the first sentence, say plainly what fast radio bursts are and why the look-alikes were a problem, e.g. 'Astronomers were also chasing fast radio bursts, split-second flashes of radio waves from far out in space. Perytons looked so much like them that some people wondered if those were fake too.' Then keep the office-hours and lunchtime line. Add claims for any new facts."
+    },
+    {
+      "beat": "story",
+      "problem": "Unclear reference. In 'needed to know if they were just local noise too', 'they' could mean perytons or the real bursts. 'Too' assumes the viewer has been told perytons were local noise, which hasn't been said yet: at this point nobody knows what perytons are.",
+      "fix": "Name both things plainly, e.g. 'Emily Petroff, a PhD student hunting fast radio bursts, needed to know whether perytons and her bursts came from the same place.'"
+    },
+    {
+      "beat": "story",
+      "problem": "The person is missing at the turn. Emily has the stake, but at the turn 'a new radio monitor caught three perytons' (a machine) and 'her team ran the staff kitchen microwave' (the team). She never notices the blip or decides to test the kitchen, so the Belief (somebody refused to ignore a small thing) isn't shown through her.",
+      "fix": "Make Emily the one who acts, e.g. 'In January 2015, three more perytons came in. Emily checked a new monitor on site and saw each one came with a blip on the band microwave ovens use. So she took it to the staff kitchen microwave…'"
+    },
+    {
+      "beat": "story",
+      "problem": "A missing why. 'Opened the door before the timer finished' is the surprising action that makes the whole test work, and the voiceover doesn't say why they did it that way. A viewer hears 'ran the microwave' and wonders why the timing mattered.",
+      "fix": "Add the reason in plain words in the same sentence, e.g. '…and opened the door before the timer finished, the way someone in a hurry for lunch would, because that's when the oven can leak a burst of radio waves.' Add it as a claim."
+    },
+    {
+      "beat": "point",
+      "problem": "A missing why. The voiceover states the conclusion, 'A microwave couldn't have made the very first fast radio burst, so those bursts were real', without the reason a viewer needs to believe it. 'The very first fast radio burst' also appears for the first time here.",
+      "fix": "Say in one plain sentence what made the first burst different from the microwave signals, using the reason the Petroff paper gives, and list it as a claim. Then say 'so fast radio bursts were real after all, and today they're traced to other galaxies.' If the first burst matters, introduce it in the clue beat (for example, that Parkes caught the first one in 2001)."
+    }
+  ]
+}
