@@ -7,7 +7,7 @@ import { PipelinePause } from "../core/errors.ts";
 import { writeJson } from "../core/util.ts";
 import { makeEpisode } from "../pipeline/episode.ts";
 import { brandKit } from "../storefront/brand-kit.ts";
-import { makeChannel, sampleScript, tempWorkspace } from "./helpers.ts";
+import { makeChannel, passScriptReview, sampleScript, tempWorkspace } from "./helpers.ts";
 
 /** Start an episode of the test channel and return its folder (the writer is waiting). */
 async function startEpisode(ws: ReturnType<typeof tempWorkspace>): Promise<string> {
@@ -42,6 +42,7 @@ describe("a channel's point of view", () => {
     writeJson(join(dir, "script.json"), bare);
     await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "needs-fix" && /has no "angle"/.test(e.lines.join(" ")));
     writeJson(join(dir, "script.json"), sampleScript("alpha"));
+    passScriptReview(dir, sampleScript("alpha"));
     await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "awaiting-approval");
   });
 

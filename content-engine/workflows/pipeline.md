@@ -1,6 +1,6 @@
 # Workflow: episode pipeline
 
-**idea → script → fact-check → [footage] → voice → render → QA → (later) post**
+**idea → script → script review → fact-check → [footage] → voice → render → QA → (later) post**
 
 One command runs it for any channel: `./engine make episode --channel <slug> --series <series>`.
 It stops whenever it needs someone, and continues from the first unfinished step when you run it again.
@@ -10,6 +10,7 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 |---|---|---|---|---|
 | 1 | **Idea** | engine | `episode.json`; idea → `used` in ideas.md | needs a `new` idea for the series |
 | 2 | **Script** | agent (or `--llm anthropic`) | `tasks/script.md` (context bundle) → `script.json` | must pass `script/v1` + series checks |
+| 2b | **Script review** | agent (or `--llm anthropic`) | `tasks/script-review.md` → `script-review.json` | must pass; bound to the exact script.json. Skipped where review findings don't block (the storefront) |
 | 3 | **Fact-check** | engine lists, **person approves** | `factcheck.md` | **STOP until approved**; bound to the script's words and numbers |
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
 | 4 | **Voice** | engine (Kokoro, local; or cut from the Veo clips) | `audio/voice.wav`, `audio/timings.json`, `audio/envelope.json` | — |
@@ -28,6 +29,13 @@ SKILL.md of each skill the series names (`skills.script`, `skills.render`, `skil
 writes `script.json` following `skills/write-script/SKILL.md` and re-runs the command. The engine checks it:
 beat order, speakers, expressions, render-skill payloads, estimated length, the 2-second hook, banned-topic
 keywords. Problems are printed; fix `script.json` and re-run.
+
+## 2b. Script review
+A second reader judges the voiceover alone, before anyone checks facts or anything is voiced or paid for: does it
+argue a point through the person with something at stake, in the order it happened, with everything introduced
+before it is referred to, a "why" for every surprising act and conclusion, and an ending on what happened (no
+preaching, no pun)? It writes `script-review.json` (`verdict`, `issues` with beat, problem, fix), bound to the exact
+`script.json`. A fail stops the episode until the script is fixed; any change to the script is reviewed again.
 
 ## 3. Fact-check (hard stop)
 The engine writes `factcheck.md`: every claim with its source, plus the full transcript and on-screen text so

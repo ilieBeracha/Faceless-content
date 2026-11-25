@@ -1,7 +1,7 @@
 /**
  * The episode pipeline — identical for every channel:
  *
- *   idea → script → fact-check (STOP for human approval) → [footage] → voice → render → QA
+ *   idea → script → script review → fact-check (STOP for human approval) → [footage] → voice → render → QA
  *
  * The footage step only runs for series that use render-ai-video (paid; it stops once more for a
  * person to approve the stills and the cost before any video is generated).
@@ -25,10 +25,11 @@ import { formatIssues, hasErrors } from "../core/validate.ts";
 import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
+import { currentScriptReview, scriptReviewPath, scriptReviewTask } from "./script-review.ts";
 import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, LENGTH_MARGIN, budgetWordsPerSecond, checkScript, factualHash, hookLimit, voiceOverhead, type SeriesData } from "./script-check.ts";
 import { newStoryboard, readStoryboard, storyboardApproved, storyboardPath, writeStoryboard, type CaptionSettings } from "./storyboard.ts";
 
-export const STEPS = ["idea", "script", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
+export const STEPS = ["idea", "script", "review", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
 export type StepName = (typeof STEPS)[number];
 
 export interface EpisodeState {
@@ -149,6 +150,30 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
     commitPaths(ws, [ep.dir], `${channel.slug}: script ready for ${ep.state.id}`);
   }
   log(`• script: ${script.beats.length} beats, ${script.claims.length} claims`);
+
+  // 2b. Script review — a second reader checks the story before the facts are checked or anything is paid for.
+  // Runs only where its findings block (reviewBlocks): where they are notes, it would cost a call and change nothing.
+  if (opts.reviewBlocks !== false) {
+    let review = currentScriptReview(ep);
+    if (!review) {
+      mark(ep, "review", "waiting", existsSync(scriptReviewPath(ep)) ? "script changed; it needs a fresh review" : undefined);
+      log(`• review: preparing the script review (${llm})`);
+      await runTask(ws, scriptReviewTask(ws, ep, series), llm);
+      commitPaths(ws, [ep.dir], `${channel.slug}: script review for ${ep.state.id}`);
+      review = currentScriptReview(ep);
+      if (!review) throw new EngineError(`${ws.rel(scriptReviewPath(ep))} is not a review of the current script.`);
+    }
+    if (review.verdict === "fail") {
+      mark(ep, "review", "failed", `${review.issues.length} issue(s)`);
+      throw new PipelinePause("needs-fix", [
+        `The script review failed — see ${ws.rel(scriptReviewPath(ep))}:`,
+        ...review.issues.map((i) => `  - ${i.beat}: ${i.problem} → ${i.fix}`),
+        `Fix ${ws.rel(scriptPath)}, then run the same command again (the review runs again on the new script).`,
+      ]);
+    }
+    if (!done("review")) mark(ep, "review", "done");
+    log("• review: the script passed");
+  }
 
   // 3. Fact-check — hard stop until a person approves the exact claims of this script.
   const hash = factualHash(script);

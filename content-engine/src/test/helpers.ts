@@ -3,9 +3,15 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createChannel, createCharacter, createSeries, defaultModel } from "../core/scaffold.ts";
 import { appendIdeaBlocks, renderIdeas } from "../core/ideas.ts";
-import { readText, today, writeText } from "../core/util.ts";
+import { readText, today, writeJson, writeText } from "../core/util.ts";
+import { scriptReviewHash } from "../pipeline/script-review.ts";
 import { ENGINE_DIR, Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
+
+/** A passing script review of exactly this script, as the reviewer would write it. */
+export function passScriptReview(epDir: string, script: object): void {
+  writeJson(join(epDir, "script-review.json"), { script_hash: scriptReviewHash(script), verdict: "pass", issues: [] });
+}
 
 /** A throwaway workspace with the real templates, skills and house rules, and git auto-commit off. */
 export function tempWorkspace(): Workspace {

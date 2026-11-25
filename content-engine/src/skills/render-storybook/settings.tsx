@@ -125,8 +125,10 @@ export const SettingView: React.FC<{ setting: StoryScene["setting"]; time: Story
           <Shape d={rect(620, 170, 260, 230, 6)} fill={c("#cfe0e4")} o={{ seed: seed + 1 }} />
           <Line x1={750} y1={170} x2={750} y2={400} o={{ seed: seed + 2 }} />
           <Line x1={620} y1={285} x2={880} y2={285} o={{ seed: seed + 3 }} />
-          <Shape d={rect(110, 200, 170, 130, 4)} fill={c("#d9b97e")} o={{ seed: seed + 4 }} />
-          <Circle cx={195} cy={265} r={36} fill={c("#c2553a")} o={{ seed: seed + 5, width: 2 }} />
+          {/* A small landscape on the wall: a hill under a sun in the corner (a centred disc on a plain field reads as a flag). */}
+          <Shape d={rect(110, 200, 170, 130, 4)} fill={c("#bcd6e0")} o={{ seed: seed + 4 }} />
+          <Shape d="M114 326 C150 282 205 270 276 296 L276 326 Z" fill={c("#7f9a5c")} o={{ seed: seed + 6, width: 1.6 }} />
+          <Circle cx={242} cy={232} r={15} fill={c("#e8b84a")} o={{ seed: seed + 5, width: 1.6 }} />
           <rect x={0} y={772} width={1000} height={16} fill={c("#c9b08a")} />
           <rect x={0} y={788} width={1000} height={212} fill={c("#a98563")} />
           {[880, 930, 980].map((y, i) => (

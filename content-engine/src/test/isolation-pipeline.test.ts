@@ -9,7 +9,7 @@ import { writeJson } from "../core/util.ts";
 import { makeEpisode } from "../pipeline/episode.ts";
 import { approveFactcheck, readFactcheck } from "../pipeline/factcheck.ts";
 import { checkScript, factualHash } from "../pipeline/script-check.ts";
-import { makeChannel, sampleScript, tempWorkspace } from "./helpers.ts";
+import { makeChannel, passScriptReview, sampleScript, tempWorkspace } from "./helpers.ts";
 
 describe("context isolation", () => {
   it("refuses another channel's files, unlisted skills and stray paths", () => {
@@ -52,7 +52,13 @@ describe("pipeline gates", () => {
     const idea = ch.ideas.find((i) => i.id === "a-ballpoint-pen")!;
     assert.equal(idea.status, "used");
     const epDir = join(ch.dir, idea.fields.used_in!);
-    writeJson(join(epDir, "script.json"), sampleScript("alpha"));
+    const script = sampleScript("alpha");
+    writeJson(join(epDir, "script.json"), script);
+    // The script review comes first: no fact-check list until it passes.
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+    assert.ok(existsSync(join(epDir, "tasks", "script-review.md")));
+    assert.equal(readFactcheck(epDir), null);
+    passScriptReview(epDir, script);
     await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "awaiting-approval");
     assert.equal(readFactcheck(epDir)?.status, "pending");
     assert.equal(existsSync(join(epDir, "audio")), false);
@@ -72,6 +78,7 @@ describe("pipeline gates", () => {
     const epDir = join(ch.dir, ch.ideas.find((i) => i.id === "a-ballpoint-pen")!.fields.used_in!);
     const script = sampleScript("alpha");
     writeJson(join(epDir, "script.json"), script);
+    passScriptReview(epDir, script);
     await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), PipelinePause);
     approveFactcheck(epDir, script, "Tester");
     assert.equal(readFactcheck(epDir)?.status, "approved");
@@ -87,8 +94,47 @@ describe("pipeline gates", () => {
     (label.visuals["render-3d-explainer"] as { parts: { label: string }[] }).parts[1].label = "Steel ball";
     assert.notEqual(factualHash(label), factualHash(script));
     writeJson(join(epDir, "script.json"), words);
+    passScriptReview(epDir, words);
     await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "awaiting-approval");
     assert.equal(readFactcheck(epDir)?.status, "pending");
+  });
+});
+
+describe("script review", () => {
+  async function scripted(ws: ReturnType<typeof tempWorkspace>) {
+    makeChannel(ws, "alpha", { status: "active" });
+    makeChannel(ws, "beta", { status: "active" });
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), PipelinePause);
+    const ch = loadChannel(ws, "alpha");
+    const epDir = join(ch.dir, ch.ideas.find((i) => i.id === "a-ballpoint-pen")!.fields.used_in!);
+    const script = sampleScript("alpha");
+    writeJson(join(epDir, "script.json"), script);
+    return { epDir, script };
+  }
+
+  it("its task reads only this channel, and a failed review sends the script back before the fact-check", async () => {
+    const ws = tempWorkspace();
+    const { epDir, script } = await scripted(ws);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+    const manifest = JSON.parse(readFileSync(join(epDir, "tasks", "script-review.manifest.json"), "utf8")) as { files: { path: string }[] };
+    assert.ok(manifest.files.every((f) => f.path === "AGENTS.md" || f.path.startsWith("channels/alpha/") || f.path === "skills/write-script/SKILL.md" || f.path.startsWith("(inline)")), manifest.files.map((f) => f.path).join("\n"));
+    writeJson(join(epDir, "script-review.json"), { script_hash: JSON.parse(readFileSync(join(epDir, "tasks", "script-review.md"), "utf8").match(/"script_hash": (".*?")/)![1]), verdict: "fail", issues: [{ beat: "kicker", problem: "ends on a pun", fix: "end on what happened" }] });
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "needs-fix" && /kicker: ends on a pun/.test(e.lines.join(" ")));
+    assert.equal(readFactcheck(epDir), null);
+    // A pass on an older script doesn't count: the changed script is reviewed again.
+    passScriptReview(epDir, script);
+    const changed = structuredClone(script);
+    changed.beats[1].voiceover = changed.beats[1].voiceover.replace("tiny", "huge");
+    writeJson(join(epDir, "script.json"), changed);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+    assert.equal(readFactcheck(epDir), null);
+  });
+
+  it("is skipped where review findings don't block", async () => {
+    const ws = tempWorkspace();
+    const { epDir } = await scripted(ws);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent", reviewBlocks: false }), (e: unknown) => e instanceof PipelinePause && e.kind === "awaiting-approval");
+    assert.equal(existsSync(join(epDir, "script-review.json")), false);
   });
 });
 
