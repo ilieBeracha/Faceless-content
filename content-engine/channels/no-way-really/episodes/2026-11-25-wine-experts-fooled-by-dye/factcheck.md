@@ -1,11 +1,11 @@
 ---
 episode: 2026-11-25-wine-experts-fooled-by-dye
 channel: no-way-really
-status: pending
+status: approved
 script_hash: 2e94b92c9dabf4456537fb72e6e89c493fe35d8f8395434651e34198babc0777
 generated_at: 2026-11-25T21:26:41Z
-approved_by: null
-approved_at: null
+approved_by: ilieBeracha (told Claude in chat not to wait for approval; not read before approving)
+approved_at: 2026-11-25T21:26:53Z
 notes: null
 ---
 
