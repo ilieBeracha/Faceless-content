@@ -1,0 +1,29 @@
+[
+  {
+    "script_hash": "6761d1bfb3147c77d3654bedba907d3f5cb4c6bc076646229abc1591051d791f",
+    "verdict": "fail",
+    "issues": [
+      {
+        "beat": "twist",
+        "problem": "Not in order, and referred to before introduced. \"In dark glasses, fifty testers had found the two smelled identical\" jumps back (\"had found\") to a check that happened before the students ever tasted anything. The \"fifty testers\" turn up out of nowhere: a first-time listener can't tell whether they are the students or someone else. \"Dark glasses\" sounds like sunglasses.",
+        "fix": "Remove that sentence from the twist. Tell the dye check first, in the turn beat, before the first tasting: \"First he made sure his red grape dye had no smell: fifty other people sniffed white wine with and without it from black glasses they couldn't see into, and couldn't tell them apart. Then he had wine students describe the smell of a red and a white.\" Move claim c8's beat to \"turn\" to match."
+      },
+      {
+        "beat": "twist",
+        "problem": "A missing why. \"He served that same white twice, plain and dyed red\" doesn't say why he dyed it or that the students weren't told, so the viewer can't see that colour was the only thing that changed. That is the reason the ending means anything.",
+        "fix": "Make the twist: \"A week later, he gave the students that same white twice, one glass plain and one dyed red, so the only thing that changed was the colour they could see.\""
+      }
+    ]
+  },
+  {
+    "script_hash": "4ff309a1aa0605a0095e3f6d2997b04a81235e4e192a52293723610085953c97",
+    "verdict": "fail",
+    "issues": [
+      {
+        "beat": "turn",
+        "problem": "Referred to before introduced, and a conclusion without its reason. \"His red dye\" appears out of nowhere: nobody has said Brochet dyed anything, so a first-time listener doesn't know what dye he has or what it was put in. And \"fifty people sniffing wine ... found his red dye added no smell\" states the result without what they compared (dyed wine against plain), so the viewer has no reason to believe it.",
+        "fix": "Replace the turn's first sentence \"First, fifty people sniffing wine from black glasses found his red dye added no smell.\" with \"He dyed white wine red with grape pigment, and fifty people sniffing both from black glasses smelled no difference.\" (facts f11, f12, f13; keeps the dye check in the turn, before the first tasting, as review 1 asked). That adds 3 words; to make room, in the setup change \"describe wine smells with things the same colour as the wine\" to \"describe smells with things coloured like the wine\" (cuts 3). Leave the turn's second sentence as it is."
+      }
+    ]
+  }
+]
