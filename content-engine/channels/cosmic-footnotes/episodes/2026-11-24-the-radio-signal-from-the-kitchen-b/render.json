@@ -1,6 +1,6 @@
 {
   "output": "out/cosmic-footnotes/clean/2026-11-24-the-radio-signal-from-the-kitchen-b.mp4",
-  "rendered_at": "2026-11-24T22:58:16Z",
+  "rendered_at": "2026-11-25T09:45:09Z",
   "seconds_to_render": 137,
   "width": 1080,
   "height": 1920,
@@ -10,5 +10,5 @@
     "render-storybook"
   ],
   "gl": "angle",
-  "inputs_hash": "64fd7a1da5f9b9b3a474d81549a0ed4540c0f8bdadd7bad22cf281740dcb9597"
+  "inputs_hash": "44a65c7fa11746b7a94b0fb3ef734926eb7dc1d164c001b80c5fc9b8fb8e8684"
 }
