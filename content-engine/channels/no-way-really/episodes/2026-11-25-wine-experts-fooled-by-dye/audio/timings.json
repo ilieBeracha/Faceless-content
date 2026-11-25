@@ -1,670 +1,649 @@
 {
   "version": 4,
-  "hash": "8f7a4f7d0f2b61778a5059fcf1d8187d7db9f838fb7f53000f064fe689d7045b",
+  "hash": "e7479d6f5b0115cb471e97dcfdbb667d22a02c48b274f85ebe8ac3931a87f77a",
   "fps": 30,
-  "frames": 1010,
-  "duration": 33.667,
+  "frames": 997,
+  "duration": 33.233,
   "speech_start": 0.1,
-  "speech_end": 32.64,
+  "speech_end": 32.225,
   "outro_padding": 0,
   "words": [
     {
       "i": 0,
       "beat": "hook",
-      "text": "Red",
+      "text": "Dye",
       "start": 0.1,
-      "end": 0.275
+      "end": 0.375
     },
     {
       "i": 1,
       "beat": "hook",
-      "text": "dye",
-      "start": 0.325,
-      "end": 0.6
+      "text": "fooled",
+      "start": 0.45,
+      "end": 0.75
     },
     {
       "i": 2,
       "beat": "hook",
-      "text": "changed",
-      "start": 0.65,
-      "end": 1.025
+      "text": "wine",
+      "start": 0.8,
+      "end": 1.05
     },
     {
       "i": 3,
       "beat": "hook",
-      "text": "wine",
+      "text": "students.",
       "start": 1.1,
-      "end": 1.375
+      "end": 1.85
     },
     {
       "i": 4,
-      "beat": "hook",
-      "text": "students'",
-      "start": 1.425,
-      "end": 1.75
+      "beat": "setup",
+      "text": "Frédéric",
+      "start": 2,
+      "end": 2.675
     },
     {
       "i": 5,
-      "beat": "hook",
-      "text": "smell",
-      "start": 1.8,
-      "end": 2.05
+      "beat": "setup",
+      "text": "Brochet,",
+      "start": 2.725,
+      "end": 3.4
     },
     {
       "i": 6,
-      "beat": "hook",
-      "text": "words.",
-      "start": 2.1,
-      "end": 2.8
+      "beat": "setup",
+      "text": "working",
+      "start": 3.525,
+      "end": 3.8
     },
     {
       "i": 7,
       "beat": "setup",
-      "text": "Frédéric",
-      "start": 2.975,
-      "end": 3.65
+      "text": "on",
+      "start": 3.825,
+      "end": 3.9
     },
     {
       "i": 8,
       "beat": "setup",
-      "text": "Brochet,",
-      "start": 3.7,
-      "end": 4.25
+      "text": "his",
+      "start": 3.925,
+      "end": 4.05
     },
     {
       "i": 9,
       "beat": "setup",
-      "text": "working",
-      "start": 4.415,
-      "end": 4.665
+      "text": "doctorate,",
+      "start": 4.1,
+      "end": 4.825
     },
     {
       "i": 10,
       "beat": "setup",
-      "text": "on",
-      "start": 4.69,
-      "end": 4.765
+      "text": "noticed",
+      "start": 4.95,
+      "end": 5.25
     },
     {
       "i": 11,
       "beat": "setup",
-      "text": "his",
-      "start": 4.79,
-      "end": 4.915
+      "text": "experts",
+      "start": 5.325,
+      "end": 5.825
     },
     {
       "i": 12,
       "beat": "setup",
-      "text": "doctorate,",
-      "start": 4.965,
-      "end": 5.64
+      "text": "describe",
+      "start": 5.875,
+      "end": 6.3
     },
     {
       "i": 13,
       "beat": "setup",
-      "text": "noticed",
-      "start": 5.765,
-      "end": 6.065
+      "text": "smells",
+      "start": 6.375,
+      "end": 6.775
     },
     {
       "i": 14,
       "beat": "setup",
-      "text": "experts",
-      "start": 6.115,
-      "end": 6.59
+      "text": "with",
+      "start": 6.8,
+      "end": 6.925
     },
     {
       "i": 15,
       "beat": "setup",
-      "text": "describe",
-      "start": 6.64,
-      "end": 7.065
+      "text": "things",
+      "start": 6.975,
+      "end": 7.225
     },
     {
       "i": 16,
       "beat": "setup",
-      "text": "smells",
-      "start": 7.14,
-      "end": 7.54
+      "text": "coloured",
+      "start": 7.275,
+      "end": 7.575
     },
     {
       "i": 17,
       "beat": "setup",
-      "text": "with",
-      "start": 7.565,
-      "end": 7.69
+      "text": "like",
+      "start": 7.6,
+      "end": 7.725
     },
     {
       "i": 18,
       "beat": "setup",
-      "text": "things",
-      "start": 7.74,
-      "end": 7.965
+      "text": "the",
+      "start": 7.75,
+      "end": 7.8
     },
     {
       "i": 19,
       "beat": "setup",
-      "text": "coloured",
-      "start": 8.015,
-      "end": 8.315
+      "text": "wine,",
+      "start": 7.85,
+      "end": 8.475
     },
     {
       "i": 20,
       "beat": "setup",
-      "text": "like",
-      "start": 8.34,
-      "end": 8.465
+      "text": "and",
+      "start": 8.6,
+      "end": 8.675
     },
     {
       "i": 21,
       "beat": "setup",
-      "text": "the",
-      "start": 8.49,
-      "end": 8.54
+      "text": "suspected",
+      "start": 8.725,
+      "end": 9.225
     },
     {
       "i": 22,
       "beat": "setup",
-      "text": "wine,",
-      "start": 8.59,
-      "end": 9.19
+      "text": "colour",
+      "start": 9.3,
+      "end": 9.625
     },
     {
       "i": 23,
       "beat": "setup",
-      "text": "and",
-      "start": 9.315,
-      "end": 9.39
+      "text": "chose",
+      "start": 9.7,
+      "end": 9.975
     },
     {
       "i": 24,
       "beat": "setup",
-      "text": "suspected",
-      "start": 9.44,
-      "end": 9.915
+      "text": "their",
+      "start": 10.025,
+      "end": 10.175
     },
     {
       "i": 25,
       "beat": "setup",
-      "text": "colour",
-      "start": 9.965,
-      "end": 10.29
+      "text": "words.",
+      "start": 10.225,
+      "end": 11
     },
     {
       "i": 26,
-      "beat": "setup",
-      "text": "chose",
-      "start": 10.34,
-      "end": 10.615
+      "beat": "turn",
+      "text": "He",
+      "start": 11.15,
+      "end": 11.225
     },
     {
       "i": 27,
-      "beat": "setup",
-      "text": "their",
-      "start": 10.665,
-      "end": 10.815
+      "beat": "turn",
+      "text": "dyed",
+      "start": 11.275,
+      "end": 11.525
     },
     {
       "i": 28,
-      "beat": "setup",
-      "text": "words.",
-      "start": 10.865,
-      "end": 11.615
+      "beat": "turn",
+      "text": "white",
+      "start": 11.6,
+      "end": 11.825
     },
     {
       "i": 29,
       "beat": "turn",
-      "text": "He",
-      "start": 11.765,
-      "end": 11.84
+      "text": "wine",
+      "start": 11.875,
+      "end": 12.175
     },
     {
       "i": 30,
       "beat": "turn",
-      "text": "dyed",
-      "start": 11.89,
-      "end": 12.14
+      "text": "red",
+      "start": 12.225,
+      "end": 12.425
     },
     {
       "i": 31,
       "beat": "turn",
-      "text": "white",
-      "start": 12.215,
-      "end": 12.44
+      "text": "with",
+      "start": 12.475,
+      "end": 12.6
     },
     {
       "i": 32,
       "beat": "turn",
-      "text": "wine",
-      "start": 12.49,
-      "end": 12.79
+      "text": "grape",
+      "start": 12.65,
+      "end": 12.85
     },
     {
       "i": 33,
       "beat": "turn",
-      "text": "red",
-      "start": 12.84,
-      "end": 13.015
+      "text": "pigment,",
+      "start": 12.9,
+      "end": 13.475
     },
     {
       "i": 34,
       "beat": "turn",
-      "text": "with",
-      "start": 13.04,
-      "end": 13.165
+      "text": "and",
+      "start": 13.575,
+      "end": 13.65
     },
     {
       "i": 35,
       "beat": "turn",
-      "text": "grape",
-      "start": 13.215,
-      "end": 13.415
+      "text": "fifty",
+      "start": 13.725,
+      "end": 13.975
     },
     {
       "i": 36,
       "beat": "turn",
-      "text": "pigment,",
-      "start": 13.465,
-      "end": 14.04
+      "text": "people",
+      "start": 14.025,
+      "end": 14.325
     },
     {
       "i": 37,
       "beat": "turn",
-      "text": "and",
-      "start": 14.14,
-      "end": 14.215
+      "text": "sniffing",
+      "start": 14.4,
+      "end": 14.75
     },
     {
       "i": 38,
       "beat": "turn",
-      "text": "fifty",
-      "start": 14.29,
-      "end": 14.54
+      "text": "both",
+      "start": 14.8,
+      "end": 15.05
     },
     {
       "i": 39,
       "beat": "turn",
-      "text": "people",
-      "start": 14.59,
-      "end": 14.89
+      "text": "from",
+      "start": 15.1,
+      "end": 15.2
     },
     {
       "i": 40,
       "beat": "turn",
-      "text": "sniffing",
-      "start": 14.965,
-      "end": 15.29
+      "text": "black",
+      "start": 15.25,
+      "end": 15.5
     },
     {
       "i": 41,
       "beat": "turn",
-      "text": "both",
-      "start": 15.34,
-      "end": 15.565
+      "text": "glasses",
+      "start": 15.55,
+      "end": 16.125
     },
     {
       "i": 42,
       "beat": "turn",
-      "text": "from",
-      "start": 15.615,
-      "end": 15.715
+      "text": "smelled",
+      "start": 16.2,
+      "end": 16.475
     },
     {
       "i": 43,
       "beat": "turn",
-      "text": "black",
-      "start": 15.765,
-      "end": 16.015
+      "text": "no",
+      "start": 16.525,
+      "end": 16.7
     },
     {
       "i": 44,
       "beat": "turn",
-      "text": "glasses",
-      "start": 16.065,
-      "end": 16.54
+      "text": "difference.",
+      "start": 16.75,
+      "end": 17.55
     },
     {
       "i": 45,
       "beat": "turn",
-      "text": "smelled",
-      "start": 16.615,
-      "end": 16.89
+      "text": "Then",
+      "start": 17.675,
+      "end": 17.85
     },
     {
       "i": 46,
       "beat": "turn",
-      "text": "no",
-      "start": 16.94,
-      "end": 17.115
+      "text": "he",
+      "start": 17.9,
+      "end": 17.975
     },
     {
       "i": 47,
       "beat": "turn",
-      "text": "difference.",
-      "start": 17.165,
-      "end": 17.965
+      "text": "had",
+      "start": 18,
+      "end": 18.15
     },
     {
       "i": 48,
       "beat": "turn",
-      "text": "Then",
-      "start": 18.09,
-      "end": 18.265
+      "text": "wine",
+      "start": 18.2,
+      "end": 18.425
     },
     {
       "i": 49,
       "beat": "turn",
-      "text": "he",
-      "start": 18.315,
-      "end": 18.39
+      "text": "students",
+      "start": 18.475,
+      "end": 18.825
     },
     {
       "i": 50,
       "beat": "turn",
-      "text": "had",
-      "start": 18.415,
-      "end": 18.565
+      "text": "describe",
+      "start": 18.875,
+      "end": 19.275
     },
     {
       "i": 51,
       "beat": "turn",
-      "text": "wine",
-      "start": 18.615,
-      "end": 18.84
+      "text": "the",
+      "start": 19.3,
+      "end": 19.35
     },
     {
       "i": 52,
       "beat": "turn",
-      "text": "students",
-      "start": 18.89,
-      "end": 19.24
+      "text": "smell",
+      "start": 19.425,
+      "end": 19.75
     },
     {
       "i": 53,
       "beat": "turn",
-      "text": "describe",
-      "start": 19.29,
-      "end": 19.69
+      "text": "of",
+      "start": 19.8,
+      "end": 19.975
     },
     {
       "i": 54,
       "beat": "turn",
-      "text": "the",
-      "start": 19.715,
-      "end": 19.765
+      "text": "a",
+      "start": 19.975,
+      "end": 19.975
     },
     {
       "i": 55,
       "beat": "turn",
-      "text": "smell",
-      "start": 19.84,
-      "end": 20.165
+      "text": "red",
+      "start": 20.05,
+      "end": 20.4
     },
     {
       "i": 56,
       "beat": "turn",
-      "text": "of",
-      "start": 20.215,
-      "end": 20.39
+      "text": "and",
+      "start": 20.475,
+      "end": 20.55
     },
     {
       "i": 57,
       "beat": "turn",
       "text": "a",
-      "start": 20.39,
-      "end": 20.39
+      "start": 20.575,
+      "end": 20.6
     },
     {
       "i": 58,
       "beat": "turn",
-      "text": "red",
-      "start": 20.465,
-      "end": 20.815
+      "text": "white.",
+      "start": 20.65,
+      "end": 21.325
     },
     {
       "i": 59,
-      "beat": "turn",
-      "text": "and",
-      "start": 20.89,
-      "end": 20.965
+      "beat": "twist",
+      "text": "A",
+      "start": 21.525,
+      "end": 21.575
     },
     {
       "i": 60,
-      "beat": "turn",
-      "text": "a",
-      "start": 20.99,
-      "end": 21.015
+      "beat": "twist",
+      "text": "week",
+      "start": 21.625,
+      "end": 21.825
     },
     {
       "i": 61,
-      "beat": "turn",
-      "text": "white.",
-      "start": 21.065,
-      "end": 21.74
+      "beat": "twist",
+      "text": "later,",
+      "start": 21.85,
+      "end": 22.275
     },
     {
       "i": 62,
       "beat": "twist",
-      "text": "A",
-      "start": 21.94,
-      "end": 21.99
+      "text": "he",
+      "start": 22.4,
+      "end": 22.475
     },
     {
       "i": 63,
       "beat": "twist",
-      "text": "week",
-      "start": 22.04,
-      "end": 22.24
+      "text": "served",
+      "start": 22.55,
+      "end": 22.8
     },
     {
       "i": 64,
       "beat": "twist",
-      "text": "later,",
-      "start": 22.265,
-      "end": 22.69
+      "text": "that",
+      "start": 22.85,
+      "end": 23.025
     },
     {
       "i": 65,
       "beat": "twist",
-      "text": "he",
-      "start": 22.815,
-      "end": 22.89
+      "text": "same",
+      "start": 23.1,
+      "end": 23.325
     },
     {
       "i": 66,
       "beat": "twist",
-      "text": "served",
-      "start": 22.965,
-      "end": 23.215
+      "text": "white",
+      "start": 23.375,
+      "end": 23.6
     },
     {
       "i": 67,
       "beat": "twist",
-      "text": "that",
-      "start": 23.265,
-      "end": 23.44
+      "text": "twice,",
+      "start": 23.65,
+      "end": 24.275
     },
     {
       "i": 68,
       "beat": "twist",
-      "text": "same",
-      "start": 23.515,
-      "end": 23.74
+      "text": "one",
+      "start": 24.425,
+      "end": 24.6
     },
     {
       "i": 69,
       "beat": "twist",
-      "text": "white",
-      "start": 23.79,
-      "end": 24.015
+      "text": "glass",
+      "start": 24.65,
+      "end": 24.925
     },
     {
       "i": 70,
       "beat": "twist",
-      "text": "twice,",
-      "start": 24.065,
-      "end": 24.69
+      "text": "dyed,",
+      "start": 24.975,
+      "end": 25.55
     },
     {
       "i": 71,
       "beat": "twist",
-      "text": "one",
-      "start": 24.84,
-      "end": 25.015
+      "text": "so",
+      "start": 25.675,
+      "end": 25.8
     },
     {
       "i": 72,
       "beat": "twist",
-      "text": "glass",
-      "start": 25.065,
-      "end": 25.34
+      "text": "only",
+      "start": 25.85,
+      "end": 26.1
     },
     {
       "i": 73,
       "beat": "twist",
-      "text": "dyed,",
-      "start": 25.39,
-      "end": 25.965
+      "text": "colour",
+      "start": 26.175,
+      "end": 26.475
     },
     {
       "i": 74,
       "beat": "twist",
-      "text": "so",
-      "start": 26.09,
-      "end": 26.215
+      "text": "differed.",
+      "start": 26.525,
+      "end": 27.275
     },
     {
       "i": 75,
-      "beat": "twist",
-      "text": "only",
-      "start": 26.265,
-      "end": 26.515
+      "beat": "ending",
+      "text": "The",
+      "start": 27.45,
+      "end": 27.5
     },
     {
       "i": 76,
-      "beat": "twist",
-      "text": "colour",
-      "start": 26.59,
-      "end": 26.89
+      "beat": "ending",
+      "text": "students",
+      "start": 27.55,
+      "end": 27.925
     },
     {
       "i": 77,
-      "beat": "twist",
-      "text": "differed.",
-      "start": 26.94,
-      "end": 27.69
+      "beat": "ending",
+      "text": "generally",
+      "start": 28,
+      "end": 28.375
     },
     {
       "i": 78,
       "beat": "ending",
-      "text": "The",
-      "start": 27.865,
-      "end": 27.915
+      "text": "described",
+      "start": 28.425,
+      "end": 28.9
     },
     {
       "i": 79,
       "beat": "ending",
-      "text": "students",
-      "start": 27.965,
-      "end": 28.34
+      "text": "the",
+      "start": 28.925,
+      "end": 28.975
     },
     {
       "i": 80,
       "beat": "ending",
-      "text": "generally",
-      "start": 28.415,
-      "end": 28.79
+      "text": "dyed",
+      "start": 29.05,
+      "end": 29.325
     },
     {
       "i": 81,
       "beat": "ending",
-      "text": "described",
-      "start": 28.84,
-      "end": 29.315
+      "text": "glass",
+      "start": 29.375,
+      "end": 29.775
     },
     {
       "i": 82,
       "beat": "ending",
-      "text": "the",
-      "start": 29.34,
-      "end": 29.39
+      "text": "with",
+      "start": 29.825,
+      "end": 30.025
     },
     {
       "i": 83,
       "beat": "ending",
-      "text": "dyed",
-      "start": 29.465,
-      "end": 29.74
+      "text": "the",
+      "start": 30.025,
+      "end": 30.025
     },
     {
       "i": 84,
       "beat": "ending",
-      "text": "glass",
-      "start": 29.79,
-      "end": 30.19
+      "text": "smell",
+      "start": 30.125,
+      "end": 30.4
     },
     {
       "i": 85,
       "beat": "ending",
-      "text": "with",
-      "start": 30.24,
-      "end": 30.44
+      "text": "words",
+      "start": 30.45,
+      "end": 30.775
     },
     {
       "i": 86,
       "beat": "ending",
-      "text": "the",
-      "start": 30.44,
-      "end": 30.44
+      "text": "they'd",
+      "start": 30.825,
+      "end": 31
     },
     {
       "i": 87,
       "beat": "ending",
-      "text": "smell",
-      "start": 30.54,
-      "end": 30.815
+      "text": "used",
+      "start": 31.05,
+      "end": 31.3
     },
     {
       "i": 88,
       "beat": "ending",
-      "text": "words",
-      "start": 30.865,
-      "end": 31.19
+      "text": "for",
+      "start": 31.3,
+      "end": 31.3
     },
     {
       "i": 89,
       "beat": "ending",
-      "text": "they'd",
-      "start": 31.24,
-      "end": 31.415
+      "text": "the",
+      "start": 31.35,
+      "end": 31.525
     },
     {
       "i": 90,
       "beat": "ending",
-      "text": "used",
-      "start": 31.465,
-      "end": 31.715
-    },
-    {
-      "i": 91,
-      "beat": "ending",
-      "text": "for",
-      "start": 31.715,
-      "end": 31.715
-    },
-    {
-      "i": 92,
-      "beat": "ending",
-      "text": "the",
-      "start": 31.765,
-      "end": 31.94
-    },
-    {
-      "i": 93,
-      "beat": "ending",
       "text": "red.",
-      "start": 31.99,
-      "end": 32.49
+      "start": 31.575,
+      "end": 32.075
     }
   ],
   "beats": [
@@ -672,31 +651,31 @@
       "id": "hook",
       "speaker": "blink",
       "start": 0.1,
-      "end": 2.888
+      "end": 1.925
     },
     {
       "id": "setup",
       "speaker": "blink",
-      "start": 2.888,
-      "end": 11.69
+      "start": 1.925,
+      "end": 11.075
     },
     {
       "id": "turn",
       "speaker": "blink",
-      "start": 11.69,
-      "end": 21.84
+      "start": 11.075,
+      "end": 21.425
     },
     {
       "id": "twist",
       "speaker": "blink",
-      "start": 21.84,
-      "end": 27.778
+      "start": 21.425,
+      "end": 27.362
     },
     {
       "id": "ending",
       "speaker": "blink",
-      "start": 27.778,
-      "end": 32.64
+      "start": 27.362,
+      "end": 32.225
     }
   ],
   "voices": {
@@ -710,7 +689,7 @@
     }
   },
   "loudness": {
-    "integrated_lufs": -14.49,
-    "true_peak_db": -1.31
+    "integrated_lufs": -14.53,
+    "true_peak_db": -1.88
   }
 }
