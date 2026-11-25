@@ -8,6 +8,25 @@ import { scriptReviewHash } from "../pipeline/script-review.ts";
 import { ENGINE_DIR, Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 
+/** A research dossier for the test channel's pen idea; its one source is the one sampleScript's claim cites. */
+export function writeDossier(epDir: string, idea = "a-ballpoint-pen"): void {
+  const source = "https://example.org/ballpoint";
+  writeJson(join(epDir, "research.json"), {
+    idea,
+    question: "Why doesn't a ballpoint pen leak?",
+    facts: [{ id: "f1", fact: "A ballpoint pen's tip holds a small metal ball.", source, quote: "the tip holds a small metal ball" }],
+    people: [{ name: "László Bíró", role: "newspaper editor", stake: "his fountain pens smudged every page", facts: ["f1"] }],
+    timeline: [
+      { when: "1930s", what: "Bíró tires of smudged ink", facts: ["f1"] },
+      { when: "1938", what: "He patents a pen with a ball in the tip", why: "quick-drying ink clogged a nib", facts: ["f1"] },
+      { when: "1945", what: "Ballpoints go on sale", facts: ["f1"] },
+    ],
+    turn: { what: "The ball seals the ink in when it stops rolling", facts: ["f1"] },
+    key_objects: ["ballpoint pen", "metal ball"],
+    unverified: [],
+  });
+}
+
 /** A passing script review of exactly this script, as the reviewer would write it. */
 export function passScriptReview(epDir: string, script: object): void {
   writeJson(join(epDir, "script-review.json"), { script_hash: scriptReviewHash(script), verdict: "pass", issues: [] });

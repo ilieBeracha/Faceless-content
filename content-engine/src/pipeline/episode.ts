@@ -1,7 +1,7 @@
 /**
  * The episode pipeline — identical for every channel:
  *
- *   idea → script → script review → fact-check (STOP for human approval) → [footage] → voice → render → QA
+ *   idea → research → script → script review → fact-check (STOP for human approval) → [footage] → voice → render → QA
  *
  * The footage step only runs for series that use render-ai-video (paid; it stops once more for a
  * person to approve the stills and the cost before any video is generated).
@@ -25,11 +25,12 @@ import { formatIssues, hasErrors } from "../core/validate.ts";
 import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
+import { claimsOutsideDossier, readDossier, researchPath, researchTask } from "./research.ts";
 import { currentScriptReview, scriptReviewPath, scriptReviewTask } from "./script-review.ts";
 import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, LENGTH_MARGIN, budgetWordsPerSecond, checkScript, factualHash, hookLimit, voiceOverhead, type SeriesData } from "./script-check.ts";
 import { newStoryboard, readStoryboard, storyboardApproved, storyboardPath, writeStoryboard, type CaptionSettings } from "./storyboard.ts";
 
-export const STEPS = ["idea", "script", "review", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
+export const STEPS = ["idea", "research", "script", "review", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
 export type StepName = (typeof STEPS)[number];
 
 export interface EpisodeState {
@@ -131,10 +132,26 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
 
   const ep = findOrCreateEpisode(ws, channel, opts, log);
   const redo = new Set(opts.redo ?? []);
+  // New research means a new script written from it.
+  if (redo.has("research")) redo.add("script");
   const done = (step: StepName) => ep.state.steps[step]?.status === "done" && !redo.has(step);
 
-  // 2. Script
+  // 1b. Research — the story is looked up in real sources before a line is written; the script is written from it.
+  // Episodes whose script was written before this step keep going without one.
   const scriptPath = join(ep.dir, "script.json");
+  if ((!existsSync(scriptPath) || redo.has("script")) && (!existsSync(researchPath(ep.dir)) || redo.has("research"))) {
+    mark(ep, "research", "waiting");
+    log(`• research: preparing the research task (${llm})`);
+    await runTask(ws, researchTask(ws, ep, series, existsSync(scriptPath)), llm);
+    commitPaths(ws, [ep.dir], `${channel.slug}: research for ${ep.state.id}`);
+  }
+  const dossier = readDossier(ep);
+  if (dossier) {
+    if (!done("research")) mark(ep, "research", "done", `${dossier.facts.length} facts`);
+    log(`• research: ${dossier.facts.length} facts from ${new Set(dossier.facts.map((f) => f.source.trim())).size} sources`);
+  }
+
+  // 2. Script
   if (!existsSync(scriptPath) || redo.has("script")) {
     mark(ep, "script", "waiting");
     log(`• script: preparing the writing task (${llm})`);
@@ -145,6 +162,9 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
   if (!done("script")) {
     // A new script says what it argues; episodes accepted before angles keep going without one.
     if (!script.angle) throw new PipelinePause("needs-fix", [`${ws.rel(scriptPath)} has no "angle": write the point, stakes, turn and takeaway first (step 0 of skills/write-script/SKILL.md), then run the same command again.`]);
+    // Written from the dossier: every claim cites a page that was looked up for this video.
+    const outside = dossier ? claimsOutsideDossier(script, dossier) : [];
+    if (outside.length) throw new PipelinePause("needs-fix", [`${ws.rel(scriptPath)} cites sources the research didn't find:`, ...outside.map((e) => `  - ${e}`), "Fix the script, then run the same command again."]);
     ep.state.title = script.title;
     mark(ep, "script", "done");
     commitPaths(ws, [ep.dir], `${channel.slug}: script ready for ${ep.state.id}`);
@@ -344,10 +364,15 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   for (const skill of skills) if (known.has(skill)) ctx.addFile(`skills/${skill}/SKILL.md`, "skill");
   const idea = ch.ideas.find((i) => i.id === ep.state.idea)!;
   ctx.addInline("the idea for this episode", ["```", `id: ${idea.id}`, `title: ${idea.title}`, `angle: ${idea.angle ?? "(none)"}`, ...(idea.fields.point ? [`point: ${idea.fields.point}`] : []), "```"].join("\n"));
+  // The research dossier: the only facts the script may use.
+  const dossier = readDossier(ep);
+  if (dossier) ctx.addFile(ws.rel(researchPath(ep.dir)), "channel");
   // A fact-check that asked for changes: the next script starts from the one that was checked.
   const scriptPath = join(ep.dir, "script.json");
   const asked = readFactcheck(ep.dir);
   const revising = asked?.status === "changes-requested" && existsSync(scriptPath);
+  // A person's fact-check outranks the dossier: a revision may cite what they asked for.
+  const fromDossier = dossier && !revising ? dossier : null;
   if (revising) {
     ctx.addFile(ws.rel(scriptPath), "channel");
     ctx.addInline(
@@ -390,7 +415,7 @@ ${lang.code === "en" ? "" : `
 3. **Length.** The series runs ${min}–${max}s. ${lengthNote}
 4. **Hook.** The first sentence must be **${hook.max} ${hook.unit} or fewer** (spoken, numbers said as words) so it lands within ${ws.config.hook.hook_line_ends_by_seconds}s. There is no headline: the captions are the only words on screen, so don't write \`on_screen_text\`.
 5. **Voice.** A full stop ends a thought: the voice drops its pitch and pauses there, so never split one phrase across sentences ("You think all wine improves. With time." → "You think all wine gets better with time?"). Join fragments with a comma, a dash or "…". Write the way the character in this channel talks (personality, vocabulary, catchphrases from its file — a catchphrase at most once, where it fits). Audience: ${JSON.stringify((ch.doc.data.audience as { who?: string })?.who ?? "")}.
-6. **Facts.** Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it. A person approves this list before anything renders.
+6. **Facts.** ${fromDossier ? `Write only from the research dossier \`${ws.rel(researchPath(ep.dir))}\`: its facts, its people, its order of events and its whys. Every factual statement (spoken, on screen, or in a label) goes into \`claims\` with the \`source\` of the dossier fact it comes from, and says no more than that fact's \`quote\` supports. Never use anything in its \`unverified\` list. A fact the dossier doesn't have is cut, however true.` : "Every factual statement (spoken, on screen, or in a label) goes into `claims` with a real, specific source you have checked (prefer manufacturers, standards bodies, encyclopedias, peer-reviewed or government sources). Never invent a source; if you can't verify something, cut it."} A person approves this list before anything renders.
 7. **Visuals.** Use only these render skills: ${series.skills.render.map((s) => `\`${s}\``).join(", ")}. Follow each skill's SKILL.md for the \`visuals\` payload and each beat's \`visual\` block.
 8. **Banned topics** for this channel (never touch them): ${banned || "none listed"}.
 9. **Learnings.** Apply what \`learnings.md\` says worked or failed for this channel.
@@ -406,11 +431,16 @@ Write the JSON to \`${ws.rel(scriptPath)}\` (schema \`script/v1\`, documented in
     instructions,
     outputs: [{ path: scriptPath, format: "json", description: "the episode script (script/v1)" }],
     next: `./engine make episode --channel ${ch.slug} --series ${ep.series}`,
-    research: { maxSearches: 8 },
+    // Written from a dossier, the facts are already looked up: no searches.
+    ...(fromDossier ? {} : { research: { maxSearches: 8 } }),
     check: () => {
       const r = checkScript(ws, readJson(scriptPath), { channel: ep.channel, series: ep.series, idea: ep.state.idea });
       // Scripts from before angles still load; a new one says what it argues (makeEpisode refuses one without).
-      return [...r.errors, ...(r.script && !r.script.angle ? ['"angle" is missing: write the point, stakes, turn and takeaway first (step 0 of the skill)'] : [])];
+      return [
+        ...r.errors,
+        ...(r.script && !r.script.angle ? ['"angle" is missing: write the point, stakes, turn and takeaway first (step 0 of the skill)'] : []),
+        ...(r.script && fromDossier ? claimsOutsideDossier(r.script, fromDossier) : []),
+      ];
     },
   };
 }

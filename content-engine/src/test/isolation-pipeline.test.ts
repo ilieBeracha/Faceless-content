@@ -9,7 +9,7 @@ import { writeJson } from "../core/util.ts";
 import { makeEpisode } from "../pipeline/episode.ts";
 import { approveFactcheck, readFactcheck } from "../pipeline/factcheck.ts";
 import { checkScript, factualHash } from "../pipeline/script-check.ts";
-import { makeChannel, passScriptReview, sampleScript, tempWorkspace } from "./helpers.ts";
+import { makeChannel, passScriptReview, sampleScript, tempWorkspace, writeDossier } from "./helpers.ts";
 
 describe("context isolation", () => {
   it("refuses another channel's files, unlisted skills and stray paths", () => {
@@ -34,6 +34,8 @@ describe("context isolation", () => {
     await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
     const ep = loadChannel(ws, "alpha");
     const epDir = join(ep.dir, "episodes", readFileSync(join(ep.dir, "ideas.md"), "utf8").match(/used_in: episodes\/(\S+)/)![1]);
+    writeDossier(epDir);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
     const manifest = JSON.parse(readFileSync(join(epDir, "tasks", "script.manifest.json"), "utf8")) as { files: { path: string }[] };
     const paths = manifest.files.map((f) => f.path);
     assert.ok(paths.includes("AGENTS.md"));
@@ -165,4 +167,62 @@ describe("script checks", () => {
   });
 });
 
+describe("research dossier", () => {
+  async function started(ws: ReturnType<typeof tempWorkspace>) {
+    makeChannel(ws, "alpha", { status: "active" });
+    makeChannel(ws, "beta", { status: "active" });
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+    const ch = loadChannel(ws, "alpha");
+    return join(ch.dir, ch.ideas.find((i) => i.id === "a-ballpoint-pen")!.fields.used_in!);
+  }
 
+  it("comes before the script, and its task reads only this channel", async () => {
+    const ws = tempWorkspace();
+    const epDir = await started(ws);
+    assert.ok(existsSync(join(epDir, "tasks", "research.md")));
+    assert.equal(existsSync(join(epDir, "tasks", "script.md")), false);
+    const manifest = JSON.parse(readFileSync(join(epDir, "tasks", "research.manifest.json"), "utf8")) as { files: { path: string }[] };
+    assert.ok(manifest.files.every((f) => f.path === "AGENTS.md" || f.path.startsWith("channels/alpha/") || f.path.startsWith("(inline)")), manifest.files.map((f) => f.path).join("\n"));
+  });
+
+  it("a dossier with no person, too few events or a fact without its quote is sent back", async () => {
+    const ws = tempWorkspace();
+    const epDir = await started(ws);
+    writeJson(join(epDir, "research.json"), { idea: "a-ballpoint-pen", question: "Why?", facts: [{ id: "f1", fact: "A ball.", source: "https://example.org/ballpoint", quote: "" }], people: [], timeline: [], turn: { what: "it seals", facts: ["f9"] }, key_objects: ["pen"], unverified: [] });
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => {
+      const text = e instanceof PipelinePause && e.kind === "needs-fix" ? e.lines.join("\n") : "";
+      return /facts\[0\] needs "id", "fact", "source" and "quote"/.test(text) && /"people" must name at least one person/.test(text) && /"timeline" must list at least 3 events/.test(text) && /turn: no fact "f9"/.test(text);
+    });
+  });
+
+  it("the script is written from it: a claim citing another source is sent back, and the fact-check shows what each source says", async () => {
+    const ws = tempWorkspace();
+    const epDir = await started(ws);
+    writeDossier(epDir);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+    const manifest = JSON.parse(readFileSync(join(epDir, "tasks", "script.manifest.json"), "utf8")) as { files: { path: string }[] };
+    assert.ok(manifest.files.some((f) => f.path.endsWith("/research.json")));
+    assert.match(readFileSync(join(epDir, "tasks", "script.md"), "utf8"), /Write only from the research dossier/);
+    const script = sampleScript("alpha");
+    const elsewhere = structuredClone(script);
+    elsewhere.claims[0].source = "https://example.org/from-memory";
+    writeJson(join(epDir, "script.json"), elsewhere);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "needs-fix" && /claim c1 cites "https:\/\/example.org\/from-memory", which is not a source in research.json/.test(e.lines.join(" ")));
+    writeJson(join(epDir, "script.json"), script);
+    passScriptReview(epDir, script);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "awaiting-approval");
+    assert.match(readFileSync(join(epDir, "factcheck.md"), "utf8"), /\*\*The source says:\*\*\n {2}- "the tip holds a small metal ball"/);
+  });
+
+  it("--redo research looks the story up again and rewrites the script from it", async () => {
+    const ws = tempWorkspace();
+    const epDir = await started(ws);
+    writeDossier(epDir);
+    writeJson(join(epDir, "script.json"), sampleScript("alpha"));
+    passScriptReview(epDir, sampleScript("alpha"));
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "awaiting-approval");
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent", redo: ["research"] }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent" && /tasks\/research\.md/.test(e.lines.join(" ")) && /--redo script/.test(e.lines.join(" ")));
+    // The new dossier is in: the command it printed writes the script again.
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent", redo: ["script"] }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent" && /tasks\/script\.md/.test(e.lines.join(" ")));
+  });
+});

@@ -6,8 +6,10 @@ description: Turns a series definition + an idea into script.json (beats, voiceo
 
 # Skill: write-script
 
-You receive a task file with the channel, the series, its characters, the channel's learnings, the idea, and the
-SKILL.md of every render skill the series uses. You write **one file: `script.json`**. Nothing else.
+You receive a task file with the channel, the series, its characters, the channel's learnings, the idea, the
+research dossier (`research.json`: the facts with their sources and quotes, the people, the events in order with
+their whys, the turn, the key objects, and what could not be verified), and the SKILL.md of every render skill the
+series uses. You write **one file: `script.json`**. Nothing else.
 
 ## How to write it
 
@@ -53,8 +55,11 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
    Never make a shot whose subject is writing (a page, score sheet, letter, sign, label or screen): the picture
    model can't draw readable text, so it comes out as scribbles. Show the person doing something with it instead
    (reading it with the paper edge-on, reaching for it).
-6. **Facts are claims.** Every fact — spoken, on screen, in a part label, or a number in a graphic — goes into
-   `claims` with a real source you have checked. Unverifiable → cut it. Confidence `low` → find a better source.
+6. **Facts are claims, from the dossier.** Write only from `research.json`: its facts, its people, its order and its
+   whys. Every fact — spoken, on screen, in a part label, or a number in a graphic — goes into `claims` with the
+   `source` of the dossier fact it comes from, and says no more than that fact's `quote` supports. Never use
+   anything in its `unverified` list. A fact the dossier doesn't have is cut, however true. (An older episode with no
+   dossier: a real source you have checked. Unverifiable → cut it. Confidence `low` → find a better source.)
 7. **Pronunciations.** If the voice may stumble (years, acronyms, names, symbols), add
    `"pronunciations": {"1938": "nineteen thirty-eight", "LED": "L E D"}`. Captions still show the original word.
 8. **No AI-label text, no links, no "subscribe", no call to action.** A series' `cta` is a fixed closing line, never advice.
@@ -113,6 +118,6 @@ SKILL.md of every render skill the series uses. You write **one file: `script.js
 - beats match the series exactly; speakers are series characters; expressions exist in the character's model.json
 - each beat's `visual.skill` is one of the series' scene skills and its payload is valid
 - `visuals[...]` payloads are valid for their skill (part ids unique, targets/callouts exist, sizes present …)
-- every claim points at an existing beat
+- every claim points at an existing beat, and cites the source of a fact in `research.json`
 - estimated length is inside the series length; the first sentence fits the 2-second hook
 - banned-topic keywords (warning; the QA review decides)

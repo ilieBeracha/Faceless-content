@@ -7,13 +7,16 @@ import { PipelinePause } from "../core/errors.ts";
 import { writeJson } from "../core/util.ts";
 import { makeEpisode } from "../pipeline/episode.ts";
 import { brandKit } from "../storefront/brand-kit.ts";
-import { makeChannel, passScriptReview, sampleScript, tempWorkspace } from "./helpers.ts";
+import { makeChannel, passScriptReview, sampleScript, tempWorkspace, writeDossier } from "./helpers.ts";
 
-/** Start an episode of the test channel and return its folder (the writer is waiting). */
+/** Start an episode of the test channel, research it, and return its folder (the writer is waiting). */
 async function startEpisode(ws: ReturnType<typeof tempWorkspace>): Promise<string> {
   await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
   const ch = loadChannel(ws, "alpha");
-  return join(ch.dir, ch.ideas.find((i) => i.id === "a-ballpoint-pen")!.fields.used_in!);
+  const dir = join(ch.dir, ch.ideas.find((i) => i.id === "a-ballpoint-pen")!.fields.used_in!);
+  writeDossier(dir);
+  await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+  return dir;
 }
 
 describe("a channel's point of view", () => {

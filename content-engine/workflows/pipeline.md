@@ -1,6 +1,6 @@
 # Workflow: episode pipeline
 
-**idea → script → script review → fact-check → [footage] → voice → render → QA → (later) post**
+**idea → research → script → script review → fact-check → [footage] → voice → render → QA → (later) post**
 
 One command runs it for any channel: `./engine make episode --channel <slug> --series <series>`.
 It stops whenever it needs someone, and continues from the first unfinished step when you run it again.
@@ -9,7 +9,8 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 | # | Step | Who | Writes | Gate |
 |---|---|---|---|---|
 | 1 | **Idea** | engine | `episode.json`; idea → `used` in ideas.md | needs a `new` idea for the series |
-| 2 | **Script** | agent (or `--llm anthropic`) | `tasks/script.md` (context bundle) → `script.json` | must pass `script/v1` + series checks |
+| 1b | **Research** | agent (or `--llm anthropic`, with web search) | `tasks/research.md` → `research.json` | must pass the dossier checks (a named person, ≥3 events in order, every fact with its https source and the exact quote) |
+| 2 | **Script** | agent (or `--llm anthropic`) | `tasks/script.md` (context bundle) → `script.json` | must pass `script/v1` + series checks; every claim cites a source in `research.json` |
 | 2b | **Script review** | agent (or `--llm anthropic`) | `tasks/script-review.md` → `script-review.json` | must pass; bound to the exact script.json. Skipped where review findings don't block (the storefront) |
 | 3 | **Fact-check** | engine lists, **person approves** | `factcheck.md` | **STOP until approved**; bound to the script's words and numbers |
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
@@ -22,13 +23,25 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 Picks the first `new` idea whose series matches (or `--idea <id>`), creates the episode folder and marks the
 idea `used` (with `used_in`). Run with `--new` to start a second episode while one is in progress.
 
+## 1b. Research
+Before a line is written, the story is looked up. `tasks/research.md` gives the agent AGENTS.md, `channel.md`,
+the series file and the idea; it writes `research.json`: the question the video answers, the **facts** (each one
+sentence with the https address of the page it came from and the exact words on that page), the **people** with
+something at stake (by name: who actually noticed or acted), the **timeline** in order with the why of each
+surprising act, the **turn**, the **key objects** the viewer has to see, and what it could **not** verify
+(including popular versions of the story the sources don't back). Nothing is written from memory.
+`--redo research` looks it up again and then writes the script again from the new dossier. Episodes whose script
+was written before this step have no dossier and keep going without one.
+
 ## 2. Script
 The engine writes `tasks/script.md`: the instructions plus the **only** context allowed — AGENTS.md, this
-channel's `channel.md`, the series file, its characters (+ model.json), `learnings.md`, the idea, and the
+channel's `channel.md`, the series file, its characters (+ model.json), `learnings.md`, the idea, `research.json`, and the
 SKILL.md of each skill the series names (`skills.script`, `skills.render`, `skills.captions`). The agent
 writes `script.json` following `skills/write-script/SKILL.md` and re-runs the command. The engine checks it:
 beat order, speakers, expressions, render-skill payloads, estimated length, the 2-second hook, banned-topic
-keywords. Problems are printed; fix `script.json` and re-run.
+keywords, and that every claim cites the source of a dossier fact (a script written from the dossier doesn't search
+the web). Problems are printed; fix `script.json` and re-run. A revision asked for by the fact-check may cite what
+the person asked for.
 
 ## 2b. Script review
 A second reader judges the voiceover alone, before anyone checks facts or anything is voiced or paid for: does it
@@ -38,7 +51,8 @@ preaching, no pun)? It writes `script-review.json` (`verdict`, `issues` with bea
 `script.json`. A fail stops the episode until the script is fixed; any change to the script is reviewed again.
 
 ## 3. Fact-check (hard stop)
-The engine writes `factcheck.md`: every claim with its source, plus the full transcript and on-screen text so
+The engine writes `factcheck.md`: every claim with its source and, from the dossier, the exact words that source
+says, plus the full transcript and on-screen text so
 nothing slips through. The person approves with
 `./engine approve factcheck --channel <slug> --episode <id> --by "<name>"` or asks for changes with
 `./engine reject factcheck … --reason "…"`. The approval stores a hash of every word and number shown or said;
