@@ -47,8 +47,11 @@ the person asked for.
 A second reader judges the voiceover alone, before anyone checks facts or anything is voiced or paid for: does it
 argue a point through the person with something at stake, in the order it happened, with everything introduced
 before it is referred to, a "why" for every surprising act and conclusion, and an ending on what happened (no
-preaching, no pun)? It writes `script-review.json` (`verdict`, `issues` with beat, problem, fix), bound to the exact
-`script.json`. A fail stops the episode until the script is fixed; any change to the script is reviewed again.
+preaching, no pun)? Only those six fail a script. It writes `script-review.json` (`verdict`, `issues` with beat, problem,
+fix), bound to the exact `script.json`. A fail stops the episode until the script is fixed; any change to the script is
+reviewed again. Each fail is kept in `script-review-history.json`, and the next reviewer reads them: it may not ask to
+undo a fix an earlier review asked for (unless that fix broke one of the six rules). It also reads `research.json` (a
+fix only uses facts in it) and the series' word budget, which every fix must stay inside.
 
 ## 3. Fact-check (hard stop)
 The engine writes `factcheck.md`: every claim with its source and, from the dossier, the exact words that source

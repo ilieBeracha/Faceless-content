@@ -132,6 +132,27 @@ describe("script review", () => {
     assert.equal(readFactcheck(epDir), null);
   });
 
+  it("the next review reads the failed ones, keeps their fixes and keeps the script inside its word budget", async () => {
+    const ws = tempWorkspace();
+    const { epDir, script } = await scripted(ws);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), PipelinePause);
+    const first = readFileSync(join(epDir, "tasks", "script-review.md"), "utf8");
+    assert.match(first, /must stay within \*\*\d+–\d+ spoken words\*\*; it has \d+ now/);
+    assert.doesNotMatch(first, /Earlier reviews/);
+    const hash = first.match(/"script_hash": "(.*?)"/)![1];
+    writeJson(join(epDir, "script-review.json"), { script_hash: hash, verdict: "fail", issues: [{ beat: "kicker", problem: "ends on a pun", fix: "end on what happened" }] });
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "needs-fix");
+    const changed = structuredClone(script);
+    changed.beats[1].voiceover = changed.beats[1].voiceover.replace("tiny", "huge");
+    writeJson(join(epDir, "script.json"), changed);
+    await assert.rejects(makeEpisode(ws, { channel: "alpha", series: "inside", llm: "agent" }), (e: unknown) => e instanceof PipelinePause && e.kind === "waiting-for-agent");
+    const second = readFileSync(join(epDir, "tasks", "script-review.md"), "utf8");
+    assert.match(second, /Review 1:\n- kicker: ends on a pun → end on what happened/);
+    assert.match(second, /Don't ask to undo a fix one of them\s+asked for/);
+    const history = JSON.parse(readFileSync(join(epDir, "script-review-history.json"), "utf8")) as { script_hash: string }[];
+    assert.deepEqual(history.map((r) => r.script_hash), [hash]);
+  });
+
   it("is skipped where review findings don't block", async () => {
     const ws = tempWorkspace();
     const { epDir } = await scripted(ws);

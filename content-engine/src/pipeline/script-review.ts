@@ -8,10 +8,12 @@ import { join } from "node:path";
 import { bodySection } from "../core/markdown.ts";
 import { ContextBundle } from "../core/context.ts";
 import type { Task } from "../core/tasks.ts";
-import { canonicalJson, readJson, sha256 } from "../core/util.ts";
+import { canonicalJson, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
+import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
 import type { EpisodeRef } from "./episode.ts";
-import type { SeriesData } from "./script-check.ts";
+import { researchPath } from "./research.ts";
+import { wordBudget, type SeriesData } from "./script-check.ts";
 
 export interface ScriptReview {
   script_hash: string;
@@ -21,6 +23,23 @@ export interface ScriptReview {
 
 export function scriptReviewPath(ep: EpisodeRef): string {
   return join(ep.dir, "script-review.json");
+}
+
+/** Every failed review of this episode's earlier scripts, oldest first: the next reviewer reads them so it doesn't undo a fix one of them asked for. */
+export function scriptReviewHistoryPath(ep: EpisodeRef): string {
+  return join(ep.dir, "script-review-history.json");
+}
+
+export function readReviewHistory(ep: EpisodeRef): ScriptReview[] {
+  const path = scriptReviewHistoryPath(ep);
+  return existsSync(path) ? readJson<ScriptReview[]>(path) : [];
+}
+
+/** Keeps a failed review once, before the script is fixed and the review file is written over. */
+export function recordFailedReview(ep: EpisodeRef, review: ScriptReview): void {
+  const history = readReviewHistory(ep);
+  if (history.some((r) => r.script_hash === review.script_hash)) return;
+  writeJson(scriptReviewHistoryPath(ep), [...history, review]);
 }
 
 /** All of script.json as written: a review holds only for the script it read. */
@@ -69,6 +88,19 @@ export function scriptReviewTask(ws: Workspace, ep: EpisodeRef, series: SeriesDa
   for (const name of series.characters) ctx.addFile(ch.characters.get(name)!.rel, "channel");
   ctx.addFile(`skills/${series.skills.script}/SKILL.md`, "skill");
   ctx.addFile(ws.rel(scriptPath), "channel");
+  const dossier = existsSync(researchPath(ep.dir));
+  if (dossier) ctx.addFile(ws.rel(researchPath(ep.dir)), "channel");
+  const history = readReviewHistory(ep);
+  if (history.length)
+    ctx.addInline(
+      "earlier reviews of this episode",
+      [
+        "Each failed an earlier version of this script; the script now in script.json was rewritten to fix them. Oldest first.",
+        ...history.map((r, k) => [``, `Review ${k + 1}:`, ...r.issues.map((i) => `- ${i.beat}: ${i.problem} → ${i.fix}`)].join("\n")),
+      ].join("\n"),
+    );
+  const { lo, hi } = wordBudget(ws, ch, series);
+  const words = readJson<Script>(scriptPath).beats.reduce((n, b) => n + voiceTokens(b.voiceover).length, 0);
 
   const instructions = `
 Review the script \`${ws.rel(scriptPath)}\` before anyone checks its facts or anything is voiced or rendered. You are
@@ -88,9 +120,21 @@ Fail the script for any of these, naming the beat:
 6. **The ending.** The last beat doesn't end on what happened: it preaches (advice, "next time…", "trust yourself", a
    moral or pep talk to the viewer) or closes on a pun or wise-sounding line instead of the result.
 
-Don't judge facts, sources, length, visuals or anything the engine checks; a person approves the facts next. Each fix
-says exactly what to change in the voiceover, in plain words. Be strict: a fail costs a text edit now, a pass that
-should have failed costs a render.
+Only these six fail a script. Wording you would merely prefer, a line a series beat suggests, a catchphrase, or anything
+else outside them is not a fail.
+
+Don't judge facts, sources, visuals or anything the engine checks; a person approves the facts next. Each fix
+says exactly what to change in the voiceover, in plain words.${dossier ? ` A fix may only use facts in \`${ws.rel(researchPath(ep.dir))}\`; if the one it needs isn't there, the fix says how to say less instead.` : ""}
+
+**Length.** The script must stay within **${lo}–${hi} spoken words**; it has ${words} now. Every fix must keep it inside:
+when a fix adds words, it says which words to cut to make room. Never ask for something that can't fit.
+${history.length ? `
+**Earlier reviews.** ${history.length} earlier review(s) of this episode are in the context. Don't ask to undo a fix one of them
+asked for (put back what it cut, cut what it asked to add, move back what it moved). The one exception is a fix that broke
+one of the six rules itself: then name the review and the rule. A problem an earlier review already raised and the script
+now fixes is passed.
+` : ""}
+Be strict about the six: a fail costs a text edit now, a pass that should have failed costs a render.
 
 Write \`${ws.rel(reviewPath)}\` as JSON:
 

@@ -178,6 +178,17 @@ export function speechSeconds(ws: Workspace, characterData: Record<string, unkno
   return voiceTokens(text).length / speechRate(ws, characterData) + pauseSeconds(ws, characterData, text);
 }
 
+/** The spoken words a script of this series may have, for its narrator's voice: what the script task asks for and the review must keep. */
+export function wordBudget(ws: Workspace, channel: Channel, series: SeriesData): { lo: number; hi: number; wps: number } {
+  const speaker = channel.characters.get(series.characters[0])!;
+  // With the pauses this voice adds (a slow, pausing voice fits fewer words), kept inside the series by the estimate's margin.
+  const wps = budgetWordsPerSecond(ws, speaker.data);
+  // One speaker says every beat in one turn; with more, assume they take turns at every beat.
+  const overhead = voiceOverhead(ws, series.characters.length === 1 ? 1 : series.beats.length);
+  const { min_seconds: min, max_seconds: max } = series.length;
+  return { lo: Math.round((min * (1 + LENGTH_MARGIN) - overhead) * wps), hi: Math.round((max * (1 - LENGTH_MARGIN) - overhead) * wps), wps };
+}
+
 /** Words per second for a word budget, with the pauses a typical script has: a voice with long pauses fits fewer words. */
 export function budgetWordsPerSecond(ws: Workspace, characterData: Record<string, unknown> | undefined): number {
   const voice = characterData?.voice as CharacterVoice | undefined;

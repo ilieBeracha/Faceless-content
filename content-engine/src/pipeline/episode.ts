@@ -26,8 +26,8 @@ import type { Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
 import { readFactcheck, writeFactcheck } from "./factcheck.ts";
 import { claimsOutsideDossier, readDossier, researchPath, researchTask } from "./research.ts";
-import { currentScriptReview, scriptReviewPath, scriptReviewTask } from "./script-review.ts";
-import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, LENGTH_MARGIN, budgetWordsPerSecond, checkScript, factualHash, hookLimit, voiceOverhead, type SeriesData } from "./script-check.ts";
+import { currentScriptReview, recordFailedReview, scriptReviewPath, scriptReviewTask } from "./script-review.ts";
+import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, checkScript, factualHash, hookLimit, wordBudget, type SeriesData } from "./script-check.ts";
 import { newStoryboard, readStoryboard, storyboardApproved, storyboardPath, writeStoryboard, type CaptionSettings } from "./storyboard.ts";
 
 export const STEPS = ["idea", "research", "script", "review", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
@@ -184,6 +184,7 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
       if (!review) throw new EngineError(`${ws.rel(scriptReviewPath(ep))} is not a review of the current script.`);
     }
     if (review.verdict === "fail") {
+      recordFailedReview(ep, review);
       mark(ep, "review", "failed", `${review.issues.length} issue(s)`);
       throw new PipelinePause("needs-fix", [
         `The script review failed — see ${ws.rel(scriptReviewPath(ep))}:`,
@@ -382,14 +383,9 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData): T
   }
 
   const speaker = ch.characters.get(series.characters[0])!;
-  // With the pauses this voice adds (a slow, pausing voice fits fewer words), kept inside the series by the estimate's margin.
-  const wps = budgetWordsPerSecond(ws, speaker.data);
+  const { lo, hi, wps } = wordBudget(ws, ch, series);
   const voice = (speaker.data.voice ?? {}) as { sentence_pause?: number; clause_pause?: number };
   const { min_seconds: min, max_seconds: max } = series.length;
-  // One speaker says every beat in one turn; with more, assume they take turns at every beat.
-  const overhead = voiceOverhead(ws, series.characters.length === 1 ? 1 : series.beats.length);
-  const lo = Math.round((min * (1 + LENGTH_MARGIN) - overhead) * wps);
-  const hi = Math.round((max * (1 - LENGTH_MARGIN) - overhead) * wps);
   const hook = hookLimit(ws, speaker.data);
   // A hosted voice sets its own pace and pauses; Kokoro's pauses are the character's settings.
   const ownPaced = ws.config.voice.providers[String((speaker.data.voice as { provider?: string } | undefined)?.provider)]?.words_per_second !== undefined;
