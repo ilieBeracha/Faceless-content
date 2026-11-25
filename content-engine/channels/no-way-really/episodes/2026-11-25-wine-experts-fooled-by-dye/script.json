@@ -1,0 +1,173 @@
+{
+  "schema": "script/v1",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "idea": "wine-experts-fooled-by-dye",
+  "title": "White wine, dyed red, got red-wine words",
+  "angle": {
+    "point": "A glass of white wine isn't boring: dye it red and trained wine students describe its smell with the words they use for red wine, because what they see overrides what they smell.",
+    "stakes": "Frédéric Brochet, a doctoral researcher at Bordeaux's Faculty of Oenology, was working towards his doctorate on how much of a taster's words come from the wine itself, and his team's test could show they come from its colour instead.",
+    "turn": "A week after the students described a real red and a real white, Brochet's team gave them the same white wine twice, one glass dyed red with a pigment checked to have no smell, and they generally gave the dyed glass their red-wine words.",
+    "takeaway": "The words wine tasters use for a smell can come from the colour they see, shown with one odourless dye and the same white wine in two glasses."
+  },
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "blink",
+      "voiceover": "White wine, dyed red, got red-wine words.",
+      "visual": { "skill": "render-themed", "elements": [ { "type": "art", "id": "two-glasses" } ] },
+      "character": { "placement": "full", "expression": "surprised" }
+    },
+    {
+      "id": "setup",
+      "speaker": "blink",
+      "voiceover": "Wine researcher Frédéric Brochet's team suspected a wine's colour steers which smells tasters name.",
+      "visual": { "skill": "render-themed", "elements": [ { "type": "note", "kicker": "Bordeaux", "text": "Does colour steer the smell words?" } ] },
+      "character": { "placement": "corner", "expression": "curious" }
+    },
+    {
+      "id": "turn",
+      "speaker": "blink",
+      "voiceover": "So they dyed a white wine red with grape pigment, checked to have no smell. Wine students wrote smell words for a real red and white. A week later, Brochet's team gave them the white twice, one glass dyed.",
+      "visual": { "skill": "render-themed", "elements": [ { "type": "marks", "items": [
+        { "value": "Dye", "label": "Grape pigment, no smell" },
+        { "value": "Session 1", "label": "Real red, real white" },
+        { "value": "A week later", "label": "White, dyed white" }
+      ] } ] },
+      "character": { "placement": "corner", "expression": "thinking" }
+    },
+    {
+      "id": "twist",
+      "speaker": "blink",
+      "voiceover": "They generally gave the dyed glass their red-wine words. The dye had no smell, so their eyes overruled their noses.",
+      "visual": { "skill": "render-themed", "elements": [ { "type": "art", "id": "two-glasses", "label": "Same white wine" } ] },
+      "character": { "placement": "corner", "expression": "excited" }
+    },
+    {
+      "id": "ending",
+      "speaker": "blink",
+      "voiceover": "Their 2001 paper called it a real perceptual illusion.",
+      "visual": { "skill": "render-themed", "elements": [ { "type": "heading", "lines": ["The Color", "of Odors", "2001"] } ] },
+      "character": { "placement": "full", "expression": "surprised" }
+    }
+  ],
+  "visuals": {
+    "render-themed": {
+      "art": {
+        "two-glasses": { "shapes": [
+          { "d": "M14 20H44C44 44 38 54 29 54C20 54 14 44 14 20Z", "fill": "paper" },
+          { "d": "M15 30H43C42 46 37 53 29 53C21 53 16 46 15 30Z", "fill": "c" },
+          { "d": "M14 20H44C44 44 38 54 29 54C20 54 14 44 14 20Z", "stroke": "ink", "width": 3 },
+          { "d": "M29 54V80", "stroke": "ink", "width": 3 },
+          { "d": "M18 82H40", "stroke": "ink", "width": 4 },
+          { "d": "M56 20H86C86 44 80 54 71 54C62 54 56 44 56 20Z", "fill": "paper" },
+          { "d": "M57 30H85C84 46 79 53 71 53C63 53 58 46 57 30Z", "fill": "a" },
+          { "d": "M56 20H86C86 44 80 54 71 54C62 54 56 44 56 20Z", "stroke": "ink", "width": 3 },
+          { "d": "M71 54V80", "stroke": "ink", "width": 3 },
+          { "d": "M60 82H82", "stroke": "ink", "width": 4 }
+        ] }
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Part of a white wine was dyed red, and tasters generally described the dyed white with the smell words they had used for a red wine.",
+      "beat": "hook",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f11 and f25. \"Got red-wine words\" = the students generally used the descriptors they had used for wine R to describe wine RW. They were not asked the wine's colour."
+    },
+    {
+      "id": "c2",
+      "claim": "Frédéric Brochet was a researcher at the Faculty of Oenology in Bordeaux and a co-author of the study.",
+      "beat": "setup",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f3. \"Brochet's team\" = the three authors Gil Morrot, Frédéric Brochet and Denis Dubourdieu; Morrot is first author. Brochet did the work towards a doctorate (f4)."
+    },
+    {
+      "id": "c3",
+      "claim": "The researchers suspected that a wine's colour directs how its smell is identified.",
+      "beat": "setup",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f8: \"initially led us to hypothesize that the color of a wine directs the identification of its odor.\" On screen as a question: \"Does colour steer the smell words?\""
+    },
+    {
+      "id": "c4",
+      "claim": "Part of the white wine was dyed red with purified grape anthocyanins, the red pigment of grapes.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f11 (2 g/L of purified grape anthocyanins). Also on screen: \"Dye — Grape pigment, no smell\"."
+    },
+    {
+      "id": "c5",
+      "claim": "The dye was checked to have no smell: 50 people compared the dyed and plain white wine and found them identical.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f12 and f13. The paper reports the odour check only, not a taste check."
+    },
+    {
+      "id": "c6",
+      "claim": "Oenology students wrote lists of smell words for a real red wine and a real white wine in the first session.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f14 and f17: 54 undergraduates from the Faculty of Oenology of the University of Bordeaux. On screen: \"Session 1 — Real red, real white\"."
+    },
+    {
+      "id": "c7",
+      "claim": "One week later, in the second session, the two wines were the white wine and the same white wine dyed red.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f15 and f23. On screen: \"A week later — White, dyed white\"; on the twist, the two glasses are labelled \"Same white wine\"."
+    },
+    {
+      "id": "c8",
+      "claim": "In the second session the students generally used the smell words they had used for the red wine to describe the dyed white wine.",
+      "beat": "twist",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f25: \"generally\". The paper gives no count of how many did."
+    },
+    {
+      "id": "c9",
+      "claim": "Because the dye had no smell, the authors conclude that, because of what they saw, the tasters discounted what they smelled.",
+      "beat": "twist",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f13 and f27: \"because of the visual information, the tasters discounted the olfactory information.\" Said as \"their eyes overruled their noses\"."
+    },
+    {
+      "id": "c10",
+      "claim": "The study, \"The Color of Odors\", was published in Brain and Language in 2001.",
+      "beat": "ending",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f1. 2001 is the publication year, not the year of the tastings. On screen: \"The Color of Odors 2001\"."
+    },
+    {
+      "id": "c11",
+      "claim": "The authors call the effect a real perceptual illusion.",
+      "beat": "ending",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f28: \"The observed phenomenon is a real perceptual illusion.\""
+    }
+  ],
+  "pronunciations": {
+    "Frédéric": "Fray-day-reek",
+    "Brochet's": "Broh-shay's",
+    "2001": "two thousand one"
+  },
+  "publish": {
+    "title": "White wine, dyed red, got red-wine words",
+    "description": "Bordeaux wine students described a white wine and a red. A week later they got the same white twice, one glass dyed red with a grape pigment that has no smell, and generally gave it their red-wine words. From \"The Color of Odors\" (Brain and Language, 2001).",
+    "hashtags": ["#wine", "#science", "#perception", "#facts", "#shorts"]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-11-25-wine-experts-fooled-by-dye",
+  "purpose": "script",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "created": "2026-11-25T20:25:29Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "channels/no-way-really/channel.md",
+      "role": "channel",
+      "sha256": "5b1cfdf00c367452714f94a3618335013e7434bf17f7b1a80ba9f47cf9008ba6",
+      "bytes": 3958
+    },
+    {
+      "path": "channels/no-way-really/series/wait-what.md",
+      "role": "channel",
+      "sha256": "45fff5399490dc3560c44e0e4828be4aa4c1858af61c0a378a947adc9ae66722",
+      "bytes": 3777
+    },
+    {
+      "path": "channels/no-way-really/characters/blink.md",
+      "role": "channel",
+      "sha256": "628048d8aa0d4d991139042f232cf04bf72e32de33d92a4a675a30a2e59bb296",
+      "bytes": 2822
+    },
+    {
+      "path": "channels/no-way-really/characters/blink/model.json",
+      "role": "channel",
+      "sha256": "8c2e9ab614ae62b22d309c6b4c717354e7d5adf44b2e19fa50b6a1c36524990c",
+      "bytes": 1173
+    },
+    {
+      "path": "channels/no-way-really/learnings.md",
+      "role": "channel",
+      "sha256": "f8e18641d1580be8d014ae350d6322d4b8f7031f7729b0604874b93cc3dde03c",
+      "bytes": 1275
+    },
+    {
+      "path": "channels/no-way-really/theme.json",
+      "role": "channel",
+      "sha256": "f6eb3192ecbfa520b81f7007ab3eebab3913a8a8070a32aaaf16fb674d097510",
+      "bytes": 411
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "de78647738e4550c69a2b5453217572b9607a5a6a43f955a8ba3ab865fcc4553",
+      "bytes": 8251
+    },
+    {
+      "path": "skills/render-themed/SKILL.md",
+      "role": "skill",
+      "sha256": "a9a1ef991b8e84d024f7b7f4ae58305611dfc9f201a30d0f680f21895b289381",
+      "bytes": 11354
+    },
+    {
+      "path": "skills/render-talking-character/SKILL.md",
+      "role": "skill",
+      "sha256": "09d2a4170c92ce9f0c3730db44095845b5c3ccc21f8041de3e7f69c666823a3f",
+      "bytes": 6013
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "dcd4f71fab322043bdb8e874877fc297c25667040cce9dbe45c13da75f1de7e5",
+      "bytes": 2207
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "fb0dba8926948386963035dce0690ef6a184b52d17d9d67bc79c16a37cb52a68",
+      "bytes": 236
+    },
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/research.json",
+      "role": "channel",
+      "sha256": "d7ea51192ea8cd9ce2f850997d2e491e5f2c7247b23c6386a30711d85d8176d8",
+      "bytes": 17324
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel no-way-really --series wait-what"
+}
