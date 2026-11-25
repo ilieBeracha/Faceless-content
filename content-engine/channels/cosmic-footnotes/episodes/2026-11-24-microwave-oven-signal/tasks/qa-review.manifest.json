@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-11-24-microwave-oven-signal",
+  "purpose": "qa-review",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "created": "2026-11-24T22:55:25Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "890bbd115866fae472304ad6381eddb9b8797af4d34aad21d92eec16d44369f1",
+      "bytes": 3130
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "d660cd21b0d0a6474281ac131b0f62fa378f9c829a2a89cf32545d10819bcdc6",
+      "bytes": 4054
+    },
+    {
+      "path": "channels/cosmic-footnotes/series/tiny-clue-big-deal.md",
+      "role": "channel",
+      "sha256": "f19eb2fb58e0c1068bdee6bcbfaab6224a29a937fcd78ff4ac4a0787a539090f",
+      "bytes": 3531
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori.md",
+      "role": "channel",
+      "sha256": "3acc2d0a23f93766152fdaf925e7f82e8b7127cc9238be083a9915a091b4b0d2",
+      "bytes": 2855
+    },
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-11-24-microwave-oven-signal/script.json",
+      "role": "channel",
+      "sha256": "9445e8f195be7e0bd80caa5f587f941df2fd396704c331c73be5bfbb00331207",
+      "bytes": 19631
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "1694d208961475635de282e6bcdfe27c3521942931d4e7c8a1e5c12df00437a2",
+      "bytes": 807
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-11-24-microwave-oven-signal/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel cosmic-footnotes --series tiny-clue-big-deal"
+}

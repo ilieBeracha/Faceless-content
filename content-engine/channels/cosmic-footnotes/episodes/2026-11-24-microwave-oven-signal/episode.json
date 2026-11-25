@@ -5,7 +5,7 @@
   "idea": "microwave-oven-signal",
   "title": "Lunch fooled a telescope",
   "created": "2026-11-24T19:24:35Z",
-  "updated": "2026-11-24T22:55:23Z",
+  "updated": "2026-11-25T09:42:44Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -31,6 +31,11 @@
       "status": "done",
       "at": "2026-11-24T22:55:23Z",
       "note": "out/cosmic-footnotes/2026-11-24-microwave-oven-signal.mp4"
+    },
+    "qa": {
+      "status": "failed",
+      "at": "2026-11-25T09:42:44Z",
+      "note": "1 problem(s)"
     }
   }
 }
