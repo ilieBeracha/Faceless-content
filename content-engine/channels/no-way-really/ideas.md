@@ -140,3 +140,11 @@ The engine marks an idea "used" when an episode is made from it.
 - status: new
 - angle: Almost all data between continents travels through cables about as thick as a garden hose, not through satellites.
 - added: 2026-11-14
+
+## wine-experts-fooled-by-dye
+- title: Wine experts called white wine red
+- series: wait-what
+- status: used
+- angle: In 2001 Frédéric Brochet served wine students a white wine dyed red, and they described it with red-wine words; what we see decides what we taste.
+- added: 2026-11-25
+- used_in: episodes/2026-11-25-wine-experts-fooled-by-dye
