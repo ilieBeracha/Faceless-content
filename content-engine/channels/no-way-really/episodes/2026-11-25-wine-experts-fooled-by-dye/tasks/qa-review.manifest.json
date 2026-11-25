@@ -4,7 +4,7 @@
   "purpose": "qa-review",
   "channel": "no-way-really",
   "series": "wait-what",
-  "created": "2026-11-25T21:30:15Z",
+  "created": "2026-11-25T21:34:41Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -39,14 +39,14 @@
     {
       "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/script.json",
       "role": "channel",
-      "sha256": "8275636b804ae05a5fa4866819ad7e96027ac188dab6e44fb9208bc3f7011ef4",
-      "bytes": 10744
+      "sha256": "c50d78cb919b7fb60a7cfa0374a864e63bd63ab3c26f1092f8621a4619c7d16e",
+      "bytes": 10774
     },
     {
       "path": "(inline) automated QA results",
       "role": "input",
-      "sha256": "25205a8b64db34caf0ddb07681382ab71ce90be314d1ee8d7c05aab8b004a777",
-      "bytes": 870
+      "sha256": "7e40abea42e5450aaa76fd0f3fb45d0cd3a60ac0be413a987e9eb558a2ab5a88",
+      "bytes": 878
     }
   ],
   "outputs": [

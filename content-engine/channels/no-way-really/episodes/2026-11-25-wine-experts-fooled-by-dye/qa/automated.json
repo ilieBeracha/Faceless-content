@@ -1,6 +1,6 @@
 {
-  "checked_at": "2026-11-25T21:30:15Z",
-  "render_hash": "fa1ec38232f1c11678e14bbfaa6e7832ea7c643ec0add2b2911416d969fec36c",
+  "checked_at": "2026-11-25T21:36:02Z",
+  "render_hash": "febfe3a982bdef4f3601ab38dd55263499f43df40e608ce0bbc25486ea94fe75",
   "checks": [
     {
       "id": "format",
@@ -12,7 +12,7 @@
       "id": "length",
       "label": "Length",
       "pass": true,
-      "detail": "33.69s (series allows 20–35s)"
+      "detail": "33.24s (series allows 20–35s)"
     },
     {
       "id": "hook-speech",
@@ -23,8 +23,8 @@
     {
       "id": "hook-line",
       "label": "Hook: first line lands in 2 s",
-      "pass": false,
-      "detail": "\"Red dye changed wine students' smell words.\" ends at 2.80s (limit 2s)"
+      "pass": true,
+      "detail": "\"Dye fooled wine students.\" ends at 1.85s (limit 2s)"
     },
     {
       "id": "hook-text",
@@ -35,8 +35,8 @@
     {
       "id": "safe-areas",
       "label": "Text inside safe areas",
-      "pass": false,
-      "detail": "th:turn:0:mark-v-0 (177 frames)"
+      "pass": true,
+      "detail": "8 text elements checked on every frame (2596 measurements)"
     },
     {
       "id": "cut-off",
@@ -48,13 +48,13 @@
       "id": "captions-sync",
       "label": "Captions in sync",
       "pass": true,
-      "detail": "94 words; text matches script: yes; highlight off on 0/1005 frames; words over silent audio: 0"
+      "detail": "91 words; text matches script: yes; highlight off on 0/992 frames; words over silent audio: 0"
     },
     {
       "id": "loudness",
       "label": "Loudness",
       "pass": true,
-      "detail": "-14.0 LUFS (target -14 ±1.5), true peak -1.8 dBTP (max -1)"
+      "detail": "-14.0 LUFS (target -14 ±1.5), true peak -2.2 dBTP (max -1)"
     },
     {
       "id": "banned-topics",

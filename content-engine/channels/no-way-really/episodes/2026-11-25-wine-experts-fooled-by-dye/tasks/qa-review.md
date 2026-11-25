@@ -11,18 +11,18 @@ Review the rendered episode **2026-11-25-wine-experts-fooled-by-dye** against `w
    - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t000.5s.jpg`
    - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t001.5s.jpg`
    - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t004.7s.jpg`
-   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t009.5s.jpg`
-   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t014.2s.jpg`
-   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t018.9s.jpg`
-   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t023.6s.jpg`
-   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t028.4s.jpg`
+   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t009.3s.jpg`
+   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t014.0s.jpg`
+   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t018.6s.jpg`
+   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t023.3s.jpg`
+   - `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa/frames/t028.0s.jpg`
    The full video is `out/no-way-really/2026-11-25-wine-experts-fooled-by-dye.mp4`.
 2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises, no shot of a page, sign or label that comes out as meaningless scribbles), **character** (looks and sounds like its character file), **point** (does the video argue the point in its script's `angle` and the channel's Belief, told through someone with something at stake, with a turn, and does the last beat end on what happened, so the story makes the point on its own? A string of true facts with no point fails. Also check the telling: it explains plainly, in the order things happened, like someone explaining to a friend, with no opening on the ending, teasing, flashbacks or clever dramatic lines; every person and thing is introduced before it is referred to; when someone does something surprising, the video says why. A viewer who can't follow what happened and why fails, and so does an ending that preaches: advice, "next time…", "trust yourself", a pep talk or a moral addressed to the viewer).
 3. Write `channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa-review.json` as JSON:
 
 ```json
 {
-  "render_hash": "fa1ec38232f1c11678e14bbfaa6e7832ea7c643ec0add2b2911416d969fec36c",
+  "render_hash": "febfe3a982bdef4f3601ab38dd55263499f43df40e608ce0bbc25486ea94fe75",
   "tone": { "pass": true, "notes": "…" },
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
@@ -338,7 +338,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
   "channel": "no-way-really",
   "series": "wait-what",
   "idea": "wine-experts-fooled-by-dye",
-  "title": "Red dye changed wine students' smell words",
+  "title": "Dye fooled wine students",
   "angle": {
     "point": "A glass of white wine isn't boring: dye it red and trained wine students describe its smell with the words they used for a real red, because what they see overrides what they smell.",
     "stakes": "Frédéric Brochet, working towards a doctorate at Bordeaux's Faculty of Oenology, suspected from experts' tasting notes that a wine's colour steers which smells tasters name; his doctoral work stood on testing it.",
@@ -350,7 +350,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
     {
       "id": "hook",
       "speaker": "blink",
-      "voiceover": "Red dye changed wine students' smell words.",
+      "voiceover": "Dye fooled wine students.",
       "visual": {
         "skill": "render-themed",
         "elements": [
@@ -395,7 +395,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
             "type": "marks",
             "items": [
               {
-                "value": "Dye check",
+                "value": "Dye",
                 "label": "50 sniffers: no smell"
               },
               {
@@ -513,7 +513,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
       "beat": "hook",
       "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
       "confidence": "high",
-      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Red dye changed wine students' smell words\" = f25 (dyed white described with the red's smell words)."
+      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Dye fooled wine students\": \"fooled\" = the authors' finding that, because of what they saw, the tasters discounted what they smelled (f27), which they call a real perceptual illusion (f28)."
     },
     {
       "id": "c2",
@@ -585,7 +585,7 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
     "Brochet": "Broh-shay"
   },
   "publish": {
-    "title": "Red dye changed wine students' smell words",
+    "title": "Dye fooled wine students",
     "description": "Bordeaux wine students described a real red and a real white. A week later they got the same white twice, one glass dyed red with a grape pigment that has no smell, and generally gave it their red-wine smell words. From \"The Color of Odors\" (Brain and Language, 2001).",
     "hashtags": [
       "#wine",
@@ -600,14 +600,14 @@ Blink keeps a jar of facts that are no use to anyone and thinks it is the best j
 
 <file path="(inline) automated QA results" role="input">
 - [x] Format: 1080×1920 @ 30.00 fps, h264/aac, yuvj420p
-- [x] Length: 33.69s (series allows 20–35s)
+- [x] Length: 33.24s (series allows 20–35s)
 - [x] Hook: speech starts immediately: first word at 0.10s (limit 0.5s)
-- [ ] Hook: first line lands in 2 s: "Red dye changed wine students' smell words." ends at 2.80s (limit 2s)
+- [x] Hook: first line lands in 2 s: "Dye fooled wine students." ends at 1.85s (limit 2s)
 - [x] Hook: captions on screen: visible from 0.17s
-- [ ] Text inside safe areas: th:turn:0:mark-v-0 (177 frames)
+- [x] Text inside safe areas: 8 text elements checked on every frame (2596 measurements)
 - [x] Nothing cut off: no element leaves the frame or overflows its box
-- [x] Captions in sync: 94 words; text matches script: yes; highlight off on 0/1005 frames; words over silent audio: 0
-- [x] Loudness: -14.0 LUFS (target -14 ±1.5), true peak -1.8 dBTP (max -1)
+- [x] Captions in sync: 91 words; text matches script: yes; highlight off on 0/992 frames; words over silent audio: 0
+- [x] Loudness: -14.0 LUFS (target -14 ±1.5), true peak -2.2 dBTP (max -1)
 - [x] Banned topics (keyword screen): none of 6 banned topics mentioned
 - [x] Fact-check approved: approved by ilieBeracha (told Claude in chat not to wait for approval; not read before approving) (9 claims)
 </file>
