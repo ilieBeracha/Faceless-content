@@ -13,7 +13,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { existsSync, readFileSync } from "node:fs";
 import { join, relative, resolve, sep } from "node:path";
 import type { ContextBundle } from "./context.ts";
-import { generateContent } from "../skills/render-ai-video/gemini.ts";
+import { GROUNDING_LINK, generateContent, resolveGroundingLink } from "../skills/render-ai-video/gemini.ts";
 import { EngineError, PipelinePause } from "./errors.ts";
 import { today, writeJson, writeText } from "./util.ts";
 import type { Workspace } from "./workspace.ts";
@@ -171,7 +171,7 @@ async function runWithGeminiApi(ws: Workspace, task: Task): Promise<void> {
     const candidate = res.candidates?.[0];
     if (candidate?.finishReason === "MAX_TOKENS") throw new EngineError(`The response for "${task.title}" hit max_output_tokens (${max_output_tokens}).`, "Raise llm.gemini.max_output_tokens in engine.config.json.");
     if (!candidate?.content?.parts || candidate.finishReason !== "STOP") throw new EngineError(`Gemini gave no complete answer for "${task.title}" (finish reason: ${candidate?.finishReason ?? "none"}).`);
-    const text = candidate.content.parts.flatMap((p) => (p.text !== undefined && !p.thought ? [p.text] : [])).join("").trim();
+    const text = await withPageLinks(candidate.content.parts.flatMap((p) => (p.text !== undefined && !p.thought ? [p.text] : [])).join("").trim());
 
     writeResponse(ws, task, single, text);
 
@@ -234,6 +234,13 @@ async function runWithClaudeApi(ws: Workspace, task: Task): Promise<void> {
     messages.push({ role: "assistant", content: message.content });
     messages.push({ role: "user", content: `The engine found these problems — fix them and resend the complete output in the same format:\n- ${problems.join("\n- ")}` });
   }
+}
+
+/** Google Search's redirect links in an answer, replaced by the pages they lead to. */
+async function withPageLinks(text: string): Promise<string> {
+  const links = [...new Set(text.match(GROUNDING_LINK) ?? [])];
+  const pages = new Map(await Promise.all(links.map(async (l) => [l, await resolveGroundingLink(l)] as const)));
+  return text.replace(GROUNDING_LINK, (l) => pages.get(l)!);
 }
 
 function stripFences(text: string): string {

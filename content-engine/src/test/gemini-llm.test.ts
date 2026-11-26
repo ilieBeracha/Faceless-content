@@ -11,12 +11,18 @@ import { tempWorkspace } from "./helpers.ts";
 const realFetch = globalThis.fetch;
 let requests: { url: string; body: Record<string, unknown> }[] = [];
 let replies: GeminiResponse[] = [];
+let pages: Record<string, string> = {};
 
 beforeEach(() => {
   process.env.GEMINI_API_KEY = "test-key";
   requests = [];
   replies = [];
+  pages = {};
   globalThis.fetch = (async (url: string, init: RequestInit) => {
+    if (url.startsWith("https://vertexaisearch.cloud.google.com/grounding-api-redirect/")) {
+      const page = pages[url];
+      return page ? new Response(null, { status: 302, headers: { location: page } }) : new Response("gone", { status: 404 });
+    }
     requests.push({ url, body: JSON.parse(String(init.body)) });
     const reply = replies.shift();
     assert.ok(reply, "the test sent more requests than it has replies");
@@ -63,6 +69,17 @@ test("a research task gets Google Search and URL context, and is told its search
   const body = requests[0].body as { tools: unknown; contents: { parts: { text?: string }[] }[] };
   assert.deepEqual(body.tools, [{ google_search: {} }, { url_context: {} }]);
   assert.match(body.contents[0].parts.at(-1)!.text!, /at most 7 web searches/);
+});
+
+test("Google Search's redirect links become the pages they lead to, and one that leads nowhere is an error", async () => {
+  const ws = tempWorkspace();
+  const link = "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQabc-_=";
+  pages[link] = "https://example.org/wine-study";
+  replies.push(answer(JSON.stringify({ facts: [{ source: link }, { source: link }] })));
+  await runTask(ws, jsonTask(ws, { research: { maxSearches: 3 } }), "gemini");
+  assert.deepEqual(JSON.parse(readFileSync(join(ws.root, "out.json"), "utf8")), { facts: [{ source: "https://example.org/wine-study" }, { source: "https://example.org/wine-study" }] });
+  replies.push(answer(JSON.stringify({ source: "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQgone" })));
+  await assert.rejects(runTask(ws, jsonTask(ws), "gemini"), /did not lead to a page \(status 404\)/);
 });
 
 test("problems the check finds go back with the model's own turn, and the fixed answer is kept", async () => {

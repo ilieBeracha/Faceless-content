@@ -48,6 +48,17 @@ export function generateContent<T>(model: string, body: unknown): Promise<T> {
   return call<T>("POST", `models/${model}:generateContent`, body);
 }
 
+/** Google Search answers cite its own redirect links; these stand for the page the model read. */
+export const GROUNDING_LINK = /https:\/\/vertexaisearch\.cloud\.google\.com\/grounding-api-redirect\/[A-Za-z0-9_\-=]+/g;
+
+/** The page a grounding redirect link points to (its Location), so a source names the real page and doesn't expire. */
+export async function resolveGroundingLink(link: string): Promise<string> {
+  const res = await fetch(link, { method: "GET", redirect: "manual" });
+  const target = res.headers.get("location");
+  if (res.status < 300 || res.status >= 400 || !target) throw new EngineError(`The Gemini source link ${link} did not lead to a page (status ${res.status}).`);
+  return target;
+}
+
 export interface ModelInfo {
   name: string;
   displayName?: string;
