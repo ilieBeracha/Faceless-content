@@ -113,14 +113,18 @@ Fail the script for any of these, naming the beat:
 2. **The person is missing.** The one with something at stake isn't the one who acts at the turn, or is replaced by
    "the team", "scientists" or a machine there.
 3. **Not in order.** It opens on the ending, teases, flashes back, or uses clever dramatic lines instead of the plain thing.
-4. **Referred to before introduced.** A person, thing, place or term ("the first one", "they", "the sheet") the viewer
+4. **Referred to before introduced.** A person, thing, place or term ("the first one", "they", "the sheet", "the same wine") the viewer
    hasn't been told about yet.
 5. **A missing why.** Someone does something surprising and the voiceover doesn't say why, or the script states a
    conclusion ("so they were real") without the reason a viewer needs to believe it.
 6. **The ending.** The last beat doesn't end on what happened: it preaches (advice, "next time…", "trust yourself", a
    moral or pep talk to the viewer) or closes on a pun or wise-sounding line instead of the result.
 
-Only these six fail a script. Wording you would merely prefer, a line a series beat suggests, a catchphrase, or anything
+7. **Said twice.** A beat tells the viewer something an earlier beat already told them (the turn explained again in the
+   last beat, the same fact in other words), so the story stops moving. The hook may state the result the turn then shows;
+   nothing after the turn repeats it.
+
+Only these seven fail a script. Wording you would merely prefer, a line a series beat suggests, a catchphrase, or anything
 else outside them is not a fail.
 
 Don't judge facts, sources, visuals or anything the engine checks; a person approves the facts next. Each fix
@@ -131,10 +135,10 @@ when a fix adds words, it says which words to cut to make room. Never ask for so
 ${history.length ? `
 **Earlier reviews.** ${history.length} earlier review(s) of this episode are in the context. Don't ask to undo a fix one of them
 asked for (put back what it cut, cut what it asked to add, move back what it moved). The one exception is a fix that broke
-one of the six rules itself: then name the review and the rule. A problem an earlier review already raised and the script
+one of the seven rules itself: then name the review and the rule. A problem an earlier review already raised and the script
 now fixes is passed.
 ` : ""}
-Be strict about the six: a fail costs a text edit now, a pass that should have failed costs a render.
+Be strict about the seven: a fail costs a text edit now, a pass that should have failed costs a render.
 
 Write \`${ws.rel(reviewPath)}\` as JSON:
 

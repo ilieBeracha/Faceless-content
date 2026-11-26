@@ -34,7 +34,8 @@ series uses. You write **one file: `script.json`**. Nothing else.
    Don't open on the ending, tease, flash back, or add dramatic lines ("so here's the thing", "and then?",
    questions to the viewer mid-story). If a line sounds clever, say the plain thing instead. Every person, thing
    and place is introduced before it is referred to, and when someone does something surprising, say why in
-   plain words ("she asked for her sheet back, so no one would see she'd picked California").
+   plain words ("she asked for her sheet back, so no one would see she'd picked California"). Say each thing once:
+   the hook may state the result and the turn shows how it happened, but no beat repeats what an earlier one told.
 1. **Follow the series.** Use its beats, in order, with the same ids. Each beat's `purpose` says what it must do;
    `seconds` is a target — the voice decides the real timing.
 2. **Hook first.** The first sentence of the first beat is ~5 words and lands within 2 seconds. The captions put it
