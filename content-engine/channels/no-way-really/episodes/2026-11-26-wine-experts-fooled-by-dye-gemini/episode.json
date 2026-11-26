@@ -5,7 +5,7 @@
   "idea": "wine-experts-fooled-by-dye-gemini",
   "title": "Wine experts called white wine red",
   "created": "2026-11-26T07:53:45Z",
-  "updated": "2026-11-26T07:57:26Z",
+  "updated": "2026-11-26T08:01:21Z",
   "status": "in-progress",
   "steps": {
     "idea": {
@@ -14,12 +14,13 @@
       "note": "Wine experts called white wine red"
     },
     "research": {
-      "status": "waiting",
-      "at": "2026-11-26T07:57:26Z"
+      "status": "done",
+      "at": "2026-11-26T08:01:21Z",
+      "note": "9 facts"
     },
     "script": {
-      "status": "done",
-      "at": "2026-11-26T07:56:11Z"
+      "status": "waiting",
+      "at": "2026-11-26T08:01:21Z"
     },
     "review": {
       "status": "failed",

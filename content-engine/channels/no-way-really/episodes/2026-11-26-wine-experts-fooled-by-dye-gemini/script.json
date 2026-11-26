@@ -5,25 +5,25 @@
   "idea": "wine-experts-fooled-by-dye-gemini",
   "title": "Wine experts called white wine red",
   "angle": {
-    "point": "What we see decides what we smell, proven when enology students described a dyed white wine with red-wine words.",
-    "stakes": "Fifty-four wine undergraduates whose studies relied on their highly trained noses.",
-    "turn": "They smelled a white wine dyed red and mapped their red-wine words onto it.",
-    "takeaway": "Our visual expectations can completely overwrite our sense of smell."
+    "point": "What we see decides what we taste.",
+    "stakes": "54 wine students trusting their trained noses to evaluate wine.",
+    "turn": "They smelled a white wine dyed red, and described it as a red wine.",
+    "takeaway": "Visual cues can completely override our other senses."
   },
   "language": "en",
   "beats": [
     {
       "id": "hook",
       "speaker": "blink",
-      "voiceover": "Wine students called white wine red.",
+      "voiceover": "They called a white wine red.",
       "visual": {
         "skill": "render-themed",
         "elements": [
           {
             "type": "heading",
             "lines": [
-              "WHITE WINE",
-              "CALLED RED"
+              "They called a",
+              "white wine red."
             ]
           }
         ]
@@ -36,33 +36,19 @@
     {
       "id": "setup",
       "speaker": "blink",
-      "voiceover": "In 2001, fifty-four wine undergraduates in Bordeaux wrote down smell words for a real white and a real red wine.",
+      "voiceover": "In 2001, a researcher gave fifty-four wine students two glasses of the exact same white wine.",
       "visual": {
         "skill": "render-themed",
         "elements": [
           {
+            "type": "art",
+            "id": "glasses",
+            "label": "Identical white wines"
+          },
+          {
             "type": "note",
-            "text": "54 undergraduates from the Bordeaux enology faculty.",
+            "text": "Frédéric Brochet study",
             "kicker": "2001"
-          }
-        ]
-      },
-      "character": {
-        "placement": "corner",
-        "expression": "curious"
-      }
-    },
-    {
-      "id": "turn",
-      "speaker": "blink",
-      "voiceover": "A week later, the researcher gave them that same white wine, plus a glass of it dyed red with an odorless grape pigment.",
-      "visual": {
-        "skill": "render-themed",
-        "elements": [
-          {
-            "type": "note",
-            "text": "White wine colored with natural grape anthocyanins.",
-            "kicker": "Odorless dye"
           }
         ]
       },
@@ -72,37 +58,35 @@
       }
     },
     {
-      "id": "twist",
+      "id": "turn",
       "speaker": "blink",
-      "voiceover": "When they smelled the fake red, they described it using the exact red-wine words they had used the week before.",
+      "voiceover": "But he colored one glass with an odorless red dye, and asked them to describe the smells.",
       "visual": {
         "skill": "render-themed",
         "elements": [
           {
-            "type": "note",
-            "text": "Described as a red wine by a panel of 54 tasters.",
-            "kicker": "The result"
+            "type": "art",
+            "id": "dye-glass",
+            "label": "Odorless red dye"
           }
         ]
       },
       "character": {
         "placement": "corner",
-        "expression": "surprised"
+        "expression": "curious"
       }
     },
     {
-      "id": "ending",
+      "id": "twist",
       "speaker": "blink",
-      "voiceover": "Their eyes completely overwrote what their noses were telling them. No way. Really.",
+      "voiceover": "Most of these trained students used red-wine words for the dyed glass. They saw the color, and just ignored their own noses.",
       "visual": {
         "skill": "render-themed",
         "elements": [
           {
-            "type": "heading",
-            "lines": [
-              "EYES OVERWRITE",
-              "NOSES"
-            ]
+            "type": "art",
+            "id": "notes",
+            "label": "Assigned red words"
           }
         ]
       },
@@ -110,58 +94,109 @@
         "placement": "corner",
         "expression": "excited"
       }
+    },
+    {
+      "id": "ending",
+      "speaker": "blink",
+      "voiceover": "What you see decides what you taste. No way. Really.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "heading",
+            "lines": [
+              "Sight overrides",
+              "smell."
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "thinking"
+      }
     }
   ],
   "visuals": {
-    "render-themed": {}
+    "render-themed": {
+      "art": {
+        "glasses": {
+          "shapes": [
+            { "d": "M20 30 C20 60 40 60 40 30 Z", "stroke": "ink", "fill": "paper", "width": 2.4 },
+            { "d": "M30 58 V85", "stroke": "ink", "width": 2.4 },
+            { "d": "M20 85 H40", "stroke": "ink", "width": 2.4 },
+            { "d": "M22 45 H38 V48 C38 56 22 56 22 48 Z", "fill": "accent" },
+            { "d": "M60 30 C60 60 80 60 80 30 Z", "stroke": "ink", "fill": "paper", "width": 2.4 },
+            { "d": "M70 58 V85", "stroke": "ink", "width": 2.4 },
+            { "d": "M60 85 H80", "stroke": "ink", "width": 2.4 },
+            { "d": "M62 45 H78 V48 C78 56 62 56 62 48 Z", "fill": "accent" }
+          ]
+        },
+        "dye-glass": {
+          "shapes": [
+            { "d": "M35 30 C35 65 65 65 65 30 Z", "stroke": "ink", "fill": "paper", "width": 2.4 },
+            { "d": "M50 63 V90", "stroke": "ink", "width": 2.4 },
+            { "d": "M35 90 H65", "stroke": "ink", "width": 2.4 },
+            { "d": "M37 45 H63 V50 C63 60 37 60 37 50 Z", "fill": "a" },
+            { "d": "M50 10 C46 16 50 22 50 22 C50 22 54 16 50 10 Z", "fill": "a", "anim": "blink" }
+          ]
+        },
+        "notes": {
+          "shapes": [
+            { "d": "M30 15 H70 V85 H30 Z", "stroke": "ink", "fill": "paper", "width": 2.4 },
+            { "d": "M40 30 H60", "stroke": "ink", "width": 2.4 },
+            { "d": "M40 45 H60", "stroke": "ink", "width": 2.4 },
+            { "d": "M40 60 H50", "stroke": "ink", "width": 2.4 },
+            { "d": "M55 70 L60 75 L75 50", "stroke": "a", "width": 4 }
+          ]
+        }
+      }
+    }
   },
   "claims": [
     {
       "id": "c1",
-      "claim": "In 2001, 54 wine undergraduates in Bordeaux took part in a test.",
+      "claim": "In 2001, Frédéric Brochet gave 54 enology students two identical white wines.",
       "beat": "setup",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "confidence": "high"
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "confidence": "high",
+      "note": "Combines f1, f4, and f7 from the dossier."
     },
     {
       "id": "c2",
-      "claim": "The students built a personal list of smell words for a real white and a real red wine.",
-      "beat": "setup",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "confidence": "high"
+      "claim": "One glass was artificially colored with an odorless red dye.",
+      "beat": "turn",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
+      "confidence": "high",
+      "note": "From f3."
     },
     {
       "id": "c3",
-      "claim": "A week later, they were given the same white wine and a version dyed red with an odorless grape pigment (anthocyanins).",
-      "beat": "turn",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "confidence": "high"
+      "claim": "Most tasters assigned red descriptors to the colored wine.",
+      "beat": "twist",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "confidence": "high",
+      "note": "From f5. Crucial that 'most' is used instead of 'all'."
     },
     {
       "id": "c4",
-      "claim": "The tasters described the dyed white wine using red-wine words.",
+      "claim": "Visual information caused tasters to discount their olfactory senses.",
       "beat": "twist",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkmtgDswe06ZqL0zNUmrU2oItyZCJnnA9h7ZQobrDzunw2zm2u7nS1plIzzX6v2vOonJoodmWRb-fDTfG78LEkdQjKt3EveBy-amHbLYCzFxm9rXO_iZ_otxCa16tpVw==",
-      "confidence": "high"
-    },
-    {
-      "id": "c5",
-      "claim": "The visual information caused the tasters to discount the olfactory information.",
-      "beat": "ending",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkmtgDswe06ZqL0zNUmrU2oItyZCJnnA9h7ZQobrDzunw2zm2u7nS1plIzzX6v2vOonJoodmWRb-fDTfG78LEkdQjKt3EveBy-amHbLYCzFxm9rXO_iZ_otxCa16tpVw==",
-      "confidence": "high"
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
+      "confidence": "high",
+      "note": "From f6."
     }
   ],
   "pronunciations": {
-    "Bordeaux": "bor-doe"
+    "2001": "two thousand and one"
   },
   "publish": {
     "title": "Wine experts called white wine red",
-    "description": "In 2001, a simple test proved that what we see completely overwrites what we smell. Fifty-four wine students were fooled by a tasteless dye.",
+    "description": "A 2001 study proves that what we see can completely override what we smell and taste.",
     "hashtags": [
       "#science",
-      "#wine",
       "#psychology",
+      "#wine",
       "#facts",
       "#shorts"
     ]
