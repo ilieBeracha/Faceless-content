@@ -1,0 +1,60 @@
+{
+  "task": "script-review",
+  "title": "Review the script for 2026-11-26-wine-experts-fooled-by-dye-gemini",
+  "purpose": "script review",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "created": "2026-11-26T07:56:11Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "channels/no-way-really/channel.md",
+      "role": "channel",
+      "sha256": "5b1cfdf00c367452714f94a3618335013e7434bf17f7b1a80ba9f47cf9008ba6",
+      "bytes": 3958
+    },
+    {
+      "path": "channels/no-way-really/series/wait-what.md",
+      "role": "channel",
+      "sha256": "45fff5399490dc3560c44e0e4828be4aa4c1858af61c0a378a947adc9ae66722",
+      "bytes": 3777
+    },
+    {
+      "path": "channels/no-way-really/characters/blink.md",
+      "role": "channel",
+      "sha256": "628048d8aa0d4d991139042f232cf04bf72e32de33d92a4a675a30a2e59bb296",
+      "bytes": 2822
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "de78647738e4550c69a2b5453217572b9607a5a6a43f955a8ba3ab865fcc4553",
+      "bytes": 8251
+    },
+    {
+      "path": "channels/no-way-really/episodes/2026-11-26-wine-experts-fooled-by-dye-gemini/script.json",
+      "role": "channel",
+      "sha256": "b7dfae6b343e1038d0a3936ca0877466da1f3a54a843fa47d5bc3d665839d713",
+      "bytes": 5829
+    },
+    {
+      "path": "channels/no-way-really/episodes/2026-11-26-wine-experts-fooled-by-dye-gemini/research.json",
+      "role": "channel",
+      "sha256": "9e8c7e5f3d4845dcb701fa70d8bc1b7b3511534fdf55f6cf8bcc63d60f905bf2",
+      "bytes": 8494
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/no-way-really/episodes/2026-11-26-wine-experts-fooled-by-dye-gemini/script-review.json",
+      "format": "json",
+      "description": "the script review"
+    }
+  ],
+  "next": "./engine make episode --channel no-way-really --series wait-what --episode 2026-11-26-wine-experts-fooled-by-dye-gemini"
+}
