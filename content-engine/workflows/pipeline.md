@@ -9,9 +9,9 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 | # | Step | Who | Writes | Gate |
 |---|---|---|---|---|
 | 1 | **Idea** | engine | `episode.json`; idea → `used` in ideas.md | needs a `new` idea for the series |
-| 1b | **Research** | agent (or `--llm anthropic`, with web search) | `tasks/research.md` → `research.json` | must pass the dossier checks (a named person, ≥3 events in order, every fact with its https source and the exact quote) |
-| 2 | **Script** | agent (or `--llm anthropic`) | `tasks/script.md` (context bundle) → `script.json` | must pass `script/v1` + series checks; every claim cites a source in `research.json` |
-| 2b | **Script review** | agent (or `--llm anthropic`) | `tasks/script-review.md` → `script-review.json` | must pass; bound to the exact script.json. Skipped where review findings don't block (the storefront) |
+| 1b | **Research** | agent (or `--llm anthropic` / `--llm gemini`, with web search) | `tasks/research.md` → `research.json` | must pass the dossier checks (a named person, ≥3 events in order, every fact with its https source and the exact quote) |
+| 2 | **Script** | agent (or `--llm anthropic` / `gemini`) | `tasks/script.md` (context bundle) → `script.json` | must pass `script/v1` + series checks; every claim cites a source in `research.json` |
+| 2b | **Script review** | agent (or `--llm anthropic` / `gemini`) | `tasks/script-review.md` → `script-review.json` | must pass; bound to the exact script.json. Skipped where review findings don't block (the storefront) |
 | 3 | **Fact-check** | engine lists, **person approves** | `factcheck.md` | **STOP until approved**; bound to the script's words and numbers |
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
 | 4 | **Voice** | engine (Kokoro, local; or cut from the Veo clips) | `audio/voice.wav`, `audio/timings.json`, `audio/envelope.json` | — |

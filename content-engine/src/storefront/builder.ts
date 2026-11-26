@@ -23,7 +23,7 @@ import { PipelinePause } from "../core/errors.ts";
 import { languageOf } from "../core/languages.ts";
 import { updateFrontmatter } from "../core/markdown.ts";
 import { createChannelSkeleton } from "../core/scaffold.ts";
-import { runTask } from "../core/tasks.ts";
+import { runTask, type LlmProviderName } from "../core/tasks.ts";
 import { nowIso, readJson, readText, today, writeJson, writeText } from "../core/util.ts";
 import { Workspace } from "../core/workspace.ts";
 import { draftChannelTask } from "../pipeline/draft-channel.ts";
@@ -167,13 +167,13 @@ export interface CaptionsView {
   restyle: { state: "working" | "failed"; error?: string } | null;
 }
 
-/** The engine's own episode pipeline, with the Claude API (paid) writing the script and reviewing the frames. */
-const claudeVideo: VideoMaker = async (ws, slug, series, pick, captions) => {
+/** The engine's own episode pipeline, with a paid LLM API writing the script and reviewing the frames. */
+const apiVideo = (llm: ApiLlm): VideoMaker => async (ws, slug, series, pick, captions) => {
   const open = () => listEpisodes(loadChannel(ws, slug)).filter((e) => e.series === series && e.status !== "done").at(-1);
   const current = pick.episode ?? (pick.idea ? undefined : open()?.id);
   const rewrite = current !== undefined && readFactcheck(join(episodesDir(loadChannel(ws, slug)), current))?.status === "changes-requested";
   try {
-    const ep = await makeEpisode(ws, { channel: slug, series, llm: "anthropic", reviewBlocks: false, storyboard: { captions }, ...(current ? { episode: current } : pick.idea ? { idea: pick.idea } : {}), redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
+    const ep = await makeEpisode(ws, { channel: slug, series, llm, reviewBlocks: false, storyboard: { captions }, ...(current ? { episode: current } : pick.idea ? { idea: pick.idea } : {}), redo: rewrite ? ["script"] : [], log: (line) => console.log(line) });
     return { episode: ep.state.id, state: "done" };
   } catch (err) {
     if (!(err instanceof PipelinePause)) throw err;
@@ -194,10 +194,10 @@ export function pausedEpisode(ws: Workspace, slug: string, series: string, pick:
   return ep.id;
 }
 
-/** The engine's brainstorm, with the Claude API (paid) proposing five ideas. */
-const claudeSuggest: Suggester = async (ws, slug, series, direction) => {
+/** The engine's brainstorm, with a paid LLM API proposing five ideas. */
+const apiSuggest = (llm: ApiLlm): Suggester => async (ws, slug, series, direction) => {
   const { brainstorm } = await import("../cli/commands/brainstorm.ts");
-  await brainstorm(ws, "ideas", { channel: slug, series, count: 5, llm: "anthropic", ...(direction ? { seed: directionSeed(direction) } : {}) });
+  await brainstorm(ws, "ideas", { channel: slug, series, count: 5, llm, ...(direction ? { seed: directionSeed(direction) } : {}) });
 };
 
 /** The customer's wish for new ideas, marked as their words so it can't change the task. */
@@ -210,17 +210,20 @@ export function directionSeed(direction: string): string {
   ].join("\n");
 }
 
-/** The paid one: the Claude API runs the same tasks an agent would be given. */
-export const claudeWriter: Writer = {
-  draft: (ws, slug, seed, skills) => runTask(ws, draftChannelTask(ws, slug, seed, skills), "anthropic"),
-  revise: (ws, slug, requests, skills, keep) => runTask(ws, reviseChannelTask(ws, slug, requests, skills, keep), "anthropic"),
-  video: claudeVideo,
-  suggest: claudeSuggest,
+/** The LLM APIs the storefront can build with (both paid). */
+export type ApiLlm = Exclude<LlmProviderName, "agent">;
+
+/** The paid one: an LLM API (Claude or Gemini) runs the same tasks an agent would be given. */
+export const apiWriter = (llm: ApiLlm): Writer => ({
+  draft: (ws, slug, seed, skills) => runTask(ws, draftChannelTask(ws, slug, seed, skills), llm),
+  revise: (ws, slug, requests, skills, keep) => runTask(ws, reviseChannelTask(ws, slug, requests, skills, keep), llm),
+  video: apiVideo(llm),
+  suggest: apiSuggest(llm),
   captions: async (ws, slug, episode) => {
     const ep = loadEpisode(ws, slug, episode);
     await bakeCaptions(ws, ep, readScript(ep), { log: (line) => console.log(line) });
   },
-};
+});
 
 /** How many times a build that was cut off (the server stopped mid-way) is started again by itself. */
 const MAX_INTERRUPTED = 2;
@@ -555,7 +558,7 @@ export class Builder {
     writeText(channel.doc.abs, updateFrontmatter(channel.doc.text, { status: paused ? "paused" : "active" }));
   }
 
-  /** Ask the Claude API for new ideas for the channel. Throws (for the customer) when one is running or today's are used up. */
+  /** Ask the LLM API for new ideas for the channel. Throws (for the customer) when one is running or today's are used up. */
   suggestIdeas(id: string, direction = ""): void {
     const order = this.store.byId(id);
     if (!order) throw new Error(`No order "${id}".`);

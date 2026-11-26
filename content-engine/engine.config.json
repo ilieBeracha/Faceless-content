@@ -81,12 +81,17 @@
     }
   },
   "llm": {
-    "$comment": "agent = the coding agent operating this repo writes drafts/scripts from task files (free). anthropic = Claude API (paid; needs ANTHROPIC_API_KEY and your OK).",
+    "$comment": "agent = the coding agent operating this repo writes drafts/scripts from task files (free). anthropic = Claude API (paid; needs ANTHROPIC_API_KEY and your OK). gemini = Google's Gemini API (paid; needs GEMINI_API_KEY and your OK; `./engine ai-video models` lists the model ids your key can use).",
     "provider": "agent",
     "anthropic": {
       "model": "claude-opus-5-5",
       "effort": "high",
       "max_tokens": 32000
+    },
+    "gemini": {
+      "model": "gemini-3.1-pro-preview",
+      "thinking_level": "high",
+      "max_output_tokens": 32000
     }
   },
   "captions": {

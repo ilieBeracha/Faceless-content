@@ -1,5 +1,6 @@
 /**
- * Minimal client for Google's Gemini API (paid): Gemini image models for photos, Veo for video clips.
+ * Minimal client for Google's Gemini API (paid): Gemini image models for photos, Veo for video clips, and Gemini text
+ * models when they write the engine's tasks (`--llm gemini`).
  * The key comes from GEMINI_API_KEY (.env or the environment) and is only ever sent in the request header.
  */
 import { EngineError } from "../../core/errors.ts";
@@ -10,7 +11,7 @@ export function geminiKey(): string {
   const key = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
   if (!key) {
     throw new EngineError(
-      "GEMINI_API_KEY is not set, so realistic footage can't be generated.",
+      "GEMINI_API_KEY is not set, so the Gemini API can't be called.",
       "Create a key in Google AI Studio, then add it as GEMINI_API_KEY in your environment settings (or in .env, which is never committed).",
     );
   }
@@ -37,9 +38,14 @@ async function call<T>(method: "GET" | "POST", path: string, body?: unknown, att
     } catch {
       // keep the raw text
     }
-    throw new EngineError(`Gemini API ${method} ${path.split("?")[0]} failed (${res.status}): ${message}`, res.status === 403 || res.status === 401 ? "Check that GEMINI_API_KEY is valid and has billing enabled for Veo." : undefined);
+    throw new EngineError(`Gemini API ${method} ${path.split("?")[0]} failed (${res.status}): ${message}`, res.status === 403 || res.status === 401 ? "Check that GEMINI_API_KEY is valid and has billing enabled." : undefined);
   }
   return JSON.parse(text) as T;
+}
+
+/** One `generateContent` call, the request and response as the API defines them. */
+export function generateContent<T>(model: string, body: unknown): Promise<T> {
+  return call<T>("POST", `models/${model}:generateContent`, body);
 }
 
 export interface ModelInfo {

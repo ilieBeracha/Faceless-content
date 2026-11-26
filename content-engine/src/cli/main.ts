@@ -24,7 +24,7 @@ import { log, ok, printPause } from "./ui.ts";
 
 const ws = Workspace.fromEnv();
 const program = new Command();
-const llmOption = () => new Option("--llm <provider>", "who writes drafts/scripts: agent (free, default) | anthropic (paid API, opt-in)").choices(["agent", "anthropic"]);
+const llmOption = () => new Option("--llm <provider>", "who writes drafts/scripts: agent (free, default) | anthropic | gemini (paid APIs, opt-in)").choices(["agent", "anthropic", "gemini"]);
 const llm = (o: { llm?: string }): LlmProviderName => (o.llm as LlmProviderName | undefined) ?? ws.config.llm.provider;
 
 program
