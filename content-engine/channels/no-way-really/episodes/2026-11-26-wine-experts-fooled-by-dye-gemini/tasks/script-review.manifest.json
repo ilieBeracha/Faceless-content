@@ -4,7 +4,7 @@
   "purpose": "script review",
   "channel": "no-way-really",
   "series": "wait-what",
-  "created": "2026-11-26T07:56:11Z",
+  "created": "2026-11-26T08:02:22Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -39,14 +39,20 @@
     {
       "path": "channels/no-way-really/episodes/2026-11-26-wine-experts-fooled-by-dye-gemini/script.json",
       "role": "channel",
-      "sha256": "b7dfae6b343e1038d0a3936ca0877466da1f3a54a843fa47d5bc3d665839d713",
-      "bytes": 5829
+      "sha256": "8319bdaf621cc41cd6775cbafab7f85d8a1da5e6d7d98dc6431c41e4de1cbacf",
+      "bytes": 6230
     },
     {
       "path": "channels/no-way-really/episodes/2026-11-26-wine-experts-fooled-by-dye-gemini/research.json",
       "role": "channel",
-      "sha256": "9e8c7e5f3d4845dcb701fa70d8bc1b7b3511534fdf55f6cf8bcc63d60f905bf2",
-      "bytes": 8494
+      "sha256": "6b21f637ae0af170e11196722f9d1ed8b84f767e814b031b7823d3e38f2b2b5e",
+      "bytes": 6051
+    },
+    {
+      "path": "(inline) earlier reviews of this episode",
+      "role": "input",
+      "sha256": "42979246c44914a4a5e6abc426afe43c9b460a4f059a44841742b24b1ffb6617",
+      "bytes": 774
     }
   ],
   "outputs": [

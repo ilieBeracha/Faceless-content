@@ -23,9 +23,9 @@
       "at": "2026-11-26T08:02:22Z"
     },
     "review": {
-      "status": "failed",
-      "at": "2026-11-26T07:56:42Z",
-      "note": "2 issue(s)"
+      "status": "waiting",
+      "at": "2026-11-26T08:02:22Z",
+      "note": "script changed; it needs a fresh review"
     }
   }
 }
