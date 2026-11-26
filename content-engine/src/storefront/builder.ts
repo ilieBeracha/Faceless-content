@@ -36,7 +36,7 @@ import { bakeCaptions, brandOf, buildProps, loadChannelTheme } from "../render/r
 import { liveCaptions, type LiveCaptions } from "../skills/captions/live.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
 import { checkShots, shotsUsed, showsHost, type Shot, type ThBeatVisual } from "../skills/render-themed/schema.ts";
-import type { Script } from "../skills/write-script/schema.ts";
+import { scriptSchema, type Script } from "../skills/write-script/schema.ts";
 import { cleanVideoPath, versionPath, videoPath, videoVersions } from "./brand-kit.ts";
 import { MAX_ROUNDS, REPAINTS_PER_VIDEO, SUGGESTS_PER_DAY, TOPIC_MAX, VIDEOS_PER_DAY, changeRequests, countToday, isBuilding, isMakingVideo, videoUnderWay, type Order, type OrderStore } from "./store.ts";
 
@@ -166,6 +166,9 @@ export interface CaptionsView {
   /** Its changed captions being drawn into the video, or stopped. */
   restyle: { state: "working" | "failed"; error?: string } | null;
 }
+
+/** A script as the engine reads it: through its schema, so the fields a script may leave out have their defaults. */
+const scriptFile = (path: string): Script => scriptSchema.parse(readJson(path));
 
 /** The engine's own episode pipeline, with a paid LLM API writing the script and reviewing the frames. */
 const apiVideo = (llm: ApiLlm): VideoMaker => async (ws, slug, series, pick, captions) => {
@@ -604,7 +607,7 @@ export class Builder {
   /** The script whose facts the customer is checking. Throws when the order is not at that step. */
   facts(order: Order): Script {
     if (order.video?.state !== "facts" || !order.video.episode || !order.channel) throw new Error(`Order ${order.id} has no facts to check now.`);
-    return readJson<Script>(join(this.episodeDir(order.channel, order.video.episode), "script.json"));
+    return scriptFile(join(this.episodeDir(order.channel, order.video.episode), "script.json"));
   }
 
   /** The customer approved every fact of the script as it is now: record it under their name and make the video. */
@@ -669,7 +672,7 @@ export class Builder {
     const dir = join(episodesDir(channel), episode);
     if (!readStoryboard(dir)) throw new CustomerError("This video was made without a storyboard, so it can't be revised.");
     // A video made under another host setting (on screen, off screen, main character) can't be made again under this one.
-    const misfit = checkShots(readJson<Script>(join(dir, "script.json")).beats, loadChannelTheme(channel.dir, channel.slug));
+    const misfit = checkShots(scriptFile(join(dir, "script.json")).beats, loadChannelTheme(channel.dir, channel.slug));
     if (misfit.length) throw new CustomerError(`This video was made with a different host setting, so it can't be revised as the channel is set now (${misfit[0]}). Change the host setting back in Settings to revise it.`);
     // The repaints the video has used so far: they are counted per video, across its revisions.
     const used = Math.max(existsSync(repaintsPath(dir)) ? readJson<{ repaints: number }>(repaintsPath(dir)).repaints : 0, order.video?.episode === episode ? (order.video.repaints ?? 0) : 0);
@@ -907,7 +910,7 @@ export class Builder {
   private storyboardEpisode(order: Order): { dir: string; script: Script } {
     if (order.video?.state !== "storyboard" || !order.video.episode || !order.channel) throw new CustomerError("This video has no storyboard to check now.");
     const dir = this.episodeDir(order.channel, order.video.episode);
-    return { dir, script: readJson<Script>(join(dir, "script.json")) };
+    return { dir, script: scriptFile(join(dir, "script.json")) };
   }
 
   private episodeDir(slug: string, episode: string): string {

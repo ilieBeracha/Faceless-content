@@ -26,7 +26,7 @@ import { factualHash } from "../pipeline/script-check.ts";
 import { newStoryboard, readStoryboard, storyboardApproved, videoCaptions, writeStoryboard } from "../pipeline/storyboard.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
 import { showsHost, shotsUsed, type Shot } from "../skills/render-themed/schema.ts";
-import type { Script } from "../skills/write-script/schema.ts";
+import { scriptSchema, type Script } from "../skills/write-script/schema.ts";
 import { sha256 } from "../core/util.ts";
 import { NO_HOST } from "../storefront/catalog.ts";
 
@@ -34,14 +34,19 @@ const GOOD = { contact_name: "Sam Example", email: "sam@example.com", idea: "How
 const OFFER = loadCatalog(ENGINE_DIR);
 
 /** The sample script told in painted shots (a look with a world): the same words, shots instead of 3D scenes. */
-function paintedScript(channel: string): Script {
+/** A script as written to script.json (before the schema fills in what it may leave out). */
+type WrittenScript = Omit<Script, "visuals"> & { visuals?: Script["visuals"] };
+
+function paintedScript(channel: string): WrittenScript {
   const s = sampleScript(channel);
   const shots: Record<string, Shot[]> = {
     hook: [{ show: "The host stares at a giant pen dripping blue ink", host: true }],
     explain: [{ show: "A tiny steel ball sits in the tip of a pen", host: false }, { at: "ink", show: "Thick blue ink waits behind the ball", host: false }],
     payoff: [{ show: "A pen cap shaped like a round ball", host: false }],
   };
-  return { ...s, visuals: {}, beats: s.beats.map((b) => ({ ...b, visual: { skill: "render-themed", shots: shots[b.id] } })) };
+  // No "visuals" at all: the schema lets a script leave them out (a Gemini script did), so everything that reads one must too.
+  const { visuals: _none, ...rest } = s;
+  return { ...rest, beats: s.beats.map((b) => ({ ...b, visual: { skill: "render-themed", shots: shots[b.id] } })) };
 }
 const form = (values: Record<string, string>) => ({ method: "POST", redirect: "manual" as const, headers: { "content-type": "application/x-www-form-urlencoded" }, body: new URLSearchParams(values).toString() });
 
@@ -559,11 +564,11 @@ describe("storefront: automatic builds", () => {
       const script = { ...(boards ? paintedScript(slug) : sampleScript(slug)), title: rewrite ? "Inside a pen, corrected" : "Inside a pen" };
       writeJson(join(dir, "script.json"), script);
       state("in-progress");
-      writeFactcheck(dir, script, { channel: slug, episode: id });
+      writeFactcheck(dir, scriptSchema.parse(script), { channel: slug, episode: id });
       return { episode: id, state: "facts" };
     }
     // Words changed after the approval (on the storyboard): the facts are checked again, as the real pipeline does.
-    const written = readJson<Script>(join(dir, "script.json"));
+    const written = scriptSchema.parse(readJson(join(dir, "script.json")));
     if (check.scriptHash !== factualHash(written)) {
       writeFactcheck(dir, written, { channel: slug, episode: id });
       return { episode: id, state: "facts" };
