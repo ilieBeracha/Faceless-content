@@ -148,3 +148,11 @@ The engine marks an idea "used" when an episode is made from it.
 - angle: In 2001 Frédéric Brochet served wine students a white wine dyed red, and they described it with red-wine words; what we see decides what we taste.
 - added: 2026-11-25
 - used_in: episodes/2026-11-25-wine-experts-fooled-by-dye
+
+## wine-experts-fooled-by-dye-gemini
+- title: Wine experts called white wine red
+- series: wait-what
+- status: used
+- angle: In 2001 Frédéric Brochet served wine students a white wine dyed red, and they described it with red-wine words; what we see decides what we taste. (Same story as wine-experts-fooled-by-dye, written by the Gemini API to compare writers.)
+- added: 2026-11-26
+- used_in: episodes/2026-11-26-wine-experts-fooled-by-dye-gemini
