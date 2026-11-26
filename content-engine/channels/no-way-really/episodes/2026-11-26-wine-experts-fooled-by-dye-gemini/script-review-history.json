@@ -1,0 +1,18 @@
+[
+  {
+    "script_hash": "a952197ccf3618b7fd1207f6e25ca9c9b5dba11dafd90a4e93df2371cd057e6a",
+    "verdict": "fail",
+    "issues": [
+      {
+        "beat": "turn",
+        "problem": "Referred to before introduced (Rule 4) and the person is missing (Rule 2): \"the researcher\" acts at the turn instead of the students who have the stakes, and was never introduced.",
+        "fix": "Change \"the researcher gave them\" to \"they got\". This cuts 2 words."
+      },
+      {
+        "beat": "ending",
+        "problem": "The ending (Rule 6): The beat closes on a summary of what it means (\"Their eyes completely overwrote...\") instead of the final result of the story.",
+        "fix": "Replace \"Their eyes completely overwrote what their noses were telling them.\" with \"The study was published, and people still use it to argue that wine tasting is nonsense.\" This adds 5 words, keeping the total at 86 words."
+      }
+    ]
+  }
+]

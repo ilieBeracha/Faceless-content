@@ -4,7 +4,7 @@
   "purpose": "research",
   "channel": "no-way-really",
   "series": "wait-what",
-  "created": "2026-11-26T07:53:45Z",
+  "created": "2026-11-26T07:57:26Z",
   "files": [
     {
       "path": "AGENTS.md",
@@ -38,5 +38,5 @@
       "description": "the research dossier"
     }
   ],
-  "next": "./engine make episode --channel no-way-really --series wait-what --episode 2026-11-26-wine-experts-fooled-by-dye-gemini"
+  "next": "./engine make episode --channel no-way-really --series wait-what --episode 2026-11-26-wine-experts-fooled-by-dye-gemini --redo script"
 }

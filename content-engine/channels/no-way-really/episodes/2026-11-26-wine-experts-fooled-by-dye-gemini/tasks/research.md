@@ -48,7 +48,7 @@ person, event and the turn list the ids of the facts that back them.
 
 - `channels/no-way-really/episodes/2026-11-26-wine-experts-fooled-by-dye-gemini/research.json` (json) — the research dossier
 
-When the output is written, run: `./engine make episode --channel no-way-really --series wait-what --episode 2026-11-26-wine-experts-fooled-by-dye-gemini`
+When the output is written, run: `./engine make episode --channel no-way-really --series wait-what --episode 2026-11-26-wine-experts-fooled-by-dye-gemini --redo script`
 
 ## Allowed context (4 items)
 

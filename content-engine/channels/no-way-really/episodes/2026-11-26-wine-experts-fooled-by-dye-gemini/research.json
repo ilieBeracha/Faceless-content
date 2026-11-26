@@ -1,117 +1,129 @@
 {
   "idea": "wine-experts-fooled-by-dye-gemini",
-  "question": "How a 2001 study revealed that our visual expectations can overwrite our sense of smell when enology students described a dyed white wine using red wine words.",
+  "question": "How visual cues override our sense of taste and smell, demonstrated by a 2001 study where enology students described a dyed white wine as a red wine.",
   "facts": [
     {
       "id": "f1",
-      "fact": "Frédéric Brochet was a PhD candidate at the University of Bordeaux II.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFExFGVqI3x8FZekbnmTOxOOdexv4TOTMJoYBLoC8M3LFZRygisw-H8O4QbnLJKaHOytBRkLQz5P-fUj8ylb-zfoQpQX5GTvodTnkxtc-zwdHNa7zjn7LDprHsriYQI6hRqlaTRBcDxMIR7S3lG28NPKdPCUss2ZUxsC9gW4mmbEdtFf_Jk8fguSaglD89hGwg=",
-      "quote": "Nobody remembers the 2001 winner of Amorim Academy's annual competition... but many do recall the runner-up: a certain dissertation by Frédéric Brochet, then a PhD candidate at the University of Bordeaux II in Talence, France."
-    },
-    {
-      "id": "f8",
-      "fact": "The experiment was part of his dissertation researching perception and wine tasting.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEXCDLP2xENlmSJMc85XCNMhlEePig5GXGwaApqOqb1SlSyLkWnzwl_NrWPPDCW34McZwu8j8K9KvmTTJPS_s5HbZkkKqN2wvHFqUUCt95MHWyUFvH8j_ouezRkio6zZEtE--RZASFSa78u-ArTGaoZHWGujbKPeUZvsk64RtUP",
-      "quote": "The study, conducted by Frédéric Brochet in 2001, was part of a larger dissertation on perception and wine tasting, which largely consisted of lexical analysis of published wine reviews using computer software."
+      "fact": "In 2001, Frédéric Brochet conducted a study as part of his dissertation on perception and wine tasting.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "The study, conducted by Frédéric Brochet in 2001, was part of a larger dissertation on perception and wine tasting"
     },
     {
       "id": "f2",
-      "fact": "Brochet and his team colored a white Bordeaux wine red using two grams per liter of natural grape anthocyanins.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "quote": "They colored part of the white with grape anthocyanins, the natural pigment that makes red wine red, at 2 grams per liter."
-    },
-    {
-      "id": "f7",
-      "fact": "Prior to the main test, the researchers verified that the pigment added no smell by having fifty people smell the plain and dyed wines in opaque glasses under red light.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "quote": "First they checked the dye. Fifty people tasted the colored and plain white side by side in opaque glasses under red light, in a standard three-glass test, to confirm the pigment added no smell of its own."
+      "fact": "The study investigated the interaction between the vision of colors and odor determination.",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
+      "quote": "The interaction between the vision of colors and odor determination is investigated"
     },
     {
       "id": "f3",
-      "fact": "During the first session of the experiment, 54 enology undergraduates smelled a real white and real red wine side-by-side, creating a list of smell words for each.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "quote": "Then came the main test, with 54 undergraduates from the Bordeaux enology faculty, half men and half women, in two sessions a week apart. In the first, each student compared the real white and the real red in clear glasses under white light, built a personal list of smell words, and marked which wine showed each one more strongly."
-    },
-    {
-      "id": "f4",
-      "fact": "A week later, the students were given the plain white wine and the same wine dyed red, and were asked to evaluate them using the list of words they had generated.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
-      "quote": "In the second, each student got the same list back, with no wine names on it, and compared the plain white with the white dyed red."
-    },
-    {
-      "id": "f5",
-      "fact": "The panel of students described the odor of the artificially colored white wine as if it were a red wine.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkmtgDswe06ZqL0zNUmrU2oItyZCJnnA9h7ZQobrDzunw2zm2u7nS1plIzzX6v2vOonJoodmWRb-fDTfG78LEkdQjKt3EveBy-amHbLYCzFxm9rXO_iZ_otxCa16tpVw==",
+      "fact": "A psychophysical experiment was performed involving a panel of 54 tasters.",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
       "quote": "A white wine artificially colored red with an odorless dye was olfactory described as a red wine by a panel of 54 tasters."
     },
     {
+      "id": "f4",
+      "fact": "The tasters were given two identical white wines that differed only in color, and were asked to assign descriptors to them.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "So they were given two identical white wines, different only in color, and asked to assign them descriptors from both red and white wines."
+    },
+    {
+      "id": "f5",
+      "fact": "Most of the people assigned the red descriptors to the white wine that had been artificially colored red.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "With no other difference between them, and being required to assign the red descriptors to one of the wines, most people assigned them to the red-colored wine instead of randomly."
+    },
+    {
       "id": "f6",
-      "fact": "The researchers concluded that visual information dominates over olfactory information, causing the tasters to rely on the wine's color to describe its smell.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkmtgDswe06ZqL0zNUmrU2oItyZCJnnA9h7ZQobrDzunw2zm2u7nS1plIzzX6v2vOonJoodmWRb-fDTfG78LEkdQjKt3EveBy-amHbLYCzFxm9rXO_iZ_otxCa16tpVw==",
+      "fact": "The researchers concluded that because of the visual information, the tasters discounted the actual olfactory information.",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
       "quote": "Hence, because of the visual information, the tasters discounted the olfactory information."
     },
     {
+      "id": "f7",
+      "fact": "The story is frequently retold claiming that 'wine experts' were completely fooled, but the subjects were actually undergraduate enology students.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "-The most important is that the subjects in this experiment were not, in fact 'wine experts'. They were undergraduate enology students."
+    },
+    {
+      "id": "f8",
+      "fact": "It is a myth that every single person was oblivious to the trick.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "- It's simply not true that “Every single one, all 54, could not tell it was white.” as is frequently stated."
+    },
+    {
       "id": "f9",
-      "fact": "The study was widely picked up by the press and used to argue that wine tasting is nonsense.",
-      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFExFGVqI3x8FZekbnmTOxOOdexv4TOTMJoYBLoC8M3LFZRygisw-H8O4QbnLJKaHOytBRkLQz5P-fUj8ylb-zfoQpQX5GTvodTnkxtc-zwdHNa7zjn7LDprHsriYQI6hRqlaTRBcDxMIR7S3lG28NPKdPCUss2ZUxsC9gW4mmbEdtFf_Jk8fguSaglD89hGwg=",
-      "quote": "The research, later published in the journal Brain and Language, is now widely used to show why wine tasting is total BS."
+      "fact": "Some people did correctly give white wine descriptions to the dyed-red wine.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "the paper that is frequently cited shows that indeed some people gave 'white wine' descriptions to the dyed-red wine."
     }
   ],
   "people": [
     {
       "name": "Frédéric Brochet",
-      "role": "A PhD candidate in enology at the University of Bordeaux II",
-      "stake": "His doctoral dissertation rested on proving that human perception of flavor is heavily manipulated by cognitive representation and visual cues.",
+      "role": "Researcher and author of the dissertation",
+      "stake": "Discovering if visual cues could override a trained sense of smell for his dissertation on wine perception",
       "facts": [
         "f1",
-        "f8"
+        "f2"
+      ]
+    },
+    {
+      "name": "54 Enology Students",
+      "role": "Undergraduate wine science students acting as the tasting panel",
+      "stake": "Their ability to accurately evaluate the smells of wine utilizing their specific training",
+      "facts": [
+        "f3",
+        "f4",
+        "f7"
       ]
     }
   ],
   "timeline": [
     {
       "when": "2001",
-      "what": "Brochet and his team colored a white wine using grape anthocyanins and had fifty people confirm in a blind test under red light that the pigment added no smell.",
-      "why": "To ensure that any difference in perception during the main test would be caused solely by the visual color of the wine, not by the dye's scent.",
+      "what": "Frédéric Brochet designed a psychophysical experiment for his dissertation with 54 undergraduate enology students.",
+      "why": "To investigate the interaction between the vision of colors and odor determination.",
       "facts": [
+        "f1",
         "f2",
+        "f3",
         "f7"
       ]
     },
     {
-      "when": "2001",
-      "what": "During the first session, 54 enology undergraduates smelled a real white and a real red wine side-by-side and generated a personal list of descriptive smell words.",
-      "why": "To establish the baseline smell vocabulary each student naturally used when evaluating wines of known colors.",
+      "when": "During the experiment",
+      "what": "Brochet served the students two identical white wines, but one was artificially dyed red, and asked them to describe the wines.",
+      "why": "To test if their visual perception of a red color would make them use red wine descriptors despite smelling white wine.",
       "facts": [
-        "f3"
+        "f4"
       ]
     },
     {
-      "when": "A week later",
-      "what": "The students returned for a second session where they were asked to compare the plain white wine and the white wine dyed red using the smell words they had written the week before.",
-      "why": "To test whether the visual appearance of the red dye would cause them to map their previously established red-wine odor descriptors onto a chemically white wine.",
+      "when": "Publishing the results",
+      "what": "The findings showed that most students assigned red descriptors to the dyed white wine.",
+      "why": "Because their perception was hijacked by visual information, causing them to discount their olfactory senses.",
       "facts": [
-        "f4"
+        "f5",
+        "f6"
       ]
     }
   ],
   "turn": {
-    "what": "The tasters described the artificially colored white wine using red wine words, leading the researchers to conclude that visual expectations override smell. The study was later widely publicized and misused by critics to argue that wine tasting is nonsense.",
+    "what": "The moment the trained enology students confidently described a white wine using red-wine terms because it was dyed red, proving that sight overrides smell.",
     "facts": [
+      "f3",
       "f5",
-      "f6",
-      "f9"
+      "f6"
     ]
   },
   "key_objects": [
-    "A white Bordeaux wine from the 1996 vintage",
-    "Odorless grape anthocyanins used as red dye",
-    "Clear wine glasses",
-    "Personal lists of smell descriptor words"
+    "Two glasses of identical white wine",
+    "Odorless red dye",
+    "A white wine artificially dyed red",
+    "Tasting notes assigning red wine descriptors to white wine"
   ],
   "unverified": [
-    "The participants in the experiment were professional 'wine experts' (they were actually undergraduate enology students).",
-    "The wine was dyed using generic artificial red food coloring (it was colored with natural grape anthocyanins).",
-    "The experiment proved wine tasters cannot tell the difference between red and white wine by taste (the study specifically tested only olfactory descriptions, not full taste)."
+    "The subjects were widely reported as 'wine experts' or seasoned professionals, but they were actually undergraduate wine science students [f7].",
+    "Popular retellings claim every single one of the 54 students was completely oblivious to the trick, but some actually did use white wine descriptors [f8, f9]."
   ]
 }
