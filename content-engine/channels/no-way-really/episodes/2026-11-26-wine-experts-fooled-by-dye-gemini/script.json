@@ -1,0 +1,169 @@
+{
+  "schema": "script/v1",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "idea": "wine-experts-fooled-by-dye-gemini",
+  "title": "Wine experts called white wine red",
+  "angle": {
+    "point": "What we see decides what we smell, proven when enology students described a dyed white wine with red-wine words.",
+    "stakes": "Fifty-four wine undergraduates whose studies relied on their highly trained noses.",
+    "turn": "They smelled a white wine dyed red and mapped their red-wine words onto it.",
+    "takeaway": "Our visual expectations can completely overwrite our sense of smell."
+  },
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "blink",
+      "voiceover": "Wine students called white wine red.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "heading",
+            "lines": [
+              "WHITE WINE",
+              "CALLED RED"
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "surprised"
+      }
+    },
+    {
+      "id": "setup",
+      "speaker": "blink",
+      "voiceover": "In 2001, fifty-four wine undergraduates in Bordeaux wrote down smell words for a real white and a real red wine.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "text": "54 undergraduates from the Bordeaux enology faculty.",
+            "kicker": "2001"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "turn",
+      "speaker": "blink",
+      "voiceover": "A week later, the researcher gave them that same white wine, plus a glass of it dyed red with an odorless grape pigment.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "text": "White wine colored with natural grape anthocyanins.",
+            "kicker": "Odorless dye"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "twist",
+      "speaker": "blink",
+      "voiceover": "When they smelled the fake red, they described it using the exact red-wine words they had used the week before.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "text": "Described as a red wine by a panel of 54 tasters.",
+            "kicker": "The result"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "surprised"
+      }
+    },
+    {
+      "id": "ending",
+      "speaker": "blink",
+      "voiceover": "Their eyes completely overwrote what their noses were telling them. No way. Really.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "heading",
+            "lines": [
+              "EYES OVERWRITE",
+              "NOSES"
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-themed": {}
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "In 2001, 54 wine undergraduates in Bordeaux took part in a test.",
+      "beat": "setup",
+      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "claim": "The students built a personal list of smell words for a real white and a real red wine.",
+      "beat": "setup",
+      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
+      "confidence": "high"
+    },
+    {
+      "id": "c3",
+      "claim": "A week later, they were given the same white wine and a version dyed red with an odorless grape pigment (anthocyanins).",
+      "beat": "turn",
+      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_hu67h0pucoyZt6aFS01ygrYhrmZso2R2eLc1Y-WAzTcWa2FLMcfHIwlc9NPyaCEdX4bYzV1w6tnrgcJJsImVMRpfL6-7gRdkHDztyoxqmRLQEIM6vMPKRn7WpvMLc_wCy_AMFQ0Ms1kmTMjQ2lFhrsqqy8nAFHqXcajhHhkylBGISk=",
+      "confidence": "high"
+    },
+    {
+      "id": "c4",
+      "claim": "The tasters described the dyed white wine using red-wine words.",
+      "beat": "twist",
+      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkmtgDswe06ZqL0zNUmrU2oItyZCJnnA9h7ZQobrDzunw2zm2u7nS1plIzzX6v2vOonJoodmWRb-fDTfG78LEkdQjKt3EveBy-amHbLYCzFxm9rXO_iZ_otxCa16tpVw==",
+      "confidence": "high"
+    },
+    {
+      "id": "c5",
+      "claim": "The visual information caused the tasters to discount the olfactory information.",
+      "beat": "ending",
+      "source": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkmtgDswe06ZqL0zNUmrU2oItyZCJnnA9h7ZQobrDzunw2zm2u7nS1plIzzX6v2vOonJoodmWRb-fDTfG78LEkdQjKt3EveBy-amHbLYCzFxm9rXO_iZ_otxCa16tpVw==",
+      "confidence": "high"
+    }
+  ],
+  "pronunciations": {
+    "Bordeaux": "bor-doe"
+  },
+  "publish": {
+    "title": "Wine experts called white wine red",
+    "description": "In 2001, a simple test proved that what we see completely overwrites what we smell. Fifty-four wine students were fooled by a tasteless dye.",
+    "hashtags": [
+      "#science",
+      "#wine",
+      "#psychology",
+      "#facts",
+      "#shorts"
+    ]
+  }
+}
