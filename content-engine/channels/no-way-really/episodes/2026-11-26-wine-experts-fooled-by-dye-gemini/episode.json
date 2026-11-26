@@ -12,6 +12,10 @@
       "status": "done",
       "at": "2026-11-26T07:53:45Z",
       "note": "Wine experts called white wine red"
+    },
+    "research": {
+      "status": "waiting",
+      "at": "2026-11-26T07:53:45Z"
     }
   }
 }
