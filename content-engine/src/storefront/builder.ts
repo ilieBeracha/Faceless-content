@@ -31,9 +31,10 @@ import { episodesDir, listEpisodes, loadEpisode, makeEpisode, readScript } from 
 import { approveFactcheck, readFactcheck, rejectFactcheck } from "../pipeline/factcheck.ts";
 import { reviseChannelTask, type ChangeRequest } from "../pipeline/revise-channel.ts";
 import { PACES, approveStoryboard, captionSettingsSchema, readStoryboard, setPace, setVideoCaptions, storyboardApproved, videoCaptions, type CaptionSettings, type Pace } from "../pipeline/storyboard.ts";
-import { checkScript } from "../pipeline/script-check.ts";
+import { checkScript, speechSeconds } from "../pipeline/script-check.ts";
 import { bakeCaptions, brandOf, buildProps, loadChannelTheme } from "../render/render-episode.ts";
 import { liveCaptions, type LiveCaptions } from "../skills/captions/live.ts";
+import { motionCostUsd } from "../skills/render-themed/animate.ts";
 import { paintPaths } from "../skills/render-themed/paint.ts";
 import { checkShots, shotsUsed, showsHost, type Shot, type ThBeatVisual } from "../skills/render-themed/schema.ts";
 import { scriptSchema, type Script } from "../skills/write-script/schema.ts";
@@ -81,6 +82,8 @@ export interface StoryboardView {
   changed: boolean;
   /** Shot id → a short version of its picture (changes when it is painted again). */
   pictures: Record<string, string>;
+  /** About what moving every picture costs (paid, made after the storyboard is approved), from the script's length. */
+  motionUsd: number;
 }
 
 /** One beat as the customer left it on the storyboard: its shots in order. */
@@ -654,7 +657,9 @@ export class Builder {
       if (!painted[id]) throw new Error(`Order ${order.id}: shot "${id}" has no painted picture.`);
       return [id, painted[id].sha.slice(0, 12)];
     }));
-    return { script, captions: board.captions, pace: board.pace ?? "normal", hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script) };
+    const channel = loadChannel(this.ws, order.channel!);
+    const seconds = script.beats.reduce((s, b) => s + speechSeconds(this.ws, channel.characters.get(b.speaker)?.data, b.voiceover), 0);
+    return { script, captions: board.captions, pace: board.pace ?? "normal", hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script), motionUsd: motionCostUsd(this.ws, seconds, shotsUsed(script.beats).length) };
   }
 
   /**

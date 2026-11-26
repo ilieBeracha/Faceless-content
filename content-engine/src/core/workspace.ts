@@ -37,6 +37,14 @@ export interface EngineConfig {
   fonts: string[];
   platforms: Record<string, { max_seconds: number; ai_disclosure: string }>;
   paint: { budget_per_episode_usd: number };
+  motion: {
+    /** An image-to-video endpoint on fal that takes prompt, image_url, duration, resolution and prompt_expansion_mode. */
+    endpoint: string;
+    resolution: string;
+    usd_per_second: number;
+    max_clip_seconds: number;
+    budget_per_episode_usd: number;
+  };
   music: {
     endpoint: string;
     usd_per_second: number;

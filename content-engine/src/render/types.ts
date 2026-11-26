@@ -70,6 +70,8 @@ export interface EpisodeProps {
   theme?: Theme;
   /** render-themed with a world: shot id (`<beat>-<n>`) → its painted picture (staged next to voice.wav). */
   shots?: Record<string, string>;
+  /** render-themed with a world, when its shots were animated: shot id → its moving clip and the seconds it holds. */
+  shotClips?: Record<string, { file: string; seconds: number }>;
   showSafeAreas: boolean;
   qaProbe: boolean;
 }

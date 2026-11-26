@@ -104,6 +104,10 @@ With a world, every beat tells its words in 1–3 shots, and takes no `elements`
 `camera` on a shot moves over it: `push-in`, `pull-out`, `pan-left`, `pan-right`, `rise`, `sink` or `drift`.
 Leave it out and shots take turns, so consecutive shots never move the same way. Shots dissolve into each other.
 
+After the voice, the engine sets every painted shot moving (the motion step, paid): what `show` describes happens
+in the picture, with a still camera, so the clip replaces the camera move. Write `show` as an action you could
+film ("pours white wine into two glasses", "red drops fall into the glass"), not a frozen pose.
+
 ## Frames: `layout.frames`
 
 A frame is one arrangement of a beat: a box for the host, a box for the lettering and a box for the picture.

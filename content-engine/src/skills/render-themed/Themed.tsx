@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
-import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFor } from "../../render/fonts.ts";
 import { useQaProbe } from "../../render/qa-probe.ts";
 import { characterRect, clamp, easeInOut, easeOut, hash01, regions } from "../../render/timeline.ts";
 import type { BeatSpan, EpisodeProps, Rect } from "../../render/types.ts";
-import { shotTimeline, type ShotSpan } from "./shots.ts";
+import { FADE, shotTimeline, type ShotSpan } from "./shots.ts";
 import { beatFrame, FACE, HEADING_SIZE, frameHostRect, frameTextRect, GAP, noteHeight, onStage, stackLayout } from "./frames.ts";
 import { type CameraMove, type Drawing, type Role, type Theme, type ThBeatVisual, type ThElement, type ThScene } from "./schema.ts";
 
@@ -421,7 +421,6 @@ const Backdrop: React.FC<{ th: Theme; now: number; clock: number; beatT: number;
 };
 
 /** Seconds a shot dissolves into the next. */
-const FADE = 0.3;
 /** Where the camera is over a shot, `p` of the way through it (0 → 1): a scale and an offset in fractions of the frame. */
 function cameraAt(move: CameraMove, p: number, clock: number): { scale: number; x: number; y: number } {
   const k = easeInOut(p);
@@ -443,10 +442,22 @@ function cameraAt(move: CameraMove, p: number, clock: number): { scale: number; 
   }
 }
 
-/** The painted story: the shot on screen, filmed with its camera move; the shot before dissolves out under it. */
+/**
+ * The painted story: the shot on screen, filmed with its camera move, or played as its moving clip when the shots
+ * were animated (a still camera: the clip moves by itself); the shot before dissolves out under it.
+ */
 const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number; width: number; height: number }> = ({ shots, th, now, clock, width, height }) => {
+  const { fps } = useVideoConfig();
   const at = shots.reduce((cur, s, i) => (now >= s.start ? i : cur), 0);
   const draw = (s: ShotSpan, opacity: number) => {
+    if (s.clip) {
+      const onScreen = s.end - s.start + FADE;
+      return (
+        <Sequence key={s.id} from={Math.round(s.start * fps)} durationInFrames={Math.max(1, Math.round(onScreen * fps) + 1)} layout="none">
+          <OffthreadVideo src={staticFile(s.clip.file)} muted playbackRate={Math.min(1, s.clip.seconds / onScreen)} style={{ position: "absolute", left: 0, top: 0, width, height, objectFit: "cover", opacity }} />
+        </Sequence>
+      );
+    }
     const p = clamp((now - s.start) / Math.max(0.1, s.end - s.start));
     const cam = cameraAt(s.move, p, clock);
     return (

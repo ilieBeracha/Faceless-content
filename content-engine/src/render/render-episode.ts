@@ -13,6 +13,7 @@ import { videoCaptions } from "../pipeline/storyboard.ts";
 import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
 import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schema.ts";
+import { readMotionClips } from "../skills/render-themed/animate.ts";
 import { EngineError } from "../core/errors.ts";
 import { runFfmpeg } from "../core/ffmpeg.ts";
 import type { Script } from "../skills/write-script/schema.ts";
@@ -55,11 +56,20 @@ export function loadChannelTheme(channelDir: string, slug: string): Theme {
   return parseTheme(readJson(path), `channels/${slug}/theme.json`);
 }
 
-/** render-themed: the channel's look and, when it has a world, the painted shots (staged as shots/<id>.jpg). */
-function themedProps(ep: EpisodeRef, script: Script): Pick<EpisodeProps, "theme" | "shots"> {
+/**
+ * render-themed: the channel's look and, when it has a world, the painted shots (staged as shots/<id>.jpg) and,
+ * once the motion step has animated them, their moving clips (staged as shots/clips/<id>.mp4).
+ */
+function themedProps(ep: EpisodeRef, script: Script): Pick<EpisodeProps, "theme" | "shots" | "shotClips"> {
   const theme = loadChannelTheme(ep.channel.dir, ep.channel.slug);
   if (!theme.world) return { theme };
-  return { theme, shots: Object.fromEntries(shotsUsed(script.beats).map(({ id }) => [id, `shots/${id}.jpg`])) };
+  const ids = shotsUsed(script.beats).map(({ id }) => id);
+  const shots = Object.fromEntries(ids.map((id) => [id, `shots/${id}.jpg`]));
+  const moving = readMotionClips(ep.dir);
+  if (!moving) return { theme, shots };
+  const missing = ids.filter((id) => !moving[id]);
+  if (missing.length) throw new EngineError(`Shot(s) ${missing.map((id) => `"${id}"`).join(", ")} of ${ep.state.id} have no moving clip, but its other shots do.`, "Run the episode again: its motion step animates every shot.");
+  return { theme, shots, shotClips: Object.fromEntries(ids.map((id) => [id, { file: `shots/${moving[id].file}`, seconds: moving[id].seconds }])) };
 }
 
 export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): EpisodeProps {
@@ -237,6 +247,7 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
   const clipFiles = [
     ...(props.clips ?? []).map((c) => ({ src: join(ep.dir, "footage", c.file), dest: c.file })),
     ...Object.values(props.shots ?? {}).map((file) => ({ src: join(ep.dir, file), dest: file })),
+    ...Object.values(props.shotClips ?? {}).map(({ file }) => ({ src: join(ep.dir, file), dest: file })),
   ];
   for (const c of clipFiles) if (!existsSync(c.src)) throw new EngineError(`${ws.rel(c.src)} is missing, so the episode can't be rendered.`, "Run the episode again: its footage or paint step makes it.");
   const inputsHash = sha256(canonicalJson({ v: RENDER_VERSION, props: { ...clean, envelope: sha256(JSON.stringify(clean.envelope)) }, wav: sha256(readFileSync(wav)), clips: clipFiles.map((c) => sha256(readFileSync(c.src))), code: codeHash() }));

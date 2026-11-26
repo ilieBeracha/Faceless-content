@@ -135,6 +135,14 @@
     "$comment": "render-themed worlds: every place an episode needs is painted with ai_video.image_model (Google, paid; needs GEMINI_API_KEY) at ai_video.rates_usd.image each. Spending stops before an episode would pass its budget.",
     "budget_per_episode_usd": 2
   },
+  "motion": {
+    "$comment": "render-themed worlds: after the voice, every painted shot is turned into a moving clip as long as it is on screen (fal, paid; needs FAL_KEY), so what it shows really happens (wine pours, drops fall). About $0.85 for a 38 s video with 8 shots. Clips are kept by content, so a re-render does not pay again; spending stops before an episode would pass its budget.",
+    "endpoint": "minimax/h3-max-turbo/image-to-video",
+    "resolution": "768P",
+    "usd_per_second": 0.01875,
+    "max_clip_seconds": 15,
+    "budget_per_episode_usd": 2
+  },
   "music": {
     "$comment": "Every video gets a music bed made for it (fal, paid; needs FAL_KEY) and the engine's sound effects (src/audio/sfx/, made once with `./engine sfx`). Both are mixed under the voice at render time; voice.wav and the caption timings never change. The music is kept in the episode's audio/ folder, so a re-render does not pay again.",
     "endpoint": "sonilo/v1.1/text-to-music",

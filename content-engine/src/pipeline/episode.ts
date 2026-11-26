@@ -30,7 +30,7 @@ import { currentScriptReview, recordFailedReview, scriptReviewPath, scriptReview
 import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, checkScript, factualHash, hookLimit, wordBudget, type SeriesData } from "./script-check.ts";
 import { newStoryboard, readStoryboard, storyboardApproved, storyboardPath, writeStoryboard, type CaptionSettings } from "./storyboard.ts";
 
-export const STEPS = ["idea", "research", "script", "review", "factcheck", "footage", "paint", "voice", "render", "qa"] as const;
+export const STEPS = ["idea", "research", "script", "review", "factcheck", "footage", "paint", "voice", "motion", "render", "qa"] as const;
 export type StepName = (typeof STEPS)[number];
 
 export interface EpisodeState {
@@ -299,9 +299,25 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
   }
   log(`• voice: ${voice.duration.toFixed(2)}s, ${voice.words} words${voice.regenerated ? "" : " (cached)"}`);
 
+  // 4b. Moving shots (render-themed with a world): each painted shot becomes a clip as long as it is on screen.
+  let motionChanged = false;
+  if (series.skills.render.includes("render-themed")) {
+    const { loadChannelTheme, buildProps } = await import("../render/render-episode.ts");
+    if (loadChannelTheme(channel.dir, channel.slug).world) {
+      const { runAnimate } = await import("../skills/render-themed/animate.ts");
+      // The timeline without clips: what the clips are cut to.
+      const { shotClips: _old, ...props } = buildProps(ws, ep, script);
+      const motion = await runAnimate(ws, ep, script, props, { log }).finally(() => commitPaths(ws, [join(ep.dir, "shots")], `${channel.slug}: moving shots for ${ep.state.id}`));
+      motionChanged = motion.regenerated;
+      const count = Object.keys(motion.clips).length;
+      if (!done("motion") || motion.regenerated) mark(ep, "motion", "done", `${count} clips, $${motion.spentUsd.toFixed(2)} spent${motion.fake ? " (PLACEHOLDERS)" : ""}`);
+      log(`• motion: ${count} clips, $${motion.spentUsd.toFixed(2)} spent${motion.fake ? " — placeholders, not real clips" : motion.regenerated ? "" : " (cached)"}`);
+    }
+  }
+
   // 5. Render
   const { renderEpisode } = await import("../render/render-episode.ts");
-  const render = await renderEpisode(ws, ep, script, { force: redo.has("render") || voice.regenerated, log });
+  const render = await renderEpisode(ws, ep, script, { force: redo.has("render") || voice.regenerated || motionChanged, log });
   if (!done("render") || render.regenerated) {
     mark(ep, "render", "done", ws.rel(render.output));
     commitPaths(ws, [join(ep.dir, "render.json"), join(ep.dir, "captions-render.json"), join(ep.dir, "qa"), join(ep.dir, "episode.json")], `${channel.slug}: render for ${ep.state.id}`);
