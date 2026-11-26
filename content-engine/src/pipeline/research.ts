@@ -105,6 +105,59 @@ export function claimsOutsideDossier(script: Pick<Script, "claims">, dossier: Do
     .map((c) => `claim ${c.id} cites "${c.source}", which is not a source in research.json: cite the source of the dossier fact it comes from, or cut the claim`);
 }
 
+/** Text compared for quotes: letters and digits only, lower case, single spaces (markup, punctuation and quote styles don't count). */
+export function comparableText(text: string): string {
+  return text.normalize("NFKC").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+}
+
+const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", ldquo: "“", rdquo: "”", lsquo: "‘", rsquo: "’", mdash: "—", ndash: "–", hellip: "…" };
+
+/** The words a person reads on an HTML page: scripts, styles and tags removed, entities decoded. */
+export function pageText(html: string): string {
+  return html
+    .replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e: string) =>
+      e[0] === "#" ? String.fromCodePoint(e[1].toLowerCase() === "x" ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10)) : (ENTITIES[e.toLowerCase()] ?? m),
+    );
+}
+
+/**
+ * Facts whose quote isn't on the page they cite. Each page is opened once; a page that can't be opened, or isn't a
+ * web page (a PDF), can't back a quote, so its facts are problems too. A quote cut with "…" must have every part on the page.
+ */
+export async function quoteProblems(facts: DossierFact[]): Promise<string[]> {
+  const sources = [...new Set(facts.map((f) => f.source.trim()))];
+  const pages = new Map(
+    await Promise.all(
+      sources.map(async (url): Promise<[string, { text: string } | { problem: string }]> => {
+        let res: Response;
+        try {
+          res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 (compatible; content-engine research check)", accept: "text/html,*/*" }, signal: AbortSignal.timeout(20_000) });
+        } catch (e) {
+          return [url, { problem: `could not be opened (${(e as Error).message})` }];
+        }
+        if (!res.ok) return [url, { problem: `could not be opened (status ${res.status})` }];
+        const type = res.headers.get("content-type") ?? "";
+        if (!/html|text\/plain|xml/i.test(type)) return [url, { problem: `is not a web page (${type || "no content type"}), so its words can't be checked: cite the web page that has them (a paper's abstract page, for one)` }];
+        return [url, { text: comparableText(pageText(await res.text())) }];
+      }),
+    ),
+  );
+  const problems: string[] = [];
+  for (const f of facts) {
+    const page = pages.get(f.source.trim())!;
+    if ("problem" in page) {
+      problems.push(`fact ${f.id}: its source ${f.source} ${page.problem}. Use a page that opens and says it, or move the fact to "unverified"`);
+      continue;
+    }
+    const parts = f.quote.split(/\.\.\.|…/).map(comparableText).filter(Boolean);
+    if (!parts.length || parts.some((p) => !page.text.includes(p)))
+      problems.push(`fact ${f.id}: the quote "${f.quote}" is not on ${f.source}. Copy the words exactly as that page has them, cite the page that says them, or move the fact to "unverified"`);
+  }
+  return problems;
+}
+
 /**
  * The research task: the house rules, this channel's files and the idea. It looks the story up; it writes no script.
  * `rewriteScript`: a script already exists (the research is being redone), so the next command writes it again.
@@ -136,7 +189,8 @@ anyone writes a line of it. The script will be written from what you find and no
 
 Rules:
 1. Open every page you use. Each fact is one sentence, with \`source\` the https address of that page and \`quote\`
-   the words on it that say this, copied exactly. Prefer the original paper, the institution, a museum or an
+   the words on it that say this, copied exactly: the engine opens each page and looks for the quote on it. Cite web
+   pages, not PDFs (a paper's abstract page, not its PDF). Prefer the original paper, the institution, a museum or an
    encyclopedia over a blog or a list.
 2. Never write a fact from memory. If you can't find a page that says it, it goes in \`unverified\`, not \`facts\`.
 3. Put the popular versions of the story that the sources don't back in \`unverified\` too (a wrong date, a person
@@ -170,6 +224,10 @@ person, event and the turn list the ids of the facts that back them.
     outputs: [{ path, format: "json", description: "the research dossier" }],
     next: `./engine make episode --channel ${ch.slug} --series ${ep.series} --episode ${ep.state.id}${rewriteScript ? " --redo script" : ""}`,
     research: { maxSearches: 12 },
-    check: () => dossierErrors(readJson(path), idea.id),
+    // The shape first; then every quote is looked for on its page, so a fact can't come from memory with a quote attached.
+    check: async () => {
+      const errors = dossierErrors(readJson(path), idea.id);
+      return errors.length ? errors : quoteProblems(readJson<Dossier>(path).facts);
+    },
   };
 }

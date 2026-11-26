@@ -9,9 +9,9 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 | # | Step | Who | Writes | Gate |
 |---|---|---|---|---|
 | 1 | **Idea** | engine | `episode.json`; idea → `used` in ideas.md | needs a `new` idea for the series |
-| 1b | **Research** | agent (or `--llm anthropic` / `--llm gemini`, with web search) | `tasks/research.md` → `research.json` | must pass the dossier checks (a named person, ≥3 events in order, every fact with its https source and the exact quote) |
+| 1b | **Research** | agent (or `--llm anthropic` / `--llm gemini`, with web search) | `tasks/research.md` → `research.json` | must pass the dossier checks (a named person, ≥3 events in order, every fact with its https source and the exact quote; with an API writer, each quote must be on its page) |
 | 2 | **Script** | agent (or `--llm anthropic` / `gemini`) | `tasks/script.md` (context bundle) → `script.json` | must pass `script/v1` + series checks; every claim cites a source in `research.json` |
-| 2b | **Script review** | agent (or `--llm anthropic` / `gemini`) | `tasks/script-review.md` → `script-review.json` | must pass; bound to the exact script.json. Skipped where review findings don't block (the storefront) |
+| 2b | **Script review** | agent (or `--llm anthropic` / `gemini`) | `tasks/script-review.md` → `script-review.json` | must pass; bound to the exact script.json. An API writer fixes a fail itself (up to 2 rewrites); on the storefront what's left after that is a note |
 | 3 | **Fact-check** | engine lists, **person approves** | `factcheck.md` | **STOP until approved**; bound to the script's words and numbers |
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
 | 4 | **Voice** | engine (Kokoro, local; or cut from the Veo clips) | `audio/voice.wav`, `audio/timings.json`, `audio/envelope.json` | — |
@@ -29,7 +29,9 @@ the series file and the idea; it writes `research.json`: the question the video 
 sentence with the https address of the page it came from and the exact words on that page), the **people** with
 something at stake (by name: who actually noticed or acted), the **timeline** in order with the why of each
 surprising act, the **turn**, the **key objects** the viewer has to see, and what it could **not** verify
-(including popular versions of the story the sources don't back). Nothing is written from memory.
+(including popular versions of the story the sources don't back). Nothing is written from memory. With an API
+writer (`--llm anthropic` / `gemini`, and the storefront), the engine opens every cited page and looks for each quote
+on it; a quote that isn't there, a page that won't open or a PDF goes back to the writer to fix.
 `--redo research` looks it up again and then writes the script again from the new dossier. Episodes whose script
 was written before this step have no dossier and keep going without one.
 
@@ -51,7 +53,10 @@ preaching, no pun)? Only those six fail a script. It writes `script-review.json`
 fix), bound to the exact `script.json`. A fail stops the episode until the script is fixed; any change to the script is
 reviewed again. Each fail is kept in `script-review-history.json`, and the next reviewer reads them: it may not ask to
 undo a fix an earlier review asked for (unless that fix broke one of the six rules). It also reads `research.json` (a
-fix only uses facts in it) and the series' word budget, which every fix must stay inside.
+fix only uses facts in it) and the series' word budget, which every fix must stay inside. With an API writer the
+script goes back to it with the review's findings and is reviewed again, up to 2 times, before a fail stops the
+episode; the agent fixes it by hand. On a customer's video (the storefront) what is still wrong after those rewrites
+is kept as notes and the episode goes on to the fact-check, where the customer reads it.
 
 ## 3. Fact-check (hard stop)
 The engine writes `factcheck.md`: every claim with its source and, from the dossier, the exact words that source

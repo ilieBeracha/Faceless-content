@@ -35,8 +35,8 @@ export interface Task {
   outputs: TaskOutput[];
   /** Command to run once the output exists. */
   next: string;
-  /** Optional check of a produced output; returns problems to send back to the model. */
-  check?: () => string[];
+  /** Optional check of a produced output; returns problems to send back to the model. It may open web pages. */
+  check?: () => string[] | Promise<string[]>;
   /** Existing files (absolute paths) this task is allowed to replace, e.g. placeholders it fills in. */
   replaceable?: string[];
   /**
@@ -175,7 +175,7 @@ async function runWithGeminiApi(ws: Workspace, task: Task): Promise<void> {
 
     writeResponse(ws, task, single, text);
 
-    const problems = task.check?.() ?? [];
+    const problems = (await task.check?.()) ?? [];
     if (!problems.length) return;
     if (attempt === 3) throw new EngineError(`The output for "${task.title}" still has problems after 3 attempts:\n  - ${problems.join("\n  - ")}`);
     // The model's turn goes back as it came (with its thought signatures), then the problems.
@@ -228,7 +228,7 @@ async function runWithClaudeApi(ws: Workspace, task: Task): Promise<void> {
 
     writeResponse(ws, task, single, text);
 
-    const problems = task.check?.() ?? [];
+    const problems = (await task.check?.()) ?? [];
     if (!problems.length) return;
     if (attempt === 3) throw new EngineError(`The output for "${task.title}" still has problems after 3 attempts:\n  - ${problems.join("\n  - ")}`);
     messages.push({ role: "assistant", content: message.content });
