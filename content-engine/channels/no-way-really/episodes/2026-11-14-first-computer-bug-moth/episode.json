@@ -1,0 +1,41 @@
+{
+  "id": "2026-11-14-first-computer-bug-moth",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "idea": "first-computer-bug-moth",
+  "title": "The first computer bug was a real moth",
+  "created": "2026-11-14T19:31:02Z",
+  "updated": "2026-11-15T18:32:44Z",
+  "status": "done",
+  "steps": {
+    "idea": {
+      "status": "done",
+      "at": "2026-11-14T19:31:02Z",
+      "note": "The first computer bug was a real moth"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-11-14T19:32:34Z"
+    },
+    "factcheck": {
+      "status": "done",
+      "at": "2026-11-15T14:07:40Z",
+      "note": "approved by ilieBeracha"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-15T14:09:48Z",
+      "note": "32.70s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-11-15T18:29:52Z",
+      "note": "out/no-way-really/2026-11-14-first-computer-bug-moth.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-11-15T18:32:44Z",
+      "note": "all checks passed"
+    }
+  }
+}

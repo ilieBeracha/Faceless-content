@@ -1,0 +1,42 @@
+{
+  "task": "research",
+  "title": "Research the story for 2026-11-25-wine-experts-fooled-by-dye",
+  "purpose": "research",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "created": "2026-11-25T20:21:46Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "channels/no-way-really/channel.md",
+      "role": "channel",
+      "sha256": "5b1cfdf00c367452714f94a3618335013e7434bf17f7b1a80ba9f47cf9008ba6",
+      "bytes": 3958
+    },
+    {
+      "path": "channels/no-way-really/series/wait-what.md",
+      "role": "channel",
+      "sha256": "45fff5399490dc3560c44e0e4828be4aa4c1858af61c0a378a947adc9ae66722",
+      "bytes": 3777
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "fb0dba8926948386963035dce0690ef6a184b52d17d9d67bc79c16a37cb52a68",
+      "bytes": 236
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/research.json",
+      "format": "json",
+      "description": "the research dossier"
+    }
+  ],
+  "next": "./engine make episode --channel no-way-really --series wait-what --episode 2026-11-25-wine-experts-fooled-by-dye"
+}

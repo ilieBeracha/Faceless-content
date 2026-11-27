@@ -1,0 +1,247 @@
+{
+  "schema": "script/v1",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "idea": "saturn-s-hexagon-storm-up-close",
+  "title": "Saturn's hexagon storm, reviewed",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly-space",
+      "voiceover": "A hexagon. On Saturn. And I'm floating right above it.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "inside a dim, sleek budget spacecraft cabin; through the giant round window behind her, Saturn's north pole: a golden hexagon of cloud with exactly six straight sides and a blue spiral storm at its centre; warm golden light rims her hair and cheek",
+            "action": "floating weightless in the dim cabin, eyes wide, a slow awed smile, curls drifting",
+            "line": "A hexagon. On Saturn. And I'm floating right above it.",
+            "sound": "the low hum of the spacecraft cabin",
+            "expression": "excited"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      },
+      "on_screen_text": "Saturn's hexagon"
+    },
+    {
+      "id": "arrival",
+      "speaker": "tilly-space",
+      "voiceover": "We're over a billion kilometres from home, above Saturn's north pole. No landing, by the way. Saturn has no solid surface to stand on.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "establishing",
+            "place": "far out in space, a tiny white tourist spacecraft, just a small glint with one lit window, glides over the vast curved golden horizon of the planet Saturn, its bright rings stretching away into the distance, black starry sky above",
+            "action": "a slow, graceful tracking move alongside the tiny spacecraft as Saturn's horizon slides past below",
+            "line": "We're over a billion kilometres from home, above Saturn's north pole.",
+            "sound": "a faint deep rumble"
+          },
+          {
+            "camera": "silhouette",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; Saturn's banded golden cloud tops fill the whole window in front of her",
+            "action": "slowly pushes in past her shoulders toward the window as she gives a small shrug",
+            "line": "No landing, by the way. Saturn has no solid surface to stand on.",
+            "sound": "the low hum of the spacecraft cabin"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "tour",
+      "speaker": "tilly-space",
+      "voiceover": "First, the shape. A six-sided storm, and each side is wider than Earth. The wind racing along its edge? Over three hundred kilometres an hour. And it's not new. Voyager spotted it in the early eighties. Cassini found it still there, decades later.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "establishing",
+            "place": "seen from high above, Saturn's north pole: a huge golden hexagon of cloud circling the pole, with exactly six long straight sides and six sharp corners, a deep blue spiral storm at its centre, the planet's curve falling away into black space",
+            "action": "a slow crane down toward the hexagon so its six straight sides fill the frame",
+            "line": "First, the shape. A six-sided storm, and each side is wider than Earth.",
+            "sound": "a faint deep rumble"
+          },
+          {
+            "camera": "establishing",
+            "place": "racing along one straight edge of Saturn's golden hexagon: a fast jet stream of cloud streaks with darker and lighter bands on either side, lit by low golden sunlight",
+            "action": "tracks fast and low along the racing clouds of the edge",
+            "line": "The wind racing along its edge? Over three hundred kilometres an hour.",
+            "sound": "a faint deep rumble"
+          },
+          {
+            "camera": "establishing",
+            "place": "the whole planet Saturn from space, the golden six-sided hexagon on its north pole, the bright rings sweeping across the frame, stars in the black",
+            "action": "a slow pull back that reveals the whole planet and its rings",
+            "line": "And it's not new. Voyager spotted it in the early eighties. Cassini found it still there, decades later.",
+            "sound": "a faint deep rumble"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "catch",
+      "speaker": "tilly-space",
+      "voiceover": "The catch? Nobody's totally sure why it has six sides. Lab tanks of spinning water make shapes like it. And the south pole? No hexagon. Weird.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; the golden glow of Saturn through the window lights one side of her face",
+            "action": "leaning slightly toward the lens, eyebrows raised, speaking quietly",
+            "line": "The catch? Nobody's totally sure why it has six sides.",
+            "sound": "the low hum of the spacecraft cabin",
+            "expression": "curious"
+          },
+          {
+            "camera": "establishing",
+            "place": "the deep blue spiral storm at the exact centre of Saturn's hexagon seen from straight above: pale golden and cream cloud bands spiralling into a small dark blue-grey eye, no oceans, no land",
+            "action": "a slow rotating push-in toward the eye of the storm",
+            "line": "Lab tanks of spinning water make shapes like it.",
+            "sound": "a faint deep rumble"
+          },
+          {
+            "camera": "silhouette",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; through the window, the pale curve of Saturn's southern half and the rings",
+            "action": "holds still as she tilts her head at the view",
+            "line": "And the south pole? No hexagon. Weird.",
+            "sound": "the low hum of the spacecraft cabin"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "rating",
+      "speaker": "tilly-space",
+      "voiceover": "Okay, review time. View, five out of five. Snacks, one out of five. The universe makes hexagons for fun. I'm obsessed.",
+      "visual": {
+        "skill": "render-ai-video",
+        "shots": [
+          {
+            "camera": "closeup",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin with a huge round panoramic window; a squashed silver foil snack pouch floats beside her face, Saturn's golden glow behind her",
+            "action": "holding up five fingers with a grin, then frowning at the floating snack pouch",
+            "line": "Okay, review time. View, five out of five. Snacks, one out of five.",
+            "sound": "the low hum of the spacecraft cabin",
+            "expression": "excited"
+          },
+          {
+            "camera": "silhouette",
+            "place": "inside a dim, sleek but slightly worn budget tourist spacecraft cabin; the whole pale-golden planet Saturn with its bright rings fills the giant round window in front of her, a small golden hexagon visible on its north pole",
+            "action": "a slow, steady pull back that leaves her a tiny figure against the glowing planet",
+            "line": "The universe makes hexagons for fun. I'm obsessed.",
+            "sound": "the low hum of the spacecraft cabin"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-ai-video": {
+      "world": "Saturn, seen from a small budget tourist spacecraft in a high orbit above its north pole during northern summer: dim, warm sunlight, the black of space",
+      "look": "cinematic sci-fi film, large-format cinema camera with anamorphic lenses, dramatic rim light, soft volumetric haze in the cabin, deep blacks, rich amber and teal colour",
+      "grade": "cinematic",
+      "score": "space-drone"
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Saturn has a long-lasting six-sided (hexagonal) cloud pattern around its north pole.",
+      "beat": "hook",
+      "source": "https://en.wikipedia.org/wiki/Saturn%27s_hexagon ; NASA/JPL, 'Saturn's Mysterious Hexagon Emerges From Winter Darkness' (2009), https://www.jpl.nasa.gov/news/saturns-mysterious-hexagon-emerges-from-winter-darkness/",
+      "confidence": "high",
+      "note": "Also the on-screen hook text 'Saturn's hexagon'. The hexagon sits at about 78° N."
+    },
+    {
+      "id": "c2",
+      "claim": "Saturn is more than a billion kilometres from Earth.",
+      "beat": "arrival",
+      "source": "NASA Saturn facts (about 1.4 billion km from the Sun), https://science.nasa.gov/saturn/facts/ ; ESA Facts about Saturn",
+      "confidence": "high",
+      "note": "Earth–Saturn distance varies from roughly 1.2 to 1.7 billion km; 'over a billion' is true at all times."
+    },
+    {
+      "id": "c3",
+      "claim": "Saturn is a gas giant with no solid surface to stand on.",
+      "beat": "arrival",
+      "source": "NASA Solar System Exploration, Saturn: 'As a gas giant, Saturn doesn't have a true surface', https://science.nasa.gov/saturn/facts/ ; ESA Facts about Saturn",
+      "confidence": "high",
+      "note": "It may have a solid core deep inside, but nothing a visitor could land on."
+    },
+    {
+      "id": "c4",
+      "claim": "Each side of the hexagon is longer than Earth's diameter (about 13,800–14,500 km per side vs Earth's 12,742 km).",
+      "beat": "tour",
+      "source": "https://en.wikipedia.org/wiki/Saturn%27s_hexagon (sides about 14,500 km) ; Astronomy magazine, 'Weird object: Hexagon on Saturn' (2015), https://www.astronomy.com/science/weird-object-hexagon-on-saturn/ (13,800 km)",
+      "confidence": "high",
+      "note": "Sources give 13,800 or 14,500 km per side; both exceed Earth's diameter, so the line says only 'wider than Earth'."
+    },
+    {
+      "id": "c5",
+      "claim": "The jet stream along the hexagon blows at roughly 100 metres per second, over 300 km/h.",
+      "beat": "tour",
+      "source": "NASA/JPL (2009) hexagon release: jet stream at about 100 m/s (220 mph), https://www.jpl.nasa.gov/news/saturns-mysterious-hexagon-emerges-from-winter-darkness/ ; Space.com, https://www.space.com/7651-saturn-weird-hexagon-images.html",
+      "confidence": "high",
+      "note": "100 m/s = 360 km/h, 220 mph = 354 km/h; said conservatively as 'over three hundred kilometres an hour'."
+    },
+    {
+      "id": "c6",
+      "claim": "The hexagon was discovered in Voyager images in the early 1980s, and NASA's Cassini spacecraft imaged it again decades later.",
+      "beat": "tour",
+      "source": "NASA/JPL (2009): 'originally discovered in images taken by the Voyager spacecraft in the early 1980s' and Cassini's matching images, https://www.jpl.nasa.gov/news/saturns-mysterious-hexagon-emerges-from-winter-darkness/",
+      "confidence": "high",
+      "note": "Voyager flybys 1980–81; Cassini observed it 2006–2017."
+    },
+    {
+      "id": "c7",
+      "claim": "Scientists are not fully sure why the hexagon has six sides; spinning-water lab experiments produce similar polygon shapes.",
+      "beat": "catch",
+      "source": "Barbosa Aguiar, Read et al., 'A laboratory model of Saturn's North Polar Hexagon', Icarus 206 (2010); Smithsonian Magazine, https://www.smithsonianmag.com/science-nature/saturns-polar-hexagon-26686194/ ; Rostami et al., Icarus 297 (2017): 'not enough convincing dynamical explanation', https://web.lmd.jussieu.fr/~aspiga/pub/REF/2017Icar..297...59R.pdf",
+      "confidence": "high",
+      "note": "A meandering jet stream is the leading explanation, but it is debated; said as 'nobody's totally sure'."
+    },
+    {
+      "id": "c8",
+      "claim": "Saturn's south pole has no matching hexagon.",
+      "beat": "catch",
+      "source": "Rostami et al., Icarus 297 (2017) on 'the absence of its counterpart at Saturn's South pole', https://web.lmd.jussieu.fr/~aspiga/pub/REF/2017Icar..297...59R.pdf ; https://en.wikipedia.org/wiki/Saturn%27s_hexagon",
+      "confidence": "high",
+      "note": "The south pole has a large polar vortex (hurricane-like storm), but no hexagon."
+    }
+  ],
+  "pronunciations": {},
+  "publish": {
+    "title": "I floated over Saturn's hexagon",
+    "description": "A six-sided storm, each side wider than Earth, winds over 300 km/h, and nobody is totally sure why it's a hexagon. Tilly reviews Saturn's north pole.",
+    "hashtags": [
+      "#saturn",
+      "#space",
+      "#hexagon",
+      "#astronomy",
+      "#shorts"
+    ]
+  }
+}

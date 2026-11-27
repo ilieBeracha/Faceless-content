@@ -1,0 +1,23 @@
+{
+  "name": "Arcade",
+  "paper": "#12002b",
+  "card": "#24104f",
+  "ink": "#ffffff",
+  "text": "#ffffff",
+  "colors": [
+    "#00f5d4",
+    "#fee440",
+    "#f15bb5"
+  ],
+  "accent": "#fee440",
+  "display": [
+    "space-grotesk"
+  ],
+  "body": "space-grotesk",
+  "casing": "upper",
+  "surface": "glow",
+  "backdrop": "grid",
+  "texture": "none",
+  "motion": "snappy",
+  "art": "flat"
+}

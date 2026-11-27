@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-11-24-microwave-oven-signal",
+  "purpose": "script",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "created": "2026-11-24T19:24:35Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "05ffa8c6c4d25611e58cf8f38c5d4a44ef625570c85c22c143f1c3cdb9bba752",
+      "bytes": 4779
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "4b2a28c8c85bc04a92f70d2d38c19dcf641598f30b95499a088f2e2756bb95e0",
+      "bytes": 4085
+    },
+    {
+      "path": "channels/cosmic-footnotes/series/tiny-clue-big-deal.md",
+      "role": "channel",
+      "sha256": "33e76ef050c371308b3922b8db0d032b09911dd13cdc07a769305a1262fd3b51",
+      "bytes": 3478
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori.md",
+      "role": "channel",
+      "sha256": "eec7ad49aa635481ecab9377564a8a64aa1e51fb9c970ccee2787ab5752fea35",
+      "bytes": 2854
+    },
+    {
+      "path": "channels/cosmic-footnotes/characters/ori/model.json",
+      "role": "channel",
+      "sha256": "98a16681a12345133a2a3f62eaeeeaf414e5c744bc4c3eb4e614aad7fbc13683",
+      "bytes": 967
+    },
+    {
+      "path": "channels/cosmic-footnotes/learnings.md",
+      "role": "channel",
+      "sha256": "aaaa6b4ed9f1d13f730be4ec469fe1738db6dc80a169223b932371f8154b0dce",
+      "bytes": 739
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "2034bac18e34bf3ad773f98f1d236589168a28596d490fc7b63fc40408146e02",
+      "bytes": 7629
+    },
+    {
+      "path": "skills/render-storybook/SKILL.md",
+      "role": "skill",
+      "sha256": "f361ee44295bf2c87b897dfd79a5b4a4ffedf51cfaebdc18b3840bb2e94e7854",
+      "bytes": 9041
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "dcd4f71fab322043bdb8e874877fc297c25667040cce9dbe45c13da75f1de7e5",
+      "bytes": 2207
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "2bc56402b31619c1650d0013d8eee40fa93284e576950179c4246847c449c744",
+      "bytes": 226
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-11-24-microwave-oven-signal/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel cosmic-footnotes --series tiny-clue-big-deal"
+}

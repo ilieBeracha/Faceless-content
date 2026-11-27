@@ -19,12 +19,15 @@ never overwritten.
 1. **Engine** creates `channels/<slug>/` with `channel.md` (the annotated template; `status: draft`),
    `ideas.md`, `learnings.md`, and the agent task `channels/<slug>/tasks/draft-channel.md`. It commits.
 2. **Agent** reads only that task file and writes, inside `channels/<slug>/`:
-   - `channel.md` — every field, plus the Promise section.
+   - `channel.md` — every field, plus the Promise, **Belief** (the one idea every video argues) and **What the
+     viewer gets** (what a viewer understands from every video, shown by the story, never preached) sections. A topic is not a belief.
    - `characters/<name>.md` + `characters/<name>/model.json` — an original character; the rig and
      parameters come from `skills/render-talking-character/SKILL.md`. Expressions: at least `neutral`,
      `curious`, `excited`.
-   - `series/<slug>.md` — beats that add up to the length; `skills.render` only from existing render skills.
-   - `ideas.md` — exactly 10 ideas, status `new`, each with a one-line angle.
+   - `series/<slug>.md` — beats that add up to the length, shaped as a story with a point (hook → setup →
+     stakes → turn → ending on what happened, adapted to the series); `skills.render` only from existing render skills.
+   - `ideas.md` — exactly 10 ideas, status `new`, each with a one-line angle and a `point` (what this story
+     argues for the channel's Belief, and why a viewer would care).
 3. **Agent** runs `./engine validate --channel <slug>` until it reports no errors, then summarises the
    channel for the person (niche, audience, character, series, the 10 ideas) and asks for approval.
 4. **Person** reviews and edits whatever they like (`./engine edit channel --channel <slug>` etc.).

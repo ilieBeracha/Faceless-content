@@ -1,0 +1,78 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-10-16-enceladus-ice-geysers",
+  "purpose": "script",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "created": "2026-10-16T16:05:42Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/time-tourist/channel.md",
+      "role": "channel",
+      "sha256": "2f8df1f178a8b5ecd605167ec9fc1ed07e79e07a0169b29560718730c7700202",
+      "bytes": 3796
+    },
+    {
+      "path": "channels/time-tourist/series/rated-space.md",
+      "role": "channel",
+      "sha256": "3a9406fb8c02fa8f610954c74472883212ccf06fbeb98b863efc2798a7e379f3",
+      "bytes": 4665
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly-space.md",
+      "role": "channel",
+      "sha256": "699f14a596283f44492ea1e743d756fdd139dc34e923088ea4ca5992370d123c",
+      "bytes": 2902
+    },
+    {
+      "path": "channels/time-tourist/characters/tilly-space/model.json",
+      "role": "channel",
+      "sha256": "7e79e3fa3ac3c9d7affe78298a3a0eb11a2f4462cad0021696c3e84f1d65ee50",
+      "bytes": 1063
+    },
+    {
+      "path": "channels/time-tourist/learnings.md",
+      "role": "channel",
+      "sha256": "957ed097a1197395259a5d8dd751bf3b7f3e6cd45550ccd38e4fd76d353abfc6",
+      "bytes": 3264
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-ai-video/SKILL.md",
+      "role": "skill",
+      "sha256": "0db3e465831ffd6e2c63ab0b7486ab3a5539aa3a634607104d9cf0fe983e9fab",
+      "bytes": 8577
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "797c4c7493cdf911948bcc42f7b983869cae91edfb373464d858d5cc77cc7e62",
+      "bytes": 76
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/time-tourist/episodes/2026-10-16-enceladus-ice-geysers/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel time-tourist --series rated-space"
+}

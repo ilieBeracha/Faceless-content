@@ -8,7 +8,8 @@ description: Realistic footage - a photoreal fictional presenter filmed selfie-v
 # Skill: render-ai-video
 
 A scene skill for **realistic** videos. Every beat is 1–4 **shots**. In each shot the series' photoreal character
-says one line straight into the camera, lip-synced, with the place's real sound around them. The engine turns
+says one line, with the place's real sound around them: either straight into the camera (lip-synced), or from
+behind the phone while it films what they are talking about (`camera: "pov"`). The engine turns
 your shot descriptions into prompts:
 
 1. a first frame per shot, made by a Gemini image model from the character's approved face photos;
@@ -52,7 +53,11 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
 ```jsonc
 {
   "world": "Rome, 216 AD, the Baths of Caracalla on a hot summer afternoon",   // era, place, season, light
-  "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field"  // optional
+  "look": "handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field",  // optional
+  "grade": "natural",     // optional: "cinematic" adds a film grade, vignette, grain and a slow push-in per shot
+  "score": "none",        // optional: "space-drone" lays a generated ambient music bed under the voice (free) instead of the video's made-for-it music
+  "direction": "vlog",    // optional: "documentary" = calm, natural acting and strictly photoreal, unstylised visuals
+  "wardrobe": "…"         // optional: this episode's outfit (e.g. a pressure suit); the face stays the same
 }
 ```
 
@@ -63,7 +68,8 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
   "skill": "render-ai-video",
   "shots": [
     {
-      "camera": "selfie",            // selfie | selfie-walk | over-shoulder | wide
+      "camera": "selfie",            // vlog: selfie | selfie-walk | over-shoulder | wide | pov
+                                     // film: closeup | establishing | silhouette | first-person | on-location
       "place": "the vast frigidarium hall: marble columns, a coffered vaulted ceiling, a cold plunge pool, bathers in tunics",
       "action": "turning slowly so the hall fills the frame behind her",
       "line": "This is the cold room.", // EXACTLY the words said in this shot
@@ -80,8 +86,25 @@ capped at `ai_video.identity_budget_usd` per character); a person picks one with
 - **Lines:** the shots' `line`s, joined with spaces, must be exactly the beat's `voiceover` (the engine checks).
   One or two short sentences per shot, **≤ 18 words** (a clip lasts at most 8 s). No double quotes inside a
   line. Shorter lines get shorter, cheaper clips (4 s ≈ up to 7 words, 6 s ≈ 12, 8 s ≈ 18).
-- **Hook:** the first shot's line starts with the hook sentence (≤ 5 words). Put the hook text in the first
-  beat's `on_screen_text`. It is shown as a headline at the top, so keep it short.
+- **Hook:** the first shot's line starts with the hook sentence (no longer than the word limit the task gives). The captions show it from the
+  first frame; there is no headline.
+- **Show the thing, not just the face:** whenever a line is about something you can see (a room, an object,
+  a view, a crowd), use `camera: "pov"`: the phone turns around and films it while the character narrates off
+  screen. In a pov shot `place` is what fills the frame and `action` is what the camera does ("slowly tilts up
+  to the vaulted ceiling", "pans across the pool", "her hand holds up the coin"). Aim for **about half the shots
+  as pov**; keep the hook and the rating on camera so the audience knows who is talking.
+- **Cinematic episodes** (a series whose visual style says film, not vlog): use the film cameras.
+  `closeup` = the character talks to the lens like a documentary host (slow dolly push-in, rim light);
+  `establishing` = the wonder itself at epic scale with a slow dolly/orbit/crane move, narrated off screen;
+  `silhouette` = the character small and seen from behind against the view, narrated as a voice-over;
+  `first-person` = through the character's own eyes, physically inside the scene (gloved hands may reach in);
+  `on-location` = a camera operator films the character standing in the place itself, not behind glass.
+  Mix them like a trailer: open on a striking close-up, then alternate establishing and silhouette shots, and
+  return to a close-up for the verdict. Set `look` to a film look ("cinematic sci-fi film, anamorphic lens,
+  dramatic rim light, volumetric haze, deep blacks"), `grade: "cinematic"` and a `score`.
+- **Voice-over shots** (`establishing`, `first-person`, `pov`): Veo sometimes invents a presenter to "say" the
+  narration. Start the shot's `place` with "no people, no faces and no presenter anywhere in the picture" and
+  end its `action` with "the narration is a voice-over and nobody is ever shown".
 - **Pacing:** 8–12 shots per 45–55 s episode. Change the place or camera every shot: a new room, a new angle,
   walking somewhere. Jump cuts between shots are normal in vlogs.
 - **Places:** concrete, visible things, period-accurate: materials, light, crowd, weather. Never ask for

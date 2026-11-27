@@ -3,9 +3,34 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { createChannel, createCharacter, createSeries, defaultModel } from "../core/scaffold.ts";
 import { appendIdeaBlocks, renderIdeas } from "../core/ideas.ts";
-import { readText, today, writeText } from "../core/util.ts";
+import { readText, today, writeJson, writeText } from "../core/util.ts";
+import { scriptReviewHash } from "../pipeline/script-review.ts";
 import { ENGINE_DIR, Workspace } from "../core/workspace.ts";
 import type { Script } from "../skills/write-script/schema.ts";
+
+/** A research dossier for the test channel's pen idea; its one source is the one sampleScript's claim cites. */
+export function writeDossier(epDir: string, idea = "a-ballpoint-pen"): void {
+  const source = "https://example.org/ballpoint";
+  writeJson(join(epDir, "research.json"), {
+    idea,
+    question: "Why doesn't a ballpoint pen leak?",
+    facts: [{ id: "f1", fact: "A ballpoint pen's tip holds a small metal ball.", source, quote: "the tip holds a small metal ball" }],
+    people: [{ name: "László Bíró", role: "newspaper editor", stake: "his fountain pens smudged every page", facts: ["f1"] }],
+    timeline: [
+      { when: "1930s", what: "Bíró tires of smudged ink", facts: ["f1"] },
+      { when: "1938", what: "He patents a pen with a ball in the tip", why: "quick-drying ink clogged a nib", facts: ["f1"] },
+      { when: "1945", what: "Ballpoints go on sale", facts: ["f1"] },
+    ],
+    turn: { what: "The ball seals the ink in when it stops rolling", facts: ["f1"] },
+    key_objects: ["ballpoint pen", "metal ball"],
+    unverified: [],
+  });
+}
+
+/** A passing script review of exactly this script, as the reviewer would write it. */
+export function passScriptReview(epDir: string, script: object): void {
+  writeJson(join(epDir, "script-review.json"), { script_hash: scriptReviewHash(script), verdict: "pass", issues: [] });
+}
 
 /** A throwaway workspace with the real templates, skills and house rules, and git auto-commit off. */
 export function tempWorkspace(): Workspace {
@@ -30,6 +55,8 @@ export function makeChannel(ws: Workspace, slug: string, opts: { status?: "draft
     banned_topics: opts.banned ?? ["weapons", "medical advice"],
     brand: { primary_color: "#3d5afe", accent_color: "#ffb300", background_top: "#0d1b2a", background_bottom: "#1b263b", font: "montserrat" },
     promise: "Short peeks inside everyday objects.",
+    belief: "Every everyday object is a clever answer to a problem somebody once had.",
+    gets: "The one why behind something they use every day.",
   });
   createCharacter(ws, slug, {
     name: "bot",
@@ -84,6 +111,12 @@ export function sampleScript(channel: string, idea = "a-ballpoint-pen"): Script 
     series: "inside",
     idea,
     title: "Inside a pen",
+    angle: {
+      point: "A pen works because of a ball smaller than a grain of sand, not because of the ink.",
+      stakes: "Every student whose pen leaks in their pocket before an exam.",
+      turn: "The ball is a door: it only lets ink out while it rolls.",
+      takeaway: "When a pen skips, warm the tip and roll it: the door is stuck, not the ink gone.",
+    },
     language: "en",
     beats: [
       { id: "hook", speaker: "bot", voiceover: "Why doesn't your pen leak?", on_screen_text: "Why no leaks?", visual: { skill: "render-3d-explainer", shot: "establish" }, character: { placement: "full", expression: "curious" } },

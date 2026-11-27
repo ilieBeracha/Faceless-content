@@ -52,8 +52,42 @@ format with `status: proposed`:
 - series: inside-it
 - status: proposed
 - angle: How do two rows of teeth lock so tight — and why does the slider open them so easily?
+- point: The strongest grip comes from the angle, not the force — the same trick your hands miss every time you yank.
+- fact: A zip's slider is a wedge: it pushes the teeth together at an angle no tug on the cloth can copy.
+- fact_source: https://www.explainthatstuff.com/zippers.html
 - added: 2026-01-31
 ```
 
+Every idea has a `fact` (one sentence: the true, surprising fact the video turns on) and a `fact_source` (the
+https address of a solid source where a person can check that fact). The person decides on the idea from these,
+so the fact must be exactly what the source says. If you can't name a source for a fact, propose a different idea.
+
+Every idea also has a `point`: what this story argues for the channel's Belief (channel.md) and why a viewer would
+care. A true fact with no point is trivia; pick a story where someone has something at stake and the facts turn.
+
 A good idea has a question the audience already wonders about, a payoff that fits the series' length, and facts
 that can be verified from solid sources.
+
+### Ideas only this channel would make
+
+The niche says what the channel is about; the Belief, Promise and What the viewer gets (channel.md) say why it
+exists. Ideas come from the second, not the first.
+
+1. **Start from the Belief.** Before any idea, ask: what does someone who holds this Belief notice that others
+   miss? Who proves it, who got caught by it, who was wrong about it, where does it show up in the viewer's own day?
+   Find ideas there.
+2. **The other-channel test.** If any channel in the same niche could make the video as is, it isn't this
+   channel's idea. "Bananas are berries" is any trivia channel's; the story behind it, told so it argues this
+   channel's Belief, is this one's.
+3. **Skip the famous ones.** The first facts on every "top 10" list are already known and already made. Go one step
+   behind them: the person, the date, the place, the decision or the money that made the fact true.
+4. **Someone with something at stake.** A person or group who could win or lose, so the facts can turn.
+5. **No two ideas share a shape.** Mix them: someone caught out, a hidden cause, a thing the viewer owns or does
+   every day, a belief the viewer holds that turns out wrong, a number that changes meaning, an insider's trick.
+6. **The title is a hook, not a label.** Specific (a name, a number, a place) and something the viewer wants
+   answered: "The wine that beat France in a blind test", not "The 1976 Paris tasting".
+7. **The story makes the point.** It finishes the sentence "after this video, you'll know…": what happened and why
+   it mattered, a new way of seeing something. Never advice, a line to say, or a thing to try.
+
+Work it as a funnel: think of about three times as many candidates as you're asked for, cut every one that fails
+the other-channel test or repeats a shape, and write only the strongest.

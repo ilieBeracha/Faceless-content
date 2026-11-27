@@ -1,0 +1,46 @@
+{
+  "id": "2026-10-16-saturn-s-hexagon-storm-up-close",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "idea": "saturn-s-hexagon-storm-up-close",
+  "title": "Saturn's hexagon storm, reviewed",
+  "created": "2026-10-16T09:00:32Z",
+  "updated": "2026-10-16T12:32:34Z",
+  "status": "done",
+  "steps": {
+    "idea": {
+      "status": "done",
+      "at": "2026-10-16T09:00:32Z",
+      "note": "Saturn's hexagon storm, up close"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-10-16T09:02:20Z"
+    },
+    "factcheck": {
+      "status": "done",
+      "at": "2026-10-16T09:27:00Z",
+      "note": "approved by Ilie (delegated to Claude: 'decide by yourself'; hook reworded, same claims)"
+    },
+    "footage": {
+      "status": "done",
+      "at": "2026-10-16T11:14:09Z",
+      "note": "11 clips, $15.97 spent"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-16T11:14:42Z",
+      "note": "57.60s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-10-16T12:31:31Z",
+      "note": "out/time-tourist/2026-10-16-saturn-s-hexagon-storm-up-close.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-16T12:32:34Z",
+      "note": "all checks passed"
+    }
+  }
+}

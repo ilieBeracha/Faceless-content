@@ -45,7 +45,8 @@ export async function voiceFromClips(ws: Workspace, ep: EpisodeRef, script: Scri
   const missing = plan.filter((s) => !state?.shots[s.id]?.clip || !existsSync(join(fp.clips, `${s.id}.mp4`)));
   if (missing.length) throw new EngineError(`Footage is missing for ${missing.map((s) => s.id).join(", ")}.`, `Run: ./engine make episode --channel ${ep.channel.slug} --series ${ep.series}`);
 
-  const hash = sha256(canonicalJson({ v: CLIP_AUDIO_VERSION, shots: plan.map((s) => [s.id, s.beat, s.line, state!.shots[s.id].clip!.sha]), audio: cfg, fps, len: series.length }));
+  const score = ((script.visuals["render-ai-video"] ?? {}) as { score?: string }).score ?? "none";
+  const hash = sha256(canonicalJson({ v: CLIP_AUDIO_VERSION, score, shots: plan.map((s) => [s.id, s.beat, s.line, state!.shots[s.id].clip!.sha]), audio: cfg, fps, len: series.length }));
   if (!opts.force && existsSync(paths.timings) && existsSync(paths.wav) && existsSync(paths.envelope)) {
     const existing = readJson<Timings>(paths.timings);
     if (existing.hash === hash) return { duration: existing.duration, words: existing.words.length, regenerated: false };
@@ -108,7 +109,8 @@ export async function voiceFromClips(ws: Workspace, ep: EpisodeRef, script: Scri
   for (const p of pieces) mix.set(p.samples.subarray(0, Math.max(0, Math.min(p.samples.length, mix.length - p.at))), p.at);
   const rawMix = join(work, "mix-raw.wav");
   writeWavFloat(rawMix, { sampleRate: sr, samples: mix });
-  normalizeLoudness(rawMix, paths.wav, cfg.target_lufs, cfg.true_peak_max_db - 0.5, sr);
+  const mixed = score === "space-drone" ? withScore(rawMix, join(work, "mix-scored.wav"), duration, sr, work) : rawMix;
+  normalizeLoudness(mixed, paths.wav, cfg.target_lufs, cfg.true_peak_max_db - 0.5, sr);
   const loud = measureLoudness(paths.wav);
   writeJson(paths.envelope, { fps, frames, values: loudnessEnvelope(readWav(paths.wav), fps, frames) });
 
@@ -156,3 +158,36 @@ function fillWords(found: { i: number; start: number; end: number }[], count: nu
   return out;
 }
 
+/**
+ * A free, generated music bed: an open-fifth A drone (A1, E2, A2, E3, A3) with a slow swell, soft pink-noise
+ * "air" and a long echo, about 16 LU under the voice and ducked further whenever she speaks.
+ */
+export function withScore(voiceWav: string, out: string, seconds: number, sr: number, work: string): string {
+  const d = (seconds + 1).toFixed(2);
+  const drone = join(work, "score-drone.wav");
+  const tones = [55, 82.41, 110, 164.81, 220].map((f) => `sine=frequency=${f}:sample_rate=${sr}:duration=${d}`);
+  const inputs = [...tones, `anoisesrc=color=pink:amplitude=0.4:sample_rate=${sr}:duration=${d}`].flatMap((src) => ["-f", "lavfi", "-i", src]);
+  runFfmpeg(
+    [
+      "-y", ...inputs,
+      "-filter_complex",
+      `[5]lowpass=f=500,volume=0.25[air];[0][1][2][3][4][air]amix=inputs=6:weights='1 0.8 0.6 0.35 0.2 1':normalize=1,` +
+        `tremolo=f=0.12:d=0.45,aecho=0.8:0.6:700|1400:0.35|0.25,lowpass=f=1400,` +
+        `afade=t=in:d=2.5,afade=t=out:st=${Math.max(0, seconds - 2.5).toFixed(2)}:d=2.5[m]`,
+      "-map", "[m]", "-t", seconds.toFixed(3), "-ac", "1", "-ar", String(sr), "-c:a", "pcm_f32le", drone,
+    ],
+    "making the score",
+  );
+  const gain = measureLoudness(voiceWav).integratedLufs - 16 - measureLoudness(drone).integratedLufs;
+  runFfmpeg(
+    [
+      "-y", "-i", voiceWav, "-i", drone,
+      "-filter_complex",
+      `[0]asplit=2[v][key];[1]volume=${gain.toFixed(2)}dB[bed];[bed][key]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=700[duck];` +
+        `[v][duck]amix=inputs=2:weights='1 1':normalize=0[o]`,
+      "-map", "[o]", "-ac", "1", "-ar", String(sr), "-c:a", "pcm_f32le", out,
+    ],
+    "mixing the score under the voice",
+  );
+  return out;
+}

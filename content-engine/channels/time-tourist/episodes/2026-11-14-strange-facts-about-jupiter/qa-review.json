@@ -1,0 +1,28 @@
+{
+  "render_hash": "4e6abb0757f3eb2c94999127af595918cf21d4aaf14311838d61d318e88e7489",
+  "tone": {
+    "pass": true,
+    "notes": "First person, short sentences, light slang (\"ridiculous\", \"One day here?\"), Tilly's catchphrase once and a two-part rating as the closer. Casual, curious and honest; nothing mean. Fits a 13+ audience."
+  },
+  "banned_topics": {
+    "pass": true,
+    "notes": "Planetary science only. No people, deaths, violence, politics, religion or health advice; every fact is sourced to NASA, so nothing is made up. The keyword screen found nothing."
+  },
+  "visuals": {
+    "pass": true,
+    "notes": "Reviewed the 8 sampled frames plus extra frames at 2.2-4.0s, 18.5s, 24.3s, 26.5s, 27.8s, 29.0s and 34.5s. Code-drawn Jupiter on a dark starfield with a new view per fact, as the series promises; labels and captions are readable at phone size and inside the safe areas. The first render failed this check: in the tilt view the \"3°\" number sat on top of the \"spin axis\" label for the whole beat. The renderer's number position was fixed and the episode re-rendered; in this render the number sits clear above the label. Minor, not blocking: the angle counts up, so intermediate values (e.g. \"1.4°\") show for about a second before it lands on 3°; the \"11 Earths wide\" label is fully visible for under a second because the hook is short."
+  },
+  "character": {
+    "pass": true,
+    "notes": "Tilly is off screen (placement hidden) as the series requires. Lines match her file: discovers facts on the spot, \"Okay, review time.\", rating format \"Size: five out of five. Landing spots: zero.\" The voice is the Kokoro af_heart setting from her file; the audio was checked by the automated loudness and caption-sync checks, not listened to by the reviewer."
+  },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "The tilt view was first used here: for small tilts (a few degrees) the big angle number used to collide with the axis label; the renderer now lifts the number above the label, but check the tilt frame by eye on every planet.",
+    "The automated checks do not catch text overlapping other text; the reviewer must look for it in every view with two or more labels.",
+    "A two-view hook of about 4 seconds leaves the second view's label on screen for under a second; keep that label to three words or put the comparison in its own beat.",
+    "The Jupiter palette (6 tan and cream bands, glow #f0d9b5) reads clearly as Jupiter on the dark starfield.",
+    "When NASA pages disagree on a number (moon counts), leave the fact out rather than hedge; the episode did not miss it."
+  ]
+}

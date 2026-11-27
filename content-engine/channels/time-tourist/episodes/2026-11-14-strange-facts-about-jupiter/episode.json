@@ -1,0 +1,41 @@
+{
+  "id": "2026-11-14-strange-facts-about-jupiter",
+  "channel": "time-tourist",
+  "series": "strange-space",
+  "idea": "strange-facts-about-jupiter",
+  "title": "Strange facts about Jupiter",
+  "created": "2026-11-14T15:43:01Z",
+  "updated": "2026-11-14T17:21:03Z",
+  "status": "done",
+  "steps": {
+    "idea": {
+      "status": "done",
+      "at": "2026-11-14T15:43:01Z",
+      "note": "Strange facts about Jupiter"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-11-14T15:45:37Z"
+    },
+    "factcheck": {
+      "status": "done",
+      "at": "2026-11-14T17:15:03Z",
+      "note": "approved by ilieBeracha"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-14T17:15:14Z",
+      "note": "36.27s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-11-14T17:20:15Z",
+      "note": "out/time-tourist/2026-11-14-strange-facts-about-jupiter.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-11-14T17:21:03Z",
+      "note": "all checks passed"
+    }
+  }
+}

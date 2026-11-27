@@ -84,7 +84,7 @@ Run it again after each stop; it continues from the first unfinished step.
 |---|---|
 | `⏸ Waiting for the agent` | The agent opens the task file it names (e.g. `…/tasks/script.md`), writes the output, re-runs the command. |
 | `✋ STOP — human approval needed` | Read `…/factcheck.md` (every claim + source + the full transcript), then `./engine approve factcheck --channel <slug> --episode <id> --by "Your Name"`, or `./engine reject factcheck … --reason "…"`. Realistic series stop once more after the stills: read `…/footage/storyboard.md`, then `./engine approve footage … --by "Your Name"`. |
-| `✔ done` | Watch `out/<channel>/<episode>.mp4`; read `qa-report.md` and `publish.json` in the episode folder. |
+| `✔ done` | Watch `out/<channel>/<episode>.mp4` (its captions as a file: `<episode>.srt`); read `qa-report.md` and `publish.json` in the episode folder. |
 
 Options: `--idea <id>` (pick the idea), `--new` (another episode while one is open), `--episode <id>`,
 `--redo footage,voice,render,qa`.
@@ -105,7 +105,9 @@ engine writes a task file with the instructions and exactly the allowed context,
 and stops. A coding agent such as Claude Code, opened in this folder, reads `AGENTS.md` / `CLAUDE.md`, does the
 task and re-runs the command. You can simply say "make the next episode for big-numbers" and approve when asked.
 
-`--llm anthropic` makes the engine call the Claude API itself instead (paid, see below; needs `ANTHROPIC_API_KEY`).
+`--llm anthropic` makes the engine call the Claude API itself instead (paid, see below; needs `ANTHROPIC_API_KEY`);
+`--llm gemini` does the same with Google's Gemini API (paid; needs `GEMINI_API_KEY`; the model is `llm.gemini.model`).
+The storefront picks one with `STOREFRONT_LLM` (`anthropic`, the default, or `gemini`).
 
 ## The example channels
 
@@ -179,6 +181,7 @@ lost. `ENGINE_AI_VIDEO_FAKE=1` runs the whole flow with local placeholders for f
 | **`agent`** (in use) | your coding agent's own plan | — |
 | Claude API, Claude Opus 5.5 (`--llm anthropic`) | $4 / $20 per million input / output tokens | ≈ $0.18 |
 | Claude API, Claude Sonnet 5.5 (set `llm.anthropic.model`) | $2 / $10 per million | ≈ $0.09 |
+| Gemini API, Gemini 3.1 Pro preview (`--llm gemini`) | Google's Gemini API price list; research also pays per Google Search | not measured yet |
 
 ### Rendering
 

@@ -83,7 +83,7 @@ export async function askSeries(ws: Workspace, channel: string): Promise<string[
     beats,
     visual_style: await input({ message: "Visual style:", required: true }),
     skills: { script: "write-script", render: await checkbox({ message: "Render skills (mix and match):", choices: renderSkills.map((s) => ({ value: s.name, name: `${s.name} — ${s.description}` })), required: true }), captions: "captions" },
-    cta: await input({ message: "Closing line / call to action (optional):" }),
+    cta: await input({ message: "Fixed closing line, e.g. a sign-off (optional; never advice):" }),
   });
   ok(`Created ${ws.rel(files[0])}`);
   return files;

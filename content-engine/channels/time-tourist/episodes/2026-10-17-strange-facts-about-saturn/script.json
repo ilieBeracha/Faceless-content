@@ -1,0 +1,277 @@
+{
+  "schema": "script/v1",
+  "channel": "time-tourist",
+  "series": "strange-space",
+  "idea": "strange-facts-about-saturn",
+  "title": "Strange facts about Saturn",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly",
+      "voiceover": "Saturn is wild. Nine Earths could line up across it.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "hero",
+            "at_word": 0
+          },
+          {
+            "view": "compare",
+            "at_word": 3,
+            "other": {
+              "name": "Earth",
+              "color": "#3d7bd9",
+              "ratio": 0.11
+            },
+            "label": "≈ 9 Earths wide"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      },
+      "on_screen_text": "Strange facts: Saturn"
+    },
+    {
+      "id": "fact-1",
+      "speaker": "tilly",
+      "voiceover": "Split it open and there's no ground at all. Just gas and liquid, crushed around a dense core.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "cutaway",
+            "at_word": 0,
+            "layers": [
+              {
+                "label": "Hydrogen & helium gas",
+                "color": "#e3c48c",
+                "radius": 0.97
+              },
+              {
+                "label": "Liquid hydrogen",
+                "color": "#c98b4a",
+                "radius": 0.78
+              },
+              {
+                "label": "Metallic hydrogen",
+                "color": "#b4552f",
+                "radius": 0.52
+              },
+              {
+                "label": "Dense core",
+                "color": "#5e3524",
+                "radius": 0.22
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "fact-2",
+      "speaker": "tilly",
+      "voiceover": "It's so light for its size, it would float in water, if you found a tub big enough.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "float",
+            "at_word": 0,
+            "submerged": 0.69,
+            "label": "Less dense than water"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "fact-3",
+      "speaker": "tilly",
+      "voiceover": "A day there lasts about ten and a half hours.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "spin",
+            "at_word": 0,
+            "label": "1 day ≈ 10 h 33 min"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "fact-4",
+      "speaker": "tilly",
+      "voiceover": "Its north pole has a storm shaped like a hexagon.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "spot",
+            "at_word": 0,
+            "shape": "hexagon",
+            "at": "north-pole",
+            "size": 0.5,
+            "label": "Six-sided polar storm"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "fact-5",
+      "speaker": "tilly",
+      "voiceover": "Its rings reach hundreds of thousands of kilometres out, but the main ones are often about ten metres thick.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "rings",
+            "at_word": 0,
+            "caption": "Up to 282,000 km from Saturn"
+          },
+          {
+            "view": "stat",
+            "at_word": 10,
+            "value": "~10 m",
+            "subtitle": "typical thickness of the main rings"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    },
+    {
+      "id": "kicker",
+      "speaker": "tilly",
+      "voiceover": "Cassini studied it for thirteen years. Saturn still surprises us.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "probe",
+            "at_word": 0,
+            "tag": "Cassini · 2004–2017"
+          }
+        ]
+      },
+      "character": {
+        "placement": "hidden",
+        "expression": "neutral"
+      }
+    }
+  ],
+  "visuals": {
+    "render-planet-explainer": {
+      "planet": {
+        "name": "Saturn",
+        "color": "#d8b77a",
+        "bands": [
+          "#ecd8a8",
+          "#cfa86b",
+          "#e6c992",
+          "#c39a5c",
+          "#dcbd85",
+          "#b58a52"
+        ],
+        "glow": "#f2d7a0",
+        "rings": {
+          "color": "#e8dcc2",
+          "inner": 1.22,
+          "outer": 2.05,
+          "bands": 6
+        },
+        "tilt_deg": -14
+      },
+      "stars": true
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Saturn is about 9 times wider than Earth (diameter about 116,000 km vs Earth's 12,742 km), so about nine Earths could line up across it; Earth's diameter is about 0.11 of Saturn's.",
+      "beat": "hook",
+      "source": "NASA Science, Saturn facts, https://science.nasa.gov/saturn/facts/ ; Canadian Space Agency, Saturn, https://asc-csa.gc.ca/eng/astronomy/solar-system/saturn.asp (116,464 km, 'about 9 Earths')",
+      "confidence": "high",
+      "note": "Shown as '≈ 9 Earths wide' and as an Earth disc at 0.11 of Saturn's size."
+    },
+    {
+      "id": "c2",
+      "claim": "Saturn has no solid surface: it is mostly hydrogen and helium gas, with liquid hydrogen and liquid metallic hydrogen deeper down around a dense core.",
+      "beat": "fact-1",
+      "source": "NASA Science, Saturn facts, https://science.nasa.gov/saturn/facts/ ; Sky & Telescope, 'Surprising science from Cassini's Grand Finale', https://skyandtelescope.org/astronomy-news/surprising-science-from-cassinis-grand-finale/",
+      "confidence": "high",
+      "note": "Layer sizes in the cutaway are illustrative. Cassini data suggest the core may be diffuse, so it is labelled only 'Dense core'."
+    },
+    {
+      "id": "c3",
+      "claim": "Saturn's average density (about 0.69 g/cm³) is less than water's, so it would float if there were water enough to hold it.",
+      "beat": "fact-2",
+      "source": "NASA Goddard (archived), https://science.gsfc.nasa.gov/attic/huygensgcms/Saturn.htm ; BBC Sky at Night, https://www.skyatnightmagazine.com/space-science/saturn-could-float-on-water",
+      "confidence": "high",
+      "note": "A thought experiment; said with 'if you found a tub big enough'. Shown about 69% under water."
+    },
+    {
+      "id": "c4",
+      "claim": "A day on Saturn lasts about 10 hours 33 minutes (Cassini ring-seismology measurement, 2019).",
+      "beat": "fact-3",
+      "source": "NASA Science, Saturn facts, https://science.nasa.gov/saturn/facts/ ; Mental Floss, https://mentalfloss.com/article/501981/9-essential-facts-about-saturn",
+      "confidence": "high",
+      "note": "10 h 33 min 38 s; said as 'about ten and a half hours'."
+    },
+    {
+      "id": "c5",
+      "claim": "Saturn's north pole has a long-lasting six-sided (hexagonal) storm pattern.",
+      "beat": "fact-4",
+      "source": "NASA/JPL (2009), https://www.jpl.nasa.gov/news/saturns-mysterious-hexagon-emerges-from-winter-darkness/ ; https://en.wikipedia.org/wiki/Saturn%27s_hexagon",
+      "confidence": "high"
+    },
+    {
+      "id": "c6",
+      "claim": "Saturn's ring system extends up to about 282,000 km (175,000 miles) from the planet, yet the main rings are typically only about 10 metres (30 feet) thick.",
+      "beat": "fact-5",
+      "source": "NASA Science, Saturn facts, https://science.nasa.gov/saturn/facts/ ('extends up to 175,000 miles (282,000 kilometers) from the planet, yet the vertical height is typically about 30 feet (10 meters) in the main rings')",
+      "confidence": "high"
+    },
+    {
+      "id": "c7",
+      "claim": "NASA's Cassini spacecraft orbited and studied Saturn for about 13 years, from 2004 to 2017.",
+      "beat": "kicker",
+      "source": "Universe Today, https://www.universetoday.com/articles/what-cassinis-grand-finale-taught-us-about-saturns-interior ; NASA Cassini mission pages",
+      "confidence": "high",
+      "note": "Arrived July 2004, ended September 2017."
+    }
+  ],
+  "pronunciations": {},
+  "publish": {
+    "title": "Strange facts about Saturn",
+    "description": "It would float in water, its rings are about ten metres thick and its north pole has a hexagon. Strange facts about Saturn.",
+    "hashtags": [
+      "#saturn",
+      "#space",
+      "#astronomy",
+      "#planets",
+      "#shorts"
+    ]
+  }
+}

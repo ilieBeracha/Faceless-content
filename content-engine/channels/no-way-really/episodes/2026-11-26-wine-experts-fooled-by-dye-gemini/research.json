@@ -1,0 +1,129 @@
+{
+  "idea": "wine-experts-fooled-by-dye-gemini",
+  "question": "How visual cues override our sense of taste and smell, demonstrated by a 2001 study where enology students described a dyed white wine as a red wine.",
+  "facts": [
+    {
+      "id": "f1",
+      "fact": "In 2001, Frédéric Brochet conducted a study as part of his dissertation on perception and wine tasting.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "The study, conducted by Frédéric Brochet in 2001, was part of a larger dissertation on perception and wine tasting"
+    },
+    {
+      "id": "f2",
+      "fact": "The study investigated the interaction between the vision of colors and odor determination.",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
+      "quote": "The interaction between the vision of colors and odor determination is investigated"
+    },
+    {
+      "id": "f3",
+      "fact": "A psychophysical experiment was performed involving a panel of 54 tasters.",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
+      "quote": "A white wine artificially colored red with an odorless dye was olfactory described as a red wine by a panel of 54 tasters."
+    },
+    {
+      "id": "f4",
+      "fact": "The tasters were given two identical white wines that differed only in color, and were asked to assign descriptors to them.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "So they were given two identical white wines, different only in color, and asked to assign them descriptors from both red and white wines."
+    },
+    {
+      "id": "f5",
+      "fact": "Most of the people assigned the red descriptors to the white wine that had been artificially colored red.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "With no other difference between them, and being required to assign the red descriptors to one of the wines, most people assigned them to the red-colored wine instead of randomly."
+    },
+    {
+      "id": "f6",
+      "fact": "The researchers concluded that because of the visual information, the tasters discounted the actual olfactory information.",
+      "source": "https://pubmed.ncbi.nlm.nih.gov/11712849/",
+      "quote": "Hence, because of the visual information, the tasters discounted the olfactory information."
+    },
+    {
+      "id": "f7",
+      "fact": "The story is frequently retold claiming that 'wine experts' were completely fooled, but the subjects were actually undergraduate enology students.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "-The most important is that the subjects in this experiment were not, in fact 'wine experts'. They were undergraduate enology students."
+    },
+    {
+      "id": "f8",
+      "fact": "It is a myth that every single person was oblivious to the trick.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "- It's simply not true that “Every single one, all 54, could not tell it was white.” as is frequently stated."
+    },
+    {
+      "id": "f9",
+      "fact": "Some people did correctly give white wine descriptions to the dyed-red wine.",
+      "source": "https://sciencesnopes.blogspot.com/2013/05/about-that-wine-experiment.html",
+      "quote": "the paper that is frequently cited shows that indeed some people gave 'white wine' descriptions to the dyed-red wine."
+    }
+  ],
+  "people": [
+    {
+      "name": "Frédéric Brochet",
+      "role": "Researcher and author of the dissertation",
+      "stake": "Discovering if visual cues could override a trained sense of smell for his dissertation on wine perception",
+      "facts": [
+        "f1",
+        "f2"
+      ]
+    },
+    {
+      "name": "54 Enology Students",
+      "role": "Undergraduate wine science students acting as the tasting panel",
+      "stake": "Their ability to accurately evaluate the smells of wine utilizing their specific training",
+      "facts": [
+        "f3",
+        "f4",
+        "f7"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "when": "2001",
+      "what": "Frédéric Brochet designed a psychophysical experiment for his dissertation with 54 undergraduate enology students.",
+      "why": "To investigate the interaction between the vision of colors and odor determination.",
+      "facts": [
+        "f1",
+        "f2",
+        "f3",
+        "f7"
+      ]
+    },
+    {
+      "when": "During the experiment",
+      "what": "Brochet served the students two identical white wines, but one was artificially dyed red, and asked them to describe the wines.",
+      "why": "To test if their visual perception of a red color would make them use red wine descriptors despite smelling white wine.",
+      "facts": [
+        "f4"
+      ]
+    },
+    {
+      "when": "Publishing the results",
+      "what": "The findings showed that most students assigned red descriptors to the dyed white wine.",
+      "why": "Because their perception was hijacked by visual information, causing them to discount their olfactory senses.",
+      "facts": [
+        "f5",
+        "f6"
+      ]
+    }
+  ],
+  "turn": {
+    "what": "The moment the trained enology students confidently described a white wine using red-wine terms because it was dyed red, proving that sight overrides smell.",
+    "facts": [
+      "f3",
+      "f5",
+      "f6"
+    ]
+  },
+  "key_objects": [
+    "Two glasses of identical white wine",
+    "Odorless red dye",
+    "A white wine artificially dyed red",
+    "Tasting notes assigning red wine descriptors to white wine"
+  ],
+  "unverified": [
+    "The subjects were widely reported as 'wine experts' or seasoned professionals, but they were actually undergraduate wine science students [f7].",
+    "Popular retellings claim every single one of the 54 students was completely oblivious to the trick, but some actually did use white wine descriptors [f8, f9]."
+  ]
+}

@@ -4,9 +4,9 @@
 slug: time-tourist                # required slug — folder name under channels/; never changes
 name: "Time Tourist"                # required string — public channel name
 status: active                  # required enum(draft|active|paused) — draft until you approve it; paused stops new episodes
-niche: "A budget time-traveller vlogs famous places and moments in history and reviews them like a travel influencer — real facts, honest star ratings."                       # required string — one sentence: what every video is about
+niche: "A budget time-and-space traveller vlogs famous places and moments in history and real wonders across the universe, and reviews them like a travel influencer — real facts, honest star ratings."                       # required string — one sentence: what every video is about
 audience:                       # required object
-  who: "Teens and adults who like history best when it feels like scrolling a travel feed"                       # required string — who watches, in plain words
+  who: "Teens and adults who like history and space best when they feel like scrolling a travel feed"                       # required string — who watches, in plain words
   age_range: "13+"                 # required string — e.g. "8-12" or "18+"
   made_for_kids: false          # required boolean — YouTube "made for kids" (COPPA) setting
 tone: [casual, funny, curious, honest, respectful]                        # required list(string) min=2 max=6 — adjectives for how it feels
@@ -38,8 +38,16 @@ approved_by: "ilieBeracha (approved in chat)" # optional string — who approved
 
 ## Promise <!-- required -->
 
-Every episode is a holiday to a famous moment in history: what it was really like to be there, what nobody
-tells you, and an honest rating at the end.
+Every episode is a holiday to a famous moment in history or a real wonder of the universe: what it would really
+be like to be there, what nobody tells you, and an honest rating at the end.
+
+## Belief <!-- required -->
+
+The famous moments of history and the wonders of the universe were real places with real weather, smells and inconveniences; seeing them as places, not legends, makes them stranger and closer.
+
+## What the viewer gets <!-- required -->
+
+What it would really have been like to stand there, the detail nobody tells you, and an honest sense of whether the legend is worth the trip.
 
 ## Style notes
 
@@ -47,4 +55,4 @@ tells you, and an honest rating at the end.
 - Every joke is about the experience of being there (no soap, weird food, the queue), never about the people
   who suffered. When the history is hard (slavery, disease, war), say it plainly and kindly, then move on.
 - Strictly true: names, dates, numbers and customs come from sources; when sources disagree, say "about".
-- Every episode ends with a rating (on a sign, like "5/5") and one line on what it tells us about life back then.
+- Every episode ends with a rating (on a sign, like "5/5") and the one detail that earned it.

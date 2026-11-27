@@ -1,0 +1,210 @@
+{
+  "schema": "script/v1",
+  "channel": "time-tourist",
+  "series": "strange-space",
+  "idea": "strange-facts-about-jupiter",
+  "title": "Strange facts about Jupiter",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "tilly",
+      "voiceover": "Jupiter is ridiculous. It's eleven Earths wide.",
+      "on_screen_text": "Jupiter is ridiculous",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          { "view": "hero", "at_word": 0, "zoom": 1.2 },
+          { "view": "compare", "at_word": 3, "other": { "name": "Earth", "color": "#3f7fd1", "ratio": 0.09 }, "label": "11 Earths wide" }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "excited" }
+    },
+    {
+      "id": "fact-1",
+      "speaker": "tilly",
+      "voiceover": "Split it open and there's no ground. Just hydrogen squeezed into liquid, then liquid that acts like metal, around a fuzzy core.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          {
+            "view": "cutaway",
+            "at_word": 0,
+            "caption": "No solid surface",
+            "layers": [
+              { "label": "Hydrogen gas", "color": "#d8b98c", "radius": 1.0 },
+              { "label": "Liquid hydrogen", "color": "#c48a52", "radius": 0.86 },
+              { "label": "Metallic hydrogen", "color": "#8c93a8", "radius": 0.68 },
+              { "label": "Fuzzy core", "color": "#f0c36a", "radius": 0.3 }
+            ]
+          }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "curious" }
+    },
+    {
+      "id": "fact-2",
+      "speaker": "tilly",
+      "voiceover": "It's also heavy. More than twice as heavy as every other planet put together.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          { "view": "hero", "at_word": 0, "zoom": 1.4 },
+          { "view": "stat", "at_word": 3, "value": "Over 2×", "subtitle": "the mass of all other planets combined" }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "surprised" }
+    },
+    {
+      "id": "fact-3",
+      "speaker": "tilly",
+      "voiceover": "And it spins fast. One day here? Under ten hours.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          { "view": "spin", "at_word": 0, "label": "1 day = 9.9 hours" }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "excited" }
+    },
+    {
+      "id": "fact-4",
+      "speaker": "tilly",
+      "voiceover": "That red spot is a storm bigger than Earth. It's been going for over a hundred years.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          { "view": "spot", "at_word": 0, "shape": "oval", "at": "lower", "size": 0.22, "color": "#c8553d", "label": "Great Red Spot", "caption": "A storm bigger than Earth" }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "surprised" }
+    },
+    {
+      "id": "fact-5",
+      "speaker": "tilly",
+      "voiceover": "It barely leans, just three degrees. So, hardly any seasons.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          { "view": "tilt", "at_word": 0, "degrees": 3, "axis_label": "spin axis", "orbit_label": "orbit" }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "curious" }
+    },
+    {
+      "id": "kicker",
+      "speaker": "tilly",
+      "voiceover": "Juno pulled into orbit in 2016. Okay, review time. Size: five out of five. Landing spots: zero.",
+      "visual": {
+        "skill": "render-planet-explainer",
+        "views": [
+          { "view": "probe", "at_word": 0, "tag": "Juno · arrived 2016" },
+          { "view": "hero", "at_word": 6, "zoom": 1.1 }
+        ]
+      },
+      "character": { "placement": "hidden", "expression": "neutral" }
+    }
+  ],
+  "visuals": {
+    "render-planet-explainer": {
+      "planet": {
+        "name": "Jupiter",
+        "color": "#c9a57a",
+        "bands": ["#e3d2b5", "#b98a5e", "#ead9bd", "#a8734c", "#dcc7a3", "#b58a62"],
+        "glow": "#f0d9b5",
+        "tilt_deg": -3
+      },
+      "background": { "top": "#0b1026", "bottom": "#04050b" },
+      "stars": true
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Jupiter is 11 times wider than Earth (on screen: \"11 Earths wide\"; Earth drawn at 0.09 of Jupiter's diameter).",
+      "beat": "hook",
+      "source": "NASA Science, Jupiter Facts: \"With a radius of 43,440.7 miles (69,911 kilometers), Jupiter is 11 times wider than Earth.\" https://science.nasa.gov/jupiter/jupiter-facts/ ; NASA NSSDC Jupiter Fact Sheet, equatorial radius ratio Jupiter/Earth 11.209 (1 ÷ 11.209 = 0.089) https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html",
+      "confidence": "high"
+    },
+    {
+      "id": "c2",
+      "claim": "Jupiter has no solid ground: as a gas giant it has no true surface (on screen: \"No solid surface\").",
+      "beat": "fact-1",
+      "source": "NASA Science, Jupiter Facts: \"As a gas giant, Jupiter doesn't have a true surface.\" https://science.nasa.gov/jupiter/jupiter-facts/",
+      "confidence": "high"
+    },
+    {
+      "id": "c3",
+      "claim": "Deep inside, pressure squeezes Jupiter's hydrogen gas into a liquid, and deeper still the liquid conducts electricity like a metal (labels: \"Hydrogen gas\", \"Liquid hydrogen\", \"Metallic hydrogen\").",
+      "beat": "fact-1",
+      "source": "NASA Science, Jupiter Facts: \"Deep in the atmosphere, pressure and temperature increase, compressing the hydrogen gas into a liquid\" and \"making the liquid electrically conducting like metal\". https://science.nasa.gov/jupiter/jupiter-facts/",
+      "confidence": "high",
+      "note": "The layers in the cutaway are a diagram; their thicknesses are not to scale and no sizes are stated."
+    },
+    {
+      "id": "c4",
+      "claim": "Jupiter's core is described by researchers as dilute, or \"fuzzy\" (label: \"Fuzzy core\").",
+      "beat": "fact-1",
+      "source": "NASA Science, Jupiter Facts: \"leading researchers to describe the core as dilute, or 'fuzzy.'\" https://science.nasa.gov/jupiter/jupiter-facts/",
+      "confidence": "high"
+    },
+    {
+      "id": "c5",
+      "claim": "Jupiter is more than twice as massive as all the other planets combined (on screen: \"Over 2×\", \"the mass of all other planets combined\").",
+      "beat": "fact-2",
+      "source": "NASA Science, Jupiter overview: \"more than twice as massive as the other planets combined.\" https://science.nasa.gov/jupiter/",
+      "confidence": "high"
+    },
+    {
+      "id": "c6",
+      "claim": "One day on Jupiter takes 9.9 hours, which is under ten hours (on screen: \"1 day = 9.9 hours\").",
+      "beat": "fact-3",
+      "source": "NASA Science, Jupiter Facts: \"One day on Jupiter takes 9.9 hours\" https://science.nasa.gov/jupiter/jupiter-facts/ ; NASA NSSDC Jupiter Fact Sheet, length of day 9.9259 hours https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html",
+      "confidence": "high"
+    },
+    {
+      "id": "c7",
+      "claim": "The Great Red Spot is a storm bigger than Earth (on screen: \"Great Red Spot\", \"A storm bigger than Earth\").",
+      "beat": "fact-4",
+      "source": "NASA Science, Jupiter Facts: \"Jupiter's iconic Great Red Spot is a giant storm bigger than Earth that has raged for hundreds of years.\" https://science.nasa.gov/jupiter/jupiter-facts/",
+      "confidence": "high"
+    },
+    {
+      "id": "c8",
+      "claim": "The Great Red Spot has been going for over a hundred years.",
+      "beat": "fact-4",
+      "source": "NASA Science, Jupiter Facts: \"has raged for hundreds of years\" and \"has been observed on the giant planet for more than 300 years.\" https://science.nasa.gov/jupiter/jupiter-facts/",
+      "confidence": "high",
+      "note": "Conservative on purpose: NASA says hundreds of years, but whether the spot seen in the 1600s is the same storm is debated, so the script only says \"over a hundred years\"."
+    },
+    {
+      "id": "c9",
+      "claim": "Jupiter's equator is tilted just 3 degrees to its orbit, so its seasons are mild (on screen: 3 degrees, \"spin axis\", \"orbit\").",
+      "beat": "fact-5",
+      "source": "NASA Science, Jupiter Facts: \"Its equator is tilted with respect to its orbital path around the Sun by just 3 degrees. This means Jupiter spins nearly upright and does not have seasons as extreme as other planets do.\" https://science.nasa.gov/jupiter/jupiter-facts/ ; NASA NSSDC Jupiter Fact Sheet, obliquity to orbit 3.13 degrees https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html",
+      "confidence": "high",
+      "note": "NASA says the seasons are not as extreme as on other planets; the script says \"hardly any seasons\", not \"none\"."
+    },
+    {
+      "id": "c10",
+      "claim": "NASA's Juno spacecraft entered orbit around Jupiter in 2016 (on screen: \"Juno · arrived 2016\").",
+      "beat": "kicker",
+      "source": "NASA Science, Jupiter Exploration: \"the Juno spacecraft entered orbit around Jupiter on July 4, 2016.\" https://science.nasa.gov/jupiter/exploration/",
+      "confidence": "high"
+    },
+    {
+      "id": "c11",
+      "claim": "There is nowhere to land on Jupiter (\"Landing spots: zero\").",
+      "beat": "kicker",
+      "source": "NASA Science, Jupiter Facts: \"As a gas giant, Jupiter doesn't have a true surface.\" https://science.nasa.gov/jupiter/jupiter-facts/",
+      "confidence": "high",
+      "note": "The \"five out of five\" rating is Tilly's opinion, not a fact."
+    }
+  ],
+  "pronunciations": { "2016": "twenty sixteen" },
+  "publish": {
+    "title": "Strange facts about Jupiter",
+    "description": "Eleven Earths wide, no ground to stand on, a day under ten hours and a storm bigger than our whole planet. Tilly reviews Jupiter.",
+    "hashtags": ["#jupiter", "#space", "#spacefacts", "#planets", "#shorts"]
+  }
+}

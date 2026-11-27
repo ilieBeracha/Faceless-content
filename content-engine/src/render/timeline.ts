@@ -68,14 +68,20 @@ export function regions(width: number, height: number, safe: SafeArea) {
   return { safe: s, headline, captions, stage, centreX: cx };
 }
 
-/** Where the talking character sits for each placement. */
-export function characterRect(placement: "full" | "corner" | "hidden", width: number, height: number, safe: SafeArea): Rect {
+/** Which side the talking character stands on and how big it is. A look can set this (see render-themed). */
+export interface HostLayout {
+  host: "left" | "right";
+  host_size: "small" | "medium" | "large";
+}
+export const DEFAULT_HOST_LAYOUT: HostLayout = { host: "left", host_size: "medium" };
+const HOST_SCALE = { small: 0.8, medium: 1, large: 1.25 };
+
+/** Where the talking character sits for each placement: at the bottom of the stage, on its side of the safe area. */
+export function characterRect(placement: "full" | "corner" | "hidden", width: number, height: number, safe: SafeArea, layout: HostLayout = DEFAULT_HOST_LAYOUT): Rect {
   const r = regions(width, height, safe);
-  if (placement === "full") {
-    // Big, bottom-left: the scene gets the space to its right (and above it).
-    const size = Math.min(r.stage.w * 0.56, r.stage.h * 0.66);
-    return { x: r.safe.x - 10, y: r.stage.y + r.stage.h - size + 10, w: size, h: size };
-  }
-  const size = Math.min(300, r.stage.w * 0.3);
-  return { x: r.safe.x - 10, y: r.stage.y + r.stage.h - size + 10, w: size, h: size };
+  const k = HOST_SCALE[layout.host_size];
+  // "full" is big, and the scene gets the space beside it (and above it); never wider than most of the stage.
+  const size = placement === "full" ? Math.min(r.stage.w * 0.56 * k, r.stage.h * 0.66 * k, r.stage.w * 0.7) : Math.min(300, r.stage.w * 0.3) * k;
+  const x = layout.host === "left" ? r.safe.x - 10 : r.safe.x + r.safe.w - size + 10;
+  return { x, y: r.stage.y + r.stage.h - size + 10, w: size, h: size };
 }

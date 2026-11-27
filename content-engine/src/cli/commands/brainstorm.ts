@@ -76,7 +76,7 @@ in niche, character and visual style, and only use the render skills listed. The
     const what = {
       characters: `Propose **${count}** new original characters for this channel. One file each: \`drafts/${channel.slug}/characters/<name>.md\` (templates/character.md) plus \`drafts/${channel.slug}/characters/<name>/model.json\` (see skills/render-talking-character). Add \`${draftBlock}\` to the frontmatter.`,
       series: `Propose **${count}** new series for this channel. One file each: \`drafts/${channel.slug}/series/<slug>.md\` (templates/series.md), using only this channel's characters and the render skills listed. Add \`${draftBlock}\` to the frontmatter.`,
-      ideas: `Propose **${count}** new episode ideas${opts.series ? ` for series \`${opts.series}\`` : ""}. Write ONE file \`drafts/${channel.slug}/ideas/${today()}-<short-name>.md\` with frontmatter \`---\\n${draftBlock}\\n---\` and then the ideas in the ideas format with \`status: proposed\`. Don't repeat anything already in ideas.md (including used and rejected ideas).`,
+      ideas: `Propose **${count}** new episode ideas${opts.series ? ` for series \`${opts.series}\`` : ""}. Write ONE file \`drafts/${channel.slug}/ideas/${today()}-<short-name>.md\` with frontmatter \`---\\n${draftBlock}\\n---\` and then the ideas in the ideas format with \`status: proposed\`. Don't repeat anything already in ideas.md (including used and rejected ideas). Read the Belief, Promise and What the viewer gets in channel.md first: every idea argues that Belief, and none could be made as is by another channel in the same niche (skills/brainstorm/SKILL.md, "Ideas only this channel would make").`,
     }[kind];
     task = {
       id: `brainstorm-${kind}-${today()}`,

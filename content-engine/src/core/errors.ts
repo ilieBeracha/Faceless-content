@@ -33,6 +33,8 @@ export class PipelinePause extends Error {
   constructor(
     public readonly kind: "waiting-for-agent" | "awaiting-approval" | "needs-fix",
     public readonly lines: string[],
+    /** For "awaiting-approval": which approval it waits for. */
+    public readonly gate: "factcheck" | "footage" | "storyboard" | null = null,
   ) {
     super(kind);
     this.name = "PipelinePause";

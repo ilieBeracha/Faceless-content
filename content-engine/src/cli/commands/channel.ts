@@ -3,19 +3,17 @@ import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { channelExists, CHANNEL_STATUSES, listChannelSlugs, loadChannel, validateChannel } from "../../core/channels.ts";
-import { ContextBundle } from "../../core/context.ts";
 import { draftInfo, validateDraft } from "../../core/drafts.ts";
 import { EngineError } from "../../core/errors.ts";
 import { commitPaths } from "../../core/git.ts";
 import { appendIdeaBlocks, renderIdeas } from "../../core/ideas.ts";
 import { parseMarkdown, updateFrontmatter } from "../../core/markdown.ts";
 import { createChannel, createChannelSkeleton, type ChannelInput } from "../../core/scaffold.ts";
-import { listSkills } from "../../core/skills.ts";
-import { runTask, type LlmProviderName, type Task } from "../../core/tasks.ts";
+import { runTask, type LlmProviderName } from "../../core/tasks.ts";
 import { readText, slugify, today, writeText } from "../../core/util.ts";
 import { formatIssues, hasErrors } from "../../core/validate.ts";
 import type { Workspace } from "../../core/workspace.ts";
-import { KOKORO_VOICES } from "../../voice/voices.ts";
+import { draftChannelTask } from "../../pipeline/draft-channel.ts";
 import { log, next, ok } from "../ui.ts";
 import { askCharacter, askSeries } from "./add.ts";
 
@@ -100,49 +98,8 @@ async function draftChannelFromSeed(ws: Workspace, opts: { seed?: string; slug?:
   ok(`Created channels/${slug}/ (status: draft) — the agent drafts the rest`);
   commitPaths(ws, touched, `new channel ${slug}: skeleton from ${draftRel ? "approved niche" : "seed"}`);
 
-  const renderSkills = listSkills(ws).filter((s) => s.kind === "render");
-  // The niche's chosen render skills come with their guides, so the series and character fit them.
-  const extraSkills = draftSkills.filter((s) => s !== "render-talking-character" && renderSkills.some((r) => r.name === s));
-  const ctx = new ContextBundle(ws, { purpose: "new-channel", channel: slug, skills: ["brainstorm", "render-talking-character", "write-script", ...extraSkills], globals: ["templates/channel.md", "templates/character.md", "templates/series.md", "templates/ideas.md", "workflows/new-channel.md"] });
-  ctx.addFile("workflows/new-channel.md", "workflow");
-  for (const t of ["channel.md", "character.md", "series.md", "ideas.md"]) ctx.addFile(`templates/${t}`, "template");
-  ctx.addFile("skills/brainstorm/SKILL.md", "skill");
-  ctx.addFile("skills/render-talking-character/SKILL.md", "skill");
-  for (const s of extraSkills) ctx.addFile(`skills/${s}/SKILL.md`, "skill");
-  ctx.addFile(`channels/${slug}/channel.md`, "channel");
-  ctx.addInline("seed", seed);
-  ctx.addInline("render skills available (series pick from these)", renderSkills.map((s) => `- ${s.name} (${s.layer}): ${s.description}`).join("\n"), "listing");
-  ctx.addInline("voices available (free, local Kokoro)", KOKORO_VOICES.map((v) => `- ${v.id}: ${v.desc} (quality ${v.grade})`).join("\n"), "listing");
-  ctx.addInline("fonts available", ws.config.fonts.join(", "), "listing");
-
   const dir = ws.channelDir(slug);
-  const instructions = `
-Draft a complete channel from the seed below, following \`workflows/new-channel.md\` and \`skills/brainstorm/SKILL.md\`.
-Keep \`slug: ${slug}\` and \`status: draft\`. Everything goes inside \`channels/${slug}/\`:
-
-1. \`channel.md\` — fill every field of the template (it's already there, with the annotations) and write the Promise section.
-2. One original character (two at most): \`characters/<name>.md\` from templates/character.md, plus
-   \`characters/<name>/model.json\` (a rig from skills/render-talking-character — pick the one that fits the
-   visual style, choose colours and expressions: at least neutral, curious, excited). Pick a voice from the list.
-3. One series (two at most): \`series/<slug>.md\` from templates/series.md. Its \`skills.render\` must only
-   use the render skills listed below; its beats must add up to its length.
-4. \`ideas.md\` — append exactly 10 ideas in the ideas format (status \`new\`, one-line angle, series slug, added ${today()}).
-5. Leave \`learnings.md\` as it is.
-
-Then run \`./engine validate --channel ${slug}\` and fix every error. Finally tell the person to review the files and
-approve with \`./engine approve channel ${slug}\` — never approve it yourself.
-`;
-  const task: Task = {
-    id: "draft-channel",
-    title: `Draft channel ${slug}`,
-    dir,
-    context: ctx,
-    instructions,
-    outputs: [{ path: dir, format: "files", description: "channel.md, characters/, series/, ideas.md" }],
-    next: `./engine validate --channel ${slug}`,
-    replaceable: [join(dir, "channel.md"), join(dir, "ideas.md")],
-    check: () => validateChannel(ws, loadChannel(ws, slug!)).filter((i) => i.level === "error").map((i) => `${i.file}: ${i.message}`),
-  };
+  const task = draftChannelTask(ws, slug, seed, draftSkills);
   await runTask(ws, task, opts.llm);
   const issues = validateChannel(ws, loadChannel(ws, slug));
   log(formatIssues(issues));

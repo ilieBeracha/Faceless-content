@@ -8,7 +8,7 @@ format: "Tilly visits one famous place or moment in history, films it selfie-sty
 characters: [tilly-live]        # required list(ref(character)) min=1 — characters from THIS channel; the first one narrates
 length:                         # required object — overrides the engine default (20–60 s)
   min_seconds: 38               # required number min=5 max=180 — shortest acceptable video
-  max_seconds: 58               # required number min=5 max=180 — longest acceptable video
+  max_seconds: 62               # required number min=5 max=180 — longest acceptable video
 hook_pattern: "Selfie greeting naming the place in five words or fewer (\"Reviewing Rome's biggest bathhouse.\"), Tilly already inside the place, the hook as a short headline."  # required text — how the first 2 seconds grab attention
 beats:                          # required list(object) min=2 max=8 — the structure every episode follows, in order
   - id: hook                    # required slug — beat name used in scripts
@@ -25,7 +25,7 @@ beats:                          # required list(object) min=2 max=8 — the stru
     purpose: "The thing nobody tells you: the weird, uncomfortable or surprising truth (told with care if it is hard)."
   - id: rating
     seconds: 7
-    purpose: "The rating, said out loud as 'N out of 5', and one line on what it says about life back then."
+    purpose: "The rating, said out loud as 'N out of 5', and the one detail that earned it."
 visual_style: "Live-action look: realistic handheld phone footage of a real-looking Tilly in period-accurate places, jump cuts between shots, natural sound, word-by-word captions in the lower third."  # required text — what the screen looks like
 skills:                         # required object — the ONLY skills an episode of this series may load
   script: write-script          # required ref(skill:script) — writes the script JSON

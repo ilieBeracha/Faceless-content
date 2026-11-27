@@ -1,0 +1,46 @@
+{
+  "id": "2026-10-16-enceladus-ice-geysers",
+  "channel": "time-tourist",
+  "series": "rated-space",
+  "idea": "enceladus-ice-geysers",
+  "title": "Standing on Enceladus, reviewed",
+  "created": "2026-10-16T16:05:41Z",
+  "updated": "2026-10-16T16:51:43Z",
+  "status": "done",
+  "steps": {
+    "idea": {
+      "status": "done",
+      "at": "2026-10-16T16:05:41Z",
+      "note": "Enceladus ice geysers"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-10-16T16:05:43Z"
+    },
+    "factcheck": {
+      "status": "done",
+      "at": "2026-10-16T16:05:53Z",
+      "note": "approved by Ilie (delegated to Claude: 'decide by yourself'; sources checked by Claude)"
+    },
+    "footage": {
+      "status": "done",
+      "at": "2026-10-16T16:39:52Z",
+      "note": "10 clips, $8.49 spent"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-10-16T16:40:18Z",
+      "note": "52.57s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-10-16T16:51:10Z",
+      "note": "out/time-tourist/2026-10-16-enceladus-ice-geysers.mp4"
+    },
+    "qa": {
+      "status": "done",
+      "at": "2026-10-16T16:51:43Z",
+      "note": "all checks passed"
+    }
+  }
+}

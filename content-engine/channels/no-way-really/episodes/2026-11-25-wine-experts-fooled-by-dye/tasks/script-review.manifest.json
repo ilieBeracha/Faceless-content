@@ -1,0 +1,66 @@
+{
+  "task": "script-review",
+  "title": "Review the script for 2026-11-25-wine-experts-fooled-by-dye",
+  "purpose": "script review",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "created": "2026-11-25T21:30:55Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "channels/no-way-really/channel.md",
+      "role": "channel",
+      "sha256": "5b1cfdf00c367452714f94a3618335013e7434bf17f7b1a80ba9f47cf9008ba6",
+      "bytes": 3958
+    },
+    {
+      "path": "channels/no-way-really/series/wait-what.md",
+      "role": "channel",
+      "sha256": "45fff5399490dc3560c44e0e4828be4aa4c1858af61c0a378a947adc9ae66722",
+      "bytes": 3777
+    },
+    {
+      "path": "channels/no-way-really/characters/blink.md",
+      "role": "channel",
+      "sha256": "628048d8aa0d4d991139042f232cf04bf72e32de33d92a4a675a30a2e59bb296",
+      "bytes": 2822
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "de78647738e4550c69a2b5453217572b9607a5a6a43f955a8ba3ab865fcc4553",
+      "bytes": 8251
+    },
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/script.json",
+      "role": "channel",
+      "sha256": "c50d78cb919b7fb60a7cfa0374a864e63bd63ab3c26f1092f8621a4619c7d16e",
+      "bytes": 10774
+    },
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/research.json",
+      "role": "channel",
+      "sha256": "d7ea51192ea8cd9ce2f850997d2e491e5f2c7247b23c6386a30711d85d8176d8",
+      "bytes": 17324
+    },
+    {
+      "path": "(inline) earlier reviews of this episode",
+      "role": "input",
+      "sha256": "61ec5a6c72cbd5c7bc7594225b7558ae95ab17c2980282dc20eb4867c11144ac",
+      "bytes": 2346
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/script-review.json",
+      "format": "json",
+      "description": "the script review"
+    }
+  ],
+  "next": "./engine make episode --channel no-way-really --series wait-what --episode 2026-11-25-wine-experts-fooled-by-dye"
+}

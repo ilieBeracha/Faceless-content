@@ -1,0 +1,41 @@
+{
+  "id": "2026-11-24-microwave-oven-signal",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "idea": "microwave-oven-signal",
+  "title": "Lunch fooled a telescope",
+  "created": "2026-11-24T19:24:35Z",
+  "updated": "2026-11-25T09:42:44Z",
+  "status": "in-progress",
+  "steps": {
+    "idea": {
+      "status": "done",
+      "at": "2026-11-24T19:24:35Z",
+      "note": "The radio signal from the kitchen"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-11-24T19:27:23Z"
+    },
+    "factcheck": {
+      "status": "done",
+      "at": "2026-11-24T22:50:52Z",
+      "note": "approved by ilieBeracha"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-24T22:51:09Z",
+      "note": "50.87s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-11-24T22:55:23Z",
+      "note": "out/cosmic-footnotes/2026-11-24-microwave-oven-signal.mp4"
+    },
+    "qa": {
+      "status": "failed",
+      "at": "2026-11-25T09:42:44Z",
+      "note": "1 problem(s)"
+    }
+  }
+}

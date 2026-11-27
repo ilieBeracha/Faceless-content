@@ -1,11 +1,11 @@
 ---
 episode: 2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real
 channel: time-tourist
-status: pending
+status: approved
 script_hash: 7adb2e81928981fff8c0fcadfca275af71f2a382008e42c568ed483686ee7523
 generated_at: 2026-10-15T17:24:12Z
-approved_by: null
-approved_at: null
+approved_by: Ilie
+approved_at: 2026-10-15T18:38:26Z
 notes: null
 ---
 

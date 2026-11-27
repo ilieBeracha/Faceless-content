@@ -1,0 +1,263 @@
+{
+  "schema": "script/v1",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "idea": "wine-experts-fooled-by-dye",
+  "title": "Dye fooled wine students",
+  "angle": {
+    "point": "A glass of white wine isn't boring: dye it red and trained wine students describe its smell with the words they used for a real red, because what they see overrides what they smell.",
+    "stakes": "Frédéric Brochet, working towards a doctorate at Bordeaux's Faculty of Oenology, suspected from experts' tasting notes that a wine's colour steers which smells tasters name; his doctoral work stood on testing it.",
+    "turn": "A week after the students described a real red and a real white, Brochet gave them that same white twice, one glass dyed red with a grape pigment checked to have no smell, so the only difference was what they could see.",
+    "takeaway": "The words wine tasters use for a smell can come from the colour they see, shown with one odourless dye and the same white wine in two glasses."
+  },
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "blink",
+      "voiceover": "Dye fooled wine students.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "art",
+            "id": "two-glasses"
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "surprised"
+      }
+    },
+    {
+      "id": "setup",
+      "speaker": "blink",
+      "voiceover": "Frédéric Brochet, working on his doctorate, noticed experts describe smells with things coloured like the wine, and suspected colour chose their words.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "kicker": "Experts' notes",
+            "text": "Smells described with things the colour of the wine"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "turn",
+      "speaker": "blink",
+      "voiceover": "He dyed white wine red with grape pigment, and fifty people sniffing both from black glasses smelled no difference. Then he had wine students describe the smell of a red and a white.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "marks",
+            "items": [
+              {
+                "value": "Dye",
+                "label": "50 sniffers: no smell"
+              },
+              {
+                "value": "Session 1",
+                "label": "A red and a white"
+              }
+            ]
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "thinking"
+      }
+    },
+    {
+      "id": "twist",
+      "speaker": "blink",
+      "voiceover": "A week later, he served that same white twice, one glass dyed, so only colour differed.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "kicker": "A week later",
+            "text": "Same white twice: plain, and dyed red"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "ending",
+      "speaker": "blink",
+      "voiceover": "The students generally described the dyed glass with the smell words they'd used for the red.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "art",
+            "id": "two-glasses",
+            "label": "Same white wine"
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "surprised"
+      }
+    }
+  ],
+  "visuals": {
+    "render-themed": {
+      "art": {
+        "two-glasses": {
+          "shapes": [
+            {
+              "d": "M14 20H44C44 44 38 54 29 54C20 54 14 44 14 20Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M15 30H43C42 46 37 53 29 53C21 53 16 46 15 30Z",
+              "fill": "c"
+            },
+            {
+              "d": "M14 20H44C44 44 38 54 29 54C20 54 14 44 14 20Z",
+              "stroke": "ink",
+              "width": 3
+            },
+            {
+              "d": "M29 54V80",
+              "stroke": "ink",
+              "width": 3
+            },
+            {
+              "d": "M18 82H40",
+              "stroke": "ink",
+              "width": 4
+            },
+            {
+              "d": "M56 20H86C86 44 80 54 71 54C62 54 56 44 56 20Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M57 30H85C84 46 79 53 71 53C63 53 58 46 57 30Z",
+              "fill": "a"
+            },
+            {
+              "d": "M56 20H86C86 44 80 54 71 54C62 54 56 44 56 20Z",
+              "stroke": "ink",
+              "width": 3
+            },
+            {
+              "d": "M71 54V80",
+              "stroke": "ink",
+              "width": 3
+            },
+            {
+              "d": "M60 82H82",
+              "stroke": "ink",
+              "width": 4
+            }
+          ]
+        }
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "Oenology students given a white wine dyed red generally described it with the smell words they had used for a red wine; the authors say that, because of what they saw, the tasters discounted what they smelled.",
+      "beat": "hook",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f14, f25, f27. \"Fooled\" = the authors' finding that visual information made the tasters discount the olfactory information (f27), which they call a real perceptual illusion (f28). The students were not asked the wine's colour; no count of how many. Hook \"Dye fooled wine students\": \"fooled\" = the authors' finding that, because of what they saw, the tasters discounted what they smelled (f27), which they call a real perceptual illusion (f28)."
+    },
+    {
+      "id": "c2",
+      "claim": "Frédéric Brochet did the work towards a doctorate at the Faculty of Oenology in Bordeaux.",
+      "beat": "setup",
+      "source": "https://web.archive.org/web/20070928231853/http://www.academie-amorim.com/us/laureat_2001/brochet.pdf",
+      "confidence": "high",
+      "note": "Dossier f4. He is a co-author of the study (f3) with Gil Morrot (first author, INRA Montpellier) and Denis Dubourdieu. Said as \"working on his doctorate\": the test was part of his doctoral work (f4)."
+    },
+    {
+      "id": "c3",
+      "claim": "An analysis of four wine experts' tasting notes found that a wine's smells are mostly described with objects that are the colour of the wine.",
+      "beat": "setup",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f5 and f7. The analysis was done by the study's authors, Brochet among them (f3). On screen: \"Experts' notes — Smells described with things the colour of the wine\". Said as \"noticed experts describe smells with things coloured like the wine\"."
+    },
+    {
+      "id": "c4",
+      "claim": "That pattern led the researchers to suspect that a wine's colour directs how its smell is identified.",
+      "beat": "setup",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f8 (\"led us to hypothesize that the color of a wine directs the identification of its odor\"). \"He suspected\" = the authors, Brochet among them (f3)."
+    },
+    {
+      "id": "c5",
+      "claim": "In the first session, oenology students from Bordeaux wrote lists of smell words for a real red wine and a real white wine.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f14 and f17: 54 undergraduates from the Faculty of Oenology of the University of Bordeaux drew up lists of odour descriptors.; \"he\" = the study's authors, Brochet among them (f3). On screen: \"Session 1 — Real red, real white\"."
+    },
+    {
+      "id": "c6",
+      "claim": "One week later, in the second session, the two wines were the same white wine and that white wine dyed red.",
+      "beat": "twist",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f15 and f23 (\"The two wines then proposed were W and RW\"). \"He gave them\" = the study's authors, Brochet among them (f3); the paper doesn't say which author served the wine. On screen: \"A week later — Same white, one dyed red\"; on the ending, the glasses are labelled \"Same white wine\"."
+    },
+    {
+      "id": "c7",
+      "claim": "The dye was purified grape anthocyanins, the red pigment of grapes.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f11 (2 g/L of purified grape anthocyanins). Said as \"He dyed white wine red with grape pigment\"."
+    },
+    {
+      "id": "c8",
+      "claim": "The dye was checked to have no smell: 50 people compared the dyed and plain white wine in opaque glasses and perceived them as identical.",
+      "beat": "turn",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f12 and f13 (50 people, opaque glasses; \"perceived as identical\", \"the dye can be regarded as having no odor\"). Said as \"fifty people sniffing both from black glasses smelled no difference\"; the check came before the sessions."
+    },
+    {
+      "id": "c9",
+      "claim": "In the second session the students generally used the smell words they had used for the real red wine to describe the dyed white wine.",
+      "beat": "ending",
+      "source": "https://web.stanford.edu/class/linguist62n/morrot01colorofodors.pdf",
+      "confidence": "high",
+      "note": "Dossier f25: \"generally\". The paper gives no count of how many did."
+    }
+  ],
+  "pronunciations": {
+    "Frédéric": "Fray-day-reek",
+    "Brochet": "Broh-shay"
+  },
+  "publish": {
+    "title": "Dye fooled wine students",
+    "description": "Bordeaux wine students described a real red and a real white. A week later they got the same white twice, one glass dyed red with a grape pigment that has no smell, and generally gave it their red-wine smell words. From \"The Color of Odors\" (Brain and Language, 2001).",
+    "hashtags": [
+      "#wine",
+      "#science",
+      "#perception",
+      "#facts",
+      "#shorts"
+    ]
+  }
+}

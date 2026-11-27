@@ -1,0 +1,17 @@
+{
+  "name": "Blueprint",
+  "paper": "#12408a",
+  "card": "#12408a",
+  "ink": "#eaf3ff",
+  "text": "#eaf3ff",
+  "colors": ["#eaf3ff", "#7fb0ff", "#ffe27a"],
+  "accent": "#ffe27a",
+  "display": ["space-grotesk"],
+  "body": "space-grotesk",
+  "casing": "upper",
+  "surface": "ruled",
+  "backdrop": "grid",
+  "texture": "none",
+  "motion": "draw-on",
+  "art": "line"
+}

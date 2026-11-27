@@ -16,8 +16,10 @@ import { allText, bannedTopicHits, factualHash, type SeriesData } from "../pipel
 import type { LayoutSummary } from "../render/render-episode.ts";
 import { outputPath } from "../render/render-episode.ts";
 import { activeWordIndex } from "../skills/captions/pages.ts";
+import { videoCaptions } from "../pipeline/storyboard.ts";
 import { footagePaths, readLedger, spent, type FootageState } from "../skills/render-ai-video/footage.ts";
 import { firstSentence, voiceTokens, type Script } from "../skills/write-script/schema.ts";
+import { languageOf } from "../core/languages.ts";
 import { voicePaths, type Timings } from "../voice/synthesize.ts";
 
 export interface Check {
@@ -33,15 +35,30 @@ export interface QaReview {
   banned_topics: { pass: boolean; notes: string };
   visuals: { pass: boolean; notes: string };
   character: { pass: boolean; notes: string };
+  /** Does the story argue something, ending on what happened rather than preaching? Absent on reviews from before it was judged. */
+  point?: { pass: boolean; notes: string };
   overall: "pass" | "fail";
   fixes: string[];
   learnings: string[];
 }
 
-export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts: { llm: LlmProviderName; log: (l: string) => void; fresh: boolean }): Promise<{ passed: boolean; summary: string; failures: string[] }> {
+/**
+ * Automated checks that measure how good a finished video is, not whether it may exist: its length, how fast the
+ * hook lands, where text sits, how loud it is. With `reviewBlocks: false` a miss on one of these is a note.
+ */
+export const QUALITY_CHECKS = ["length", "hook-speech", "hook-line", "hook-text", "safe-areas", "cut-off", "loudness"];
+
+/**
+ * `reviewBlocks: false` (a customer's video): a finished video is delivered with what could be better, not thrown
+ * away. The agent review's findings (tone, visuals, character, and its reading of banned topics) and misses on the
+ * QUALITY_CHECKS come back as `notes` and don't fail QA. The other automated checks still do: the format, the
+ * fact-check, the banned-topic keyword screen, the captions' words and real footage.
+ */
+export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts: { llm: LlmProviderName; log: (l: string) => void; fresh: boolean; reviewBlocks?: boolean }): Promise<{ passed: boolean; summary: string; failures: string[]; notes: string[] }> {
   const log = opts.log;
   const checks = automatedChecks(ws, ep, script);
-  const renderHash = readJson<{ inputs_hash: string }>(join(ep.dir, "render.json")).inputs_hash;
+  // The finished video's hash (the clean render with its captions drawn over it): a review is of exactly that video.
+  const renderHash = readJson<{ inputs_hash: string }>(join(ep.dir, "captions-render.json")).inputs_hash;
   const frames = sampleFrames(ws, ep, Math.max(4, ws.config.qa.frames_to_sample), opts.fresh);
   writeJson(join(ep.dir, "qa", "automated.json"), { checked_at: nowIso(), render_hash: renderHash, checks });
   const failedAuto = checks.filter((c) => !c.pass);
@@ -61,15 +78,24 @@ export async function runQa(ws: Workspace, ep: EpisodeRef, script: Script, opts:
     bannedHits.pass = true;
     bannedHits.detail += " — reviewed: false positive";
   }
-  const reviewPass = review.overall === "pass" && review.tone.pass && review.banned_topics.pass && review.visuals.pass && review.character.pass;
-  const failures = [...checks.filter((c) => !c.pass).map((c) => `${c.label}: ${c.detail}`), ...(reviewPass ? [] : ["Agent review: " + (review.fixes.join("; ") || "failed")])];
+  const reviewPass = review.overall === "pass" && review.tone.pass && review.banned_topics.pass && review.visuals.pass && review.character.pass && (review.point?.pass ?? true);
+  const reviewBlocks = opts.reviewBlocks ?? true;
+  const reviewFails = reviewBlocks && !reviewPass;
+  const missed = checks.filter((c) => !c.pass);
+  const soft = reviewBlocks ? [] : missed.filter((c) => QUALITY_CHECKS.includes(c.id));
+  const failures = [...missed.filter((c) => !soft.includes(c)).map((c) => `${c.label}: ${c.detail}`), ...(reviewFails ? ["Agent review: " + (review.fixes.join("; ") || "failed")] : [])];
+  // Not blocking: every finding is a note for the person, a banned-topic concern first, since they decide what is posted.
+  const notes = [
+    ...(!reviewPass && !reviewFails ? [...(review.banned_topics.pass ? [] : [`Banned topics: ${review.banned_topics.notes}`]), ...(review.fixes.length ? review.fixes : ["The agent review did not pass; see qa-report.md."])] : []),
+    ...soft.map((c) => `${c.label}: ${c.detail}`),
+  ];
   const passed = failures.length === 0;
-  writeReport(ws, ep, script, checks, review, frames, passed);
+  writeReport(ws, ep, script, checks, review, frames, passed, notes.length > 0);
   if (passed) {
     writePublishMetadata(ws, ep, script);
     appendLearnings(ws, ep, script, review);
   }
-  return { passed, summary: passed ? "all checks passed" : `${failures.length} problem(s)`, failures };
+  return { passed, summary: passed ? (notes.length ? `passed, with ${notes.length} note(s) that don't block` : "all checks passed") : `${failures.length} problem(s)`, failures, notes };
 }
 
 function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[] {
@@ -91,9 +117,11 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
   const hookEnd = timings.words[hookWords - 1]?.end ?? Infinity;
   add("hook-speech", "Hook: speech starts immediately", timings.speech_start <= cfg.hook.speech_starts_by_seconds, `first word at ${timings.speech_start.toFixed(2)}s (limit ${cfg.hook.speech_starts_by_seconds}s)`);
   add("hook-line", "Hook: first line lands in 2 s", hookEnd <= cfg.hook.hook_line_ends_by_seconds, `"${firstSentence(script.beats[0].voiceover)}" ends at ${hookEnd.toFixed(2)}s (limit ${cfg.hook.hook_line_ends_by_seconds}s)`);
-  if (script.beats[0].on_screen_text) {
-    const f = layout.firstHeadlineFrame;
-    add("hook-text", "Hook: on-screen text", f !== null && f / cfg.video.fps <= cfg.hook.on_screen_by_seconds, f === null ? "headline never seen by the layout probe" : `visible from ${(f / cfg.video.fps).toFixed(2)}s`);
+  // The captions are the video's only words on screen: unless switched off for the first beat, they are up from the start.
+  const board = videoCaptions(ep.dir);
+  if (series.skills.captions && (!board || (board.show && !board.hide_beats.includes(script.beats[0].id)))) {
+    const f = layout.firstCaptionFrame;
+    add("hook-text", "Hook: captions on screen", f !== null && f / cfg.video.fps <= cfg.hook.on_screen_by_seconds, f === null ? "captions never seen by the layout probe" : `visible from ${(f / cfg.video.fps).toFixed(2)}s`);
   }
 
   const outside = Object.entries(layout.violationCounts).filter(([k]) => k.endsWith(":outside-safe-area"));
@@ -121,12 +149,16 @@ function automatedChecks(ws: Workspace, ep: EpisodeRef, script: Script): Check[]
     const vals = envelope.slice(a, b);
     return vals.reduce((s, v) => s + v, 0) / Math.max(1, vals.length) < 0.12;
   });
-  const syncOk = sameWords && probed > 0 && mismatched / probed <= cfg.qa.caption_sync_max_bad_ratio && quiet.length <= Math.ceil(voiced.length * 0.03);
+  // A person can switch captions off for the video or for some beats (storyboard.json); then fewer or no frames show them.
+  const chosen = videoCaptions(ep.dir);
+  const shown = chosen ? chosen.show && script.beats.some((b) => !chosen.hide_beats.includes(b.id)) : true;
+  const highlightOk = shown ? probed > 0 && mismatched / probed <= cfg.qa.caption_sync_max_bad_ratio : probed === 0;
+  const syncOk = sameWords && highlightOk && quiet.length <= Math.ceil(voiced.length * 0.03);
   add(
     "captions-sync",
     "Captions in sync",
     syncOk,
-    `${timings.words.length} words; text matches script: ${sameWords ? "yes" : "NO"}; highlight off on ${mismatched}/${probed} frames; words over silent audio: ${quiet.length}${quiet.length ? ` (${quiet.slice(0, 4).map((w) => w.text).join(", ")})` : ""}`,
+    `${timings.words.length} words; text matches script: ${sameWords ? "yes" : "NO"}; ${shown ? `highlight off on ${mismatched}/${probed} frames` : `captions switched off in the storyboard, seen on ${probed} frames`}; words over silent audio: ${quiet.length}${quiet.length ? ` (${quiet.slice(0, 4).map((w) => w.text).join(", ")})` : ""}`,
   );
 
   const loud = measureLoudness(out);
@@ -186,13 +218,14 @@ function reviewTask(ws: Workspace, ep: EpisodeRef, script: Script, checks: Check
   ctx.addFile(ws.rel(join(ep.dir, "script.json")), "channel");
   ctx.addInline("automated QA results", checks.map((c) => `- [${c.pass ? "x" : " "}] ${c.label}: ${c.detail}`).join("\n"));
   const reviewPath = join(ep.dir, "qa-review.json");
+  const lang = languageOf(String(ep.channel.doc.data.language ?? "en"));
   const instructions = `
 Review the rendered episode **${ep.state.id}** against \`workflows/qa.md\` and this channel's definition.
 
 1. Look at every sampled frame (open the images):
 ${frames.map((f) => `   - \`${ws.rel(f)}\``).join("\n")}
    The full video is \`${ws.rel(outputPath(ws, ep.channel.slug, ep.state.id))}\`.
-${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises), **character** (looks and sounds like its character file).
+${lang.rtl ? `   The video is in **${lang.name}**, read right to left: check that every caption and on-screen text runs right to left (words in order, punctuation at the left end), and that no letter shows as an empty box or a different alphabet.\n` : ""}${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video") ? "   This is **realistic AI footage**: also check that it is the same person in every shot, nothing looks fake up close (hands, teeth, eyes, morphing), no letters, subtitles or logos are burned into the footage, the place and clothes fit the era, and the lips match the words.\n" : ""}2. Judge: **tone** (matches the channel's tone and audience?), **banned topics** (anything that touches them, even indirectly? If the keyword screen flagged something, decide whether it is a false positive), **visuals** (readable, on-model, nothing cut off or overlapping, the visual style the series promises, no shot of a page, sign or label that comes out as meaningless scribbles), **character** (looks and sounds like its character file), **point** (does the video argue the point in its script's \`angle\` and the channel's Belief, told through someone with something at stake, with a turn, and does the last beat end on what happened, so the story makes the point on its own? A string of true facts with no point fails. Also check the telling: it explains plainly, in the order things happened, like someone explaining to a friend, with no opening on the ending, teasing, flashbacks or clever dramatic lines; every person and thing is introduced before it is referred to; when someone does something surprising, the video says why. A viewer who can't follow what happened and why fails, and so does an ending that preaches: advice, "next time…", "trust yourself", a pep talk or a moral addressed to the viewer).
 3. Write \`${ws.rel(reviewPath)}\` as JSON:
 
 \`\`\`json
@@ -202,6 +235,7 @@ ${(series.data.skills as SeriesData["skills"]).render.includes("render-ai-video"
   "banned_topics": { "pass": true, "notes": "…" },
   "visuals": { "pass": true, "notes": "…" },
   "character": { "pass": true, "notes": "…" },
+  "point": { "pass": true, "notes": "…" },
   "overall": "pass",
   "fixes": [],
   "learnings": ["What worked or didn't for THIS channel, phrased so the next script can use it"]
@@ -217,15 +251,16 @@ Be strict: a fail sends the episode back for fixes. Learnings are appended to th
     context: ctx,
     instructions,
     outputs: [{ path: reviewPath, format: "json", description: "the QA review" }],
+    images: frames,
     next: `./engine make episode --channel ${ep.channel.slug} --series ${ep.series}`,
   };
 }
 
-function writeReport(ws: Workspace, ep: EpisodeRef, script: Script, checks: Check[], review: QaReview | null, frames: string[], passed?: boolean): void {
-  const status = passed === undefined ? "PENDING REVIEW" : passed ? "PASS" : "FAIL";
+function writeReport(ws: Workspace, ep: EpisodeRef, script: Script, checks: Check[], review: QaReview | null, frames: string[], passed?: boolean, notesOnly = false): void {
+  const status = passed === undefined ? "PENDING REVIEW" : passed ? (notesOnly ? "PASS (the agent review's findings are notes, not blocking)" : "PASS") : "FAIL";
   const rows = checks.map((c) => `| ${c.pass ? "✅" : "❌"} | ${c.label} | ${c.detail.replace(/\|/g, "\\|")} |`).join("\n");
   const reviewRows = review
-    ? (["tone", "banned_topics", "visuals", "character"] as const).map((k) => `| ${review[k].pass ? "✅" : "❌"} | ${k.replace("_", " ")} | ${review[k].notes.replace(/\|/g, "\\|")} |`).join("\n")
+    ? (["tone", "banned_topics", "visuals", "character", "point"] as const).flatMap((k) => { const r = review[k]; return r ? [`| ${r.pass ? "✅" : "❌"} | ${k.replace("_", " ")} | ${r.notes.replace(/\|/g, "\\|")} |`] : []; }).join("\n")
     : "| ⏳ | agent review | waiting for `qa-review.json` |";
   const body = [
     `# QA report — ${script.title}`,

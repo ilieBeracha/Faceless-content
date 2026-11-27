@@ -14,10 +14,10 @@ hook_pattern: >-
 beats:
   - id: hook
     seconds: 3
-    purpose: Ask the why-question while the object is on screen; Pip is big and curious.
+    purpose: Say the surprising fact about the object in one plain sentence while it is on screen; Pip is big and curious.
   - id: fly-in
     seconds: 7
-    purpose: The camera flies into the object; Pip spots where the answer must be hiding and teases it.
+    purpose: The camera flies into the object; Pip points at the part that does the work.
   - id: explode
     seconds: 12
     purpose: The object comes apart; callouts name the 2–3 parts that matter, each in kid-proof words.

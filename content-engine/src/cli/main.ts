@@ -12,6 +12,7 @@ import type { LlmProviderName } from "../core/tasks.ts";
 import { Workspace } from "../core/workspace.ts";
 import { STEPS } from "../pipeline/episode.ts";
 import { runSetup } from "../voice/setup.ts";
+import { makeSfx } from "../audio/bed.ts";
 import { addCharacter, addIdeas, addSeries, setIdeaStatus } from "./commands/add.ts";
 import { brainstorm, type BrainstormKind } from "./commands/brainstorm.ts";
 import { approveChannel, editFile, newChannel, setChannelStatus } from "./commands/channel.ts";
@@ -23,7 +24,7 @@ import { log, ok, printPause } from "./ui.ts";
 
 const ws = Workspace.fromEnv();
 const program = new Command();
-const llmOption = () => new Option("--llm <provider>", "who writes drafts/scripts: agent (free, default) | anthropic (paid API, opt-in)").choices(["agent", "anthropic"]);
+const llmOption = () => new Option("--llm <provider>", "who writes drafts/scripts: agent (free, default) | anthropic | gemini (paid APIs, opt-in)").choices(["agent", "anthropic", "gemini"]);
 const llm = (o: { llm?: string }): LlmProviderName => (o.llm as LlmProviderName | undefined) ?? ws.config.llm.provider;
 
 program
@@ -36,6 +37,7 @@ program
   .showHelpAfterError();
 
 program.command("setup").description("one-time machine setup: local voice (Kokoro, free), ffmpeg check, render browser").action(async () => runSetup(ws, log));
+program.command("sfx").description("make the engine's sound effects once (fal, paid, about $0.01; needs FAL_KEY): src/audio/sfx/").action(async () => makeSfx(ws, log));
 program.command("doctor").description("check this machine and render a few demo stills").action(async () => {
   if (!(await doctor(ws))) process.exitCode = 1;
 });

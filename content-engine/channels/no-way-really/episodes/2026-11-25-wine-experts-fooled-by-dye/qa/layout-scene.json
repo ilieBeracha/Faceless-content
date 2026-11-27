@@ -1,0 +1,75 @@
+{
+  "frame": {
+    "w": 1080,
+    "h": 1920
+  },
+  "safe": {
+    "x": 60,
+    "y": 250,
+    "w": 870,
+    "h": 1230
+  },
+  "elements": {
+    "th:setup:0:note": {
+      "kind": "text",
+      "frames": 249,
+      "minX": 151,
+      "minY": 530,
+      "maxX": 841,
+      "maxY": 677
+    },
+    "th:turn:0:mark-v-0": {
+      "kind": "text",
+      "frames": 270,
+      "minX": 156,
+      "minY": 455,
+      "maxX": 322,
+      "maxY": 556
+    },
+    "th:turn:0:mark-l-0": {
+      "kind": "text",
+      "frames": 270,
+      "minX": 108,
+      "minY": 596,
+      "maxX": 354,
+      "maxY": 697
+    },
+    "th:turn:0:mark-v-1": {
+      "kind": "text",
+      "frames": 258,
+      "minX": 591,
+      "minY": 447,
+      "maxX": 928,
+      "maxY": 564
+    },
+    "th:turn:0:mark-l-1": {
+      "kind": "text",
+      "frames": 258,
+      "minX": 628,
+      "minY": 596,
+      "maxX": 874,
+      "maxY": 697
+    },
+    "th:twist:0:note": {
+      "kind": "text",
+      "frames": 153,
+      "minX": 151,
+      "minY": 558,
+      "maxX": 841,
+      "maxY": 705
+    },
+    "th:ending:0:art-label": {
+      "kind": "text",
+      "frames": 146,
+      "minX": 608,
+      "minY": 1141,
+      "maxX": 879,
+      "maxY": 1196
+    }
+  },
+  "violations": [],
+  "violationCounts": {},
+  "captionWord": {},
+  "firstCaptionFrame": null,
+  "probes": 1604
+}

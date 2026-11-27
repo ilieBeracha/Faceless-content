@@ -1,0 +1,43 @@
+{
+  "status": "not-posted",
+  "$comment": "Posting is not built yet. Nothing here is sent anywhere.",
+  "title": "Strange facts about Saturn",
+  "description": "It would float in water, its rings are about ten metres thick and its north pole has a hexagon. Strange facts about Saturn.",
+  "hashtags": [
+    "#saturn",
+    "#space",
+    "#astronomy",
+    "#planets",
+    "#shorts"
+  ],
+  "video": "out/time-tourist/2026-10-17-strange-facts-about-saturn.mp4",
+  "ai_disclosure": {
+    "ai_generated": true,
+    "label_as_ai_generated": true,
+    "details": "Script drafted by an AI agent, voice synthesised (Kokoro TTS), visuals rendered procedurally. Facts reviewed by a person.",
+    "realistic": false,
+    "platforms": {
+      "youtube-shorts": {
+        "label_required": "check at posting time",
+        "how": "YouTube Studio > 'Altered or synthetic content'. Required for realistic content; optional (but allowed) for clearly animated content.",
+        "labeled": false
+      },
+      "tiktok": {
+        "label_required": "check at posting time",
+        "how": "Post settings > 'AI-generated content' toggle. Required when content is significantly AI-generated and realistic.",
+        "labeled": false
+      },
+      "instagram-reels": {
+        "label_required": "check at posting time",
+        "how": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio.",
+        "labeled": false
+      }
+    }
+  },
+  "made_for_kids": false,
+  "platforms": [
+    "youtube-shorts",
+    "tiktok",
+    "instagram-reels"
+  ]
+}

@@ -2,7 +2,7 @@
 name: render-talking-character
 kind: render
 layer: overlay
-description: The channel's character in frame, mouth driven by the loudness of the voice, blinking, expressions per beat. Rigs - orb-bot-3d (3D robot) and flat-2d (vector creature).
+description: The channel's character in frame, mouth driven by the loudness of the voice, blinking, expressions per beat. Rigs - orb-bot-3d (3D robot), flat-2d (vector creature), stick-figure (doodle person), pixel-sprite (8-bit game sprite) and neon-line (glowing line face).
 ---
 
 # Skill: render-talking-character
@@ -25,6 +25,10 @@ placement and an expression.
 
 A character picks a **rig** (a generic, parameterised character builder) and sets its parameters. New characters
 need no code — only a new model.json.
+
+Ready-made hosts live in the engine's `avatars/` folder as `<id>.json` (`name`, `summary`, `model`) with a picture
+`<id>.jpg` drawn by `npm run avatars:thumbs`. Every file there is offered as a host on the storefront's create page.
+They are starting points, not channel characters: a channel still gets its own character with its own model.json.
 
 ### Rig `orb-bot-3d` — a round 3D robot
 
@@ -96,3 +100,43 @@ each scene (see that skill); on other scene skills this layer shows it like any 
 | `glow` | 0–1.5 | eye/LED glow (robot rig) |
 
 Every model needs at least `neutral`. Recommended set: `neutral`, `curious`, `excited`, `surprised`, `thinking`.
+
+### Rig `pixel-sprite` — an 8-bit game sprite
+
+A 16 × 16 sprite that moves in whole pixels a few times a second, like an old console.
+
+```jsonc
+{
+  "rig": "pixel-sprite",
+  "params": {
+    "body": "#ff6b2c", "shade": "#c9441a",        // shade = the bottom rows
+    "outline": "#1a0f1f",                           // outline, brows, closed eyes, mouth
+    "eye": "#ffffff", "pupil": "#1a0f1f",
+    "accent": "#ffe14a",                            // the head feature and the tongue
+    "feature": "horns"                              // none | horns | antenna | cap
+  },
+  "expressions": { "neutral": {}, "excited": { "eye_scale": 1.3, "brow": "up", "mouth_curve": 0.9 } }
+}
+```
+
+It reads `eye_scale` (above 1.2 = taller eyes), `lid`, `look`, `brow`, `mouth_curve` and `bounce`; it does not tilt.
+
+### Rig `neon-line` — a glowing line face
+
+A face made only of lit tubes on a dark panel, with a slow ring of dashes turning around it and an occasional flicker.
+
+```jsonc
+{
+  "rig": "neon-line",
+  "params": {
+    "line": "#ff3d9a",          // head outline and brows
+    "glow": "#27e0ff",          // eyes and mouth
+    "backing": "#0d0b1e",       // the dark panel behind, so it reads on light backgrounds too
+    "shape": "diamond",         // hex | circle | diamond | square
+    "line_width": 7
+  },
+  "expressions": { "neutral": {}, "thinking": { "lid": 0.3, "tilt_deg": -8 } }
+}
+```
+
+It reads every expression field; `glow` scales how bright the halo is.

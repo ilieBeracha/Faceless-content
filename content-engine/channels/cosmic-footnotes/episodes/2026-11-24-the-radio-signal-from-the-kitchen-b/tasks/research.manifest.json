@@ -1,0 +1,42 @@
+{
+  "task": "research",
+  "title": "Research the story for 2026-11-24-the-radio-signal-from-the-kitchen-b",
+  "purpose": "research",
+  "channel": "cosmic-footnotes",
+  "series": "tiny-clue-big-deal",
+  "created": "2026-11-25T16:39:26Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "channels/cosmic-footnotes/channel.md",
+      "role": "channel",
+      "sha256": "d660cd21b0d0a6474281ac131b0f62fa378f9c829a2a89cf32545d10819bcdc6",
+      "bytes": 4054
+    },
+    {
+      "path": "channels/cosmic-footnotes/series/tiny-clue-big-deal.md",
+      "role": "channel",
+      "sha256": "f19eb2fb58e0c1068bdee6bcbfaab6224a29a937fcd78ff4ac4a0787a539090f",
+      "bytes": 3531
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "49e6627cde4430c61d8af30bd5bc31f2c2ec1f1525cd5b3c5c131425231f3f52",
+      "bytes": 244
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/cosmic-footnotes/episodes/2026-11-24-the-radio-signal-from-the-kitchen-b/research.json",
+      "format": "json",
+      "description": "the research dossier"
+    }
+  ],
+  "next": "./engine make episode --channel cosmic-footnotes --series tiny-clue-big-deal --episode 2026-11-24-the-radio-signal-from-the-kitchen-b --redo script"
+}

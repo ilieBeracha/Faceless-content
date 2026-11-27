@@ -1,17 +1,19 @@
 /**
  * render-ai-video — realistic footage from a video model (Google Veo through the Gemini API, paid).
- * A beat is 1–4 shots; in each shot the photoreal character says one line on camera, lip-synced, in a
- * real-looking place. Scripts describe shots in words; the engine turns them into prompts.
+ * A beat is 1–4 shots; in each shot the photoreal character says one line, either on camera (lip-synced)
+ * or from behind the phone while it films the place (camera "pov"). Scripts describe shots in words; the engine turns them into prompts.
  */
 import { z } from "zod";
 import { voiceTokens } from "../write-script/schema.ts";
 
-export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide"] as const;
+export const CAMERAS = ["selfie", "selfie-walk", "over-shoulder", "wide", "pov", "closeup", "establishing", "silhouette", "first-person", "on-location"] as const;
+/** Cameras that don't show the character's face: the line is narrated off screen (voice-over). */
+export const OFF_CAMERA: readonly Shot["camera"][] = ["pov", "establishing", "silhouette", "first-person"];
 
 export const shotSchema = z
   .object({
     place: z.string().min(12).max(400).describe("where the shot is and what is visible, concrete and period-accurate"),
-    action: z.string().min(4).max(240).describe("what the character does while talking"),
+    action: z.string().min(4).max(240).describe("what the character does while talking (pov: what the camera does, e.g. tilts up to the ceiling)"),
     camera: z.enum(CAMERAS).default("selfie"),
     line: z.string().min(1).max(200).describe("exactly what the character says in this shot (a slice of the beat's voiceover)"),
     others: z.string().max(240).optional().describe("other people in the shot (they don't speak)"),
@@ -31,6 +33,17 @@ export const worldSchema = z
   .object({
     world: z.string().min(12).max(400).describe("when and where the whole episode happens (era, city, season, light)"),
     look: z.string().max(240).default("handheld smartphone vlog footage, natural light, realistic skin texture, shallow depth of field"),
+    grade: z.enum(["natural", "cinematic"]).default("natural").describe("cinematic: film grade, vignette, grain and a slow push-in on every shot"),
+    score: z.enum(["none", "space-drone"]).default("none").describe("a generated music bed under the voice (free, made locally)"),
+    direction: z
+      .enum(["vlog", "documentary"])
+      .default("vlog")
+      .describe("documentary: calm, natural acting (no jumping, posing or big gestures) and strictly photoreal, unstylised visuals"),
+    style: z
+      .enum(["photo", "illustrated"])
+      .default("photo")
+      .describe("illustrated: a 2D animated film in flat vector illustration style (the character keeps the same face, drawn)"),
+    wardrobe: z.string().max(300).optional().describe("this episode's outfit instead of the character's usual one (same face), e.g. a pressure suit"),
   })
   .strict();
 

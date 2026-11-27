@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-11-15T18:32:44Z",
+  "render_hash": "3f909f0c20e1bfd9c0929b2fa7302eba03111c01c5a022fff9ced6bdf91b4e88",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": true,
+      "detail": "32.70s (series allows 20–35s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.17s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"A real moth jammed a computer.\" ends at 1.91s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: on-screen text",
+      "pass": true,
+      "detail": "visible from 0.33s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "14 text elements checked on every frame (3465 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "85 words; text matches script: yes; highlight off on 0/949 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-14.5 LUFS (target -14 ±1.5), true peak -4.7 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 6 banned topics mentioned"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by ilieBeracha (5 claims)"
+    }
+  ]
+}

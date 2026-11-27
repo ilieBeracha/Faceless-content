@@ -1,0 +1,84 @@
+{
+  "task": "script",
+  "title": "Write the script for 2026-11-14-first-computer-bug-moth",
+  "purpose": "script",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "created": "2026-11-14T19:31:02Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "164e62fb1aa4ccd6bf953601909be4cc0f5da48673ead7cc8b7b128920c11c74",
+      "bytes": 4257
+    },
+    {
+      "path": "channels/no-way-really/channel.md",
+      "role": "channel",
+      "sha256": "3399e6250e869dad340f644679f4fac10b8b8c14db4a5afa650c22db30871a69",
+      "bytes": 3679
+    },
+    {
+      "path": "channels/no-way-really/series/wait-what.md",
+      "role": "channel",
+      "sha256": "34ec3707cf7bfbdf93496c2cda3e73fea2dcfee606c1bf8eb2c71ab4e2be3e9f",
+      "bytes": 3365
+    },
+    {
+      "path": "channels/no-way-really/characters/blink.md",
+      "role": "channel",
+      "sha256": "d125931f72cb2b7b478946dc0004d2d6dee6b3ba295b25837b2d77062d57b7ba",
+      "bytes": 2864
+    },
+    {
+      "path": "channels/no-way-really/characters/blink/model.json",
+      "role": "channel",
+      "sha256": "8c2e9ab614ae62b22d309c6b4c717354e7d5adf44b2e19fa50b6a1c36524990c",
+      "bytes": 1173
+    },
+    {
+      "path": "channels/no-way-really/learnings.md",
+      "role": "channel",
+      "sha256": "066d035ba1e0d714ccb3d04bc29b1febe52b931a6545354b052c82f0056c0cde",
+      "bytes": 229
+    },
+    {
+      "path": "skills/write-script/SKILL.md",
+      "role": "skill",
+      "sha256": "6055ff06f45ed813d0e8fdbc8aaaa032cd079b871028725f6621d41130c97fe7",
+      "bytes": 4115
+    },
+    {
+      "path": "skills/render-motion-graphics/SKILL.md",
+      "role": "skill",
+      "sha256": "3d4b02237da83fdd20a9f5cb80e32b114b542e06948cd81cf79ee5eada739c75",
+      "bytes": 1995
+    },
+    {
+      "path": "skills/render-talking-character/SKILL.md",
+      "role": "skill",
+      "sha256": "2385f5c069a1fbbe154697e721e206de12283e6f3cf83715e31b9787e621d637",
+      "bytes": 4106
+    },
+    {
+      "path": "skills/captions/SKILL.md",
+      "role": "skill",
+      "sha256": "5939f78d65d734dcaa1364cce50bbbe5fa3ae64a2c8df93af8456f3c783c3ae6",
+      "bytes": 1672
+    },
+    {
+      "path": "(inline) the idea for this episode",
+      "role": "input",
+      "sha256": "629b6592327083c235aa6c292764c8cb91be10ce0c85c118697457ae3f67558a",
+      "bytes": 189
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/no-way-really/episodes/2026-11-14-first-computer-bug-moth/script.json",
+      "format": "json",
+      "description": "the episode script (script/v1)"
+    }
+  ],
+  "next": "./engine make episode --channel no-way-really --series wait-what"
+}

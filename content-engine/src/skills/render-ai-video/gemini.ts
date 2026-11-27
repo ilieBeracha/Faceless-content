@@ -1,5 +1,6 @@
 /**
- * Minimal client for Google's Gemini API (paid): Gemini image models for photos, Veo for video clips.
+ * Minimal client for Google's Gemini API (paid): Gemini image models for photos, Veo for video clips, and Gemini text
+ * models when they write the engine's tasks (`--llm gemini`).
  * The key comes from GEMINI_API_KEY (.env or the environment) and is only ever sent in the request header.
  */
 import { EngineError } from "../../core/errors.ts";
@@ -10,7 +11,7 @@ export function geminiKey(): string {
   const key = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
   if (!key) {
     throw new EngineError(
-      "GEMINI_API_KEY is not set, so realistic footage can't be generated.",
+      "GEMINI_API_KEY is not set, so the Gemini API can't be called.",
       "Create a key in Google AI Studio, then add it as GEMINI_API_KEY in your environment settings (or in .env, which is never committed).",
     );
   }
@@ -37,9 +38,25 @@ async function call<T>(method: "GET" | "POST", path: string, body?: unknown, att
     } catch {
       // keep the raw text
     }
-    throw new EngineError(`Gemini API ${method} ${path.split("?")[0]} failed (${res.status}): ${message}`, res.status === 403 || res.status === 401 ? "Check that GEMINI_API_KEY is valid and has billing enabled for Veo." : undefined);
+    throw new EngineError(`Gemini API ${method} ${path.split("?")[0]} failed (${res.status}): ${message}`, res.status === 403 || res.status === 401 ? "Check that GEMINI_API_KEY is valid and has billing enabled." : undefined);
   }
   return JSON.parse(text) as T;
+}
+
+/** One `generateContent` call, the request and response as the API defines them. */
+export function generateContent<T>(model: string, body: unknown): Promise<T> {
+  return call<T>("POST", `models/${model}:generateContent`, body);
+}
+
+/** Google Search answers cite its own redirect links; these stand for the page the model read. */
+export const GROUNDING_LINK = /https:\/\/vertexaisearch\.cloud\.google\.com\/grounding-api-redirect\/[A-Za-z0-9_\-=]+/g;
+
+/** The page a grounding redirect link points to (its Location), so a source names the real page and doesn't expire. */
+export async function resolveGroundingLink(link: string): Promise<string> {
+  const res = await fetch(link, { method: "GET", redirect: "manual" });
+  const target = res.headers.get("location");
+  if (res.status < 300 || res.status >= 400 || !target) throw new EngineError(`The Gemini source link ${link} did not lead to a page (status ${res.status}).`);
+  return target;
 }
 
 export interface ModelInfo {
@@ -134,6 +151,44 @@ export async function waitForVideo(operation: string, log: (l: string) => void, 
     await sleep(10_000);
     log(`    … still generating (${Math.round((Date.now() - started) / 1000)}s)`);
   }
+}
+
+/** A point in a picture, as fractions of its width (x, from the left) and height (y, from the top). */
+export interface PicturePoint {
+  x: number;
+  y: number;
+}
+
+/** Ask a Gemini vision model where each named thing is in a picture. Throws when one isn't in it. */
+export async function locatePoints(model: string, image: Buffer, targets: string[]): Promise<Record<string, PicturePoint>> {
+  const prompt = [
+    "This is a painted picture. For each thing listed, give the point at the centre of that thing as it appears in the picture.",
+    "x and y are fractions of the picture: x from 0 (left edge) to 1 (right edge), y from 0 (top edge) to 1 (bottom edge).",
+    "If a thing is not in the picture, set found to false.",
+    "Things:",
+    ...targets.map((t, i) => `${i + 1}. ${t}`),
+    'Answer only JSON: {"points": [{"thing": "<as listed>", "found": true, "x": 0.5, "y": 0.5}, ...]} in the same order.',
+  ].join("\n");
+  const res = await call<{ candidates?: { content?: { parts?: { text?: string }[] } }[] }>("POST", `models/${model}:generateContent`, {
+    contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: image.toString("base64") } }] }],
+    generationConfig: { responseMimeType: "application/json", temperature: 0 },
+  });
+  const text = res.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
+  let parsed: { points?: { found?: boolean; x?: number; y?: number }[] };
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new EngineError(`Finding things in a picture: the model's answer was not JSON: ${text.slice(0, 200)}`);
+  }
+  const points = parsed.points ?? [];
+  if (points.length !== targets.length) throw new EngineError(`Finding things in a picture: asked for ${targets.length} things, got ${points.length} answers.`);
+  const out: Record<string, PicturePoint> = {};
+  targets.forEach((t, i) => {
+    const p = points[i];
+    if (p.found === false || typeof p.x !== "number" || typeof p.y !== "number") throw new EngineError(`"${t}" is not in its painted picture, so nothing can point at it.`, "Name something the shot shows (its `show`), or paint the shot again.");
+    out[t] = { x: Math.min(1, Math.max(0, p.x)), y: Math.min(1, Math.max(0, p.y)) };
+  });
+  return out;
 }
 
 export interface SpeechCheck {

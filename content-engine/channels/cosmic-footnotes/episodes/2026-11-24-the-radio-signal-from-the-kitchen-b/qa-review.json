@@ -1,0 +1,38 @@
+{
+  "render_hash": "71e68edf067db5da3009b7e3be222de9d9e47190a41df23421946aa244d3fe3f",
+  "tone": {
+    "pass": true,
+    "notes": "Curious, warm and lightly witty: the lunchtime detail and the microwave door carry the humour without hype words. Short spoken sentences, real names and years where they help. Fits a 13+ audience and Ori's 'friend telling you the best part of a documentary' voice; 'Here's the footnote.' used once, in the right place."
+  },
+  "banned_topics": {
+    "pass": true,
+    "notes": "Keyword screen clean. Nothing touches aliens/UFOs (the 'deep space' bursts are presented as natural astrophysical signals, not alien), disasters, health, politics or religion. Microwave ovens are mentioned only as the source of interference, no usage or safety advice."
+  },
+  "visuals": {
+    "pass": false,
+    "notes": "Storybook style, bubble-helmet Ori in every scene, gold one-word captions and title bar all readable and inside the frame. But the story's key object, the microwave, is never drawn. In story s3 ('ran the staff kitchen microwave and opened the door…', ~29-33 s) and in the whole kicker ('…the answer was a microwave door opened too soon', ~43-49 s, checked on extra frames at 44, 46, 48.5 s and the last frame), the 'box' prop renders as a plain closed cardboard box on a table, so the caption 'microwave' (46 s) sits over a cardboard box. The turn and the payoff object are unreadable. Smaller: in the clue room scene (13.8 s) the wall clock sits on top of the window, and in the kicker the '17 years' calendar covers the window, both overlapping props. Story s1 (~16-20 s, Emily hunting the bursts) shows a small backyard optical telescope under the moon, which contradicts the radio dish the story is about. The point beat's ringed planet (~34 s) for 'fast radio burst' suggests the bursts come from a planet, which is not what the script says."
+  },
+  "character": {
+    "pass": true,
+    "notes": "Ori is on-model in every frame: round pale head, dot eyes, dark bun inside a clear bubble helmet, navy tunic, stick limbs, wobbly lines. Mouth open/closed varies with speech; poses and expressions fit the lines (facepalm/amused on the hook, pointing/surprised on the monitor clue, shrug/amused on the kicker)."
+  },
+  "point": {
+    "pass": false,
+    "notes": "Structure is right and in order: perytons since 1998 at lunchtime → Emily Petroff, who needs to know whether the real bursts are just local noise → January 2015 monitor blips on the microwave band → kitchen-microwave test makes a peryton on cue → bursts shown real, now traced to other galaxies. It ends on what happened, with no moral or advice. But the key step of the point beat is not explained: 'A microwave couldn't have made the very first fast radio burst, so those bursts were real' never says why. The viewer has just learned that microwaves make signals that look like fast radio bursts, so the obvious question is why the first burst wasn't a microwave too, and the video doesn't answer it. The payoff rests on a jump the viewer can't follow. Also, 'the very first fast radio burst' is never introduced earlier (the clue only says perytons 'looked a lot like fast radio bursts from deep space'). In the story beat, 'if they were just local noise too' leaves 'they' ambiguous (perytons vs real bursts). The Belief ('somebody refused to ignore') is only implied: nothing shows Petroff refusing to wave the blip away."
+  },
+  "overall": "fail",
+  "fixes": [
+    "visuals (story s3 + kicker): draw the microwave as a recognisable microwave oven (window, door, keypad), ideally with the door swinging open in the story scene; if the storybook library has no microwave prop, rewrite those sentences around something it can draw. Never let 'microwave' sit over a plain box.",
+    "visuals (story s1): replace the backyard optical telescope with the Parkes dish or a monitor/screen scene, since the story is about a radio dish.",
+    "visuals (clue room scene, kicker): move the clock and the '17 years' calendar so they don't sit on top of the window.",
+    "visuals (point s1): swap the ringed planet for a distant galaxy or starfield. The bursts come from other galaxies, not planets.",
+    "point (point beat): add the plain reason the first burst couldn't be a microwave, in one sourced clause (per Petroff et al. 2015, e.g. that it lacked the microwave signature the perytons showed), and introduce 'the first fast radio burst' (found at Parkes, which perytons cast doubt on) in the clue before relying on it. New wording needs fact-check re-approval.",
+    "point (story beat): make 'they' unambiguous ('if the real bursts were just local noise too') and show one concrete thing Petroff did because she wouldn't ignore the blip."
+  ],
+  "learnings": [
+    "Check that the storybook prop library can actually draw the story's key object before writing around it: a 'box' standing in for a microwave turned the turn and the kicker into a cardboard box.",
+    "When the twist is 'X looked like Y, but X was local', the point beat must say in plain words why Y still isn't X. Otherwise the payoff is a leap the viewer can't follow.",
+    "Introduce the thing the point depends on (here, 'the first fast radio burst') in the clue beat, not for the first time in the point beat.",
+    "Wall props (clock, calendar) collide with the room's window. Place them away from x≈0.7, y≈0.25-0.3 in the room setting."
+  ]
+}

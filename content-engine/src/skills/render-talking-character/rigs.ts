@@ -138,6 +138,42 @@ const stickFigure = z
   })
   .strict();
 
+/** An 8-bit game sprite on a 16×16 grid. */
+const pixelSprite = z
+  .object({
+    rig: z.literal("pixel-sprite"),
+    params: z
+      .object({
+        body: color,
+        shade: color.optional().describe("the bottom rows; same as body if omitted"),
+        outline: color.default("#1a0f1f").describe("outline, brows, closed eyes and mouth"),
+        eye: color.default("#ffffff"),
+        pupil: color.default("#1a0f1f"),
+        accent: color.describe("the feature on its head, and the tongue"),
+        feature: z.enum(["none", "horns", "antenna", "cap"]).default("none"),
+      })
+      .strict(),
+    expressions: z.record(z.string(), expressionSchema),
+  })
+  .strict();
+
+/** A face drawn only in glowing lines, like a neon sign. */
+const neonLine = z
+  .object({
+    rig: z.literal("neon-line"),
+    params: z
+      .object({
+        line: color.describe("the head outline and brows"),
+        glow: color.describe("eyes and mouth"),
+        backing: color.default("#0d0b1e").describe("the dark panel behind the tubes, so it reads on any background"),
+        shape: z.enum(["hex", "circle", "diamond", "square"]).default("hex"),
+        line_width: z.number().min(3).max(12).default(7),
+      })
+      .strict(),
+    expressions: z.record(z.string(), expressionSchema),
+  })
+  .strict();
+
 /** A photoreal person made by an image/video model (render-ai-video). Always fictional, or a consenting person's twin. */
 const photoreal = z
   .object({
@@ -155,13 +191,15 @@ const photoreal = z
   })
   .strict();
 
-export const characterModelSchema = z.discriminatedUnion("rig", [orbBot3d, flat2d, stickFigure, photoreal]);
+export const characterModelSchema = z.discriminatedUnion("rig", [orbBot3d, flat2d, stickFigure, pixelSprite, neonLine, photoreal]);
 export type CharacterModel = z.infer<typeof characterModelSchema>;
 export type OrbBot3dModel = z.infer<typeof orbBot3d>;
 export type Flat2dModel = z.infer<typeof flat2d>;
 export type StickFigureModel = z.infer<typeof stickFigure>;
+export type PixelSpriteModel = z.infer<typeof pixelSprite>;
+export type NeonLineModel = z.infer<typeof neonLine>;
 export type PhotorealModel = z.infer<typeof photoreal>;
-export const RIG_NAMES = ["orb-bot-3d", "flat-2d", "stick-figure", "photoreal"] as const;
+export const RIG_NAMES = ["orb-bot-3d", "flat-2d", "stick-figure", "pixel-sprite", "neon-line", "photoreal"] as const;
 
 /** Problems with a model.json (empty list when valid). */
 export function checkCharacterModel(raw: unknown): string[] {

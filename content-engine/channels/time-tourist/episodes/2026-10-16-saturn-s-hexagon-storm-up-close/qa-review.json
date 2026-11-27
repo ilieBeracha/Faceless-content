@@ -1,0 +1,15 @@
+{
+  "render_hash": "a206cf9830728908d8c9356f43ad76226f83c5203281f85ca8e5c84784db757d",
+  "tone": { "pass": true, "notes": "Same approved script in Tilly's voice: punchy two-word hook, facts as surprises, the unexplained part said plainly, one 'Okay, review time', spoken rating. Fits 13+." },
+  "banned_topics": { "pass": true, "notes": "Planetary science only; the cause of the six sides is labelled uncertain." },
+  "visuals": { "pass": true, "notes": "Cinematic remake: Saturn-lit close-ups for hook, catch and rating; establishing shots of the wonder (a tiny ship gliding over Saturn's horizon, a crane down onto the hexagon, tracking along its edge, a pull-back revealing the rings, the blue eye); silhouettes of Tilly against the giant window. Film grade, vignette, grain, slow push-ins and an ambient score under the voice. Captions and headline readable and inside safe areas. Every clip's bottom third was scanned: no burned-in text. One clip (catch-1) glitches into a teal frame after 5.5 s, but only 0–5.3 s is used. The hexagon reads stylised (a glowing outline) in tour-1." },
+  "character": { "pass": true, "notes": "Same face as the approved reference in every close-up; mustard flight suit with red shoulder stripes and faded red cap in close-ups and silhouettes. Lip-sync judged from frames; every clip's audio was transcribed and says its exact line." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "Cinematic cameras (closeup / establishing / silhouette) plus grade: cinematic and score: space-drone look far more like a film than phone-vlog framing; use them for every Rated: Space episode.",
+    "Silhouettes from behind keep the character in the shot without risking a changed face, and narrate cleanly as voice-over.",
+    "An establishing shot with a spacecraft AND a planet feature confuses the image model (a bus-sized ship parked on a six-pointed star). Give it one subject: the tiny ship over the horizon, or the hexagon, not both.",
+    "'Blue spiral storm' in a planet prompt can drift toward Earth-like oceans; name the gas giant's own colours (pale gold, cream) and say 'no oceans, no land'."
+  ]
+}

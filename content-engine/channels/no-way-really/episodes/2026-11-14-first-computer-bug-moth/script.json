@@ -1,0 +1,490 @@
+{
+  "schema": "script/v1",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "idea": "first-computer-bug-moth",
+  "title": "The first computer bug was a real moth",
+  "language": "en",
+  "beats": [
+    {
+      "id": "hook",
+      "speaker": "blink",
+      "voiceover": "A real moth jammed a computer.",
+      "on_screen_text": "A real moth jammed a computer",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "heading",
+            "lines": [
+              "Bug =",
+              "an actual insect"
+            ]
+          },
+          {
+            "type": "art",
+            "id": "moth"
+          }
+        ]
+      },
+      "character": {
+        "placement": "full",
+        "expression": "surprised"
+      }
+    },
+    {
+      "id": "setup",
+      "speaker": "blink",
+      "voiceover": "September ninth, 1947. Harvard's Mark II computer hits an error.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "heading",
+            "lines": [
+              "9 September 1947"
+            ]
+          },
+          {
+            "type": "note",
+            "kicker": "Harvard",
+            "text": "The Mark II computer hits an error"
+          },
+          {
+            "type": "art",
+            "id": "computer"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "thinking"
+      }
+    },
+    {
+      "id": "turn",
+      "speaker": "blink",
+      "voiceover": "So the operators go looking. And there it is: a moth, caught in a relay.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "kicker": "What they found",
+            "text": "A moth, caught in a relay"
+          },
+          {
+            "type": "art",
+            "id": "moth"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "excited"
+      }
+    },
+    {
+      "id": "twist",
+      "speaker": "blink",
+      "voiceover": "Here's the funny part. Engineers already called faults bugs. Edison did, back in 1878. So they taped the moth into the logbook and wrote: First actual case of bug being found.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "marks",
+            "items": [
+              {
+                "value": "1878",
+                "label": "Edison writes \"bugs\""
+              },
+              {
+                "value": "1947",
+                "label": "Moth in the Mark II"
+              }
+            ]
+          },
+          {
+            "type": "note",
+            "kicker": "Written in the logbook",
+            "text": "\"First actual case of bug being found.\""
+          },
+          {
+            "type": "art",
+            "id": "logbook"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "curious"
+      }
+    },
+    {
+      "id": "ending",
+      "speaker": "blink",
+      "voiceover": "That page, moth and all, is kept at the Smithsonian. The one time a computer bug was a real bug. No way. Really.",
+      "visual": {
+        "skill": "render-themed",
+        "elements": [
+          {
+            "type": "note",
+            "kicker": "Still around",
+            "text": "The logbook, moth and all, is kept at the Smithsonian"
+          },
+          {
+            "type": "heading",
+            "lines": [
+              "A real bug"
+            ]
+          },
+          {
+            "type": "art",
+            "id": "museum"
+          }
+        ]
+      },
+      "character": {
+        "placement": "corner",
+        "expression": "excited"
+      }
+    }
+  ],
+  "visuals": {
+    "render-themed": {
+      "art": {
+        "moth": {
+          "shapes": [
+            {
+              "d": "M50 40C30 15 5 15 6 38c1 16 24 18 44 12z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M50 40C70 15 95 15 94 38c-1 16-24 18-44 12z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M50 50c-16 4-32 12-26 26 6 10 22-4 26-16z",
+              "fill": "a",
+              "anim": "flap"
+            },
+            {
+              "d": "M50 50c16 4 32 12 26 26-6 10-22-4-26-16z",
+              "fill": "a",
+              "anim": "flap"
+            },
+            {
+              "d": "M18 34a6 6 0 1 0 12 0a6 6 0 1 0 -12 0z",
+              "fill": "paper",
+              "anim": "flap"
+            },
+            {
+              "d": "M70 34a6 6 0 1 0 12 0a6 6 0 1 0 -12 0z",
+              "fill": "paper",
+              "anim": "flap"
+            },
+            {
+              "d": "M21.6 34a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M73.6 34a2.4 2.4 0 1 0 4.8 0a2.4 2.4 0 1 0 -4.8 0z",
+              "fill": "ink",
+              "anim": "flap"
+            },
+            {
+              "d": "M44.5 52a5.5 20 0 1 0 11 0a5.5 20 0 1 0 -11 0z",
+              "fill": "ink"
+            },
+            {
+              "d": "M48 34C44 24 38 19 32 18M52 34c4-10 10-15 16-16",
+              "stroke": "ink",
+              "width": 2.4
+            }
+          ]
+        },
+        "computer": {
+          "shapes": [
+            {
+              "d": "M10 8L91 6L90 93L11 94Z",
+              "fill": "b"
+            },
+            {
+              "d": "M17 15L84 14L83 44L18 45Z",
+              "fill": "ink"
+            },
+            {
+              "d": "M25 30a10 10 0 1 0 20 0a10 10 0 1 0 -20 0z",
+              "fill": "paper"
+            },
+            {
+              "d": "M56 29a10 10 0 1 0 20 0a10 10 0 1 0 -20 0z",
+              "fill": "paper"
+            },
+            {
+              "d": "M32 30a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z",
+              "fill": "ink"
+            },
+            {
+              "d": "M63 29a3 3 0 1 0 6 0a3 3 0 1 0 -6 0z",
+              "fill": "ink"
+            },
+            {
+              "d": "M35 22L35 38",
+              "stroke": "ink",
+              "width": 2,
+              "anim": "spin",
+              "at": [
+                35,
+                30
+              ]
+            },
+            {
+              "d": "M66 21L66 37",
+              "stroke": "ink",
+              "width": 2,
+              "anim": "spin",
+              "at": [
+                66,
+                29
+              ]
+            },
+            {
+              "d": "M17.4 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "a",
+              "anim": "blink"
+            },
+            {
+              "d": "M29 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "c"
+            },
+            {
+              "d": "M40.6 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "paper",
+              "anim": "blink"
+            },
+            {
+              "d": "M52.2 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "a"
+            },
+            {
+              "d": "M63.8 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "c",
+              "anim": "blink"
+            },
+            {
+              "d": "M75.4 56a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+              "fill": "paper"
+            },
+            {
+              "d": "M19 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M22 70h5v6h-5z",
+              "fill": "ink"
+            },
+            {
+              "d": "M36 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M39 76h5v6h-5z",
+              "fill": "ink"
+            },
+            {
+              "d": "M53 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M56 70h5v6h-5z",
+              "fill": "ink"
+            },
+            {
+              "d": "M70 67h11l-1 19h-10z",
+              "fill": "paper"
+            },
+            {
+              "d": "M73 76h5v6h-5z",
+              "fill": "ink"
+            }
+          ]
+        },
+        "logbook": {
+          "shapes": [
+            {
+              "d": "M4 22L96 20L97 86L3 88Z",
+              "fill": "a"
+            },
+            {
+              "d": "M9 18L49 22L49 82L8 80Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M51 22L92 17L93 79L51 82Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M48.6 20h2.8v64h-2.8z",
+              "fill": "ink"
+            },
+            {
+              "d": "M15 32L43 34",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 42L43 44",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 52L43 54",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 62L43 64",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M15 72L43 74",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M57 34L86 31",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M57 44L86 41",
+              "stroke": "ink",
+              "width": 1.6
+            },
+            {
+              "d": "M58 52L88 49L89 68L59 71Z",
+              "fill": "c",
+              "anim": "blink"
+            }
+          ]
+        },
+        "museum": {
+          "shapes": [
+            {
+              "d": "M6 86H94V94H6Z",
+              "fill": "ink"
+            },
+            {
+              "d": "M12 80H88V86H12Z",
+              "fill": "paper"
+            },
+            {
+              "d": "M10 36L50 12L90 36Z",
+              "fill": "a"
+            },
+            {
+              "d": "M12 36H88V44H12Z",
+              "fill": "ink"
+            },
+            {
+              "d": "M17 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M31.5 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M46 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M60.5 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M75 44h8v36h-8z",
+              "fill": "paper"
+            },
+            {
+              "d": "M50 12V3",
+              "stroke": "ink",
+              "width": 2
+            },
+            {
+              "d": "M50 3h11l-3 3l3 3h-11z",
+              "fill": "c",
+              "anim": "blink"
+            },
+            {
+              "d": "M44 62h12v18h-12z",
+              "fill": "ink"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "claim": "A real moth got caught in a relay of a computer and caused an error; the operators found it when they looked for the cause (hook: \"A real moth jammed a computer\"; turn: \"the operators go looking ... a moth, caught in a relay\"; ending: \"the one time a computer bug was a real bug\"; on screen: \"Bug = an actual insect\", \"A moth, caught in a relay\", \"A real bug\").",
+      "beat": "hook",
+      "source": "Computer History Museum, This Day in History, September 9: the moth was \"caught between the relay contacts of the Harvard Mark II computer\" https://www.computerhistory.org/tdih/september/9/ ; Wikipedia, Software bug: \"operators traced an error in the Mark II to a moth trapped in a relay.\" https://en.wikipedia.org/wiki/Software_bug",
+      "confidence": "high",
+      "note": "\"Jammed\" and \"go looking\" are Blink's words for a moth caught between relay contacts and operators who \"traced an error\" to it; the sources say \"caught\", \"trapped\" and \"traced\". \"The one time\" is a turn of phrase for this being the first actual insect, as the logbook note itself says."
+    },
+    {
+      "id": "c2",
+      "claim": "It happened on September 9, 1947, on the Harvard Mark II computer, which hit an error (on screen: \"9 September 1947\", \"The Mark II computer hits an error\").",
+      "beat": "setup",
+      "source": "Computer History Museum, This Day in History, September 9 (1947): \"Harvard Mark II computer in Cambridge, Massachusetts\" https://www.computerhistory.org/tdih/september/9/",
+      "confidence": "high",
+      "note": "Wikipedia's Software bug article says only \"in about 1947\"; the exact day is from the Computer History Museum."
+    },
+    {
+      "id": "c3",
+      "claim": "Engineers already used the word \"bugs\" for faults before 1947; Thomas Edison used it in a letter in 1878 (on screen: \"Edison writes 'bugs'\" 1878, \"Moth in the Mark II\" 1947).",
+      "beat": "twist",
+      "source": "Wikipedia, Software bug: Edison \"wrote the following words in a letter to an associate in 1878\": \"'Bugs'—as such little faults and difficulties are called—show themselves\" (letter to Puskas, 13 November 1878) https://en.wikipedia.org/wiki/Software_bug ; Computer History Museum: the term originated \"with Thomas Edison in the 1800s\" https://www.computerhistory.org/tdih/september/9/",
+      "confidence": "high",
+      "note": "The episode title says \"first computer bug\"; the script makes clear the word is older and this was the first actual insect."
+    },
+    {
+      "id": "c4",
+      "claim": "The operators taped the moth into the computer's logbook and wrote \"First actual case of bug being found.\"",
+      "beat": "twist",
+      "source": "Computer History Museum, This Day in History, September 9: \"They taped the dead moth into the logbook for the computer.\" One team member wrote \"First actual case of bug being found\" https://www.computerhistory.org/tdih/september/9/ ; Wikipedia, Software bug (same annotation) https://en.wikipedia.org/wiki/Software_bug",
+      "confidence": "high"
+    },
+    {
+      "id": "c5",
+      "claim": "The logbook page with the moth is kept at the Smithsonian (National Museum of American History).",
+      "beat": "ending",
+      "source": "Wikipedia, Software bug, reference for the logbook: \"National Museum of American History, Smithsonian Institution\" https://en.wikipedia.org/wiki/Software_bug ; Smithsonian object record \"Log Book With Computer Bug\" https://americanhistory.si.edu/collections/object/nmah_334663 (the page refused automated access, so it was not read directly)",
+      "confidence": "medium",
+      "note": "Confirmed only through Wikipedia's citation; the Smithsonian page itself could not be opened by the fetch tool. The script does not say the logbook is on display."
+    }
+  ],
+  "pronunciations": {
+    "1947": "nineteen forty-seven",
+    "1878": "eighteen seventy-eight",
+    "II": "two"
+  },
+  "publish": {
+    "title": "The first computer bug was a real moth",
+    "description": "In 1947 a moth got caught in a relay of Harvard's Mark II computer. The operators taped it into the logbook as the first actual bug ever found.",
+    "hashtags": [
+      "#techfacts",
+      "#computers",
+      "#didntknow",
+      "#history",
+      "#shorts"
+    ]
+  }
+}

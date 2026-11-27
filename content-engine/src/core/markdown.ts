@@ -178,3 +178,12 @@ export function bodySections(body: string): Map<string, boolean> {
   flush();
   return sections;
 }
+
+/** The text under a `## Heading` in a markdown body, up to the next heading ("" when there is none). */
+export function bodySection(body: string, heading: string): string {
+  const lines = body.split(/\r?\n/);
+  const start = lines.findIndex((l) => l.replace(/<!--.*?-->/g, "").trim().toLowerCase() === `## ${heading.toLowerCase()}`);
+  if (start === -1) return "";
+  const end = lines.findIndex((l, i) => i > start && /^##\s/.test(l));
+  return lines.slice(start + 1, end === -1 ? undefined : end).join("\n").trim();
+}

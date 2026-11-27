@@ -196,7 +196,7 @@ function Timeline({ el, ctx, area }: { el: Extract<MgElement, { type: "timeline"
     <div style={{ position: "relative", width: w, height: 250, margin: "0 auto" }}>
       <div style={{ position: "absolute", left: 0, top: 120, width: w * lineK, height: 8, borderRadius: 4, background: ctx.accent }} />
       {el.items.map((item, i) => {
-        const x = el.items.length === 1 ? w / 2 : (i / (el.items.length - 1)) * (w - 40) + 20;
+        const x = el.items.length === 1 ? w / 2 : (i / (el.items.length - 1)) * (w - 220) + 110;
         const k = easeOut((ctx.t - 0.3 - i * 0.4) / 0.3);
         return (
           <div key={i} style={{ position: "absolute", left: x - 110, width: 220, top: 0, height: 250, display: "flex", flexDirection: "column", alignItems: "center", opacity: k }}>

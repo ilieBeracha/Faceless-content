@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-11-25T21:36:02Z",
+  "render_hash": "febfe3a982bdef4f3601ab38dd55263499f43df40e608ce0bbc25486ea94fe75",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": true,
+      "detail": "33.24s (series allows 20–35s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.10s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"Dye fooled wine students.\" ends at 1.85s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: captions on screen",
+      "pass": true,
+      "detail": "visible from 0.17s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "8 text elements checked on every frame (2596 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "91 words; text matches script: yes; highlight off on 0/992 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-14.0 LUFS (target -14 ±1.5), true peak -2.2 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 6 banned topics mentioned"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by ilieBeracha (told Claude in chat not to wait for approval; not read before approving) (9 claims)"
+    }
+  ]
+}

@@ -34,6 +34,14 @@ approved_by: ""                 # optional string — who approved it
 
 <!-- One or two sentences: why someone follows this channel. -->
 
+## Belief <!-- required -->
+
+<!-- The one idea about the world that every video argues, from a new angle each time. A topic is not a belief: "wine stories" is a topic; "wine snobbery is a costume, and every story is someone caught without it" is a belief. Viewers follow a point of view, not facts. -->
+
+## What the viewer gets <!-- required -->
+
+<!-- What a viewer understands from every video, shown by the story and never said to them as advice: a way of seeing, a line they'd repeat at dinner. Not "they learn facts". -->
+
 ## Style notes
 
 <!-- Voice, pacing, recurring jokes, what to avoid. -->

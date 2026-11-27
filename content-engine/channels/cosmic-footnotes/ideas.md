@@ -25,9 +25,10 @@ The engine marks an idea "used" when an episode is made from it.
 ## microwave-oven-signal
 - title: The radio signal from the kitchen
 - series: tiny-clue-big-deal
-- status: new
+- status: used
 - angle: Mysterious bursts at a famous radio telescope turned out to be someone opening the microwave too early — and solving it helped real astronomy.
 - added: 2026-10-15
+- used_in: episodes/2026-11-24-microwave-oven-signal
 
 ## your-head-ages-faster
 - title: Your head is older than your feet
@@ -77,3 +78,11 @@ The engine marks an idea "used" when an episode is made from it.
 - status: new
 - angle: Uranus wobbled off its path; working out why pointed telescopes straight at Neptune.
 - added: 2026-10-15
+
+## the-radio-signal-from-the-kitchen-b
+- title: The radio signal from the kitchen (B)
+- series: tiny-clue-big-deal
+- status: used
+- angle: Mysterious bursts at a famous radio telescope turned out to be someone opening the microwave too early — and solving it helped real astronomy.
+- added: 2026-11-24
+- used_in: episodes/2026-11-24-the-radio-signal-from-the-kitchen-b

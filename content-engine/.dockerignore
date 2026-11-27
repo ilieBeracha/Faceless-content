@@ -1,0 +1,21 @@
+# The storefront image: only what the public site reads, plus what an automatic build needs
+# (house rules, templates, skills, workflows). Everything else stays out, above all .env (keys)
+# and storefront/ (customers' names and email addresses).
+*
+!AGENTS.md
+!skills
+!workflows
+!package.json
+!package-lock.json
+!tsconfig.json
+!engine.config.json
+!src
+!templates
+!themes
+!avatars
+!channels
+channels/*
+!channels/no-way-really
+!out
+out/*
+!out/no-way-really

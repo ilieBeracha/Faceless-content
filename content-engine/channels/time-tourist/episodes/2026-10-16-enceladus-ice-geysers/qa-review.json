@@ -1,0 +1,14 @@
+{
+  "render_hash": "8ec07d98346f9e6d1eca5ef5b965fec3647bb94a5e0589f7b8065484fcab2c43",
+  "tone": { "pass": true, "notes": "Tilly's voice, calm delivery: hook names the place, facts as discoveries, the ocean as the catch, one 'Okay, review time', spoken rating. Fits 13+." },
+  "banned_topics": { "pass": true, "notes": "Planetary science only." },
+  "visuals": { "pass": true, "notes": "New illustrated style matching the reference: flat 2D vector animation, deep blues and violets, glowing white ice, Saturn huge in the sky. Tilly stands on the ice of Enceladus in a mustard spacesuit; her gloved hand reaches toward a tiger-stripe crack; ice jets rise into space; the spray drifts into Saturn's E ring. Every clip scanned frame by frame: Veo had inserted an invented presenter or stray hands in two voice-over clips; both were regenerated and the remaining stray frames fall outside the used segments. No burned-in text." },
+  "character": { "pass": true, "notes": "Drawn Tilly keeps the approved face: dark curly hair, freckles, thick brows; consistent mustard suit with red shoulder stripes and a clear bubble helmet. Calm, natural poses (standing, shading her visor once, small hand movements). Every clip's audio was transcribed and says its exact line." },
+  "overall": "pass",
+  "fixes": [],
+  "learnings": [
+    "style: illustrated (flat 2D vector) with the photo references keeps Tilly recognisable as a drawn character and looks like a modern animated space poster.",
+    "Veo invents a presenter (or hands) in voice-over shots; say 'no people, no faces and no presenter anywhere in the picture' in the place and 'the narration is a voice-over and nobody is ever shown' in the action.",
+    "Without the film grade, renders take ~12 minutes instead of 36-44."
+  ]
+}

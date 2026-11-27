@@ -11,3 +11,51 @@ QA (with the agent's notes); script writing reads this file. Never copy learning
 - Selfie shots (hold phone, scale 2.0) at the start and end make the vlog format instantly readable — keep both bookends.
 - Crowd scenes sell scale (~1,600 bathers) better than a number alone; use 3–4 background figures.
 - Hand-lettered labels inside the bathhouse sit on the vault line; place sky text at y ≤ 0.16 in 'baths' scenes.
+
+## 2026-10-15 · 2026-10-15-reviewing-rome-s-biggest-bathhouse-for-real
+
+- Episode: "Rome's biggest bathhouse, reviewed (live action)" (rated-live) — 60.8s, 130 words, -15.3 LUFS. QA passed.
+- Veo speaks slower than the engine's 2.6 words/s estimate: 130 words ran 60.8 s (about 2.2 words/s) after trimming. Keep rated-live scripts to about 115-120 words to land under 58 s.
+- Describing the setting as 'the massive building' or 'the huge baths' makes the image model draw the Colosseum or modern ruins. Name the bathhouse's own features (red-brick and marble front, tall arched windows) and say 'just-built, undamaged'.
+- Veo blocked a shot of Tilly miming scraping her forearm with a curved tool. Show objects held up to the camera instead of tools against skin.
+- Veo repeated words in 2 of 11 clips ('brand brand new', a doubled 'there's a library'); the by-ear check caught both and one retry fixed them. Budget about one retry per five clips.
+
+## 2026-10-16 · 2026-10-16-saturn-s-hexagon-storm-up-close
+
+- Episode: "Saturn's hexagon storm, reviewed" (rated-space) — 57.5s, 124 words, -15.0 LUFS. QA passed.
+- pov shots work: Saturn through the window carries the episode. Prompts must not mention a phone or camera, or the image model draws a phone screen inside the shot.
+- Ask for 'exactly six long straight sides and six sharp corners' or the hexagon comes out with eight sides.
+- Veo speaks the hook slowly: a 4-word first sentence ran 2.7 s. Open with a 2-word sentence ('A hexagon.') to land under 2 s.
+- Veo occasionally burns in garbled subtitles despite the negative prompt (1 of 11 clips here). Scan the bottom third of every clip before approving the render.
+- A pressurised cabin with no helmet keeps Tilly's face visible and consistent; helmets came and went between stills.
+
+## 2026-10-16 · 2026-10-16-venus-by-balloon-the-one-nice-layer
+
+- Episode: "Floating in Venus's clouds, reviewed" (rated-space) — 51.6s, 116 words, -15.2 LUFS. QA passed.
+- Putting Tilly physically on location (an open deck, a pressure suit, her gloved hand reaching into the scene) feels far more 'there' than a window view; keep doing it.
+- direction: documentary keeps her acting calm; describe actions as small and steady and say 'not walking toward the camera'.
+- Bubble-helmet close-ups that move toward the lens get a glare band across the eyes that doubles the face; use a steady medium shot with 'soft even light, no reflections across the visor'.
+- The cinematic grade/grain makes renders slow on this machine (36–44 min); plan for it.
+
+## 2026-10-16 · 2026-10-16-enceladus-ice-geysers
+
+- Episode: "Standing on Enceladus, reviewed" (rated-space) — 52.6s, 112 words, -14.9 LUFS. QA passed.
+- style: illustrated (flat 2D vector) with the photo references keeps Tilly recognisable as a drawn character and looks like a modern animated space poster.
+- Veo invents a presenter (or hands) in voice-over shots; say 'no people, no faces and no presenter anywhere in the picture' in the place and 'the narration is a voice-over and nobody is ever shown' in the action.
+- Without the film grade, renders take ~12 minutes instead of 36-44.
+
+## 2026-10-17 · 2026-10-17-strange-facts-about-saturn
+
+- Episode: "Strange facts about Saturn" (strange-space) — 30.7s, 95 words, -14.5 LUFS. QA passed.
+- The planet-explainer style (one hero planet, a new view per fact, labels as visuals) makes a 30 s video for free in ~6 minutes of rendering, with exact numbers and no AI artefacts.
+- Keep cutaway labels short (≤ 22 characters); they sit in a column to the right of the planet.
+- Change the view on the word that starts each new idea (at_word); 95 words ran 30.7 s at Tilly's Kokoro speed.
+
+## 2026-11-14 · 2026-11-14-strange-facts-about-jupiter
+
+- Episode: "Strange facts about Jupiter" (strange-space) — 36.3s, 97 words, -14.6 LUFS. QA passed.
+- The tilt view was first used here: for small tilts (a few degrees) the big angle number used to collide with the axis label; the renderer now lifts the number above the label, but check the tilt frame by eye on every planet.
+- The automated checks do not catch text overlapping other text; the reviewer must look for it in every view with two or more labels.
+- A two-view hook of about 4 seconds leaves the second view's label on screen for under a second; keep that label to three words or put the comparison in its own beat.
+- The Jupiter palette (6 tan and cream bands, glow #f0d9b5) reads clearly as Jupiter on the dark starfield.
+- When NASA pages disagree on a number (moon counts), leave the fact out rather than hedge; the episode did not miss it.

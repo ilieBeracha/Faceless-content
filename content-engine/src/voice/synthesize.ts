@@ -6,7 +6,7 @@
  *   audio/envelope.json   0–1 loudness per video frame (drives the character's mouth)
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, renameSync } from "node:fs";
 import { join } from "node:path";
 import { EngineError } from "../core/errors.ts";
 import { hasFilter, measureLoudness, runFfmpeg } from "../core/ffmpeg.ts";
@@ -14,11 +14,13 @@ import { canonicalJson, readJson, sha256, writeJson } from "../core/util.ts";
 import type { Workspace } from "../core/workspace.ts";
 import { ENGINE_DIR } from "../core/workspace.ts";
 import type { EpisodeRef } from "../pipeline/episode.ts";
-import type { CharacterVoice, SeriesData } from "../pipeline/script-check.ts";
+import { episodePace } from "../pipeline/storyboard.ts";
+import { DEFAULT_CLAUSE_PAUSE, DEFAULT_SENTENCE_PAUSE, speakerTurns, type CharacterVoice, type SeriesData } from "../pipeline/script-check.ts";
 import { voiceTokens, type Script } from "../skills/write-script/schema.ts";
+import { runElevenLabs, runElevenLabsDirect } from "./elevenlabs.ts";
 import { loudnessEnvelope, readWav, writeWavFloat } from "./wav.ts";
 
-export const VOICE_PIPELINE_VERSION = 2;
+export const VOICE_PIPELINE_VERSION = 4;
 
 export interface WordTiming {
   i: number;
@@ -77,8 +79,9 @@ export function characterVoice(ep: EpisodeRef, speaker: string): CharacterVoice 
     voice_id: v.voice_id,
     speed: v.speed ?? 1,
     pitch_semitones: v.pitch_semitones ?? 0,
-    sentence_pause: v.sentence_pause ?? 0.25,
-    clause_pause: v.clause_pause ?? 0.1,
+    sentence_pause: v.sentence_pause ?? DEFAULT_SENTENCE_PAUSE,
+    clause_pause: v.clause_pause ?? DEFAULT_CLAUSE_PAUSE,
+    ...(v.language ? { language: v.language } : {}),
     pronunciations: (doc.data.pronunciations as Record<string, string> | undefined) ?? {},
   };
 }
@@ -105,12 +108,18 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
     const { voiceFromClips } = await import("../skills/render-ai-video/audio.ts");
     return voiceFromClips(ws, ep, script, { force: opts.force, log });
   }
+  const language = String(ep.channel.doc.data.language ?? "en");
   for (const [name, v] of Object.entries(voices)) {
-    if (v.provider !== "kokoro") {
-      throw new EngineError(`${name} uses voice provider "${v.provider}", which isn't wired up yet.`, v.provider === "veo" ? "A Veo voice only works when every speaker of the series uses it (the video model speaks inside the clips)." : "Only the free local Kokoro voice is available until you choose a paid provider (see README → Voices).");
+    // A voice speaks the channel's language, or the captions and the voice disagree.
+    if ((v.language ?? "en") !== language) throw new EngineError(`${name}'s voice speaks "${v.language ?? "en"}", but the channel is in "${language}".`, `Set voice.language: ${language} in ${name}'s character file (an elevenlabs voice for anything but English).`);
+    if (v.provider === "kokoro" && language !== "en") throw new EngineError(`${name} uses the Kokoro voice, which has no "${language}" voice.`, "Use an elevenlabs voice (e.g. voice_id: George) for this language.");
+    if (v.provider !== "kokoro" && v.provider !== "elevenlabs" && v.provider !== "elevenlabs-direct") {
+      throw new EngineError(`${name} uses voice provider "${v.provider}", which isn't wired up yet.`, v.provider === "veo" ? "A Veo voice only works when every speaker of the series uses it (the video model speaks inside the clips)." : "The voices that work are kokoro (free, local) and elevenlabs (paid, through fal.ai).");
     }
   }
-  const hash = sha256(canonicalJson({ v: VOICE_PIPELINE_VERSION, beats: script.beats.map((b) => [b.id, b.speaker, b.voiceover]), pron: script.pronunciations, voices, audio: cfg, fps, min: series.length.min_seconds }));
+  // The speed chosen for this video on its storyboard, on top of each voice's own.
+  const pace = episodePace(ep.dir);
+  const hash = sha256(canonicalJson({ v: VOICE_PIPELINE_VERSION, beats: script.beats.map((b) => [b.id, b.speaker, b.voiceover]), pron: script.pronunciations, voices, audio: cfg, fps, min: series.length.min_seconds, ...(pace !== 1 ? { pace } : {}) }));
   if (!opts.force && existsSync(paths.timings) && existsSync(paths.wav) && existsSync(paths.envelope)) {
     const existing = readJson<Timings>(paths.timings);
     if (existing.hash === hash) return { duration: existing.duration, words: existing.words.length, regenerated: false };
@@ -118,40 +127,62 @@ export async function synthesizeEpisode(ws: Workspace, ep: EpisodeRef, script: S
 
   mkdirSync(paths.chunks, { recursive: true });
   const tokensPerBeat = script.beats.map((b) => voiceTokens(b.voiceover));
-  const chunks: KokoroChunk[] = script.beats.map((b, i) => {
-    const v = voices[b.speaker];
+  // One speaker's consecutive beats are voiced in one flowing pass, so the intonation runs across them
+  // instead of starting over at every beat.
+  const turns = speakerTurns(script.beats.map((b) => b.speaker));
+  const chunks: KokoroChunk[] = turns.map((turn, n) => {
+    const v = voices[script.beats[turn[0]].speaker];
     const pron = { ...v.pronunciations, ...script.pronunciations };
     return {
-      id: `${String(i).padStart(2, "0")}-${b.id}`,
+      id: `${String(n).padStart(2, "0")}-${script.beats[turn[0]].id}`,
       voice: v.voice_id,
       lang: kokoroLang(v.voice_id),
-      speed: v.speed ?? 1,
-      sentence_pause: v.sentence_pause ?? 0.25,
-      clause_pause: v.clause_pause ?? 0.1,
-      say: tokensPerBeat[i].map((t) => sayFor(t, pron)),
+      speed: (v.speed ?? 1) * pace,
+      sentence_pause: v.sentence_pause ?? DEFAULT_SENTENCE_PAUSE,
+      clause_pause: v.clause_pause ?? DEFAULT_CLAUSE_PAUSE,
+      continuous: true,
+      // Respellings ("rohzay") are written for Kokoro; a hosted voice reads the words as they are written.
+      say: turn.flatMap((i) => tokensPerBeat[i].map((t) => (v.provider === "kokoro" ? sayFor(t, pron) : t))),
     };
   });
-  log(`  ↳ synthesizing ${script.beats.length} beats with Kokoro (local, free)…`);
-  const out = runKokoro(ws, chunks, paths.chunks);
+  // Each turn goes to its speaker's voice: Kokoro on this machine (free), or ElevenLabs through fal (paid).
+  const providerOf = (c: KokoroChunk) => voices[script.beats[turns[chunks.indexOf(c)][0]].speaker].provider;
+  const hosted = chunks.filter((c) => providerOf(c) === "elevenlabs");
+  const direct = chunks.filter((c) => providerOf(c) === "elevenlabs-direct");
+  const local = chunks.filter((c) => providerOf(c) === "kokoro");
+  const toHosted = (cs: KokoroChunk[]) => cs.map((c) => ({ id: c.id, voice: c.voice, say: c.say, tempo: pace, ...(language !== "en" ? { language } : {}) }));
+  if (local.length) log(`  ↳ synthesizing ${local.length === chunks.length ? `${script.beats.length} beats in ${turns.length} pass${turns.length === 1 ? "" : "es"}` : `${local.length} pass${local.length === 1 ? "" : "es"}`} with Kokoro (local, free)…`);
+  const made = [...(local.length ? runKokoro(ws, local, paths.chunks).chunks : []), ...(hosted.length ? (await runElevenLabs(ws, toHosted(hosted), paths.chunks, log)).chunks : []), ...(direct.length ? (await runElevenLabsDirect(ws, toHosted(direct), paths.chunks, log)).chunks : [])];
+  const out: KokoroResult = { sample_rate: 24000, chunks: chunks.map((c) => made.find((m) => m.id === c.id)!) };
 
-  // Place beats on the timeline, applying each speaker's pitch.
+  // Place each speaker turn on the timeline, applying the speaker's pitch.
   const sr = out.sample_rate;
   const pieces: { at: number; samples: Float32Array }[] = [];
   const words: WordTiming[] = [];
   const beats: BeatTiming[] = [];
   let t = cfg.lead_in_seconds;
-  out.chunks.forEach((chunk, i) => {
-    const beat = script.beats[i];
-    const v = voices[beat.speaker];
+  out.chunks.forEach((chunk, n) => {
+    const turn = turns[n];
+    const v = voices[script.beats[turn[0]].speaker];
     const file = v.pitch_semitones ? pitchShift(chunk.file, v.pitch_semitones!, sr) : chunk.file;
     const pcm = readWav(file);
     const scale = pcm.samples.length / sr / chunk.duration; // pitch shifting may change the length by a few samples
-    pieces.push({ at: Math.round(t * sr), samples: pcm.samples });
-    for (const w of chunk.words) {
-      words.push({ i: words.length, beat: beat.id, text: tokensPerBeat[i][w.i], start: round(t + w.start * scale), end: round(t + w.end * scale) });
-    }
     const len = pcm.samples.length / sr;
-    beats.push({ id: beat.id, speaker: beat.speaker, start: round(t), end: round(t + len) });
+    pieces.push({ at: Math.round(t * sr), samples: pcm.samples });
+    // The chunk's words, back to their beats: a beat starts halfway through the pause before its first word
+    // (the turn's first beat at the turn's start) and ends where the next one starts (the last at the turn's end).
+    const timed = turn.flatMap((i) => tokensPerBeat[i].map((text) => ({ beat: i, text })));
+    if (chunk.words.length !== timed.length) throw new EngineError(`Kokoro timed ${chunk.words.length} words for chunk ${chunk.id}, which has ${timed.length}.`);
+    const starts: number[] = [];
+    chunk.words.forEach((w, k) => {
+      const at = { start: round(t + w.start * scale), end: round(t + w.end * scale) };
+      if (k > 0 && timed[k].beat !== timed[k - 1].beat) starts.push(round((words.at(-1)!.end + at.start) / 2));
+      words.push({ i: words.length, beat: script.beats[timed[k].beat].id, text: timed[k].text, ...at });
+    });
+    turn.forEach((i, k) => {
+      const beat = script.beats[i];
+      beats.push({ id: beat.id, speaker: beat.speaker, start: k === 0 ? round(t) : starts[k - 1], end: k === turn.length - 1 ? round(t + len) : starts[k] });
+    });
     t += len + cfg.beat_gap_seconds;
   });
   const speechEnd = Math.max(...words.map((w) => w.end), beats.at(-1)!.end);
@@ -200,6 +231,8 @@ export interface KokoroChunk {
   speed: number;
   sentence_pause: number;
   clause_pause: number;
+  /** Voice the chunk as one flowing text (the intonation runs across its sentences). */
+  continuous?: boolean;
   /** One entry per caption word: what the voice says for it. */
   say: string[];
 }
@@ -240,8 +273,19 @@ function pitchShift(file: string, semitones: number, sr: number): string {
 }
 
 /** Two-pass EBU R128 normalisation to the platform target (≈ -14 LUFS, true peak ≤ -1.5 dBTP). */
-export function normalizeLoudness(input: string, output: string, targetLufs: number, truePeak: number, sampleRate: number): void {
+export function normalizeLoudness(input: string, output: string, targetLufs: number, truePeak: number, sampleRate: number, channels = 1): void {
   const m = measureLoudness(input);
   const filter = `loudnorm=I=${targetLufs}:TP=${truePeak}:LRA=11:measured_I=${m.integratedLufs}:measured_TP=${m.truePeakDb}:measured_LRA=${m.lra}:measured_thresh=${m.threshold}:linear=true`;
-  runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", "1", "-c:a", "pcm_s16le", output], "normalising loudness");
+  runFfmpeg(["-y", "-i", input, "-af", filter, "-ar", String(sampleRate), "-ac", String(channels), "-c:a", "pcm_s16le", output], "normalising loudness");
+  // loudnorm falls back to its dynamic mode when the input's loudness range is wide (speech with pauses and
+  // ambient sound) and can land a dB or two under target. Close the gap with plain gain, never past the peak cap.
+  // When the peaks are already at the cap, a gentle limiter (1 dB under the cap, for true-peak overshoot) makes room.
+  const out = measureLoudness(output);
+  const gain = targetLufs - out.integratedLufs;
+  if (gain > 0.3) {
+    const limit = Math.pow(10, (truePeak - 1) / 20).toFixed(4);
+    const tmp = output.replace(/\.wav$/, "") + ".gain.wav";
+    runFfmpeg(["-y", "-i", output, "-af", `volume=${gain.toFixed(2)}dB,alimiter=limit=${limit}:attack=5:release=50:level=false`, "-ar", String(sampleRate), "-ac", String(channels), "-c:a", "pcm_s16le", tmp], "correcting loudness");
+    renameSync(tmp, output);
+  }
 }

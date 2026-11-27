@@ -23,15 +23,40 @@ export interface EngineConfig {
   };
   voice: {
     default_provider: string;
-    providers: Record<string, { kind: "local" | "api"; cost: string; dir?: string; model_url?: string; voices_url?: string; python_packages?: string[]; license?: string }>;
+    providers: Record<string, { kind: "local" | "api"; cost: string; dir?: string; model_url?: string; voices_url?: string; python_packages?: string[]; license?: string; endpoint?: string; model?: string; words_per_second?: number; seconds_per_syllable?: number; languages?: Record<string, { words_per_second: number; seconds_per_letter: number; hook_seconds_per_letter: number }> }>;
   };
-  llm: { provider: "agent" | "anthropic"; anthropic: { model: string; effort: string; max_tokens: number } };
+  llm: {
+    provider: "agent" | "anthropic" | "gemini";
+    anthropic: { model: string; effort: string; max_tokens: number };
+    gemini: { model: string; thinking_level: "minimal" | "low" | "medium" | "high"; max_output_tokens: number };
+  };
   captions: { max_chars_per_line: number; max_lines: number };
   qa: { caption_sync_tolerance_frames: number; caption_sync_max_bad_ratio: number; frames_to_sample: number };
   render: { gl: string; jpeg_quality: number; concurrency?: number | null; browser_executable?: string | null };
   git: { auto_commit: boolean };
   fonts: string[];
   platforms: Record<string, { max_seconds: number; ai_disclosure: string }>;
+  paint: { budget_per_episode_usd: number };
+  motion: {
+    /** false = painted shots stay pictures, moved by the camera and their drawn animation; no clips are made or played. */
+    enabled: boolean;
+    /** An image-to-video endpoint on fal that takes prompt, image_url, duration, resolution and prompt_expansion_mode. */
+    endpoint: string;
+    resolution: string;
+    usd_per_second: number;
+    max_clip_seconds: number;
+    budget_per_episode_usd: number;
+  };
+  music: {
+    endpoint: string;
+    usd_per_second: number;
+    min_billed_seconds: number;
+    /** The music's loudness under the voice's, in LU, before ducking lowers it further while someone speaks. */
+    under_voice_lu: number;
+    sfx_endpoint: string;
+    sfx_usd_per_second: number;
+    sfx_under_voice_lu: number;
+  };
   ai_video: {
     provider: "gemini";
     image_model: string;

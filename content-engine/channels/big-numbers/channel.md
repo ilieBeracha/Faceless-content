@@ -42,6 +42,14 @@ approved_by: "ilieBeracha (approved in chat)" # optional string — who approved
 Every huge number becomes one tiny story you can picture. Dot walks it out, one drawing at a time, until a billion
 feels like something you could hold.
 
+## Belief <!-- required -->
+
+Your gut is wrong about big numbers, and that's fine: every huge number becomes honest once you can picture one small thing doing it.
+
+## What the viewer gets <!-- required -->
+
+A picture to carry instead of a number: how big "a billion" or "a million to one" really is, and how a number can be used to impress.
+
 ## Style notes
 
 - Calm narrator pace. The amazement comes from the comparison, never from hype words ("insane", "you won't

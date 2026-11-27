@@ -1,0 +1,39 @@
+[
+  {
+    "script_hash": "a952197ccf3618b7fd1207f6e25ca9c9b5dba11dafd90a4e93df2371cd057e6a",
+    "verdict": "fail",
+    "issues": [
+      {
+        "beat": "turn",
+        "problem": "Referred to before introduced (Rule 4) and the person is missing (Rule 2): \"the researcher\" acts at the turn instead of the students who have the stakes, and was never introduced.",
+        "fix": "Change \"the researcher gave them\" to \"they got\". This cuts 2 words."
+      },
+      {
+        "beat": "ending",
+        "problem": "The ending (Rule 6): The beat closes on a summary of what it means (\"Their eyes completely overwrote...\") instead of the final result of the story.",
+        "fix": "Replace \"Their eyes completely overwrote what their noses were telling them.\" with \"The study was published, and people still use it to argue that wine tasting is nonsense.\" This adds 5 words, keeping the total at 86 words."
+      }
+    ]
+  },
+  {
+    "script_hash": "2470a64ef139685dc1b09b7dc27df2874981a8d8645a541598dad1ce753e581f",
+    "verdict": "fail",
+    "issues": [
+      {
+        "beat": "hook",
+        "problem": "Rule 4: Referred to before introduced. 'They' is used in the hook before the viewer has been told who they are.",
+        "fix": "Replace 'They called' with 'Wine students called'. To make room, cut 'exact' from the setup."
+      },
+      {
+        "beat": "turn",
+        "problem": "Rule 2: The person is missing. The researcher ('he') acts at the turn instead of the wine students who actually have the stakes.",
+        "fix": "Replace 'But he colored one glass with an odorless red dye, and asked them to describe the smells.' with 'But one glass was colored with an odorless red dye, and the students smelled both.' This cuts 2 words."
+      },
+      {
+        "beat": "ending",
+        "problem": "Rule 6: The ending. The beat closes on a wise-sounding summary ('What you see decides what you taste') instead of the final result of the story.",
+        "fix": "Replace 'What you see decides what you taste.' with 'Some students correctly called it white, but most were fooled by the dye.' This adds 6 words. To make room, cut 'of these' from the twist."
+      }
+    ]
+  }
+]

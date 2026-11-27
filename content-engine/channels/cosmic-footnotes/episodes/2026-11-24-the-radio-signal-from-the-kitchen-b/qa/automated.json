@@ -1,0 +1,72 @@
+{
+  "checked_at": "2026-11-25T09:46:38Z",
+  "render_hash": "71e68edf067db5da3009b7e3be222de9d9e47190a41df23421946aa244d3fe3f",
+  "checks": [
+    {
+      "id": "format",
+      "label": "Format",
+      "pass": true,
+      "detail": "1080×1920 @ 30.00 fps, h264/aac, yuvj420p"
+    },
+    {
+      "id": "length",
+      "label": "Length",
+      "pass": true,
+      "detail": "49.07s (series allows 40–58s)"
+    },
+    {
+      "id": "hook-speech",
+      "label": "Hook: speech starts immediately",
+      "pass": true,
+      "detail": "first word at 0.10s (limit 0.5s)"
+    },
+    {
+      "id": "hook-line",
+      "label": "Hook: first line lands in 2 s",
+      "pass": true,
+      "detail": "\"Lunch fooled a telescope.\" ends at 1.82s (limit 2s)"
+    },
+    {
+      "id": "hook-text",
+      "label": "Hook: captions on screen",
+      "pass": true,
+      "detail": "visible from 0.17s"
+    },
+    {
+      "id": "safe-areas",
+      "label": "Text inside safe areas",
+      "pass": true,
+      "detail": "2 text elements checked on every frame (2909 measurements)"
+    },
+    {
+      "id": "cut-off",
+      "label": "Nothing cut off",
+      "pass": true,
+      "detail": "no element leaves the frame or overflows its box"
+    },
+    {
+      "id": "captions-sync",
+      "label": "Captions in sync",
+      "pass": true,
+      "detail": "147 words; text matches script: yes; highlight off on 0/1442 frames; words over silent audio: 0"
+    },
+    {
+      "id": "loudness",
+      "label": "Loudness",
+      "pass": true,
+      "detail": "-14.0 LUFS (target -14 ±1.5), true peak -1.6 dBTP (max -1)"
+    },
+    {
+      "id": "banned-topics",
+      "label": "Banned topics (keyword screen)",
+      "pass": true,
+      "detail": "none of 6 banned topics mentioned"
+    },
+    {
+      "id": "factcheck",
+      "label": "Fact-check approved",
+      "pass": true,
+      "detail": "approved by ilieBeracha (11 claims)"
+    }
+  ]
+}

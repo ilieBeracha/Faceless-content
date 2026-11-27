@@ -1,0 +1,60 @@
+{
+  "task": "qa-review",
+  "title": "QA review of 2026-11-25-wine-experts-fooled-by-dye",
+  "purpose": "qa-review",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "created": "2026-11-25T21:34:41Z",
+  "files": [
+    {
+      "path": "AGENTS.md",
+      "role": "house-rules",
+      "sha256": "5e1e836630616c8725884ca5c7cff397fbeb0280ec96b295e08d1bee935b1460",
+      "bytes": 4798
+    },
+    {
+      "path": "workflows/qa.md",
+      "role": "workflow",
+      "sha256": "890bbd115866fae472304ad6381eddb9b8797af4d34aad21d92eec16d44369f1",
+      "bytes": 3130
+    },
+    {
+      "path": "channels/no-way-really/channel.md",
+      "role": "channel",
+      "sha256": "5b1cfdf00c367452714f94a3618335013e7434bf17f7b1a80ba9f47cf9008ba6",
+      "bytes": 3958
+    },
+    {
+      "path": "channels/no-way-really/series/wait-what.md",
+      "role": "channel",
+      "sha256": "45fff5399490dc3560c44e0e4828be4aa4c1858af61c0a378a947adc9ae66722",
+      "bytes": 3777
+    },
+    {
+      "path": "channels/no-way-really/characters/blink.md",
+      "role": "channel",
+      "sha256": "628048d8aa0d4d991139042f232cf04bf72e32de33d92a4a675a30a2e59bb296",
+      "bytes": 2822
+    },
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/script.json",
+      "role": "channel",
+      "sha256": "c50d78cb919b7fb60a7cfa0374a864e63bd63ab3c26f1092f8621a4619c7d16e",
+      "bytes": 10774
+    },
+    {
+      "path": "(inline) automated QA results",
+      "role": "input",
+      "sha256": "7e40abea42e5450aaa76fd0f3fb45d0cd3a60ac0be413a987e9eb558a2ab5a88",
+      "bytes": 878
+    }
+  ],
+  "outputs": [
+    {
+      "path": "channels/no-way-really/episodes/2026-11-25-wine-experts-fooled-by-dye/qa-review.json",
+      "format": "json",
+      "description": "the QA review"
+    }
+  ],
+  "next": "./engine make episode --channel no-way-really --series wait-what"
+}

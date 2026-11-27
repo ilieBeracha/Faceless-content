@@ -40,6 +40,14 @@ approved_by: "ilieBeracha (approved in chat)" # optional string — who approved
 Every episode, Pip flies inside one object you use every day and comes back with the one "why" you never thought
 to ask — in under a minute, with the parts labelled so you can see it, not just hear it.
 
+## Belief <!-- required -->
+
+Every everyday object is a clever answer to a problem somebody once had. Nothing you use is "just" a thing.
+
+## What the viewer gets <!-- required -->
+
+The one "why" behind something they use every day, seen from the inside.
+
 ## Style notes
 
 - One object, one question, one satisfying answer. The answer is the moment a part "clicks" for the viewer.

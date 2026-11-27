@@ -1,0 +1,23 @@
+{
+  "name": "Clay",
+  "paper": "#d9c2a7",
+  "card": "#f0e2d0",
+  "ink": "#40261a",
+  "text": "#40261a",
+  "colors": [
+    "#c1643c",
+    "#6b8f71",
+    "#e9b44c"
+  ],
+  "accent": "#c1643c",
+  "display": [
+    "fredoka"
+  ],
+  "body": "fredoka",
+  "casing": "normal",
+  "surface": "plain",
+  "backdrop": "blobs",
+  "texture": "grain",
+  "motion": "stop-motion",
+  "art": "cutout"
+}

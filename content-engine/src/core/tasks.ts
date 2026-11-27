@@ -7,11 +7,13 @@
  *              task file, writes the output file(s), and re-runs the command printed at the end.
  *   anthropic  (paid, opt-in)  the engine calls the Claude API with exactly the same task text and
  *              writes the result itself. Needs ANTHROPIC_API_KEY and an explicit `--llm anthropic`.
+ *   gemini     (paid, opt-in)  the same, with Google's Gemini API. Needs GEMINI_API_KEY and `--llm gemini`.
  */
 import Anthropic from "@anthropic-ai/sdk";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, relative, resolve, sep } from "node:path";
 import type { ContextBundle } from "./context.ts";
+import { GROUNDING_LINK, generateContent, resolveGroundingLink } from "../skills/render-ai-video/gemini.ts";
 import { EngineError, PipelinePause } from "./errors.ts";
 import { today, writeJson, writeText } from "./util.ts";
 import type { Workspace } from "./workspace.ts";
@@ -33,13 +35,20 @@ export interface Task {
   outputs: TaskOutput[];
   /** Command to run once the output exists. */
   next: string;
-  /** Optional check of a produced output; returns problems to send back to the model. */
-  check?: () => string[];
+  /** Optional check of a produced output; returns problems to send back to the model. It may open web pages. */
+  check?: () => string[] | Promise<string[]>;
   /** Existing files (absolute paths) this task is allowed to replace, e.g. placeholders it fills in. */
   replaceable?: string[];
+  /**
+   * The task states facts that must be checked against real sources. An agent uses its own web
+   * access; the Claude API gets web search (paid per search), at most this many searches.
+   */
+  research?: { maxSearches: number };
+  /** Pictures (absolute paths, .jpg) the task says to look at. The Claude API gets them attached. */
+  images?: string[];
 }
 
-export type LlmProviderName = "agent" | "anthropic";
+export type LlmProviderName = "agent" | "anthropic" | "gemini";
 
 export function taskPaths(task: Task) {
   return { md: join(task.dir, "tasks", `${task.id}.md`), manifest: join(task.dir, "tasks", `${task.id}.manifest.json`) };
@@ -86,7 +95,7 @@ export function writeTask(ws: Workspace, task: Task): string {
 
 /**
  * Run a task with the chosen provider. With "agent" this writes the task file and pauses the
- * pipeline; with "anthropic" it calls the API and writes the outputs.
+ * pipeline; with "anthropic" or "gemini" it calls that API and writes the outputs.
  */
 export async function runTask(ws: Workspace, task: Task, provider: LlmProviderName): Promise<void> {
   const taskFile = writeTask(ws, task);
@@ -101,7 +110,78 @@ export async function runTask(ws: Workspace, task: Task, provider: LlmProviderNa
     await runWithClaudeApi(ws, task);
     return;
   }
-  throw new EngineError(`Unknown LLM provider "${provider}".`, 'Use "agent" (default, free) or "anthropic" (paid).');
+  if (provider === "gemini") {
+    await runWithGeminiApi(ws, task);
+    return;
+  }
+  throw new EngineError(`Unknown LLM provider "${provider}".`, 'Use "agent" (default, free), "anthropic" or "gemini" (both paid).');
+}
+
+/** What the response must contain: one file's content, or every file as JSON. */
+function responseFormat(ws: Workspace, task: Task): { single: TaskOutput | null; format: string } {
+  const single = task.outputs.length === 1 && task.outputs[0].format !== "files" ? task.outputs[0] : null;
+  const format = single
+    ? `Respond with ONLY the complete content of ${ws.rel(single.path)} (${single.format === "json" ? "a single JSON document" : "markdown"}), no commentary.`
+    : `Respond with ONLY a JSON object {"files": {"<workspace-relative path>": "<complete file content>"}} containing every file you create. Allowed locations: ${task.outputs.map((o) => ws.rel(o.path) + (o.format === "files" ? "/…" : "")).join(", ")}.`;
+  return { single, format };
+}
+
+function writeResponse(ws: Workspace, task: Task, single: TaskOutput | null, text: string): void {
+  if (single) writeText(single.path, single.format === "json" ? stripFences(text) : text);
+  else writeFiles(ws, task, text);
+}
+
+const SYSTEM = "You are the drafting agent of a content engine for faceless short-video channels. Follow AGENTS.md and the task exactly, and output only what the task asks for.";
+
+interface GeminiPart {
+  text?: string;
+  thought?: boolean;
+  thoughtSignature?: string;
+  inline_data?: { mime_type: string; data: string };
+}
+export interface GeminiResponse {
+  candidates?: { content?: { role?: string; parts?: GeminiPart[] }; finishReason?: string }[];
+  promptFeedback?: { blockReason?: string };
+  usageMetadata?: { promptTokenCount?: number; candidatesTokenCount?: number; thoughtsTokenCount?: number };
+}
+
+/**
+ * The Gemini API runs the same task text. A research task gets Google Search and URL context (so it can open the
+ * pages it quotes); the API has no cap on the number of searches, so `research.maxSearches` is only asked for.
+ */
+async function runWithGeminiApi(ws: Workspace, task: Task): Promise<void> {
+  const { model, thinking_level, max_output_tokens } = ws.config.llm.gemini;
+  const prompt = renderTask(ws, task);
+  console.log(`  ↳ Gemini API (${model}, paid): ~${Math.round(prompt.length / 3.5).toLocaleString()} input tokens for "${task.title}"`);
+  const { single, format } = responseFormat(ws, task);
+  const searchNote = task.research ? `\n\nUse at most ${task.research.maxSearches} web searches.` : "";
+  if (task.research) console.log("  ↳ with Google Search and URL context (paid per search)");
+  const pictures: GeminiPart[] = (task.images ?? []).map((path) => ({ inline_data: { mime_type: "image/jpeg", data: readFileSync(path).toString("base64") } }));
+  const contents: { role: "user" | "model"; parts: GeminiPart[] }[] = [{ role: "user", parts: [...pictures, { text: `${prompt}${searchNote}\n\n---\n${format}` }] }];
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const res = await generateContent<GeminiResponse>(model, {
+      systemInstruction: { parts: [{ text: SYSTEM }] },
+      contents,
+      ...(task.research ? { tools: [{ google_search: {} }, { url_context: {} }] } : {}),
+      generationConfig: { maxOutputTokens: max_output_tokens, thinkingConfig: { thinkingLevel: thinking_level } },
+    });
+    const u = res.usageMetadata;
+    if (u) console.log(`  ↳ used ${(u.promptTokenCount ?? 0).toLocaleString()} in / ${((u.candidatesTokenCount ?? 0) + (u.thoughtsTokenCount ?? 0)).toLocaleString()} out tokens`);
+    if (res.promptFeedback?.blockReason) throw new EngineError(`Gemini blocked the "${task.title}" task (${res.promptFeedback.blockReason}).`);
+    const candidate = res.candidates?.[0];
+    if (candidate?.finishReason === "MAX_TOKENS") throw new EngineError(`The response for "${task.title}" hit max_output_tokens (${max_output_tokens}).`, "Raise llm.gemini.max_output_tokens in engine.config.json.");
+    if (!candidate?.content?.parts || candidate.finishReason !== "STOP") throw new EngineError(`Gemini gave no complete answer for "${task.title}" (finish reason: ${candidate?.finishReason ?? "none"}).`);
+    const text = await withPageLinks(candidate.content.parts.flatMap((p) => (p.text !== undefined && !p.thought ? [p.text] : [])).join("").trim());
+
+    writeResponse(ws, task, single, text);
+
+    const problems = (await task.check?.()) ?? [];
+    if (!problems.length) return;
+    if (attempt === 3) throw new EngineError(`The output for "${task.title}" still has problems after 3 attempts:\n  - ${problems.join("\n  - ")}`);
+    // The model's turn goes back as it came (with its thought signatures), then the problems.
+    contents.push({ role: "model", parts: candidate.content.parts });
+    contents.push({ role: "user", parts: [{ text: `The engine found these problems — fix them and resend the complete output in the same format:\n- ${problems.join("\n- ")}` }] });
+  }
 }
 
 async function runWithClaudeApi(ws: Workspace, task: Task): Promise<void> {
@@ -113,39 +193,54 @@ async function runWithClaudeApi(ws: Workspace, task: Task): Promise<void> {
   const estimatedInput = Math.round(prompt.length / 3.5);
   console.log(`  ↳ Claude API (${model}, paid): ~${estimatedInput.toLocaleString()} input tokens for "${task.title}"`);
 
-  const single = task.outputs.length === 1 && task.outputs[0].format !== "files" ? task.outputs[0] : null;
-  const format = single
-    ? `Respond with ONLY the complete content of ${ws.rel(single.path)} (${single.format === "json" ? "a single JSON document" : "markdown"}), no commentary.`
-    : `Respond with ONLY a JSON object {"files": {"<workspace-relative path>": "<complete file content>"}} containing every file you create. Allowed locations: ${task.outputs.map((o) => ws.rel(o.path) + (o.format === "files" ? "/…" : "")).join(", ")}.`;
+  const { single, format } = responseFormat(ws, task);
 
   const client = new Anthropic();
-  const messages: Anthropic.Beta.BetaMessageParam[] = [{ role: "user", content: `${prompt}\n\n---\n${format}` }];
+  const pictures: Anthropic.Beta.BetaImageBlockParam[] = (task.images ?? []).map((path) => ({ type: "image", source: { type: "base64", media_type: "image/jpeg", data: readFileSync(path).toString("base64") } }));
+  const tools: Anthropic.Beta.BetaToolUnion[] = task.research ? [{ type: "web_search_20260209", name: "web_search", max_uses: task.research.maxSearches }] : [];
+  if (task.research) console.log(`  ↳ with web search (paid per search): at most ${task.research.maxSearches} searches`);
+  const messages: Anthropic.Beta.BetaMessageParam[] = [{ role: "user", content: [...pictures, { type: "text", text: `${prompt}\n\n---\n${format}` }] }];
   for (let attempt = 1; attempt <= 3; attempt++) {
-    const stream = client.beta.messages.stream({
-      model,
-      max_tokens,
-      thinking: { type: "adaptive" },
-      output_config: { effort: effort as "low" | "medium" | "high" | "xhigh" | "max" },
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-      system: "You are the drafting agent of a content engine for faceless short-video channels. Follow AGENTS.md and the task exactly, and output only what the task asks for.",
-      messages,
-    });
-    const message = await stream.finalMessage();
+    let message: Anthropic.Beta.BetaMessage;
+    // A turn with web searches can be paused by the API; it continues when sent back as it is.
+    for (;;) {
+      const stream = client.beta.messages.stream({
+        model,
+        max_tokens,
+        thinking: { type: "adaptive" },
+        output_config: { effort: effort as "low" | "medium" | "high" | "xhigh" | "max" },
+        betas: ["server-side-fallback-2026-07-01"],
+        fallbacks: "default",
+        system: SYSTEM,
+        ...(tools.length ? { tools } : {}),
+        messages,
+      });
+      message = await stream.finalMessage();
+      console.log(`  ↳ used ${message.usage.input_tokens.toLocaleString()} in / ${message.usage.output_tokens.toLocaleString()} out tokens`);
+      if (message.stop_reason !== "pause_turn") break;
+      messages.push({ role: "assistant", content: message.content });
+    }
     if (message.stop_reason === "refusal") throw new EngineError(`Claude declined the "${task.title}" task (${message.stop_details?.category ?? "no category"}).`);
     if (message.stop_reason === "max_tokens") throw new EngineError(`The response for "${task.title}" hit max_tokens (${max_tokens}).`, "Raise llm.anthropic.max_tokens in engine.config.json.");
-    const text = message.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join("").trim();
-    console.log(`  ↳ used ${message.usage.input_tokens.toLocaleString()} in / ${message.usage.output_tokens.toLocaleString()} out tokens`);
+    // The output is the text after the last search: what was said between searches is not part of it.
+    const lastTool = message.content.findLastIndex((b) => b.type !== "text" && b.type !== "thinking" && b.type !== "redacted_thinking");
+    const text = message.content.slice(lastTool + 1).flatMap((b) => (b.type === "text" ? [b.text] : [])).join("").trim();
 
-    if (single) writeText(single.path, single.format === "json" ? stripFences(text) : text);
-    else writeFiles(ws, task, text);
+    writeResponse(ws, task, single, text);
 
-    const problems = task.check?.() ?? [];
+    const problems = (await task.check?.()) ?? [];
     if (!problems.length) return;
     if (attempt === 3) throw new EngineError(`The output for "${task.title}" still has problems after 3 attempts:\n  - ${problems.join("\n  - ")}`);
-    messages.push({ role: "assistant", content: message.content.filter((b) => b.type === "text") });
+    messages.push({ role: "assistant", content: message.content });
     messages.push({ role: "user", content: `The engine found these problems — fix them and resend the complete output in the same format:\n- ${problems.join("\n- ")}` });
   }
+}
+
+/** Google Search's redirect links in an answer, replaced by the pages they lead to. */
+async function withPageLinks(text: string): Promise<string> {
+  const links = [...new Set(text.match(GROUNDING_LINK) ?? [])];
+  const pages = new Map(await Promise.all(links.map(async (l) => [l, await resolveGroundingLink(l)] as const)));
+  return text.replace(GROUNDING_LINK, (l) => pages.get(l)!);
 }
 
 function stripFences(text: string): string {
@@ -158,7 +253,7 @@ function writeFiles(ws: Workspace, task: Task, text: string): void {
   try {
     parsed = JSON.parse(stripFences(text));
   } catch {
-    throw new EngineError(`Claude's response for "${task.title}" was not the expected JSON object.`);
+    throw new EngineError(`The response for "${task.title}" was not the expected JSON object.`);
   }
   const allowed = task.outputs.map((o) => resolve(o.path));
   for (const [rel, content] of Object.entries(parsed.files ?? {})) {

@@ -6,8 +6,10 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { EngineError } from "../core/errors.ts";
 import { parseMarkdown, serializeMarkdown, updateFrontmatter } from "../core/markdown.ts";
-import { nowIso, readText, writeText } from "../core/util.ts";
+import { nowIso, readJson, readText, writeText } from "../core/util.ts";
 import type { Script } from "../skills/write-script/schema.ts";
+import type { Dossier } from "./research.ts";
+import { researchPath } from "./research.ts";
 import { allText, factualHash } from "./script-check.ts";
 
 export type FactcheckStatus = "pending" | "approved" | "changes-requested";
@@ -41,6 +43,9 @@ export function writeFactcheck(episodeDir: string, script: Script, ids: { channe
   const path = factcheckPath(episodeDir);
   const approve = `./engine approve factcheck --channel ${ids.channel} --episode ${ids.episode} --by "<your name>"`;
   const reject = `./engine reject factcheck --channel ${ids.channel} --episode ${ids.episode} --reason "<which claim and why>"`;
+  // Written from a research dossier: what each source says, in its own words, beside the claim that cites it.
+  const dossier = existsSync(researchPath(episodeDir)) ? readJson<Dossier>(researchPath(episodeDir)) : null;
+  const quotes = (source: string) => (dossier?.facts ?? []).filter((f) => f.source.trim() === source.trim()).map((f) => `  - "${f.quote}"`);
   const claims = script.claims
     .map((c) =>
       [
@@ -49,6 +54,7 @@ export function writeFactcheck(episodeDir: string, script: Script, ids: { channe
         `> ${c.claim}`,
         "",
         `- **Source:** ${c.source}`,
+        ...(quotes(c.source).length ? ["- **The source says:**", ...quotes(c.source)] : []),
         c.note ? `- **Note:** ${c.note}` : "",
       ]
         .filter((l) => l !== "")

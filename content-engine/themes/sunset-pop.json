@@ -1,0 +1,23 @@
+{
+  "name": "Sunset pop",
+  "paper": "#ff7a59",
+  "card": "#fff3e6",
+  "ink": "#2b1338",
+  "text": "#2b1338",
+  "colors": [
+    "#ffd23f",
+    "#7b2cbf",
+    "#ff3d7f"
+  ],
+  "accent": "#7b2cbf",
+  "display": [
+    "baloo-2"
+  ],
+  "body": "baloo-2",
+  "casing": "normal",
+  "surface": "plain",
+  "backdrop": "blobs",
+  "texture": "none",
+  "motion": "snappy",
+  "art": "flat"
+}

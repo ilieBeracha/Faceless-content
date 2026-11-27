@@ -1,4 +1,5 @@
 import type { CharacterModel } from "../skills/render-talking-character/rigs.ts";
+import type { Theme } from "../skills/render-themed/schema.ts";
 import type { Beat, Script } from "../skills/write-script/schema.ts";
 
 export interface SafeArea {
@@ -56,11 +57,26 @@ export interface EpisodeProps {
   characters: Record<string, CharacterInfo>;
   renderSkills: string[];
   captionsSkill: string | null;
-  /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time. */
-  captionStyle: "pages" | "single-word";
+  /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time;
+   *  "chunks" = two or three words on one line under the picture, the spoken one in the accent colour. */
+  captionStyle: "pages" | "single-word" | "chunks";
+  /** A storyboard's caption choices: size, where they sit, and beats shown without them. Absent = the defaults. */
+  captionLayout?: { size: "small" | "medium" | "large"; place: "bottom" | "middle"; hide_beats: string[]; /** a FONTS key; absent = brand.font */ font?: string; /** the words' colour; absent = white */ text_color?: string; /** the spoken word's highlight; absent = brand.accent_color */ highlight?: string };
   audioFile: string | null;
+  /** The channel's writing direction: right-to-left languages (Hebrew) flip every line of text, captions included. */
+  direction: "ltr" | "rtl";
   /** render-ai-video: footage clips on the timeline (files are staged next to voice.wav). */
   clips?: { id: string; beat: string; file: string; start: number; duration: number; trim: number }[];
+  /** render-themed: the channel's look (its theme.json). */
+  theme?: Theme;
+  /** render-themed with a world: shot id (`<beat>-<n>`) → its painted picture (staged next to voice.wav). */
+  shots?: Record<string, string>;
+  /** render-themed with a world, when its shots were animated: shot id → its moving clip and the seconds it holds. */
+  shotClips?: Record<string, { file: string; seconds: number }>;
+  /** render-themed with a world: shot id → thing → where it is in the picture (fractions), for the shot's labels and push-in. */
+  shotPoints?: Record<string, Record<string, { x: number; y: number }>>;
+  /** render-subject: picture id → its painted picture (staged next to voice.wav) and where the subject is in it (fractions of the picture). */
+  subjectPictures?: Record<string, { file: string; box: { x0: number; y0: number; x1: number; y1: number } }>;
   showSafeAreas: boolean;
   qaProbe: boolean;
 }

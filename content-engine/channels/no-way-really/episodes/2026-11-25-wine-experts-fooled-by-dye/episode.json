@@ -1,0 +1,50 @@
+{
+  "id": "2026-11-25-wine-experts-fooled-by-dye",
+  "channel": "no-way-really",
+  "series": "wait-what",
+  "idea": "wine-experts-fooled-by-dye",
+  "title": "White wine, dyed red, got red-wine words",
+  "created": "2026-11-25T20:21:46Z",
+  "updated": "2026-11-25T21:36:02Z",
+  "status": "in-progress",
+  "steps": {
+    "idea": {
+      "status": "done",
+      "at": "2026-11-25T20:21:46Z",
+      "note": "Wine experts called white wine red"
+    },
+    "research": {
+      "status": "done",
+      "at": "2026-11-25T20:25:29Z",
+      "note": "33 facts"
+    },
+    "script": {
+      "status": "done",
+      "at": "2026-11-25T20:28:13Z"
+    },
+    "review": {
+      "status": "done",
+      "at": "2026-11-25T21:31:40Z"
+    },
+    "factcheck": {
+      "status": "done",
+      "at": "2026-11-25T21:31:41Z",
+      "note": "approved by ilieBeracha (told Claude in chat not to wait for approval; not read before approving)"
+    },
+    "voice": {
+      "status": "done",
+      "at": "2026-11-25T21:31:50Z",
+      "note": "33.23s"
+    },
+    "render": {
+      "status": "done",
+      "at": "2026-11-25T21:34:39Z",
+      "note": "out/no-way-really/2026-11-25-wine-experts-fooled-by-dye.mp4"
+    },
+    "qa": {
+      "status": "failed",
+      "at": "2026-11-25T21:36:02Z",
+      "note": "1 problem(s)"
+    }
+  }
+}

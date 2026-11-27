@@ -49,6 +49,37 @@
           "soundfile==0.14.0"
         ]
       },
+      "elevenlabs": {
+        "kind": "api",
+        "cost": "paid: about $0.08 per 1,000 characters through fal.ai (about $0.05 a video); needs FAL_KEY",
+        "license": "ElevenLabs and fal.ai terms",
+        "endpoint": "elevenlabs/tts/eleven-v4",
+        "words_per_second": 2.65,
+        "seconds_per_syllable": 0.32,
+        "languages": {
+          "he": {
+            "words_per_second": 1.78,
+            "seconds_per_letter": 0.122,
+            "hook_seconds_per_letter": 0.135
+          }
+        },
+        "$comment": "A hosted voice with natural phrasing; voice_id is an ElevenLabs voice name (George, Daniel, …). It sets its own pace and pauses: a character's speed and pause settings are not used. The two English rates were measured on one 42 s recording (2026-11-19): words a second with its pauses, and its slowest sentence per syllable, for the hook. A voice that speaks another language (the character's voice.language) uses that language's rates; Hebrew's were fitted to two George recordings (2026-11-21, 13.8 s and 37.3 s): a script's length is counted in letters, pauses included (a digit counts as 5 letters, as years are said in long words), within 4% on both; words a second is only for the word budget the writer is given; the hook uses the slowest sentence per letter (Hebrew is written without most vowels, so letters stand in for syllables)."
+      },
+      "elevenlabs-direct": {
+        "kind": "api",
+        "cost": "paid: your own ElevenLabs plan (Creator: about 125,000 characters a month, about 400 a video); needs ELEVENLABS_API_KEY",
+        "license": "ElevenLabs terms (a paid plan includes commercial use)",
+        "endpoint": "https://api.elevenlabs.io/v1",
+        "model": "eleven_v4",
+        "languages": {
+          "he": {
+            "words_per_second": 2.0,
+            "seconds_per_letter": 0.113,
+            "hook_seconds_per_letter": 0.12
+          }
+        },
+        "$comment": "ElevenLabs on the person's own account, for voices fal can't reach: any voice in ElevenLabs' voice library by its voice_id (a paid plan is needed for library voices). Hebrew channels use Erez (AZzja2JCoYeMe9vDQBll), a native Israeli voice. Its Hebrew rates were fitted to two Erez recordings (2026-11-21, 8.9 s and a 31.2 s episode): a script's length in letters with its pauses (within 2% on both), and the hook at 0.12 s a letter (his first sentence took 0.115 s a letter, so the estimate stays on the safe side)."
+      },
       "veo": {
         "kind": "api",
         "cost": "included in the Veo clip price",
@@ -58,12 +89,17 @@
     }
   },
   "llm": {
-    "$comment": "agent = the coding agent operating this repo writes drafts/scripts from task files (free). anthropic = Claude API (paid; needs ANTHROPIC_API_KEY and your OK).",
+    "$comment": "agent = the coding agent operating this repo writes drafts/scripts from task files (free). anthropic = Claude API (paid; needs ANTHROPIC_API_KEY and your OK). gemini = Google's Gemini API (paid; needs GEMINI_API_KEY and your OK; `./engine ai-video models` lists the model ids your key can use).",
     "provider": "agent",
     "anthropic": {
       "model": "claude-opus-5-5",
       "effort": "high",
       "max_tokens": 32000
+    },
+    "gemini": {
+      "model": "gemini-3.1-pro-preview",
+      "thinking_level": "high",
+      "max_output_tokens": 32000
     }
   },
   "captions": {
@@ -102,6 +138,29 @@
       "max_seconds": 180,
       "ai_disclosure": "Advanced settings > 'Add AI label'. Required for photorealistic video or realistic-sounding AI audio."
     }
+  },
+  "paint": {
+    "$comment": "render-themed worlds: every place an episode needs is painted with ai_video.image_model (Google, paid; needs GEMINI_API_KEY) at ai_video.rates_usd.image each. Spending stops before an episode would pass its budget.",
+    "budget_per_episode_usd": 2
+  },
+  "motion": {
+    "$comment": "render-themed worlds, when enabled: after the voice, every painted shot is turned into a moving clip as long as it is on screen (fal, paid; needs FAL_KEY). Off: the person found the clips worse than the paintings; shots move by the camera and their drawn animation (focus, labels, numbers) instead, for free. About $0.85 for a 38 s video with 8 shots when on. Clips are kept by content, so a re-render does not pay again; spending stops before an episode would pass its budget.",
+    "enabled": false,
+    "endpoint": "minimax/h3-max-turbo/image-to-video",
+    "resolution": "768P",
+    "usd_per_second": 0.01875,
+    "max_clip_seconds": 15,
+    "budget_per_episode_usd": 2
+  },
+  "music": {
+    "$comment": "Every video gets a music bed made for it (fal, paid; needs FAL_KEY) and the engine's sound effects (src/audio/sfx/, made once with `./engine sfx`). Both are mixed under the voice at render time; voice.wav and the caption timings never change. The music is kept in the episode's audio/ folder, so a re-render does not pay again.",
+    "endpoint": "sonilo/v1.1/text-to-music",
+    "usd_per_second": 0.0025,
+    "min_billed_seconds": 10,
+    "under_voice_lu": 15,
+    "sfx_endpoint": "elevenlabs/sound-effects/v3",
+    "sfx_usd_per_second": 0.002,
+    "sfx_under_voice_lu": 14
   },
   "ai_video": {
     "$comment": "render-ai-video: realistic footage from Google's Gemini API (paid; needs GEMINI_API_KEY and your OK). Model ids change: `./engine ai-video models` lists the ones your key can use.",
