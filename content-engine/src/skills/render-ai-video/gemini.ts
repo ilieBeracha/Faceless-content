@@ -153,6 +153,44 @@ export async function waitForVideo(operation: string, log: (l: string) => void, 
   }
 }
 
+/** A point in a picture, as fractions of its width (x, from the left) and height (y, from the top). */
+export interface PicturePoint {
+  x: number;
+  y: number;
+}
+
+/** Ask a Gemini vision model where each named thing is in a picture. Throws when one isn't in it. */
+export async function locatePoints(model: string, image: Buffer, targets: string[]): Promise<Record<string, PicturePoint>> {
+  const prompt = [
+    "This is a painted picture. For each thing listed, give the point at the centre of that thing as it appears in the picture.",
+    "x and y are fractions of the picture: x from 0 (left edge) to 1 (right edge), y from 0 (top edge) to 1 (bottom edge).",
+    "If a thing is not in the picture, set found to false.",
+    "Things:",
+    ...targets.map((t, i) => `${i + 1}. ${t}`),
+    'Answer only JSON: {"points": [{"thing": "<as listed>", "found": true, "x": 0.5, "y": 0.5}, ...]} in the same order.',
+  ].join("\n");
+  const res = await call<{ candidates?: { content?: { parts?: { text?: string }[] } }[] }>("POST", `models/${model}:generateContent`, {
+    contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: "image/jpeg", data: image.toString("base64") } }] }],
+    generationConfig: { responseMimeType: "application/json", temperature: 0 },
+  });
+  const text = res.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("") ?? "";
+  let parsed: { points?: { found?: boolean; x?: number; y?: number }[] };
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new EngineError(`Finding things in a picture: the model's answer was not JSON: ${text.slice(0, 200)}`);
+  }
+  const points = parsed.points ?? [];
+  if (points.length !== targets.length) throw new EngineError(`Finding things in a picture: asked for ${targets.length} things, got ${points.length} answers.`);
+  const out: Record<string, PicturePoint> = {};
+  targets.forEach((t, i) => {
+    const p = points[i];
+    if (p.found === false || typeof p.x !== "number" || typeof p.y !== "number") throw new EngineError(`"${t}" is not in its painted picture, so nothing can point at it.`, "Name something the shot shows (its `show`), or paint the shot again.");
+    out[t] = { x: Math.min(1, Math.max(0, p.x)), y: Math.min(1, Math.max(0, p.y)) };
+  });
+  return out;
+}
+
 export interface SpeechCheck {
   transcript: string;
   same_words: boolean;

@@ -16,7 +16,7 @@ Everything lands in `channels/<slug>/episodes/<date>-<idea>/`.
 | 3b | **Footage** (only series using `render-ai-video`; paid) | engine (Gemini image + Veo), **person approves the stills** | `footage/` (stills, clips, ledger) | **STOP until `approve footage`**; budget cap per episode |
 | 3e | **Subject pictures** (only series using `render-subject`; paid) | engine (Gemini image) | `subject/<picture>.jpg`, `subject/state.json` (with where the subject is in each picture), `subject/ledger.json` | needs GEMINI_API_KEY; `paint.budget_per_episode_usd` cap |
 | 4 | **Voice** | engine (Kokoro, local; or cut from the Veo clips) | `audio/voice.wav`, `audio/timings.json`, `audio/envelope.json` | — |
-| 4b | **Motion** (only looks with a painted world; paid) | engine (fal image-to-video, `motion` in engine.config.json) | `shots/clips/<shot>.mp4`, `shots/motion.json`, `shots/motion-ledger.json` | needs FAL_KEY; budget cap per episode |
+| 4b | **Motion** (only looks with a painted world, with `motion.enabled` on; paid) | engine (fal image-to-video, `motion` in engine.config.json) | `shots/clips/<shot>.mp4`, `shots/motion.json`, `shots/motion-ledger.json` | needs FAL_KEY; budget cap per episode |
 | 5 | **Render** | engine (fal music, paid; then Remotion) | `audio/music.m4a` + `music.json` (made once), `audio/mix.wav` (voice + music + effects), `out/<slug>/<episode>.mp4` (and without captions, `out/<slug>/clean/<episode>.mp4`), its captions as `out/<slug>/<episode>.srt`, `render.json`, `captions-render.json`, `qa/layout.json` | needs FAL_KEY and the effects (`./engine sfx`, once) |
 | 6 | **QA** | engine checks + agent review | `qa-report.md`, `qa-review.json`, `publish.json`, learnings entry | must pass `workflows/qa.md` |
 | 7 | Post | — | not built yet | — |
@@ -75,7 +75,9 @@ audio exactly. The mix is loudness-normalised (-14 LUFS, true peak ≤ -1 dBTP) 
 envelope is saved to drive the character's mouth.
 
 ## 4b. Motion
-In a look with a painted world, every painted shot is turned into a moving clip as long as it is on screen (after
+Off by default (`motion.enabled`): painted shots move by their camera and their drawn animation (push-in, labels,
+numbers; see skills/render-themed/SKILL.md), which the paint step prepares by finding each named thing in its picture.
+When it is on, in a look with a painted world, every painted shot is turned into a moving clip as long as it is on screen (after
 the voice, so the lengths are known): what the shot shows happens, with a still camera, in the painting's own style.
 Clips are kept by content, so only a shot whose picture, words or length changed is moved again. Every paid call is
 in `shots/motion-ledger.json` first, and it stops before the episode would pass `motion.budget_per_episode_usd`.

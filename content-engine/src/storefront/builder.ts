@@ -83,7 +83,8 @@ export interface StoryboardView {
   /** Shot id → a short version of its picture (changes when it is painted again). */
   pictures: Record<string, string>;
   /** About what moving every picture costs (paid, made after the storyboard is approved), from the script's length. */
-  motionUsd: number;
+  /** What setting every picture moving costs, or null when motion is off. */
+  motionUsd: number | null;
 }
 
 /** One beat as the customer left it on the storyboard: its shots in order. */
@@ -659,7 +660,7 @@ export class Builder {
     }));
     const channel = loadChannel(this.ws, order.channel!);
     const seconds = script.beats.reduce((s, b) => s + speechSeconds(this.ws, channel.characters.get(b.speaker)?.data, b.voiceover), 0);
-    return { script, captions: board.captions, pace: board.pace ?? "normal", hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script), motionUsd: motionCostUsd(this.ws, seconds, shotsUsed(script.beats).length) };
+    return { script, captions: board.captions, pace: board.pace ?? "normal", hostOnScreen: theme.world?.host !== false, repaintsLeft: Math.max(0, REPAINTS_PER_VIDEO - (order.video!.repaints ?? 0)), pictures, revising: order.video!.revising === true, changed: !storyboardApproved(dir, script), motionUsd: this.ws.config.motion.enabled ? motionCostUsd(this.ws, seconds, shotsUsed(script.beats).length) : null };
   }
 
   /**

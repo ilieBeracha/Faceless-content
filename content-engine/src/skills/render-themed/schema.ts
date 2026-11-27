@@ -201,9 +201,14 @@ const marks = z.object({ type: z.literal("marks"), items: z.array(z.object({ val
 export const elementSchema = z.discriminatedUnion("type", [heading, art, note, marks]);
 export type ThElement = z.infer<typeof elementSchema>;
 
+const animAt = z.string().trim().min(1).max(40).optional().describe("the word, in this shot's part of the line, it happens on; leave out to happen as the shot starts");
+const target = z.string().trim().min(3).max(80).describe('the thing in this shot\'s picture, in a few words as it is painted ("the glass on the left"); the engine finds it in the picture');
+
 /**
  * A painted shot (looks with a world): a picture that acts out what is being said, with the host drawn in it when it says "the host".
  * The first shot of a beat starts with the beat; each later one cuts in on the word `at`, as it is spoken.
+ * Over the picture, drawn animation lands on the words: the camera pushes in on one thing, labels draw on with a line to
+ * what they name, a big number counts up, a small title sits at the top.
  */
 const shot = z
   .object({
@@ -211,9 +216,45 @@ const shot = z
     show: z.string().trim().min(10).max(500).describe("what we see, acting out the words: who does what, where. Say \"the host\" to put the host in the shot; leave it out for a shot of the story alone. The world's style is added by the engine"),
     camera: z.enum(CAMERA_MOVES).optional().describe("how the camera moves over the shot; leave out to take the next move in turn"),
     host: z.boolean().optional().describe("true = the host is drawn in the shot, false = it is not; leave out to decide by whether `show` says \"the host\""),
+    title: z.string().trim().min(1).max(32).optional().describe('small text at the top, like a chart title ("Bordeaux · 2001")'),
+    focus: z.object({ on: target, zoom: z.number().min(1.2).max(2.5).default(1.6), at: animAt }).strict().optional().describe("the camera pushes in on this thing (instead of the shot's camera move)"),
+    labels: z
+      .array(z.object({ text: z.string().trim().min(1).max(24), on: target, at: animAt }).strict())
+      .min(1)
+      .max(3)
+      .optional()
+      .describe("labels that draw on with a line to the thing they name"),
+    stat: z.object({ value: z.string().trim().min(1).max(14).describe('the big number, e.g. "54"'), subtitle: z.string().trim().min(1).max(40).optional(), at: animAt }).strict().optional().describe("a big number that counts up at the top"),
   })
   .strict();
 export type Shot = z.infer<typeof shot>;
+
+/** Every piece of text a shot's animation puts on screen (fact-checked with the script). */
+export function shotText(shot: Shot): string[] {
+  return [shot.title ?? "", ...(shot.labels ?? []).map((l) => l.text), shot.stat?.value ?? "", shot.stat?.subtitle ?? ""].filter(Boolean);
+}
+
+/** The things a shot's animation points at, which the engine finds in its picture. */
+export function shotTargets(shot: Shot): string[] {
+  return [...new Set([...(shot.focus ? [shot.focus.on] : []), ...(shot.labels ?? []).map((l) => l.on)])];
+}
+
+/**
+ * The index (in `words`) of an animation's word: the first `at` in the shot's own words, [from, to). Null when it
+ * is not spoken there; the shot's first word when there is no `at`.
+ */
+export function animWord(words: string[], from: number, to: number, at: string | undefined): number | null {
+  if (!at) return from;
+  const k = wordKey(at);
+  for (let i = from; i < to; i++) if (wordKey(words[i]) === k) return i;
+  return null;
+}
+
+/** Each shot's own words: from its cut to the next shot's cut. */
+export function shotRanges(cuts: number[], wordCount: number): [number, number][] {
+  const starts = [0, ...cuts];
+  return starts.map((s, n) => [s, n + 1 < starts.length ? starts[n + 1] : wordCount]);
+}
 
 /** A shot has the host in it when it says so (`host`), else when its words say "the host". */
 export function showsHost(shot: Shot): boolean {
@@ -287,8 +328,17 @@ export function checkShots(beats: { id: string; voiceover: string; visual: unkno
         }
         if (theme.world.host_lead && !v.shots.some(showsHost)) errors.push(`beat "${b.id}": the host is this channel's main character, so at least one of the beat's shots shows the host`);
         if (v.shots[0].at) errors.push(`beat "${b.id}": the first shot starts with the beat, so it takes no \`at\``);
-        const r = shotCuts(v.shots, voiceTokens(b.voiceover));
-        if (r.error) errors.push(`beat "${b.id}": ${r.error}`);
+        const tokens = voiceTokens(b.voiceover);
+        const r = shotCuts(v.shots, tokens);
+        if (r.cuts === null) errors.push(`beat "${b.id}": ${r.error}`);
+        else {
+          const ranges = shotRanges(r.cuts, tokens.length);
+          v.shots.forEach((shot, n) => {
+            const [from, to] = ranges[n];
+            const ats = [shot.focus?.at, ...(shot.labels ?? []).map((l) => l.at), shot.stat?.at].filter((a): a is string => Boolean(a));
+            for (const at of ats) if (animWord(tokens, from, to, at) === null) errors.push(`beat "${b.id}": shot ${n + 1} animates on "${at}", which is not spoken while that shot is on screen`);
+          });
+        }
       }
     } else {
       if (v.shots?.length) errors.push(`beat "${b.id}": has shots, but the channel's theme.json has no world to paint them in`);

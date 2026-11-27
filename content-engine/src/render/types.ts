@@ -73,6 +73,8 @@ export interface EpisodeProps {
   shots?: Record<string, string>;
   /** render-themed with a world, when its shots were animated: shot id → its moving clip and the seconds it holds. */
   shotClips?: Record<string, { file: string; seconds: number }>;
+  /** render-themed with a world: shot id → thing → where it is in the picture (fractions), for the shot's labels and push-in. */
+  shotPoints?: Record<string, Record<string, { x: number; y: number }>>;
   /** render-subject: picture id → its painted picture (staged next to voice.wav) and where the subject is in it (fractions of the picture). */
   subjectPictures?: Record<string, { file: string; box: { x0: number; y0: number; x1: number; y1: number } }>;
   showSafeAreas: boolean;

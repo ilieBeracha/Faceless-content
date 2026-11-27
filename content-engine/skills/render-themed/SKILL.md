@@ -104,9 +104,31 @@ With a world, every beat tells its words in 1–3 shots, and takes no `elements`
 `camera` on a shot moves over it: `push-in`, `pull-out`, `pan-left`, `pan-right`, `rise`, `sink` or `drift`.
 Leave it out and shots take turns, so consecutive shots never move the same way. Shots dissolve into each other.
 
-After the voice, the engine sets every painted shot moving (the motion step, paid): what `show` describes happens
-in the picture, with a still camera, so the clip replaces the camera move. Write `show` as an action you could
-film ("pours white wine into two glasses", "red drops fall into the glass"), not a frozen pose.
+### Animation on the words
+
+Over each picture, drawn animation lands on the word that brings the new fact, so every sentence changes what you see:
+
+```jsonc
+{
+  "show": "A long dinner table seen from above, students with wine glasses",
+  "title": "Bordeaux · 2001",                                        // small text at the top, like a chart title
+  "stat": { "value": "54", "subtitle": "wine students", "at": "54" },  // a big number counts up at the top
+  "focus": { "on": "the glass held up to the nose", "zoom": 1.7, "at": "smelled" },  // the camera pushes in on it
+  "labels": [ { "text": "crushed berries", "on": "the glass held up to the nose", "at": "berries" } ]  // 1–3, drawn on with a line
+}
+```
+
+- `at` is a word of this shot's own part of the line; leave it out to start with the shot.
+- `on` names a thing as it is painted in this shot ("the glass on the left", "the notebook"); the engine finds it in
+  the picture after painting it (`ai_video.check_model`, about $0.002 a shot), so name only what `show` describes.
+- The voice tells the story; numbers, years, names and the words people used go on screen in `stat`, `labels` and
+  `title`. Every one of them is on screen, so it is a claim with a source.
+- A `focus` replaces the shot's camera move from its word on. Give most shots at least one of these, on the word
+  that matters: a push-in, a label or a number. A shot with none just moves with its camera.
+
+With `motion.enabled` in engine.config.json (off by default: the clips looked worse than the paintings), the engine
+also turns every painted shot into a moving clip on fal after the voice (paid): what `show` describes happens with a
+still camera, and the clip replaces the camera move. Then write `show` as an action you could film.
 
 ## Frames: `layout.frames`
 

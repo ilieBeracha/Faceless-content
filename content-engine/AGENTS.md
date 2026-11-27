@@ -65,7 +65,8 @@ channel and every step. Channel files can add rules (tone, banned topics); they 
 - Never use a paid API (voice, LLM, stock media, anything) unless the person chose it. The defaults — the
   Kokoro voice and the `agent` LLM provider — are free. The paid defaults, chosen by the person: every
   render makes the video's music on fal (about $0.0025 per second, once per video; `music` in engine.config.json),
-  and a painted world's shots are set moving on fal (about $0.019 per second of video, once per shot; `motion`).
+  and, only when `motion.enabled` is on (it is off), a painted world's shots are set moving on fal (about $0.019 per
+  second of video, once per shot; `motion`).
 - Keys live in `.env` only. Never print, log or commit them.
 - Nothing is posted or scheduled: those features don't exist yet. Never upload a video anywhere.
 

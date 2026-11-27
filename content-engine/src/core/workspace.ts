@@ -38,6 +38,8 @@ export interface EngineConfig {
   platforms: Record<string, { max_seconds: number; ai_disclosure: string }>;
   paint: { budget_per_episode_usd: number };
   motion: {
+    /** false = painted shots stay pictures, moved by the camera and their drawn animation; no clips are made or played. */
+    enabled: boolean;
     /** An image-to-video endpoint on fal that takes prompt, image_url, duration, resolution and prompt_expansion_mode. */
     endpoint: string;
     resolution: string;

@@ -17,9 +17,10 @@ import { canonicalJson, nowIso, readJson, sha256, writeJson } from "../../core/u
 import type { Workspace } from "../../core/workspace.ts";
 import type { EpisodeRef } from "../../pipeline/episode.ts";
 import { backend, saveJpeg } from "../render-ai-video/footage.ts";
+import { locatePoints, type PicturePoint } from "../render-ai-video/gemini.ts";
 import { parseCharacterModel, type CharacterModel } from "../render-talking-character/rigs.ts";
 import type { Script } from "../write-script/schema.ts";
-import { showsHost, shotsUsed, type Shot, type Theme, type World } from "./schema.ts";
+import { showsHost, shotsUsed, shotTargets, type Shot, type Theme, type World } from "./schema.ts";
 
 /** Bump to repaint everything (when the prompts below change in a way old pictures should follow). */
 export const PAINT_VERSION = 3;
@@ -66,6 +67,16 @@ interface Painted {
   sha: string;
   at: string;
   fake?: boolean;
+  /** Where the things the shot's animation points at are in the picture, found once per picture and list of things. */
+  points?: { key: string; at: Record<string, PicturePoint> };
+}
+
+/** Shot id → thing → where it is in the picture, as the paint step found them. */
+export function readShotPoints(episodeDir: string): Record<string, Record<string, PicturePoint>> {
+  const path = paintPaths(episodeDir).state;
+  if (!existsSync(path)) return {};
+  const state = readJson<PaintState>(path);
+  return Object.fromEntries(Object.entries(state.shots).filter(([, p]) => p.points).map(([id, p]) => [id, p.points!.at]));
 }
 interface PaintState {
   shots: Record<string, Painted>;
@@ -118,14 +129,14 @@ export async function runPaint(ws: Workspace, ep: EpisodeRef, script: Script, th
   const ledger = readPaintLedger(ws, ep.dir);
   let regenerated = false;
 
-  const pay = (what: string) => {
-    if (!be.fake && spentOf(ledger) + rate > ledger.budget_usd + 1e-9) {
+  const pay = (what: string, usd = rate) => {
+    if (!be.fake && spentOf(ledger) + usd > ledger.budget_usd + 1e-9) {
       throw new EngineError(
-        `Budget reached: painting this episode has spent $${spentOf(ledger).toFixed(2)} of its $${ledger.budget_usd.toFixed(2)} budget, and ${what} would cost about $${rate.toFixed(2)} more.`,
+        `Budget reached: painting this episode has spent $${spentOf(ledger).toFixed(2)} of its $${ledger.budget_usd.toFixed(2)} budget, and ${what} would cost about $${usd.toFixed(3)} more.`,
         `To allow more, raise budget_usd in ${ws.rel(paths.ledger)} (or paint.budget_per_episode_usd in engine.config.json for new episodes).`,
       );
     }
-    ledger.entries.push({ at: nowIso(), what, usd: be.fake ? 0 : rate, ...(be.fake ? { fake: true } : {}) });
+    ledger.entries.push({ at: nowIso(), what, usd: be.fake ? 0 : usd, ...(be.fake ? { fake: true } : {}) });
     mkdirSync(paths.dir, { recursive: true });
     writeJson(paths.ledger, ledger);
   };
@@ -188,6 +199,21 @@ export async function runPaint(ws: Workspace, ep: EpisodeRef, script: Script, th
       state.shots[id] = { file: `${id}.jpg`, key, sha: sha256(readFileSync(file)), at: nowIso(), ...(be.fake ? { fake: true } : {}) };
       writeJson(paths.state, state);
       regenerated = true;
+    }
+    // Find the things the shot's animation points at (labels, a push-in) in its picture.
+    const targets = shotTargets(shot);
+    const picture = state.shots[id];
+    if (targets.length) {
+      const checkModel = ws.config.ai_video.check_model;
+      const pointsKey = sha256(JSON.stringify({ v: PAINT_VERSION, model: checkModel, picture: picture.sha, targets, fake: be.fake }));
+      if (picture.points?.key !== pointsKey) {
+        pay(`finding ${targets.length} thing(s) in shot "${id}"`, ws.config.ai_video.rates_usd.check);
+        log(`  ↳ finding ${targets.map((t) => `"${t}"`).join(", ")} in shot "${id}"`);
+        const at = be.fake ? Object.fromEntries(targets.map((t) => [t, { x: 0.5, y: 0.5 }])) : await locatePoints(checkModel, readFileSync(file), targets);
+        state.shots[id] = { ...picture, points: { key: pointsKey, at } };
+        writeJson(paths.state, state);
+        regenerated = true;
+      }
     }
     files[id] = file;
   }

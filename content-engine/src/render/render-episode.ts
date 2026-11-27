@@ -12,8 +12,9 @@ import type { EpisodeRef } from "../pipeline/episode.ts";
 import { videoCaptions } from "../pipeline/storyboard.ts";
 import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
-import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schema.ts";
+import { parseTheme, shotsUsed, shotTargets, type Theme } from "../skills/render-themed/schema.ts";
 import { readMotionClips } from "../skills/render-themed/animate.ts";
+import { readShotPoints } from "../skills/render-themed/paint.ts";
 import { subjectPictureFiles } from "../skills/render-subject/paint.ts";
 import { EngineError } from "../core/errors.ts";
 import { runFfmpeg } from "../core/ffmpeg.ts";
@@ -61,16 +62,28 @@ export function loadChannelTheme(channelDir: string, slug: string): Theme {
  * render-themed: the channel's look and, when it has a world, the painted shots (staged as shots/<id>.jpg) and,
  * once the motion step has animated them, their moving clips (staged as shots/clips/<id>.mp4).
  */
-function themedProps(ep: EpisodeRef, script: Script): Pick<EpisodeProps, "theme" | "shots" | "shotClips"> {
+function themedProps(ws: Workspace, ep: EpisodeRef, script: Script): Pick<EpisodeProps, "theme" | "shots" | "shotClips" | "shotPoints"> {
   const theme = loadChannelTheme(ep.channel.dir, ep.channel.slug);
   if (!theme.world) return { theme };
-  const ids = shotsUsed(script.beats).map(({ id }) => id);
+  const used = shotsUsed(script.beats);
+  const ids = used.map(({ id }) => id);
   const shots = Object.fromEntries(ids.map((id) => [id, `shots/${id}.jpg`]));
-  const moving = readMotionClips(ep.dir);
-  if (!moving) return { theme, shots };
+  // Every thing a shot's animation points at must have been found in its picture by the paint step.
+  const found = readShotPoints(ep.dir);
+  const shotPoints: Record<string, Record<string, { x: number; y: number }>> = {};
+  for (const { id, shot } of used) {
+    const targets = shotTargets(shot);
+    if (!targets.length) continue;
+    const at = found[id];
+    const missing = targets.filter((t) => !at?.[t]);
+    if (missing.length) throw new EngineError(`Shot "${id}" points at ${missing.map((t) => `"${t}"`).join(", ")}, which the paint step has not found in its picture yet.`, "Run the episode again: its paint step finds them.");
+    shotPoints[id] = Object.fromEntries(targets.map((t) => [t, at![t]]));
+  }
+  const moving = ws.config.motion.enabled ? readMotionClips(ep.dir) : null;
+  if (!moving) return { theme, shots, shotPoints };
   const missing = ids.filter((id) => !moving[id]);
   if (missing.length) throw new EngineError(`Shot(s) ${missing.map((id) => `"${id}"`).join(", ")} of ${ep.state.id} have no moving clip, but its other shots do.`, "Run the episode again: its motion step animates every shot.");
-  return { theme, shots, shotClips: Object.fromEntries(ids.map((id) => [id, { file: `shots/${moving[id].file}`, seconds: moving[id].seconds }])) };
+  return { theme, shots, shotPoints, shotClips: Object.fromEntries(ids.map((id) => [id, { file: `shots/${moving[id].file}`, seconds: moving[id].seconds }])) };
 }
 
 function captionStyleOf(style: unknown): EpisodeProps["captionStyle"] {
@@ -111,7 +124,7 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     captionStyle: captionStyleOf(ep.channel.series.get(ep.series)!.data.caption_style),
     audioFile: "mix.wav",
     direction: languageOf(String(ep.channel.doc.data.language ?? "en")).rtl ? "rtl" : "ltr",
-    ...(series.skills.render.includes("render-themed") ? themedProps(ep, script) : {}),
+    ...(series.skills.render.includes("render-themed") ? themedProps(ws, ep, script) : {}),
     ...(series.skills.render.includes("render-subject") ? { subjectPictures: subjectPictureFiles(ep.dir, script) } : {}),
     ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,

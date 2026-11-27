@@ -4,6 +4,8 @@ import { buildPages, estimateWidth } from "../skills/captions/pages.ts";
 import { beatVisualSchema, checkBeat, countingValue, picturesUsed, sceneSchema, sceneText, viewText } from "../skills/render-subject/schema.ts";
 import { boxOf, subjectPrompt } from "../skills/render-subject/paint.ts";
 import type { TimedWord } from "../render/types.ts";
+import { beatVisualSchema as beatVisualSchemaThemed, checkShots, shotTargets, shotText, type Theme } from "../skills/render-themed/schema.ts";
+import { focusCamera, shotAnim } from "../skills/render-themed/shots.ts";
 
 const scene = sceneSchema.parse({
   subject: { name: "Glass", show: "a tall wine glass, half full of red wine" },
@@ -62,6 +64,43 @@ describe("render-subject", () => {
     rgb.set([255, 255, 255], (2 * w + 18) * 3);
     assert.deepEqual(boxOf(rgb, w, h), { x0: 5 / w, y0: 10 / h, x1: 15 / w, y1: 30 / h });
     assert.throws(() => boxOf(Buffer.alloc(w * h * 3), w, h), /no subject/);
+  });
+
+  it("painted shots: animation words must be spoken while the shot is on screen, and their text is fact-checked", () => {
+    const theme = { world: { description: "a 1950s poster world of wine cellars" } } as unknown as Theme;
+    const beats = [
+      {
+        id: "turn",
+        voiceover: "They smelled berries. Then they wrote jam.",
+        visual: {
+          skill: "render-themed",
+          shots: [
+            { show: "a student smelling a glass of red wine", focus: { on: "the glass", zoom: 1.6, at: "smelled" }, labels: [{ text: "berries", on: "the glass", at: "jam" }] },
+            { at: "Then", show: "a student writing in a notebook", stat: { value: "54", at: "wrote" } },
+          ],
+        },
+      },
+    ];
+    const errors = checkShots(beats, theme);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /shot 1 animates on "jam", which is not spoken while that shot is on screen/);
+    assert.deepEqual(shotText(beatVisualSchemaThemed.parse(beats[0].visual).shots![0]), ["berries"]);
+    assert.deepEqual(shotTargets(beatVisualSchemaThemed.parse(beats[0].visual).shots![0]), ["the glass"]);
+  });
+
+  it("painted shots: animation starts on its word, and the push-in keeps the picture filling the frame", () => {
+    const shot = beatVisualSchemaThemed.parse({ skill: "render-themed", shots: [{ show: "a glass of wine on a table", focus: { on: "the glass", at: "glass" }, labels: [{ text: "Red", on: "the glass" }] }] }).shots![0];
+    const anim = shotAnim(shot, "b-1", ["a", "glass", "here"], [0, 0.5, 1], [0, 3], 0, { "the glass": { x: 0.9, y: 0.1 } });
+    assert.ok(Math.abs(anim.focus!.t - 0.38) < 1e-9);
+    assert.equal(anim.focus!.zoom, 1.6);
+    assert.ok(Math.abs(anim.labels[0].t - 0.15) < 1e-9);
+    assert.throws(() => shotAnim(shot, "b-1", ["a", "glass"], [0, 0.5], [0, 2], 0, {}), /not found in its picture/);
+    // A point near the corner can't come all the way to the middle: the edges stay covered.
+    const cam = focusCamera(0.9, 0.1, 1.6, 1080, 1920);
+    assert.equal(cam.a, 1.6);
+    assert.ok(cam.bx <= 0 && cam.bx >= 1080 - 1.6 * 1080);
+    assert.ok(cam.by <= 0 && cam.by >= 1920 - 1.6 * 1920);
+    assert.equal(cam.by, 0);
   });
 
   it("counts a number up to its value and leaves other values alone", () => {

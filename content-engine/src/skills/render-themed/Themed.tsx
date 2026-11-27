@@ -4,7 +4,8 @@ import { fontFor } from "../../render/fonts.ts";
 import { useQaProbe } from "../../render/qa-probe.ts";
 import { characterRect, clamp, easeInOut, easeOut, hash01, regions } from "../../render/timeline.ts";
 import type { BeatSpan, EpisodeProps, Rect } from "../../render/types.ts";
-import { FADE, shotTimeline, type ShotSpan } from "./shots.ts";
+import { FADE, shotCamera, shotTimeline, type ShotSpan } from "./shots.ts";
+import { ShotMarks } from "./ShotMarks.tsx";
 import { beatFrame, FACE, HEADING_SIZE, frameHostRect, frameTextRect, GAP, noteHeight, onStage, stackLayout } from "./frames.ts";
 import { type CameraMove, type Drawing, type Role, type Theme, type ThBeatVisual, type ThElement, type ThScene } from "./schema.ts";
 
@@ -446,7 +447,7 @@ function cameraAt(move: CameraMove, p: number, clock: number): { scale: number; 
  * The painted story: the shot on screen, filmed with its camera move, or played as its moving clip when the shots
  * were animated (a still camera: the clip moves by itself); the shot before dissolves out under it.
  */
-const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number; width: number; height: number }> = ({ shots, th, now, clock, width, height }) => {
+const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number; width: number; height: number; props: EpisodeProps }> = ({ shots, th, now, clock, width, height, props }) => {
   const { fps } = useVideoConfig();
   const at = shots.reduce((cur, s, i) => (now >= s.start ? i : cur), 0);
   const draw = (s: ShotSpan, opacity: number) => {
@@ -458,13 +459,12 @@ const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number
         </Sequence>
       );
     }
-    const p = clamp((now - s.start) / Math.max(0.1, s.end - s.start));
-    const cam = cameraAt(s.move, p, clock);
+    const cam = shotCamera(s, now, (m, p) => cameraAt(m, p, clock), width, height);
     return (
       <Img
         key={s.id}
         src={staticFile(s.file)}
-        style={{ position: "absolute", left: 0, top: 0, width, height, objectFit: "cover", opacity, transform: `translate(${cam.x * width}px, ${cam.y * height}px) scale(${cam.scale})`, transformOrigin: "50% 50%" }}
+        style={{ position: "absolute", left: 0, top: 0, width, height, objectFit: "cover", opacity, transform: `translate(${cam.bx}px, ${cam.by}px) scale(${cam.a})`, transformOrigin: "0 0" }}
       />
     );
   };
@@ -479,6 +479,8 @@ const World: React.FC<{ shots: ShotSpan[]; th: Theme; now: number; clock: number
       {before && fadeIn < 1 && draw(before, 1)}
       {draw(cur, fadeIn)}
       <div style={{ position: "absolute", inset: 0, background: `linear-gradient(to bottom, ${wash(0)} 0%, ${wash(0)} 64%, ${wash(0.42)} 100%)` }} />
+      {/* The shot's drawn animation; a moving clip has no camera of its own, so its points stay where they were painted. */}
+      <ShotMarks s={cur} cam={cur.clip ? { a: 1, bx: 0, by: 0 } : shotCamera(cur, now, (m, p) => cameraAt(m, p, clock), width, height)} now={now} props={props} th={th} W={width} H={height} />
     </>
   );
 };
@@ -544,7 +546,7 @@ export const Themed: React.FC<{ props: EpisodeProps; spans: BeatSpan[]; from: nu
 
   return (
     <AbsoluteFill style={{ background: th.paper, overflow: "hidden" }}>
-      {story ? <World shots={shotTimeline(props, spans)} th={th} now={now} clock={clock} width={width} height={height} /> : <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />}
+      {story ? <World shots={shotTimeline(props, spans)} th={th} now={now} clock={clock} width={width} height={height} props={props} /> : <Backdrop th={th} now={now} clock={clock} beatT={now - span.start} index={span.index} spanId={span.id} width={width} height={height} lane={lane} />}
       {flow.map(({ el, i }, n) => {
         const topPx = y;
         y += (items[n].h + GAP) * scale;

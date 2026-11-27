@@ -98,7 +98,13 @@ export const RENDER_SKILLS: Record<string, RenderSkillSpec> = {
     sceneRequired: false,
     beatVisualSchema: themed.beatVisualSchema,
     check: (scene, beats) => beats.flatMap((b) => themed.checkBeat(b.visual as themed.ThBeatVisual, scene as themed.ThScene | undefined, b.id)),
-    text: (_scene, beats) => beats.flatMap((b) => ((b.visual as themed.ThBeatVisual).elements ?? []).flatMap((el) => (el && typeof el === "object" ? themed.elementText(el) : []))).filter(Boolean),
+    text: (_scene, beats) =>
+      beats
+        .flatMap((b) => [
+          ...((b.visual as themed.ThBeatVisual).elements ?? []).flatMap((el) => (el && typeof el === "object" ? themed.elementText(el) : [])),
+          ...((b.visual as themed.ThBeatVisual).shots ?? []).flatMap((s) => (s && typeof s === "object" ? themed.shotText(s) : [])),
+        ])
+        .filter(Boolean),
   },
   "render-subject": {
     name: "render-subject",

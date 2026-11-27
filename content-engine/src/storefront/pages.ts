@@ -1062,9 +1062,9 @@ function picturesStep(order: Order, sb: StoryboardView, accent: string): FlowSte
   const settings = `<section class="card set" id="set"><div class="row"><span>Voice speed</span><form class="speed" method="post" action="${base}/storyboard/speed" role="group" aria-label="Voice speed">${PACES.map((p) => `<button type="submit" name="pace" value="${p}" aria-pressed="${p === sb.pace}">${PACE_NAMES[p]}</button>`).join("")}</form></div></section>`;
   const bar = sb.revising
     ? sb.changed
-      ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the new version</button></form><small>Keeps the same words and does not use up one of today's videos. Only the pictures you changed are set moving again.</small>`
+      ? `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the new version</button></form><small>Keeps the same words and does not use up one of today's videos.${sb.motionUsd !== null ? " Only the pictures you changed are set moving again." : ""}</small>`
       : `<form method="post" action="${base}/storyboard/cancel"><button type="submit" class="go quiet">Leave it as it is</button></form>`
-    : `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the video</button></form><small>Every picture is set moving after you approve: about $${sb.motionUsd.toFixed(2)}</small>`;
+    : `<form method="post" action="${base}/storyboard/approve"><button type="submit" class="go">Make the video</button></form>${sb.motionUsd !== null ? `<small>Every picture is set moving after you approve: about $${sb.motionUsd.toFixed(2)}</small>` : ""}`;
   const sub = sb.revising
     ? `“${esc(sb.script.title)}” is finished. Change a picture or the speed (captions are changed on the video itself). ${sb.changed ? "The new version takes a few minutes." : "Nothing is changed yet."} The video you have now is kept as an earlier version.`
     : "";

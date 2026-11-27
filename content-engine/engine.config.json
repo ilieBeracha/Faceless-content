@@ -57,7 +57,11 @@
         "words_per_second": 2.65,
         "seconds_per_syllable": 0.32,
         "languages": {
-          "he": { "words_per_second": 1.78, "seconds_per_letter": 0.122, "hook_seconds_per_letter": 0.135 }
+          "he": {
+            "words_per_second": 1.78,
+            "seconds_per_letter": 0.122,
+            "hook_seconds_per_letter": 0.135
+          }
         },
         "$comment": "A hosted voice with natural phrasing; voice_id is an ElevenLabs voice name (George, Daniel, …). It sets its own pace and pauses: a character's speed and pause settings are not used. The two English rates were measured on one 42 s recording (2026-11-19): words a second with its pauses, and its slowest sentence per syllable, for the hook. A voice that speaks another language (the character's voice.language) uses that language's rates; Hebrew's were fitted to two George recordings (2026-11-21, 13.8 s and 37.3 s): a script's length is counted in letters, pauses included (a digit counts as 5 letters, as years are said in long words), within 4% on both; words a second is only for the word budget the writer is given; the hook uses the slowest sentence per letter (Hebrew is written without most vowels, so letters stand in for syllables)."
       },
@@ -68,7 +72,11 @@
         "endpoint": "https://api.elevenlabs.io/v1",
         "model": "eleven_v4",
         "languages": {
-          "he": { "words_per_second": 2.0, "seconds_per_letter": 0.113, "hook_seconds_per_letter": 0.12 }
+          "he": {
+            "words_per_second": 2.0,
+            "seconds_per_letter": 0.113,
+            "hook_seconds_per_letter": 0.12
+          }
         },
         "$comment": "ElevenLabs on the person's own account, for voices fal can't reach: any voice in ElevenLabs' voice library by its voice_id (a paid plan is needed for library voices). Hebrew channels use Erez (AZzja2JCoYeMe9vDQBll), a native Israeli voice. Its Hebrew rates were fitted to two Erez recordings (2026-11-21, 8.9 s and a 31.2 s episode): a script's length in letters with its pauses (within 2% on both), and the hook at 0.12 s a letter (his first sentence took 0.115 s a letter, so the estimate stays on the safe side)."
       },
@@ -136,7 +144,8 @@
     "budget_per_episode_usd": 2
   },
   "motion": {
-    "$comment": "render-themed worlds: after the voice, every painted shot is turned into a moving clip as long as it is on screen (fal, paid; needs FAL_KEY), so what it shows really happens (wine pours, drops fall). About $0.85 for a 38 s video with 8 shots. Clips are kept by content, so a re-render does not pay again; spending stops before an episode would pass its budget.",
+    "$comment": "render-themed worlds, when enabled: after the voice, every painted shot is turned into a moving clip as long as it is on screen (fal, paid; needs FAL_KEY). Off: the person found the clips worse than the paintings; shots move by the camera and their drawn animation (focus, labels, numbers) instead, for free. About $0.85 for a 38 s video with 8 shots when on. Clips are kept by content, so a re-render does not pay again; spending stops before an episode would pass its budget.",
+    "enabled": false,
     "endpoint": "minimax/h3-max-turbo/image-to-video",
     "resolution": "768P",
     "usd_per_second": 0.01875,

@@ -310,7 +310,7 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
 
   // 4b. Moving shots (render-themed with a world): each painted shot becomes a clip as long as it is on screen.
   let motionChanged = false;
-  if (series.skills.render.includes("render-themed")) {
+  if (series.skills.render.includes("render-themed") && ws.config.motion.enabled) {
     const { loadChannelTheme, buildProps } = await import("../render/render-episode.ts");
     if (loadChannelTheme(channel.dir, channel.slug).world) {
       const { runAnimate } = await import("../skills/render-themed/animate.ts");
