@@ -7,6 +7,7 @@ import { PlanetExplainer } from "../skills/render-planet-explainer/PlanetExplain
 import { CharacterLayer } from "../skills/render-talking-character/CharacterLayer.tsx";
 import { Scene3D } from "../skills/render-3d-explainer/Scene3D.tsx";
 import { StorybookScene } from "../skills/render-storybook/Storybook.tsx";
+import { Subject } from "../skills/render-subject/Subject.tsx";
 import { Themed } from "../skills/render-themed/Themed.tsx";
 import { fontFor, loadEngineFonts } from "./fonts.ts";
 import { useQaProbe } from "./qa-probe.ts";
@@ -24,6 +25,7 @@ export const SCENE_SKILLS: Record<string, SceneComponent> = {
   "render-motion-graphics": MotionGraphics,
   "render-planet-explainer": PlanetExplainer,
   "render-storybook": StorybookScene,
+  "render-subject": Subject,
   "render-themed": Themed,
 };
 

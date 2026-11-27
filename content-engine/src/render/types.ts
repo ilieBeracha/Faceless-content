@@ -57,8 +57,9 @@ export interface EpisodeProps {
   characters: Record<string, CharacterInfo>;
   renderSkills: string[];
   captionsSkill: string | null;
-  /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time. */
-  captionStyle: "pages" | "single-word";
+  /** "pages" = a short block of words with the spoken one highlighted; "single-word" = one word at a time;
+   *  "chunks" = two or three words on one line under the picture, the spoken one in the accent colour. */
+  captionStyle: "pages" | "single-word" | "chunks";
   /** A storyboard's caption choices: size, where they sit, and beats shown without them. Absent = the defaults. */
   captionLayout?: { size: "small" | "medium" | "large"; place: "bottom" | "middle"; hide_beats: string[]; /** a FONTS key; absent = brand.font */ font?: string; /** the words' colour; absent = white */ text_color?: string; /** the spoken word's highlight; absent = brand.accent_color */ highlight?: string };
   audioFile: string | null;
@@ -72,6 +73,8 @@ export interface EpisodeProps {
   shots?: Record<string, string>;
   /** render-themed with a world, when its shots were animated: shot id → its moving clip and the seconds it holds. */
   shotClips?: Record<string, { file: string; seconds: number }>;
+  /** render-subject: picture id → its painted picture (staged next to voice.wav) and where the subject is in it (fractions of the picture). */
+  subjectPictures?: Record<string, { file: string; box: { x0: number; y0: number; x1: number; y1: number } }>;
   showSafeAreas: boolean;
   qaProbe: boolean;
 }

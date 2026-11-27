@@ -290,6 +290,15 @@ export async function makeEpisode(ws: Workspace, opts: MakeEpisodeOptions): Prom
     }
   }
 
+  // 3e. The subject's pictures (render-subject): the subject and its other states, painted once each.
+  if (series.skills.render.includes("render-subject")) {
+    const { runPaintSubject } = await import("../skills/render-subject/paint.ts");
+    const paint = await runPaintSubject(ws, ep, script, { log }).finally(() => commitPaths(ws, [join(ep.dir, "subject")], `${channel.slug}: subject pictures for ${ep.state.id}`));
+    const count = Object.keys(paint.files).length;
+    if (!done("paint") || paint.regenerated) mark(ep, "paint", "done", `${count} pictures, $${paint.spentUsd.toFixed(2)} spent${paint.fake ? " (PLACEHOLDERS)" : ""}`);
+    log(`• paint: ${count} subject pictures, $${paint.spentUsd.toFixed(2)} spent${paint.fake ? " — placeholders, not real pictures" : paint.regenerated ? "" : " (cached)"}`);
+  }
+
   // 4. Voice
   const { synthesizeEpisode } = await import("../voice/synthesize.ts");
   const voice = await synthesizeEpisode(ws, ep, script, { force: redo.has("voice") || footageChanged, log });
@@ -446,7 +455,7 @@ export function scriptTask(ws: Workspace, ep: EpisodeRef, series: SeriesData, fi
   const banned = ((ch.doc.data.banned_topics as string[]) ?? []).join("; ");
   const lang = languageOf(String(ch.doc.data.language ?? "en"));
   // Right-to-left text is laid out by the painted look (and its talking host) only; the other drawing skills would show it backwards.
-  const rtlReady = new Set(["render-themed", "render-talking-character"]);
+  const rtlReady = new Set(["render-themed", "render-subject", "render-talking-character"]);
   const notRtl = series.skills.render.filter((s) => !rtlReady.has(s));
   if (lang.rtl && notRtl.length) throw new EngineError(`${lang.name} is written right to left, which ${notRtl.join(", ")} can't lay out yet.`, "Make this series with render-themed (the painted look).");
 

@@ -7,6 +7,9 @@ export const SINGLE_SIZES = { small: 48, medium: 60, large: 72 } as const;
 export const GAP = 30;
 /** Where single-word captions sit: the upper middle of the frame, above where faces usually are. */
 export const SINGLE_WORD_Y = 0.42;
+/** "chunks" captions: at most this many words, on one line, centred at this height (under render-subject's subject). */
+export const CHUNK_WORDS = 3;
+export const CHUNK_Y = 0.655;
 
 export interface CaptionLine {
   words: TimedWord[];
@@ -33,10 +36,10 @@ export function estimateWidth(text: string, fontSize: number, upper: boolean): n
 }
 
 /**
- * Group timed words into short caption pages (≤ maxLines lines no wider than maxWidth px).
+ * Group timed words into short caption pages (≤ maxLines lines no wider than maxWidth px, ≤ maxWords words).
  * A page never spans two beats and breaks after sentence-ending punctuation.
  */
-export function buildPages(words: TimedWord[], measure: (text: string) => number, maxWidth: number, maxLines: number, gap = 18, hold = 0.35): CaptionPage[] {
+export function buildPages(words: TimedWord[], measure: (text: string) => number, maxWidth: number, maxLines: number, gap = 18, hold = 0.35, maxWords = Infinity): CaptionPage[] {
   const pages: CaptionPage[] = [];
   let lines: CaptionLine[] = [{ words: [] }];
   const lineWidth = (l: CaptionLine) => l.words.reduce((n, w) => n + measure(w.text), 0) + Math.max(0, l.words.length - 1) * gap;
@@ -48,6 +51,7 @@ export function buildPages(words: TimedWord[], measure: (text: string) => number
   words.forEach((word, i) => {
     const prev = words[i - 1];
     if (prev && prev.beat !== word.beat) flush();
+    if (lines.reduce((n, l) => n + l.words.length, 0) >= maxWords) flush();
     let line = lines[lines.length - 1];
     if (line.words.length && lineWidth(line) + gap + measure(word.text) > maxWidth) {
       if (lines.length >= maxLines) flush();

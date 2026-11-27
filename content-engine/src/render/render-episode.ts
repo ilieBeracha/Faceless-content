@@ -14,6 +14,7 @@ import type { SeriesData } from "../pipeline/script-check.ts";
 import { parseCharacterModel } from "../skills/render-talking-character/rigs.ts";
 import { parseTheme, shotsUsed, type Theme } from "../skills/render-themed/schema.ts";
 import { readMotionClips } from "../skills/render-themed/animate.ts";
+import { subjectPictureFiles } from "../skills/render-subject/paint.ts";
 import { EngineError } from "../core/errors.ts";
 import { runFfmpeg } from "../core/ffmpeg.ts";
 import type { Script } from "../skills/write-script/schema.ts";
@@ -72,6 +73,12 @@ function themedProps(ep: EpisodeRef, script: Script): Pick<EpisodeProps, "theme"
   return { theme, shots, shotClips: Object.fromEntries(ids.map((id) => [id, { file: `shots/${moving[id].file}`, seconds: moving[id].seconds }])) };
 }
 
+function captionStyleOf(style: unknown): EpisodeProps["captionStyle"] {
+  if (style === undefined || style === "pages") return "pages";
+  if (style === "single-word" || style === "chunks") return style;
+  throw new EngineError(`Unknown caption_style "${String(style)}".`, 'Use "pages", "single-word" or "chunks".');
+}
+
 export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): EpisodeProps {
   const series = ep.channel.series.get(ep.series)!.data as unknown as SeriesData;
   const paths = voicePaths(ep.dir);
@@ -101,10 +108,11 @@ export function buildProps(ws: Workspace, ep: EpisodeRef, script: Script): Episo
     characters,
     renderSkills: series.skills.render,
     captionsSkill: captions?.show === false ? null : (series.skills.captions ?? null),
-    captionStyle: ((ep.channel.series.get(ep.series)!.data.caption_style as string) === "single-word" ? "single-word" : "pages"),
+    captionStyle: captionStyleOf(ep.channel.series.get(ep.series)!.data.caption_style),
     audioFile: "mix.wav",
     direction: languageOf(String(ep.channel.doc.data.language ?? "en")).rtl ? "rtl" : "ltr",
     ...(series.skills.render.includes("render-themed") ? themedProps(ep, script) : {}),
+    ...(series.skills.render.includes("render-subject") ? { subjectPictures: subjectPictureFiles(ep.dir, script) } : {}),
     ...(timings.clips ? { clips: timings.clips.map(({ id, beat, file, start, duration, trim }) => ({ id, beat, file, start, duration, trim })) } : {}),
     showSafeAreas: false,
     qaProbe: true,
@@ -248,6 +256,7 @@ export async function renderEpisode(ws: Workspace, ep: EpisodeRef, script: Scrip
     ...(props.clips ?? []).map((c) => ({ src: join(ep.dir, "footage", c.file), dest: c.file })),
     ...Object.values(props.shots ?? {}).map((file) => ({ src: join(ep.dir, file), dest: file })),
     ...Object.values(props.shotClips ?? {}).map(({ file }) => ({ src: join(ep.dir, file), dest: file })),
+    ...Object.values(props.subjectPictures ?? {}).map(({ file }) => ({ src: join(ep.dir, file), dest: file })),
   ];
   for (const c of clipFiles) if (!existsSync(c.src)) throw new EngineError(`${ws.rel(c.src)} is missing, so the episode can't be rendered.`, "Run the episode again: its footage or paint step makes it.");
   const inputsHash = sha256(canonicalJson({ v: RENDER_VERSION, props: { ...clean, envelope: sha256(JSON.stringify(clean.envelope)) }, wav: sha256(readFileSync(wav)), clips: clipFiles.map((c) => sha256(readFileSync(c.src))), code: codeHash() }));
